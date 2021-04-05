@@ -31,7 +31,7 @@
         class="rounded-0"
       >
         <template v-slot:prepend>
-          <v-list-item>
+          <v-list-item class="disable-hover">
             <v-list-item-avatar>
               <img src="https://randomuser.me/api/portraits/women/81.jpg" />
             </v-list-item-avatar>
@@ -104,7 +104,7 @@ a {
 a {
   display: flex;
 }
-.v-list-item {
+.v-list-item:not(.disable-hover) {
   .active,
   .v-icon {
     color: rgba(0, 0, 0, 0.6) !important;
