@@ -1,41 +1,73 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+    <!------------------------------- START: TopBar ------------------------------->
+    <v-app-bar app dark v-model="topbar">
+      <!-- show/hide Sidebar -->
+      <v-app-bar-nav-icon @click.stop="sidebar = !sidebar"></v-app-bar-nav-icon>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <div class="d-flex align-center">
+        <v-img
+          alt="Jeanwest Logo"
+          class="shrink"
+          contain
+          src="https://www.jeanswest.ir/wp-content/themes/jeanswest/assets/images/jeanwest-logo.png"
+          transition="scale-transition"
+          width="140"
+        />
+      </div>
     </v-app-bar>
+    <!-------------------------------- END: TopBar -------------------------------->
 
-    <v-main>
-      <router-view />
-    </v-main>
+    <v-card height="100vh">
+      <!------------------------------ START: Sidebar ------------------------------->
+      <v-navigation-drawer
+        app
+        absolute
+        bottom
+        right
+        v-model="sidebar"
+        class="rounded-0"
+      >
+        <template v-slot:prepend>
+          <v-list-item>
+            <v-list-item-avatar>
+              <img src="https://randomuser.me/api/portraits/women/81.jpg" />
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>Jane Smith</v-list-item-title>
+              <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+            </v-list-item-content>
+
+            <!-- show/hide TopBar -->
+            <v-app-bar-nav-icon
+              @click.stop="topbar = !topbar"
+            ></v-app-bar-nav-icon>
+          </v-list-item>
+        </template>
+
+        <v-divider></v-divider>
+
+        <v-list dense>
+          <v-list-item v-for="item in items" :key="item.title">
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+      <!------------------------------- END: Sidebar -------------------------------->
+
+      <v-main>
+        <router-view />
+      </v-main>
+    </v-card>
   </v-app>
 </template>
 
@@ -46,7 +78,15 @@ export default Vue.extend({
   name: "App",
 
   data: () => ({
-    //
+    topbar: true,
+    sidebar: true,
+    group: null,
+    items: [
+      { title: "Home", icon: "mdi-home-city" },
+      { title: "My Account", icon: "mdi-account" },
+      { title: "Users", icon: "mdi-account-group-outline" },
+    ],
+    links: ["Home", "Contacts", "Settings"],
   }),
 });
 </script>
