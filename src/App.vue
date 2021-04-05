@@ -50,15 +50,17 @@
 
         <v-divider></v-divider>
 
-        <v-list dense>
+        <v-list dense rounded>
           <v-list-item v-for="item in items" :key="item.title">
-            <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
+            <router-link :to="item.link" class="active">
+              <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </router-link>
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
@@ -83,12 +85,37 @@ export default Vue.extend({
       sidebar: document.body.clientWidth > 1264 ? true : false,
       group: null,
       items: [
-        { title: "Home", icon: "mdi-home-city" },
-        { title: "My Account", icon: "mdi-account" },
-        { title: "Users", icon: "mdi-account-group-outline" },
+        { title: "Dashboard", icon: "mdi-view-dashboard", link: "/" },
+        { title: "Home", icon: "mdi-home-city", link: "/home" },
+        { title: "Card", icon: "mdi-widgets", link: "/card" },
       ],
-      links: ["Home", "Contacts", "Settings"],
     };
   },
 });
 </script>
+
+<style lang="scss">
+a {
+  text-decoration: none;
+}
+</style>
+
+<style lang="scss" scoped>
+a {
+  display: flex;
+}
+.v-list-item {
+  .active,
+  .v-icon {
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
+  &:hover {
+    .active,
+    .v-icon {
+      color: white !important;
+      transition: none;
+    }
+    background-color: #9575cd;
+  }
+}
+</style>
