@@ -51,8 +51,13 @@
         <v-divider></v-divider>
 
         <v-list dense rounded>
-          <v-list-item v-for="item in items" :key="item.title">
-            <router-link :to="item.link" class="active">
+          <router-link
+            v-for="item in items"
+            :key="item.title"
+            :to="item.link"
+            class="active"
+          >
+            <v-list-item>
               <v-list-item-icon>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-list-item-icon>
@@ -60,8 +65,8 @@
               <v-list-item-content>
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item-content>
-            </router-link>
-          </v-list-item>
+            </v-list-item>
+          </router-link>
         </v-list>
       </v-navigation-drawer>
       <!------------------------------- END: Sidebar -------------------------------->
@@ -103,18 +108,20 @@ a {
 <style lang="scss" scoped>
 a {
   display: flex;
-}
-.v-list-item:not(.disable-hover) {
-  .active,
-  .v-icon {
+  .v-list-item__title,
+  i.v-icon {
     color: rgba(0, 0, 0, 0.6) !important;
   }
   &:hover {
-    .active,
-    .v-icon {
+    i.v-icon,
+    .v-list-item__title {
       color: white !important;
       transition: none;
     }
+  }
+}
+.v-list-item:not(.disable-hover) {
+  &:hover {
     background-color: #9575cd;
   }
 }
