@@ -12,7 +12,7 @@
           alt="Jeanwest Logo"
           class="shrink"
           contain
-          src="https://www.jeanswest.ir/wp-content/themes/jeanswest/assets/images/jeanwest-logo.png"
+          src="@/assets/images/jeanwest-logo.png"
           transition="scale-transition"
           width="140"
         />
