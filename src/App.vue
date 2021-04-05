@@ -77,16 +77,18 @@ import Vue from "vue";
 export default Vue.extend({
   name: "App",
 
-  data: () => ({
-    topbar: true,
-    sidebar: true,
-    group: null,
-    items: [
-      { title: "Home", icon: "mdi-home-city" },
-      { title: "My Account", icon: "mdi-account" },
-      { title: "Users", icon: "mdi-account-group-outline" },
-    ],
-    links: ["Home", "Contacts", "Settings"],
-  }),
+  data() {
+    return {
+      topbar: true,
+      sidebar: document.body.clientWidth > 1264 ? true : false,
+      group: null,
+      items: [
+        { title: "Home", icon: "mdi-home-city" },
+        { title: "My Account", icon: "mdi-account" },
+        { title: "Users", icon: "mdi-account-group-outline" },
+      ],
+      links: ["Home", "Contacts", "Settings"],
+    };
+  },
 });
 </script>
