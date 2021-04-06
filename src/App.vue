@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!------------------------------- START: TopBar ------------------------------->
-    <v-app-bar app dark v-model="topbar">
+    <v-app-bar app class="primary" dark v-model="topbar">
       <!-- show/hide Sidebar -->
       <v-app-bar-nav-icon @click.stop="sidebar = !sidebar"></v-app-bar-nav-icon>
 
@@ -50,24 +50,9 @@
 
         <v-divider></v-divider>
 
-        <v-list dense rounded>
-          <router-link
-            v-for="item in items"
-            :key="item.title"
-            :to="item.link"
-            class="active"
-          >
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </router-link>
-        </v-list>
+        <!-- START: Sidebar Lists -->
+        <SidebarLists />
+        <!-- END: Sidebar Lists -->
       </v-navigation-drawer>
       <!------------------------------- END: Sidebar -------------------------------->
 
@@ -80,20 +65,20 @@
 
 <script lang="ts">
 import Vue from "vue";
+import SidebarLists from "@/components/SidebarLists.vue";
 
 export default Vue.extend({
   name: "App",
 
+  components: {
+    SidebarLists,
+  },
   data() {
     return {
       topbar: true,
       sidebar: document.body.clientWidth > 1264 ? true : false,
       group: null,
-      items: [
-        { title: "Dashboard", icon: "mdi-view-dashboard", link: "/" },
-        { title: "Home", icon: "mdi-home-city", link: "/home" },
-        { title: "Card", icon: "mdi-widgets", link: "/card" },
-      ],
+      selectedItem: 1,
     };
   },
 });
@@ -106,23 +91,23 @@ a {
 </style>
 
 <style lang="scss" scoped>
-a {
-  display: flex;
-  .v-list-item__title,
-  i.v-icon {
-    color: rgba(0, 0, 0, 0.6) !important;
-  }
-  &:hover {
-    i.v-icon,
-    .v-list-item__title {
-      color: white !important;
-      transition: none;
-    }
-  }
-}
-.v-list-item:not(.disable-hover) {
-  &:hover {
-    background-color: #9575cd;
-  }
-}
+// a {
+//   display: flex;
+//   .v-list-item__title,
+//   i.v-icon {
+//     color: rgba(0, 0, 0, 0.6) !important;
+//   }
+//   &:hover {
+//     i.v-icon,
+//     .v-list-item__title {
+//       color: white !important;
+//       transition: none;
+//     }
+//   }
+// }
+// .v-list-item:not(.disable-hover) {
+//   &:hover {
+//     background-color: #9575cd;
+//   }
+// }
 </style>
