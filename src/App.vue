@@ -78,7 +78,6 @@ export default Vue.extend({
       topbar: true,
       sidebar: document.body.clientWidth > 1264 ? true : false,
       group: null,
-      selectedItem: 1,
     };
   },
 });
