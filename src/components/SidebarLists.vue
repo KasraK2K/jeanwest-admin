@@ -66,7 +66,7 @@ export default Vue.extend({
 
   data() {
     return {
-      selectedItem: 1,
+      selectedItem: 0,
       admins: [
         ["نمایش", "mdi-account-multiple-outline", "AllAdmins"],
         ["دسترسی", "mdi-account-multiple-outline", "AllAdmins"],
