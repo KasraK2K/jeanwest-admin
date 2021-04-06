@@ -6,11 +6,13 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import Highcharts from "highcharts";
 import Stock from "highcharts/modules/stock";
+import Gantt from "highcharts/modules/gantt";
 import HighchartsVue from "highcharts-vue";
 
 Vue.config.productionTip = false;
 
 Stock(Highcharts);
+Gantt(Highcharts);
 Vue.use(HighchartsVue);
 
 new Vue({

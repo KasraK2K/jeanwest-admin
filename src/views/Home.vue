@@ -20,7 +20,15 @@
       </v-col>
 
       <v-col sm="6">
-        <StockChart :chartData="StockChartData" />
+        <v-card>
+          <StockChart :chartData="StockChartData" />
+        </v-card>
+      </v-col>
+
+      <v-col sm="12">
+        <v-card>
+          <GanttChart :chartOptions="GanttChartOptions" />
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -28,6 +36,7 @@
 
 <script>
 import StockChart from "@/components/charts/StockChart";
+import GanttChart from "@/components/charts/GanttChart";
 
 const gradients = [
   ["#222"],
@@ -53,10 +62,63 @@ export default {
       type: "trend",
       autoLineWidth: false,
       StockChartData: [1, 2, 3],
+      GanttChartOptions: {
+        title: {
+          text: "Gantt Chart with Progress Indicators",
+        },
+        xAxis: {
+          min: Date.UTC(2014, 10, 17),
+          max: Date.UTC(2014, 10, 30),
+        },
+
+        series: [
+          {
+            name: "Project 1",
+            data: [
+              {
+                name: "Start prototype",
+                start: Date.UTC(2014, 10, 18),
+                end: Date.UTC(2014, 10, 25),
+                completed: 0.25,
+              },
+              {
+                name: "Test prototype",
+                start: Date.UTC(2014, 10, 27),
+                end: Date.UTC(2014, 10, 29),
+              },
+              {
+                name: "Develop",
+                start: Date.UTC(2014, 10, 20),
+                end: Date.UTC(2014, 10, 25),
+                completed: {
+                  amount: 0.12,
+                  fill: "#fa0",
+                },
+              },
+              {
+                name: "Run acceptance tests",
+                start: Date.UTC(2014, 10, 23),
+                end: Date.UTC(2014, 10, 26),
+              },
+            ],
+          },
+        ],
+      },
     };
   },
   components: {
     StockChart,
+    GanttChart,
+  },
+  methods: {
+    handler() {
+      var args = arguments;
+      for (var arg of args) {
+        if (arg instanceof Function) {
+          arg();
+        }
+      }
+    },
   },
 };
 </script>

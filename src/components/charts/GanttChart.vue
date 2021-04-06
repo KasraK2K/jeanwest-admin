@@ -1,0 +1,18 @@
+<template>
+  <div>
+    <highcharts
+      :constructorType="'ganttChart'"
+      class="hc"
+      :options="chartOptions"
+      ref="chart"
+    ></highcharts>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    chartOptions: { type: Object, required: true },
+  },
+};
+</script>
