@@ -1,27 +1,17 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
-import Card from "../views/Card.vue";
-import AllAdmins from "../views/admins/AllAdmins.vue";
+
+// routes
+import { users } from "@/router/compact/users.routes";
+import { others } from "@/router/compact/others.routes";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
-  {
-    path: "/card",
-    name: "Card",
-    component: Card,
-  },
-  {
-    path: "/admins",
-    name: "AllAdmins",
-    component: AllAdmins
-  }
+  { path: "/", name: "Home", component: Home },
+  ...users,
+  ...others,
 ];
 
 const router = new VueRouter({

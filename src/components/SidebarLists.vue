@@ -23,6 +23,17 @@
       </router-link>
       <!-- dashboard -->
 
+      <!-- support -->
+      <router-link :to="{ name: 'Card' }">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>mdi-face-agent</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>تیکت</v-list-item-title>
+        </v-list-item>
+      </router-link>
+      <!-- support -->
+
       <!-- users -->
       <v-list-group :value="false" prepend-icon="mdi-account-circle">
         <!-- #1 -->
