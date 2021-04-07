@@ -24,7 +24,7 @@
       <!-- dashboard -->
 
       <!-- support -->
-      <router-link :to="{ name: 'Card' }">
+      <router-link :to="{ name: 'TicketCreate' }">
         <v-list-item>
           <v-list-item-icon>
             <v-icon>mdi-face-agent</v-icon>
