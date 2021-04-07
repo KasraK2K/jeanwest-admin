@@ -2,28 +2,48 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-card class="py-4 px-4">
+        <v-card class="pa-4">
           <form @submit.prevent="submitForm">
-            <!-- <Tinymce id="message" /> -->
-            <editor
-              v-model="content"
-              api-key="pgxbkqy8xfl67jrbzbpzlfv76ove7nzl6nmkxm5kdg1wwyn5"
-              :init="{
-                height: 500,
-                menubar: false,
-                plugins: [
-                  'advlist autolink lists link image charmap print preview anchor',
-                  'searchreplace visualblocks code fullscreen',
-                  'insertdatetime media table paste code help wordcount',
-                ],
-                toolbar:
-                  'undo redo | formatselect | bold italic backcolor | \
-                  alignleft aligncenter alignright alignjustify | \
-                  bullist numlist outdent indent | removeformat | help',
-              }"
-            />
+            <!-- Subject -->
+            <v-row>
+              <v-col sm="12" md="8">
+                <v-text-field
+                  label="موضوع"
+                  :rules="rules"
+                  hide-details="auto"
+                  class="mb-4"
+                  name="subject"
+                >
+                  <v-icon slot="prepend" color="blue">
+                    mdi-format-title
+                  </v-icon>
+                </v-text-field>
+              </v-col>
+              <v-col sm="12" md="4">
+                <v-select
+                  :items="['جین‌وست', 'بانی‌مد', 'بالکافه']"
+                  label="دپارتمان"
+                  name="department"
+                >
+                  <template v-slot:item="{ item, attrs, on }">
+                    <v-list-item v-bind="attrs" v-on="on">
+                      <v-list-item-title
+                        :id="attrs['aria-labelledby']"
+                        v-text="item"
+                      ></v-list-item-title>
+                    </v-list-item>
+                  </template>
+                  <v-icon slot="prepend" color="blue">
+                    mdi-account-hard-hat
+                  </v-icon>
+                </v-select>
+              </v-col>
+            </v-row>
+            <!-- Message Body -->
+            <editor v-model="content" :api-key="tinyApiKey" :init="tinyInit" />
+            <!-- Submit Button -->
             <v-btn type="submit" large color="primary" class="mt-4"
-              >Submit</v-btn
+              >ارسال</v-btn
             >
           </form>
         </v-card>
@@ -33,33 +53,42 @@
 </template>
 
 <script>
-// import Tinymce from "@/components/Tinymce";
 import Editor from "@tinymce/tinymce-vue";
+import { tinyApiKey, tinyInit } from "@/globals/settings/tinymce.setting";
 
 export default {
   components: {
     editor: Editor,
   },
-  // components: {
-  //   Tinymce,
-  // },
   methods: {
     submitForm(event) {
       const elements = event.target.elements;
       const data = this.formData(elements);
-      console.log(data.message);
+      console.log("submited", data);
       // use service for send data to server
     },
     formData(data) {
       return {
         message: this.content,
+        department: data.department.value,
+        subject: data.subject.value,
       };
     },
   },
   data() {
     return {
+      rules: [
+        (value) => !!value || "پر کردن این فیلد الزامیست",
+        (value) =>
+          (value && value.length >= 3) || "وارد کردن حداقل ۳ کاراکتر الزامیست",
+      ],
       content: undefined,
+      tinyApiKey,
+      tinyInit,
     };
+  },
+  mounted() {
+    console.log(process.env.VUE_APP_ROOT_API);
   },
 };
 </script>
