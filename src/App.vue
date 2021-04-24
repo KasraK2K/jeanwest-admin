@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!------------------------------- START: TopBar ------------------------------->
-    <v-app-bar app class="primary" dark v-model="topbar">
+    <v-app-bar app class="primary" dark v-model="topbar" v-if="token">
       <!-- show/hide Sidebar -->
       <v-app-bar-nav-icon @click.stop="sidebar = !sidebar"></v-app-bar-nav-icon>
 
@@ -29,6 +29,7 @@
         right
         v-model="sidebar"
         class="rounded-0"
+        v-if="token"
       >
         <template v-slot:prepend>
           <v-list-item class="disable-hover">
@@ -51,7 +52,7 @@
         <v-divider></v-divider>
 
         <!-- START: Sidebar Lists -->
-        <SidebarLists />
+        <SidebarLists @log-out="logOut" />
         <!-- END: Sidebar Lists -->
       </v-navigation-drawer>
       <!------------------------------- END: Sidebar -------------------------------->
@@ -66,6 +67,8 @@
 <script lang="ts">
 import Vue from "vue";
 import SidebarLists from "@/components/SidebarLists.vue";
+import { tokenName } from "./common/globals/globals";
+import { mapState } from "vuex";
 
 export default Vue.extend({
   name: "App",
@@ -79,6 +82,29 @@ export default Vue.extend({
       sidebar: document.body.clientWidth > 1264 ? true : false,
       group: null,
     };
+  },
+  computed: {
+    ...mapState(["token"]),
+  },
+  methods: {
+    getToken(name: string): any {
+      const storageToken = localStorage.getItem(name);
+      if (storageToken) this.$store.dispatch('setToken', storageToken);
+      else return undefined;
+    },
+    checkLogin(): void {
+      let token = (this as any).getToken(tokenName);
+      const route = document.location.pathname.slice(1);
+      if (!token && route !== "login") (this as any).$router.push({ name: "Login" });
+    },
+    logOut() {
+      localStorage.removeItem(tokenName);
+      (this as any).$store.state.token = "";
+      (this as any).checkLogin();
+    }
+  },
+  created(): void {
+    (this as any).checkLogin();
   },
 });
 </script>

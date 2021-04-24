@@ -24,14 +24,20 @@
       <!-- dashboard -->
 
       <!-- support -->
-      <router-link :to="{ name: 'TicketCreate' }">
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon>mdi-face-agent</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>تیکت</v-list-item-title>
-        </v-list-item>
-      </router-link>
+      <v-list-group :value="false" prepend-icon="mdi-face-agent">
+        <!-- #1 -->
+        <template v-slot:activator>
+          <v-list-item-title>تیکت‌ها</v-list-item-title>
+        </template>
+        <!-- #2 -->
+        <router-link :to="{ name: 'TicketCreate' }">
+          <v-list-group :value="false" no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-title>پاسخ به تیکت</v-list-item-title>
+            </template>
+          </v-list-group>
+        </router-link>
+      </v-list-group>
       <!-- support -->
 
       <!-- users -->
@@ -40,7 +46,6 @@
         <template v-slot:activator>
           <v-list-item-title>کاربران</v-list-item-title>
         </template>
-
         <!-- #2 -->
         <v-list-group :value="false" no-action sub-group>
           <template v-slot:activator>
@@ -48,7 +53,6 @@
               <v-list-item-title>ادمین‌ها</v-list-item-title>
             </v-list-item-content>
           </template>
-
           <!-- #3 -->
           <router-link
             v-for="([title, icon, link], i) in admins"
@@ -65,6 +69,17 @@
         </v-list-group>
       </v-list-group>
       <!-- users -->
+
+      <!-- exit -->
+      <a @click="logOut">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>mdi-location-exit</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>خروج</v-list-item-title>
+        </v-list-item>
+      </a>
+      <!-- exit -->
     </v-list-item-group>
   </v-list>
 </template>
@@ -84,5 +99,10 @@ export default Vue.extend({
       ],
     };
   },
+  methods: {
+    logOut() {
+      this.$emit('log-out');
+    }
+  }
 });
 </script>

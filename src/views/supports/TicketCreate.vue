@@ -54,7 +54,10 @@
 
 <script>
 import Editor from "@tinymce/tinymce-vue";
-import { tinyApiKey, tinyInit } from "@/globals/settings/tinymce.setting";
+import {
+  tinyApiKey,
+  tinyInit,
+} from "@/common/globals/settings/tinymce.setting";
 
 export default {
   components: {
