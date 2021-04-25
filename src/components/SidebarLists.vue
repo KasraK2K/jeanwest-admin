@@ -24,14 +24,32 @@
       <!-- dashboard -->
 
       <!-- support -->
-      <v-list-group :value="false" prepend-icon="mdi-face-agent">
+      <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>تیکت‌ها</v-list-item-title>
         </template>
         <!-- #2 -->
-        <router-link :to="{ name: 'TicketCreate' }">
-          <v-list-group :value="false" no-action sub-group>
+        <router-link :to="{ name: 'AllTickets' }">
+          <v-list-group
+            :value="false"
+            no-action
+            sub-group
+            prepend-icon="mdi-checkbox-blank-circle-outline"
+          >
+            <template v-slot:activator>
+              <v-list-item-title>لیست تیکت‌ها</v-list-item-title>
+            </template>
+          </v-list-group>
+        </router-link>
+
+        <router-link :to="{ name: 'AnswerTicket' }">
+          <v-list-group
+            :value="false"
+            no-action
+            sub-group
+            prepend-icon="mdi-checkbox-blank-circle-outline"
+          >
             <template v-slot:activator>
               <v-list-item-title>پاسخ به تیکت</v-list-item-title>
             </template>
@@ -101,8 +119,8 @@ export default Vue.extend({
   },
   methods: {
     logOut() {
-      this.$emit('log-out');
-    }
-  }
+      this.$emit("log-out");
+    },
+  },
 });
 </script>

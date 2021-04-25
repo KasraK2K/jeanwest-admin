@@ -1,7 +1,14 @@
 <template>
   <v-app>
     <!------------------------------- START: TopBar ------------------------------->
-    <v-app-bar app class="primary" dark v-model="topbar" v-if="token">
+    <v-app-bar
+      app
+      class="primary"
+      dark
+      v-model="topbar"
+      id="topbar"
+      v-if="token"
+    >
       <!-- show/hide Sidebar -->
       <v-app-bar-nav-icon @click.stop="sidebar = !sidebar"></v-app-bar-nav-icon>
 
@@ -29,6 +36,7 @@
         right
         v-model="sidebar"
         class="rounded-0"
+        id="sidebar"
         v-if="token"
       >
         <template v-slot:prepend>
@@ -44,6 +52,7 @@
 
             <!-- show/hide TopBar -->
             <v-app-bar-nav-icon
+              v-if="showTopMenuBtn"
               @click.stop="topbar = !topbar"
             ></v-app-bar-nav-icon>
           </v-list-item>
@@ -79,8 +88,9 @@ export default Vue.extend({
   data() {
     return {
       topbar: true,
-      sidebar: document.body.clientWidth > 1264 ? true : false,
+      sidebar: document.body.clientWidth > 1264,
       group: null,
+      showTopMenuBtn: document.body.clientWidth > 1264,
     };
   },
   computed: {
@@ -89,19 +99,22 @@ export default Vue.extend({
   methods: {
     getToken(name: string): any {
       const storageToken = localStorage.getItem(name);
-      if (storageToken) this.$store.dispatch('setToken', storageToken);
-      else return undefined;
+      if (storageToken) {
+        this.$store.dispatch("setToken", storageToken);
+        return this.token;
+      } else return undefined;
     },
     checkLogin(): void {
       let token = (this as any).getToken(tokenName);
       const route = document.location.pathname.slice(1);
-      if (!token && route !== "login") (this as any).$router.push({ name: "Login" });
+      if (!token && route !== "login")
+        (this as any).$router.push({ name: "Login" });
     },
     logOut() {
       localStorage.removeItem(tokenName);
       (this as any).$store.state.token = "";
       (this as any).checkLogin();
-    }
+    },
   },
   created(): void {
     (this as any).checkLogin();
