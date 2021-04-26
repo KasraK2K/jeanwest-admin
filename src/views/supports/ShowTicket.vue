@@ -1,7 +1,20 @@
 <template>
   <v-container fluid>
-    <h1>تیتر سوال کاربر</h1>
+    <v-flex class="d-flex justify-space-between align-center">
+      <h1>تیتر سوال کاربر</h1>
+      <v-btn color="primary" large @click="toggleForm">نمایش فرم</v-btn>
+    </v-flex>
     <v-divider class="mb-6 mt-3"></v-divider>
+
+    <v-card id="form" class="mt-2 mb-5 pa-4">
+      <form @submit.prevent="submitForm">
+        <!-- Message Body -->
+        <editor v-model="content" :api-key="tinyApiKey" :init="tinyInit" />
+
+        <!-- Submit Button -->
+        <v-btn type="submit" large color="primary" class="mt-4">ارسال</v-btn>
+      </form>
+    </v-card>
 
     <div class="d-flex flex-column" id="messages">
       <!-- admin answere -->
@@ -73,16 +86,6 @@
         </div>
       </v-alert>
     </div>
-
-    <div id="form" class="mt-2">
-      <form @submit.prevent="submitForm">
-        <!-- Message Body -->
-        <editor v-model="content" :api-key="tinyApiKey" :init="tinyInit" />
-
-        <!-- Submit Button -->
-        <v-btn type="submit" large color="primary" class="mt-4">ارسال</v-btn>
-      </form>
-    </div>
   </v-container>
 </template>
 
@@ -119,6 +122,9 @@ export default {
         message: this.content,
       };
     },
+    toggleForm() {
+      console.log('toggle form');
+    }
   },
 };
 </script>
