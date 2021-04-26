@@ -45,6 +45,28 @@
       </v-list-group>
       <!-- support -->
 
+      <!-- notification -->
+      <v-list-group :value="false" prepend-icon="mdi-bell-ring">
+        <!-- #1 -->
+        <template v-slot:activator>
+          <v-list-item-title>اعلانات</v-list-item-title>
+        </template>
+        <!-- #2 -->
+        <router-link :to="{ name: 'AllNotifications' }">
+          <v-list-group
+            :value="false"
+            no-action
+            sub-group
+            prepend-icon="mdi-checkbox-blank-circle-outline"
+          >
+            <template v-slot:activator>
+              <v-list-item-title>لیست اعلانات</v-list-item-title>
+            </template>
+          </v-list-group>
+        </router-link>
+      </v-list-group>
+      <!-- notification -->
+
       <!-- users -->
       <v-list-group :value="false" prepend-icon="mdi-account-circle">
         <!-- #1 -->

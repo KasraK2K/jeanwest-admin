@@ -1,13 +1,11 @@
 <template>
-  <!-- <v-card> -->
   <v-container fluid>
-    <h1>لیست تیکت‌ها</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
     <v-data-table
       :headers="[
         { text: 'آیدی', value: 'id', align: 'start', sortable: false },
-        { text: 'تیتر', value: 'title', sortable: false },
+        { text: 'عنوان', value: 'title', sortable: false },
         { text: 'کد', value: 'code' },
         { text: 'زمان ایجاد', value: 'date' },
         { text: 'وضعیت', value: 'status', align: 'center' },
@@ -19,6 +17,14 @@
       :loading="!result"
       loading-text="در حال دریافت اطلاعات از سرور ..."
     >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>
+            <h1 class="blue--text">{{ title }}</h1>
+          </v-toolbar-title>
+        </v-toolbar>
+      </template>
+
       <template v-slot:[`item.status`]="{ item }">
         <v-chip :color="item.status ? 'blue' : 'red'" label outlined>
           <router-link
@@ -31,13 +37,14 @@
       </template>
     </v-data-table>
   </v-container>
-  <!-- </v-card> -->
 </template>
 
 <script>
 export default {
   data() {
+    const title = "لیست تیکت‌ها";
     return {
+      title,
       result: false,
       items: [],
       breadcrumbs: [
@@ -46,7 +53,7 @@ export default {
           to: "/",
         },
         {
-          text: "لیست تیکت‌ها",
+          text: title,
           to: document.location.pathname,
         },
       ],

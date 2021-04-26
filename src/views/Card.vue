@@ -69,25 +69,29 @@
 
 <script>
 export default {
-  data: () => ({
-    loading: false,
-    selection: 2,
-    breadcrumbs: [
-      {
-        text: "صفحه اصلی",
-        to: "/",
-      },
-      {
-        text: "خدمات",
-        to: "/services",
-      },
+  data() {
+    const title = "خدمات";
+    return {
+      title,
+      loading: false,
+      selection: 2,
+      breadcrumbs: [
+        {
+          text: "صفحه اصلی",
+          to: "/",
+        },
+        {
+          text: title,
+          to: "/services",
+        },
 
-      {
-        text: "کارت‌ها",
-        to: "/card",
-      },
-    ],
-  }),
+        {
+          text: "کارت‌ها",
+          to: "/card",
+        },
+      ],
+    };
+  },
 
   methods: {
     reserve() {

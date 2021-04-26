@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
-    <h1>تیتر سوال کاربر</h1>
-    <v-divider class="mb-6 mt-3"></v-divider>
+    <h1 class="blue--text">{{ title }}</h1>
+    <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
     <v-card id="form" class="mt-2 mb-5 pa-4">
       <form @submit.prevent="submitForm">
@@ -146,8 +146,24 @@ export default {
     editor: Editor,
   },
   data() {
+    const title = "تیتر سوال کاربر";
     return {
+      title,
       content: undefined,
+      breadcrumbs: [
+        {
+          text: "صفحه اصلی",
+          to: "/",
+        },
+        {
+          text: "لیست تیکت‌ها",
+          to: { name: "AllTickets" },
+        },
+        {
+          text: title,
+          to: document.location.pathname,
+        },
+      ],
       tinyApiKey,
       tinyInit,
     };
