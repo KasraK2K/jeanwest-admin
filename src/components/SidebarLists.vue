@@ -42,19 +42,6 @@
             </template>
           </v-list-group>
         </router-link>
-
-        <router-link :to="{ name: 'AnswerTicket' }">
-          <v-list-group
-            :value="false"
-            no-action
-            sub-group
-            prepend-icon="mdi-checkbox-blank-circle-outline"
-          >
-            <template v-slot:activator>
-              <v-list-item-title>پاسخ به تیکت</v-list-item-title>
-            </template>
-          </v-list-group>
-        </router-link>
       </v-list-group>
       <!-- support -->
 

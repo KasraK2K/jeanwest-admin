@@ -27,7 +27,7 @@
     </v-app-bar>
     <!-------------------------------- END: TopBar -------------------------------->
 
-    <v-card height="100vh" :style="true && 'overflow-y: scroll'">
+    <v-card>
       <!------------------------------ START: Sidebar ------------------------------->
       <v-navigation-drawer
         app
