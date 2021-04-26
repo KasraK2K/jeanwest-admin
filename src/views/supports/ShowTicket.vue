@@ -70,6 +70,12 @@
         style="max-width: 90%"
       >
         <div>
+          <router-link to="/editTicket">
+            <v-icon color="#2A3B4D" class="float-left pr-2">
+              mdi-notebook-edit
+            </v-icon>
+          </router-link>
+
           <p>
             لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
             استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در
