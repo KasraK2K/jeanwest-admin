@@ -10,7 +10,7 @@
         { text: 'نوع', value: 'type' },
         { text: 'زمان ایجاد', value: 'created_at' },
         { text: 'زمان ارسال', value: 'sent_at' },
-        { text: 'وضعیت', value: 'status', align: 'center' },
+        { text: 'گزینه‌ها', value: 'status', align: 'center' },
       ]"
       :items="items"
       :items-per-page="14"
@@ -33,13 +33,20 @@
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
-        <v-chip v-if="canDelete(item)" color="red" label outlined>
+        <!-- edit -->
+        <v-chip v-if="canDelete(item)" class="ml-2" color="blue" label outlined>
           <router-link
-            :to="{ name: 'ShowTicket', params: { id: item.id } }"
-            class="red--text"
+            :to="{ name: 'EditNotification', params: { id: item.id } }"
+            class="blue--text"
           >
-            <v-icon>mdi-delete</v-icon>
+            <v-icon>mdi-square-edit-outline</v-icon>
           </router-link>
+        </v-chip>
+        <!-- delete -->
+        <v-chip v-if="canDelete(item)" color="red" label outlined>
+          <a class="red--text" @click="deleteNotification(item.id)">
+            <v-icon>mdi-delete</v-icon>
+          </a>
         </v-chip>
       </template>
 
@@ -81,6 +88,9 @@ export default {
   methods: {
     canDelete(notif) {
       return notif.type !== "SMS" || notif.status === 0;
+    },
+    deleteNotification(id) {
+      // use service for delete notification with id
     },
   },
   mounted() {
