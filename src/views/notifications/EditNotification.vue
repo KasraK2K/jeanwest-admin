@@ -87,7 +87,7 @@ export default {
     editor: Editor,
   },
   props: {
-    id: { type: String },
+    id: { type: String, required: true },
   },
   data() {
     const title = "ویرایش اعلان نام اعلان";

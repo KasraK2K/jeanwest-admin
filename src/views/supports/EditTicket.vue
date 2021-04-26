@@ -70,7 +70,7 @@
         style="max-width: 90%"
       >
         <div>
-          <router-link :to="{ name: 'EditTicket', params: { id: 'item.id' } }">
+          <router-link to="/editTicket">
             <v-icon color="#2A3B4D" class="float-left pr-2">
               mdi-notebook-edit
             </v-icon>
