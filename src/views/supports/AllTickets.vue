@@ -4,7 +4,7 @@
 
     <v-data-table
       :headers="[
-        { text: 'شماره', value: 'no' },
+        { text: 'شماره', value: 'no', align: 'center' },
         { text: 'آیدی', value: 'id', align: 'start', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
         { text: 'کد', value: 'code' },
@@ -26,6 +26,10 @@
         </v-toolbar>
       </template>
 
+      <template v-slot:[`item.no`]="{ item }">
+        {{ toPersianString(item.no) }}
+      </template>
+
       <template v-slot:[`item.status`]="{ item }">
         <v-chip :color="item.status ? 'blue' : 'red'" label outlined>
           <router-link
@@ -36,12 +40,22 @@
           </router-link>
         </v-chip>
       </template>
+
+      <template v-slot:[`item.code`]="{ item }">
+        {{ toPersianString(item.code) }}
+      </template>
+
+      <template v-slot:[`item.date`]="{ item }">
+        {{ toPersianString(toPersianTime(item.date)) }}
+      </template>
     </v-data-table>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { toPersianString } from "@/common/utils/helpers";
+import { toPersianTime } from "@/common/utils/moment";
 
 export default Vue.extend({
   data(): Record<string, unknown> {
@@ -60,6 +74,8 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
+      toPersianString,
+      toPersianTime,
     };
   },
   mounted(): void {
@@ -227,7 +243,7 @@ export default Vue.extend({
           status: 1,
         },
       ];
-    }, 2000);
+    }, 500);
   },
 });
 </script>

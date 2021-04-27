@@ -14,9 +14,11 @@
   <!-- </v-card> -->
 </template>
 
-<script>
-export default {
-  data() {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
+  data(): Record<string, unknown> {
     return {
       result: false,
       headers: undefined,
@@ -121,7 +123,7 @@ export default {
           iron: "6%",
         },
       ];
-    }, 2000);
+    }, 500);
   },
-};
+});
 </script>

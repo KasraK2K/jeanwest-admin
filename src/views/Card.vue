@@ -67,9 +67,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
+  data(): Record<string, unknown> {
     const title = "خدمات";
     return {
       title,
@@ -92,13 +94,12 @@ export default {
       ],
     };
   },
-
   methods: {
-    reserve() {
+    reserve(): void {
       this.loading = true;
 
-      setTimeout(() => (this.loading = false), 2000);
+      setTimeout(() => (this.loading = false), 500);
     },
   },
-};
+});
 </script>

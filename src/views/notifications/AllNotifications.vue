@@ -4,7 +4,7 @@
 
     <v-data-table
       :headers="[
-        { text: 'شماره', value: 'no' },
+        { text: 'شماره', value: 'no', align: 'center' },
         { text: 'آیدی', value: 'id', align: 'start', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
         { text: 'تصویر', value: 'image' },
@@ -31,6 +31,10 @@
             </div>
           </v-toolbar-title>
         </v-toolbar>
+      </template>
+
+      <template v-slot:[`item.no`]="{ item }">
+        {{ toPersianString(item.no) }}
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
@@ -62,13 +66,25 @@
           {{ item.type === "SMS" ? "پیامک" : "اعلان" }}
         </span>
       </template>
+
+      <template v-slot:[`item.created_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.created_at)) }}
+      </template>
+
+      <template v-slot:[`item.sent_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.sent_at)) }}
+      </template>
     </v-data-table>
   </v-container>
 </template>
 
-<script>
-export default {
-  data() {
+<script lang="ts">
+import Vue from "vue";
+import { toPersianString } from "@/common/utils/helpers";
+import { toPersianTime } from "@/common/utils/moment";
+
+export default Vue.extend({
+  data(): Record<string, unknown> {
     const title = "لیست اعلانات";
     return {
       title,
@@ -84,13 +100,16 @@ export default {
           to: document.location.pathname,
         },
       ],
+      toPersianString,
+      toPersianTime,
     };
   },
   methods: {
-    canDelete(notif) {
-      return notif.type !== "SMS" || notif.status === 0;
+    canDelete(item: Record<string, unknown>): boolean {
+      return item.type !== "SMS" || item.status === 0;
     },
-    deleteNotification(id) {
+    deleteNotification(id: string): void {
+      console.log("delete id:", id);
       // use service for delete notification with id
     },
   },
@@ -239,7 +258,7 @@ export default {
           status: 0,
         },
       ];
-    }, 2000);
+    }, 500);
   },
-};
+});
 </script>
