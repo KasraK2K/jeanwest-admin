@@ -117,7 +117,7 @@ import Vue from "vue";
 export default Vue.extend({
   name: "SidebarLists",
 
-  data() {
+  data(): Record<string, unknown> {
     return {
       selectedItem: 0,
       admins: [
@@ -127,7 +127,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    logOut() {
+    logOut(): void {
       this.$emit("log-out");
     },
   },

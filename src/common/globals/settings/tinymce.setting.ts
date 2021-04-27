@@ -3,7 +3,7 @@ export const tinyApiKey = "pgxbkqy8xfl67jrbzbpzlfv76ove7nzl6nmkxm5kdg1wwyn5";
 export const tinyInit = {
   height: 300,
   menubar: false,
-  statusbar: true,
+  statusbar: false,
   plugins: [
     "advlist autolink lists advlist link image charmap print preview anchor",
     "searchreplace visualblocks code fullscreen",

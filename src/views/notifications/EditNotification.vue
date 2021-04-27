@@ -52,7 +52,7 @@
           />
 
           <!-- Submit Button -->
-          <v-btn large color="primary" class="mt-4" @click="submitForm"
+          <v-btn large color="primary" class="mt-4" @click="submitData"
             >ارسال</v-btn
           >
         </v-card>
@@ -75,27 +75,31 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import {
   tinyApiKey,
   tinyInit,
 } from "@/common/globals/settings/tinymce.setting";
 
-export default {
+export default Vue.extend({
   components: {
     editor: Editor,
   },
   props: {
     id: { type: String, required: true },
   },
-  data() {
+  data(): {
+    formType: { text: string; value: string };
+    [key: string]: unknown;
+  } {
     const title = "ویرایش اعلان نام اعلان";
     return {
       title,
       formTitle: "",
       formContent: "",
-      formType: "",
+      formType: { text: "", value: "" },
       formImage: null,
       imageUrl: "",
       tinyApiKey,
@@ -119,29 +123,29 @@ export default {
         { text: "اعلان", value: "PUSH" },
       ],
       rules: [
-        (value) => !!value || "پر کردن این فیلد الزامیست",
-        (value) =>
+        (value: string) => !!value || "پر کردن این فیلد الزامیست",
+        (value: string) =>
           (value && value.length >= 3) || "وارد کردن حداقل ۳ کاراکتر الزامیست",
       ],
     };
   },
   methods: {
-    submitForm() {
+    submitData(): void {
       const data = {
         formTitle: this.formTitle,
         formContent: this.formContent,
-        formType: this.formType.value,
+        formType: this.formType && this.formType.value,
       };
       console.log("submited", data);
       // use service to upload image 'this.formImage'
       // use service for send data to server
     },
-    getSrcFromFile(file) {
+    getSrcFromFile(file: FileReader): void {
       this.imageUrl = URL.createObjectURL(file);
     },
-    formCondition() {
-      return this.imageUrl || this.formTitle || this.formContent;
+    formCondition(): boolean {
+      return !!(this.imageUrl || this.formTitle || this.formContent);
     },
   },
-};
+});
 </script>

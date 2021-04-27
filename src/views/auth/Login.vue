@@ -36,85 +36,84 @@
 </template>
 
 <script lang="ts">
+import Vue from "vue";
 import { tokenName } from "@/common/globals/globals";
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 import AuthService from "@/services/Auth.service";
 
-export default {
+export default Vue.extend({
   name: "Login",
 
-  data: () => ({
-    valid: false,
-    showMobile: true,
-    mobile: "",
-    mobileRules: [
-      (v: string) => !!v || "موبایل نباید خالی باشد.",
-      (v: string) =>
-        /^(\+98|0)?9\d{9}$/.test(v) || "شماره موبایل صحیح نمی‌باشد.",
-    ],
-    showPin: false,
-    pin: "",
-    pinRules: [
-      (v: string) => !!v || "کد نباید خالی باشد.",
-      (v: string) => v.length >= 5 || "کد باید ۵ حرف باشد.",
-      (v: string) => v.length <= 5 || "کد باید ۵ حرف باشد.",
-    ],
-  }),
+  data(): Record<string, unknown> {
+    return {
+      valid: false,
+      showMobile: true,
+      mobile: "",
+      mobileRules: [
+        (v: string) => !!v || "موبایل نباید خالی باشد.",
+        (v: string) =>
+          /^(\+98|0)?9\d{9}$/.test(v) || "شماره موبایل صحیح نمی‌باشد.",
+      ],
+      showPin: false,
+      pin: "",
+      pinRules: [
+        (v: string) => !!v || "کد نباید خالی باشد.",
+        (v: string) => v.length >= 5 || "کد باید ۵ حرف باشد.",
+        (v: string) => v.length <= 5 || "کد باید ۵ حرف باشد.",
+      ],
+    };
+  },
   computed: {
     ...mapState(["token"]),
   },
   methods: {
     getPin(): void {
-      const data = { phoneNumber: (this as any).mobile };
-      if ((this as any).valid) {
+      const data: { phoneNumber: unknown } = { phoneNumber: this.mobile };
+      if (this.valid) {
         AuthService.getPin(data)
           .then()
-          .catch((error: any) => console.log("error", error));
-        (this as any).showMobile = false;
-        (this as any).showPin = true;
+          .catch((error) => console.log("error", error));
+        this.showMobile = false;
+        this.showPin = true;
       }
     },
     login(): void {
-      if ((this as any).valid) {
+      if (this.valid) {
         const data = {
-          phoneNumber: (this as any).mobile,
-          pin: (this as any).pin,
+          phoneNumber: this.mobile,
+          pin: this.pin,
         };
         // get jwt with axios
         AuthService.login(data)
-          .then((response: any) => {
-            (this as any).$store.dispatch(
-              "setToken",
-              response.data.data.accessToken
-            );
+          .then((response) => {
+            this.$store.dispatch("setToken", response.data.data.accessToken);
             // set token state as tokenName
-            if ((this as any).token)
-              (this as any).setToken((this as any).token);
+            if (this.token) this.setToken(this.token);
             // set localStorage with key tokenName
-            (this as any).checkLogin();
+            this.checkLogin();
           })
-          .catch((error: any) => console.log("error", error));
+          .catch((error) => console.log("error", error));
       }
     },
     setToken(token: string): void {
-      (this as any).$store.state.token = token;
+      this.$store.state.token = token;
       localStorage.setItem(tokenName, token);
     },
-    getToken(name: string): any {
+    getToken(name: string): string | undefined {
       const storageToken = localStorage.getItem(name);
-      if ((this as any).token) return (this as any).token;
+      if (this.token) return this.token;
       else if (storageToken) return storageToken;
       else return undefined;
     },
     checkLogin(): void {
-      let token = (this as any).getToken(tokenName);
-      if (token) (this as any).$router.push({ name: "Home" });
+      let token = this.getToken(tokenName);
+      if (token) this.$router.push({ name: "Home" });
     },
   },
   mounted(): void {
-    (this as any).checkLogin();
+    this.checkLogin();
   },
-};
+});
 </script>
 
 <style scoped></style>

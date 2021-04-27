@@ -84,7 +84,7 @@ export default Vue.extend({
   components: {
     SidebarLists,
   },
-  data() {
+  data(): Record<string, unknown> {
     return {
       topbar: true,
       sidebar: document.body.clientWidth > 1264,
@@ -96,27 +96,26 @@ export default Vue.extend({
     ...mapState(["token"]),
   },
   methods: {
-    getToken(name: string): any {
+    getToken(name: string): string | undefined {
       const storageToken = localStorage.getItem(name);
       if (storageToken) {
         this.$store.dispatch("setToken", storageToken);
-        return this.token;
-      } else return undefined;
+        return storageToken;
+      }
     },
     checkLogin(): void {
-      let token = (this as any).getToken(tokenName);
+      let token = this.getToken(tokenName);
       const route = document.location.pathname.slice(1);
-      if (!token && route !== "login")
-        (this as any).$router.push({ name: "Login" });
+      if (!token && route !== "login") this.$router.push({ name: "Login" });
     },
-    logOut() {
+    logOut(): void {
       localStorage.removeItem(tokenName);
-      (this as any).$store.state.token = "";
-      (this as any).checkLogin();
+      this.$store.state.token = "";
+      this.checkLogin();
     },
   },
   created(): void {
-    (this as any).checkLogin();
+    this.checkLogin();
   },
 });
 </script>

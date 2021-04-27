@@ -4,44 +4,48 @@
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
     <v-card id="form" class="mt-2 mb-5 pa-4">
-      <form @submit.prevent="submitForm">
-        <v-row>
-          <v-col sm="12" md="8">
-            <v-text-field
-              label="یادداشت"
-              :rules="rules"
-              hide-details="auto"
-              class="mb-4"
-              name="notes"
-            >
-              <v-icon slot="prepend" color="blue">mdi-format-title </v-icon>
-            </v-text-field>
-          </v-col>
+      <v-row>
+        <v-col sm="12" md="8">
+          <v-text-field
+            label="یادداشت"
+            hide-details="auto"
+            class="mb-4"
+            v-model="formHint"
+          >
+            <v-icon slot="prepend" color="blue">mdi-format-title </v-icon>
+          </v-text-field>
+        </v-col>
 
-          <v-col sm="12" md="4">
-            <v-select
-              :items="['در حال پیگیری', 'بسته', 'باز']"
-              label="وضعیت"
-              name="status"
-            >
-              <template v-slot:item="{ item, attrs, on }">
-                <v-list-item v-bind="attrs" v-on="on">
-                  <v-list-item-title
-                    :id="attrs['aria-labelledby']"
-                    v-text="item"
-                  ></v-list-item-title>
-                </v-list-item>
-              </template>
-              <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
-            </v-select>
-          </v-col>
-        </v-row>
-        <!-- Message Body -->
-        <editor v-model="content" :api-key="tinyApiKey" :init="tinyInit" />
+        <v-col sm="12" md="4">
+          <v-select
+            :items="['در حال پیگیری', 'بسته', 'باز']"
+            label="وضعیت"
+            v-model="formStatus"
+          >
+            <template v-slot:item="{ item, attrs, on }">
+              <v-list-item v-bind="attrs" v-on="on">
+                <v-list-item-title
+                  :id="attrs['aria-labelledby']"
+                  v-text="item"
+                ></v-list-item-title>
+              </v-list-item>
+            </template>
+            <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
+          </v-select>
+        </v-col>
+      </v-row>
+      <!-- Message Body -->
+      <editor v-model="formContent" :api-key="tinyApiKey" :init="tinyInit" />
 
-        <!-- Submit Button -->
-        <v-btn type="submit" large color="primary" class="mt-4">ارسال</v-btn>
-      </form>
+      <!-- Submit Button -->
+      <v-btn
+        type="submit"
+        large
+        color="primary"
+        class="mt-4"
+        @click="createTicket()"
+        >ارسال</v-btn
+      >
     </v-card>
 
     <div class="d-flex flex-column" id="messages">
@@ -134,22 +138,25 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import {
   tinyApiKey,
   tinyInit,
 } from "@/common/globals/settings/tinymce.setting";
 
-export default {
+export default Vue.extend({
   components: {
     editor: Editor,
   },
-  data() {
+  data(): Record<string, unknown> {
     const title = "تیتر سوال کاربر";
     return {
       title,
-      content: undefined,
+      formHint: "",
+      formStatus: "",
+      formContent: "",
       breadcrumbs: [
         {
           text: "صفحه اصلی",
@@ -172,22 +179,15 @@ export default {
     id: { type: String, required: true },
   },
   methods: {
-    submitForm(event) {
-      const elements = event.target.elements;
-      const data = this.formData(elements);
-      console.log("submited", data);
+    createTicket(): void {
+      const data = {
+        formHint: this.formHint,
+        formStatus: this.formStatus,
+        formContent: this.formContent,
+      };
+      console.log("create ticket data:", data);
       // use service for send data to server
     },
-    formData(data) {
-      return {
-        message: this.content,
-        notes: data.notes.value,
-        status: data.status.value,
-      };
-    },
-    toggleForm() {
-      console.log("toggle form");
-    },
   },
-};
+});
 </script>

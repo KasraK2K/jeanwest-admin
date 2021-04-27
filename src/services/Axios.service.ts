@@ -10,7 +10,9 @@ export const apiClient = axios.create({
   },
 });
 
-export const removeEmptyKey = (data: Record<string | number, unknown>) => {
+export const removeEmptyKey: (
+  data: Record<string, unknown>
+) => Record<string, unknown> = (data: Record<string, unknown>) => {
   for (const key in data) {
     if (!data[key] && typeof data[key] !== "boolean" && data[key] !== 0) {
       delete data[key];

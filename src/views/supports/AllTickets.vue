@@ -39,9 +39,11 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  data() {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
+  data(): Record<string, unknown> {
     const title = "لیست تیکت‌ها";
     return {
       title,
@@ -59,10 +61,10 @@ export default {
       ],
     };
   },
-  mounted() {
-    setTimeout(() => {
+  mounted(): void {
+    setTimeout((): void => {
       this.result = true;
-      this.items = [
+      const responseData = [
         {
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
@@ -274,7 +276,8 @@ export default {
           status: 1,
         },
       ];
+      this.items = responseData;
     }, 2000);
   },
-};
+});
 </script>
