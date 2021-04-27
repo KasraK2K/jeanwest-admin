@@ -4,6 +4,7 @@
 
     <v-data-table
       :headers="[
+        { text: 'شماره', value: 'no' },
         { text: 'آیدی', value: 'id', align: 'start', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
         { text: 'کد', value: 'code' },
@@ -13,7 +14,7 @@
       :items="items"
       :items-per-page="14"
       class="elevation-1"
-      item-key="name"
+      item-key="id"
       :loading="!result"
       loading-text="در حال دریافت اطلاعات از سرور ..."
     >
@@ -64,8 +65,9 @@ export default Vue.extend({
   mounted(): void {
     setTimeout((): void => {
       this.result = true;
-      const responseData = [
+      this.items = [
         {
+          no: 1,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           code: "TCK-XA66854",
@@ -73,6 +75,7 @@ export default Vue.extend({
           status: 0,
         },
         {
+          no: 2,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -80,6 +83,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 3,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -87,6 +91,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 4,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -94,6 +99,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 5,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -101,6 +107,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 6,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -108,6 +115,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 7,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -115,6 +123,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 8,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -122,6 +131,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 9,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -129,6 +139,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 10,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -136,6 +147,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 11,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           code: "TCK-XA66854",
@@ -143,6 +155,7 @@ export default Vue.extend({
           status: 0,
         },
         {
+          no: 12,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -150,6 +163,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 13,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -157,6 +171,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 14,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -164,6 +179,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 15,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -171,6 +187,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 16,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -178,6 +195,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 17,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -185,6 +203,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 18,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -192,6 +211,7 @@ export default Vue.extend({
           status: 1,
         },
         {
+          no: 19,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -199,76 +219,7 @@ export default Vue.extend({
           status: 1,
         },
         {
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          code: "TCK-XA66854",
-          date: "2020/06/11",
-          status: 0,
-        },
-        {
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
+          no: 20,
           id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
@@ -276,7 +227,6 @@ export default Vue.extend({
           status: 1,
         },
       ];
-      this.items = responseData;
     }, 2000);
   },
 });

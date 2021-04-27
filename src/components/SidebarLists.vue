@@ -23,6 +23,28 @@
       </router-link>
       <!-- dashboard -->
 
+      <!-- order -->
+      <v-list-group :value="false" prepend-icon="mdi-cart">
+        <!-- #1 -->
+        <template v-slot:activator>
+          <v-list-item-title>سفارشات</v-list-item-title>
+        </template>
+        <!-- #2 -->
+        <router-link :to="{ name: 'AllOrders' }">
+          <v-list-group
+            :value="false"
+            no-action
+            sub-group
+            prepend-icon="mdi-checkbox-blank-circle-outline"
+          >
+            <template v-slot:activator>
+              <v-list-item-title>لیست تیکت‌ها</v-list-item-title>
+            </template>
+          </v-list-group>
+        </router-link>
+      </v-list-group>
+      <!-- order -->
+
       <!-- support -->
       <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
         <!-- #1 -->

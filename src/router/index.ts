@@ -7,6 +7,7 @@ import { auths } from "@/router/compact/auths.routes";
 import { users } from "@/router/compact/users.routes";
 import { supports } from "@/router/compact/supports.routes";
 import { notifications } from "@/router/compact/notifications.routes";
+import { orders } from "@/router/compact/orders.routes";
 import { others } from "@/router/compact/others.routes";
 
 Vue.use(VueRouter);
@@ -17,6 +18,7 @@ const routes: Array<RouteConfig> = [
   ...users,
   ...supports,
   ...notifications,
+  ...orders,
   ...others,
 ];
 

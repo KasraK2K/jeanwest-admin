@@ -4,6 +4,7 @@
 
     <v-data-table
       :headers="[
+        { text: 'شماره', value: 'no' },
         { text: 'آیدی', value: 'id', align: 'start', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
         { text: 'تصویر', value: 'image' },
@@ -15,7 +16,7 @@
       :items="items"
       :items-per-page="14"
       class="elevation-1"
-      item-key="name"
+      item-key="id"
       :loading="!result"
       loading-text="در حال دریافت اطلاعات از سرور ..."
     >
@@ -98,6 +99,7 @@ export default {
       this.result = true;
       this.items = [
         {
+          no: 1,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: true,
@@ -107,6 +109,7 @@ export default {
           status: 0,
         },
         {
+          no: 2,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: true,
@@ -116,6 +119,7 @@ export default {
           status: 1,
         },
         {
+          no: 3,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: false,
@@ -125,6 +129,7 @@ export default {
           status: 1,
         },
         {
+          no: 4,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: false,
@@ -134,6 +139,7 @@ export default {
           status: 0,
         },
         {
+          no: 5,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: true,
@@ -143,6 +149,7 @@ export default {
           status: 0,
         },
         {
+          no: 6,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: true,
@@ -152,6 +159,7 @@ export default {
           status: 1,
         },
         {
+          no: 7,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: false,
@@ -161,6 +169,7 @@ export default {
           status: 1,
         },
         {
+          no: 8,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: false,
@@ -170,6 +179,7 @@ export default {
           status: 0,
         },
         {
+          no: 9,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: true,
@@ -179,6 +189,7 @@ export default {
           status: 0,
         },
         {
+          no: 10,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: true,
@@ -188,6 +199,7 @@ export default {
           status: 1,
         },
         {
+          no: 11,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: false,
@@ -197,6 +209,7 @@ export default {
           status: 1,
         },
         {
+          no: 12,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: false,
@@ -206,6 +219,7 @@ export default {
           status: 0,
         },
         {
+          no: 13,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: false,
@@ -215,6 +229,7 @@ export default {
           status: 1,
         },
         {
+          no: 14,
           id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
           title: "مشکل در ثبت سفارش با کارت  سپه",
           image: false,
