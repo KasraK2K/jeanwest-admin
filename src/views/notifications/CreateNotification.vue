@@ -75,24 +75,28 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import {
   tinyApiKey,
   tinyInit,
 } from "@/common/globals/settings/tinymce.setting";
 
-export default {
+export default Vue.extend({
   components: {
     editor: Editor,
   },
-  data() {
+  data(): {
+    formType: { text: string; value: string };
+    [key: string]: unknown;
+  } {
     const title = "ایجاد اعلان جدید";
     return {
       title,
       formTitle: "",
       formContent: "",
-      formType: "",
+      formType: { text: "", value: "" },
       formImage: null,
       imageUrl: "",
       tinyApiKey,
@@ -116,8 +120,8 @@ export default {
         { text: "اعلان", value: "PUSH" },
       ],
       rules: [
-        (value) => !!value || "پر کردن این فیلد الزامیست",
-        (value) =>
+        (value: string) => !!value || "پر کردن این فیلد الزامیست",
+        (value: string) =>
           (value && value.length >= 3) || "وارد کردن حداقل ۳ کاراکتر الزامیست",
       ],
     };
@@ -133,12 +137,12 @@ export default {
       // use service to upload image 'this.formImage'
       // use service for send data to server
     },
-    getSrcFromFile(file) {
+    getSrcFromFile(file: FileReader): void {
       this.imageUrl = URL.createObjectURL(file);
     },
     formCondition() {
       return this.imageUrl || this.formTitle || this.formContent;
     },
   },
-};
+});
 </script>

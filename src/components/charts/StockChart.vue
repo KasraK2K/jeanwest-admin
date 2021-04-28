@@ -9,12 +9,13 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+export default Vue.extend({
   props: {
     chartData: { type: Array, required: true },
   },
-  data() {
+  data(): Record<string, unknown> {
     return {
       chartOptions: {
         series: [
@@ -25,5 +26,5 @@ export default {
       },
     };
   },
-};
+});
 </script>

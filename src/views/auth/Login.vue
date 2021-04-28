@@ -6,8 +6,9 @@
 
         <v-col v-if="showMobile">
           <v-text-field
-            v-model="mobile"
-            :rules="mobileRules"
+            type="text"
+            v-model="phoneNumber"
+            :rules="phoneNumberRules"
             :counter="11"
             label="موبایل"
             required
@@ -48,8 +49,8 @@ export default Vue.extend({
     return {
       valid: false,
       showMobile: true,
-      mobile: "",
-      mobileRules: [
+      phoneNumber: "",
+      phoneNumberRules: [
         (v: string) => !!v || "موبایل نباید خالی باشد.",
         (v: string) =>
           /^(\+98|0)?9\d{9}$/.test(v) || "شماره موبایل صحیح نمی‌باشد.",
@@ -68,7 +69,9 @@ export default Vue.extend({
   },
   methods: {
     getPin(): void {
-      const data: { phoneNumber: unknown } = { phoneNumber: this.mobile };
+      const data = {
+        phoneNumber: String(this.phoneNumber),
+      };
       if (this.valid) {
         AuthService.getPin(data)
           .then()
@@ -80,8 +83,8 @@ export default Vue.extend({
     login(): void {
       if (this.valid) {
         const data = {
-          phoneNumber: this.mobile,
-          pin: this.pin,
+          phoneNumber: String(this.phoneNumber),
+          pin: String(this.pin),
         };
         // get jwt with axios
         AuthService.login(data)

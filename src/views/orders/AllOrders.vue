@@ -46,7 +46,7 @@
       </template>
 
       <template v-slot:[`item.code`]="{ item }">
-        {{ toPersianString(item.code) }}
+        {{ item.code }}
       </template>
 
       <template v-slot:[`item.status`]="{ item }">

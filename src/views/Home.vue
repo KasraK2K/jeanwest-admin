@@ -34,9 +34,10 @@
   </v-container>
 </template>
 
-<script>
-import StockChart from "@/components/charts/StockChart";
-import GanttChart from "@/components/charts/GanttChart";
+<script lang="ts">
+import Vue from "vue";
+import StockChart from "@/components/charts/StockChart.vue";
+import GanttChart from "@/components/charts/GanttChart.vue";
 
 import { GanttChartOptions } from "@/mock/GanttChartOptions";
 
@@ -49,8 +50,8 @@ const gradients = [
   ["#f72047", "#ffd200", "#1feaea"],
 ];
 
-export default {
-  data() {
+export default Vue.extend({
+  data(): Record<string, unknown> {
     return {
       width: 2,
       radius: 10,
@@ -81,5 +82,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

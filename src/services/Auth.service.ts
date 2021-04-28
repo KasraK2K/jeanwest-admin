@@ -1,17 +1,21 @@
+import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
 
 export default {
   /**
    * @param {*} data: { phoneNumber: string }
    */
-  async getPin(data: any) {
+  async getPin(data: { phoneNumber: string }): Promise<AxiosResponse<any>> {
     return await apiClient("/otp/request", {
       method: "POST",
       data,
     });
   },
 
-  async login(data: any) {
+  async login(data: {
+    phoneNumber: string;
+    pin: string;
+  }): Promise<AxiosResponse<any>> {
     return await apiClient("/customerAuth", {
       method: "POST",
       data,
