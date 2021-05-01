@@ -33,13 +33,31 @@
         <router-link :to="{ name: 'AllOrders' }">
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
             </v-list-item-icon>
             <v-list-item-title>لیست سفارشات</v-list-item-title>
           </v-list-item>
         </router-link>
       </v-list-group>
       <!-- order -->
+
+      <!-- payment -->
+      <v-list-group :value="false" prepend-icon="mdi-currency-usd">
+        <!-- #1 -->
+        <template v-slot:activator>
+          <v-list-item-title>پرداخت‌ها</v-list-item-title>
+        </template>
+        <!-- #2 -->
+        <router-link :to="{ name: 'AllPayments' }">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست پرداخت‌ها</v-list-item-title>
+          </v-list-item>
+        </router-link>
+      </v-list-group>
+      <!-- payment -->
 
       <!-- support -->
       <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
@@ -51,7 +69,7 @@
         <router-link :to="{ name: 'AllTickets' }">
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
             </v-list-item-icon>
             <v-list-item-title>لیست تیکت‌ها</v-list-item-title>
           </v-list-item>
@@ -68,7 +86,7 @@
         <router-link :to="{ name: 'AllNotifications' }">
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
             </v-list-item-icon>
             <v-list-item-title>لیست اعلانات</v-list-item-title>
           </v-list-item>
