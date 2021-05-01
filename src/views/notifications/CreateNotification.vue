@@ -60,9 +60,9 @@
 
       <v-col v-if="formCondition()" sm="12" md="3">
         <v-card elevation="2" class="mx-auto" max-width="374">
-          <v-img height="auto" :src="imageUrl"></v-img>
-
           <v-card-title>{{ formTitle }}</v-card-title>
+
+          <v-img height="auto" :src="imageUrl"></v-img>
 
           <v-card-text>
             <span>{{ formType.text }}</span>
