@@ -12,7 +12,7 @@
       </router-link>
       <!-- dashboard -->
 
-      <!-- dashboard -->
+      <!-- card -->
       <router-link :to="{ name: 'Card' }">
         <v-list-item>
           <v-list-item-icon>
@@ -21,7 +21,7 @@
           <v-list-item-title>کارت‌ها</v-list-item-title>
         </v-list-item>
       </router-link>
-      <!-- dashboard -->
+      <!-- card -->
 
       <!-- order -->
       <v-list-group :value="false" prepend-icon="mdi-cart">
@@ -31,16 +31,12 @@
         </template>
         <!-- #2 -->
         <router-link :to="{ name: 'AllOrders' }">
-          <v-list-group
-            :value="false"
-            no-action
-            sub-group
-            prepend-icon="mdi-checkbox-blank-circle-outline"
-          >
-            <template v-slot:activator>
-              <v-list-item-title>لیست تیکت‌ها</v-list-item-title>
-            </template>
-          </v-list-group>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست سفارشات</v-list-item-title>
+          </v-list-item>
         </router-link>
       </v-list-group>
       <!-- order -->
@@ -53,19 +49,14 @@
         </template>
         <!-- #2 -->
         <router-link :to="{ name: 'AllTickets' }">
-          <v-list-group
-            :value="false"
-            no-action
-            sub-group
-            prepend-icon="mdi-checkbox-blank-circle-outline"
-          >
-            <template v-slot:activator>
-              <v-list-item-title>لیست تیکت‌ها</v-list-item-title>
-            </template>
-          </v-list-group>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست تیکت‌ها</v-list-item-title>
+          </v-list-item>
         </router-link>
       </v-list-group>
-      <!-- support -->
 
       <!-- notification -->
       <v-list-group :value="false" prepend-icon="mdi-bell-ring">
@@ -75,16 +66,12 @@
         </template>
         <!-- #2 -->
         <router-link :to="{ name: 'AllNotifications' }">
-          <v-list-group
-            :value="false"
-            no-action
-            sub-group
-            prepend-icon="mdi-checkbox-blank-circle-outline"
-          >
-            <template v-slot:activator>
-              <v-list-item-title>لیست اعلانات</v-list-item-title>
-            </template>
-          </v-list-group>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست اعلانات</v-list-item-title>
+          </v-list-item>
         </router-link>
       </v-list-group>
       <!-- notification -->
