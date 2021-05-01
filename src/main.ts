@@ -10,6 +10,8 @@ import Gantt from "highcharts/modules/gantt";
 import HighchartsVue from "highcharts-vue";
 
 Vue.config.productionTip = false;
+Vue.config.devtools = true;
+if (process.env.NODE_ENV === "production") Vue.config.silent = true;
 
 Stock(Highcharts);
 Gantt(Highcharts);
