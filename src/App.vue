@@ -108,7 +108,7 @@ export default Vue.extend({
       let token = this.getToken(tokenName);
       const route = document.location.pathname.slice(1);
       if (!token && route !== "login") {
-        Toast("error", "لطفا ابتدا لاگین کنید.");
+        Toast("info", "لطفا ابتدا لاگین کنید.");
         this.$router.push({ name: "Login" });
       }
     },

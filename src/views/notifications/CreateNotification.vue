@@ -73,12 +73,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Editor from "@/components/Tinymce.vue";
 
 export default Vue.extend({
-  components: {
-    editor: Editor,
-  },
   data(): {
     formType: { text: string; value: string };
     [key: string]: unknown;

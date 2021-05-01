@@ -73,12 +73,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Editor from "@/components/Tinymce.vue";
 
 export default Vue.extend({
-  components: {
-    editor: Editor,
-  },
   props: {
     id: { type: String, required: true },
   },
