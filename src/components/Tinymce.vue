@@ -4,10 +4,7 @@
 
 <script>
 import Editor from "@tinymce/tinymce-vue";
-import {
-  tinyApiKey,
-  tinyInit,
-} from "@/common/globals/settings/tinymce.setting";
+import { tinyApiKey, tinyInit } from "@/common/globals/plugins/tinymce.setting";
 
 export default {
   components: {
@@ -15,6 +12,12 @@ export default {
   },
   props: {
     id: { type: String, require: true },
+  },
+  data() {
+    return {
+      tinyApiKey,
+      tinyInit,
+    };
   },
 };
 </script>

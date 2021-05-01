@@ -45,11 +45,7 @@
             </v-col>
           </v-row>
           <!-- Message Body -->
-          <editor
-            v-model="formContent"
-            :api-key="tinyApiKey"
-            :init="tinyInit"
-          />
+          <editor v-model="formContent" />
 
           <!-- Submit Button -->
           <v-btn large color="primary" class="mt-4" @click="submitForm"
@@ -77,11 +73,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Editor from "@tinymce/tinymce-vue";
-import {
-  tinyApiKey,
-  tinyInit,
-} from "@/common/globals/settings/tinymce.setting";
+import Editor from "@/components/Tinymce.vue";
 
 export default Vue.extend({
   components: {
@@ -99,8 +91,6 @@ export default Vue.extend({
       formType: { text: "", value: "" },
       formImage: null,
       imageUrl: "",
-      tinyApiKey,
-      tinyInit,
       breadcrumbs: [
         {
           text: "صفحه اصلی",

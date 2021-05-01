@@ -35,7 +35,7 @@
         </v-col>
       </v-row>
       <!-- Message Body -->
-      <editor v-model="formContent" :api-key="tinyApiKey" :init="tinyInit" />
+      <editor v-model="formContent" />
 
       <!-- Submit Button -->
       <v-btn
@@ -140,11 +140,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Editor from "@tinymce/tinymce-vue";
-import {
-  tinyApiKey,
-  tinyInit,
-} from "@/common/globals/settings/tinymce.setting";
+import Editor from "@/components/Tinymce.vue";
 
 export default Vue.extend({
   components: {
@@ -171,8 +167,6 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
-      tinyApiKey,
-      tinyInit,
     };
   },
   props: {
