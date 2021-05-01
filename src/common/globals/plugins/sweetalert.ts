@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { SweetAlertResult } from "sweetalert2";
+import { SweetAlertResult, SweetAlertIcon } from "sweetalert2";
 
 const Toaster = Swal.mixin({
   toast: true,
@@ -15,7 +15,7 @@ const Toaster = Swal.mixin({
 });
 
 export const Toast: (
-  icon: any,
-  title: any
-) => Promise<SweetAlertResult<any>> = (icon, title) =>
-  Toaster.fire({ icon, title });
+  icon: SweetAlertIcon,
+  title: string
+) => Promise<SweetAlertResult> = (icon, title) =>
+  Toaster.fire(title, undefined, icon);

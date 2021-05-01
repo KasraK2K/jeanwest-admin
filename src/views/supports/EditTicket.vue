@@ -35,7 +35,7 @@
         </v-col>
       </v-row>
       <!-- Message Body -->
-      <editor v-model="formContent" />
+      <Editor v-model="formContent" />
 
       <!-- Submit Button -->
       <v-btn

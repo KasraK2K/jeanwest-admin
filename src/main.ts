@@ -24,7 +24,7 @@ requireComponent.keys().forEach((fileName) => {
   const componentConfig = requireComponent(fileName);
   let componentName = fileName.split("/").pop();
   if (typeof componentName === "string") {
-    componentName = camelCase(componentName.replace(/\.\w+$/, ""));
+    componentName = upperFirst(camelCase(componentName.replace(/\.\w+$/, "")));
     Vue.component(componentName, componentConfig.default || componentConfig);
   }
 });
@@ -54,9 +54,9 @@ Vue.config.errorHandler = function (err, vm, info) {
 };
 
 Vue.config.warnHandler = function (msg, vm, trace) {
-  // console.log("warnHandler msg:", msg);
-  // console.log("warnHandler vm:", vm);
-  // console.log("warnHandler trace:", trace);
+  console.log("warnHandler msg:", msg);
+  console.log("warnHandler vm:", vm);
+  console.log("warnHandler trace:", trace);
 };
 /* ----------------------- END: Error/Warning Handling ---------------------- */
 

@@ -120,6 +120,7 @@ export default Vue.extend({
   },
   created(): void {
     this.checkLogin();
+    Toast("success", "some title");
   },
 });
 </script>
