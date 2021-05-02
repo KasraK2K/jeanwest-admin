@@ -32,6 +32,9 @@ requireComponent.keys().forEach((fileName) => {
 });
 /* --------------------- END: Register Global Components -------------------- */
 
+/* -------------------------------------------------------------------------- */
+/*                        START: Register Global Mixins                       */
+/* -------------------------------------------------------------------------- */
 Vue.mixin({
   methods: {
     numberToCash: function (number: number | string): string | 0 {
@@ -45,15 +48,7 @@ Vue.mixin({
     },
   },
 });
-
-// const plugin = {
-//   install() {
-//     Vue.gPluginFun = () => "this is a plugin test"; //Vue.gPluginFun()
-//     Vue.prototype.$gPluginFun = () => "this is a plugin test"; //this.$gPluginFun()
-//   },
-// };
-
-// Vue.use(plugin);
+/* ----------------------- END: Register Global Mixins ---------------------- */
 
 /* -------------------------------------------------------------------------- */
 /*                          START: Vue Configuration                          */
