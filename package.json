@@ -9,7 +9,8 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "postinstall": "npm run build",
-    "start": "node server.js"
+    "start": "node server.js",
+    "alaki": "nodemon"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.8",

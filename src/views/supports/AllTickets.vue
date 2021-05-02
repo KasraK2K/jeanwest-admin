@@ -2,53 +2,75 @@
   <v-container fluid>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
-    <v-data-table
-      :headers="[
-        { text: 'شماره', value: 'no', align: 'center' },
-        { text: 'آیدی', value: 'id', align: 'start', sortable: false },
-        { text: 'عنوان', value: 'title', sortable: false },
-        { text: 'کد', value: 'code' },
-        { text: 'زمان ایجاد', value: 'date' },
-        { text: 'وضعیت', value: 'status', align: 'center' },
-      ]"
-      :items="items"
-      :items-per-page="14"
-      class="elevation-1"
-      item-key="id"
-      :loading="!result"
-      loading-text="در حال دریافت اطلاعات از سرور ..."
-    >
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>
-            <h1 class="blue--text">{{ title }}</h1>
-          </v-toolbar-title>
-        </v-toolbar>
-      </template>
+    <div>
+      <v-data-table
+        :headers="[
+          { text: 'شماره', value: 'no', align: 'center' },
+          { text: 'آیدی', value: 'id', align: 'start', sortable: false },
+          { text: 'عنوان', value: 'title', sortable: false },
+          { text: 'کد', value: 'code' },
+          { text: 'زمان ایجاد', value: 'date' },
+          { text: 'وضعیت', value: 'status', align: 'center' },
+        ]"
+        :items="items"
+        class="elevation-1"
+        item-key="id"
+        :loading="!result"
+        loading-text="در حال دریافت اطلاعات از سرور ..."
+        :page.sync="page"
+        :items-per-page="itemsPerPage"
+        hide-default-footer
+        @page-count="pageCount = $event"
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>
+              <h1 class="blue--text">{{ title }}</h1>
+            </v-toolbar-title>
+          </v-toolbar>
+        </template>
 
-      <template v-slot:[`item.no`]="{ item }">
-        {{ toPersianString(item.no) }}
-      </template>
+        <template v-slot:[`item.no`]="{ item }">
+          {{ toPersianString(item.no) }}
+        </template>
 
-      <template v-slot:[`item.status`]="{ item }">
-        <v-chip :color="item.status ? 'blue' : 'red'" label outlined>
-          <router-link
-            :to="{ name: 'ShowTicket', params: { id: item.id } }"
-            :class="item.status ? 'blue--text' : 'red--text'"
-          >
-            {{ item.status ? "پاسخ داده شده" : "در انتظار پاسخ" }}
-          </router-link>
-        </v-chip>
-      </template>
+        <template v-slot:[`item.status`]="{ item }">
+          <v-chip :color="item.status ? 'blue' : 'red'" label outlined>
+            <router-link
+              :to="{ name: 'ShowTicket', params: { id: item.id } }"
+              :class="item.status ? 'blue--text' : 'red--text'"
+            >
+              {{ item.status ? "پاسخ داده شده" : "در انتظار پاسخ" }}
+            </router-link>
+          </v-chip>
+        </template>
 
-      <template v-slot:[`item.code`]="{ item }">
-        {{ toPersianString(item.code) }}
-      </template>
+        <template v-slot:[`item.code`]="{ item }">
+          {{ toPersianString(item.code) }}
+        </template>
 
-      <template v-slot:[`item.date`]="{ item }">
-        {{ toPersianString(toPersianTime(item.date)) }}
-      </template>
-    </v-data-table>
+        <template v-slot:[`item.date`]="{ item }">
+          {{ toPersianString(toPersianTime(item.date)) }}
+        </template>
+      </v-data-table>
+      <div class="d-flex align-center justify-space-between pt-3">
+        <v-pagination
+          v-model="page"
+          :length="pageCount"
+          :total-visible="10"
+          @input="getList($event)"
+        ></v-pagination>
+        <v-text-field
+          style="max-width: 250px"
+          :value="itemsPerPage"
+          label="آیتم در هر صفحه"
+          type="number"
+          min="-1"
+          max="15"
+          @input="itemsPerPage = parseInt($event, 10)"
+        ></v-text-field>
+      </div>
+    </div>
   </v-container>
 </template>
 
@@ -72,7 +94,16 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
+      // pagination
+      page: 1,
+      pageCount: 0,
+      itemsPerPage: 10,
     };
+  },
+  methods: {
+    getList(number: number): void {
+      console.log("input:", number);
+    },
   },
   mounted(): void {
     setTimeout((): void => {
@@ -88,7 +119,7 @@ export default Vue.extend({
         },
         {
           no: 2,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
+          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c3",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
           date: "2020/06/10",
@@ -104,7 +135,7 @@ export default Vue.extend({
         },
         {
           no: 4,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
+          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c5",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
           date: "2020/06/10",
@@ -112,7 +143,7 @@ export default Vue.extend({
         },
         {
           no: 5,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
+          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c6",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
           date: "2020/06/10",
@@ -120,7 +151,7 @@ export default Vue.extend({
         },
         {
           no: 6,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
+          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c7",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
           date: "2020/06/10",
@@ -128,7 +159,7 @@ export default Vue.extend({
         },
         {
           no: 7,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
+          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c8",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
           date: "2020/06/10",
@@ -136,7 +167,7 @@ export default Vue.extend({
         },
         {
           no: 8,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
+          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c9",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
           date: "2020/06/10",
@@ -144,7 +175,7 @@ export default Vue.extend({
         },
         {
           no: 9,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
+          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed110",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
           date: "2020/06/10",
@@ -152,87 +183,7 @@ export default Vue.extend({
         },
         {
           no: 10,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 11,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          code: "TCK-XA66854",
-          date: "2020/06/11",
-          status: 0,
-        },
-        {
-          no: 12,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 13,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 14,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 15,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 16,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 17,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 18,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 19,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 20,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
+          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed111",
           title: "لباس خریدم نمیدید چرا",
           code: "TCK-FC55698",
           date: "2020/06/10",
