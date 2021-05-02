@@ -7,17 +7,26 @@ export const supports = [
     path: "/supports/ticket/all",
     name: "AllTickets",
     component: AllTickets,
+    meta: {
+      title: "All Tickets",
+    },
   },
   {
     path: "/supports/ticket/show/:id",
     name: "ShowTicket",
     component: ShowTicket,
     props: true,
+    meta: {
+      title: "Show Ticket",
+    },
   },
   {
     path: "/supports/ticket/edit/:id",
     name: "EditTicket",
     component: EditTicket,
     props: true,
+    meta: {
+      title: "Edit Ticket",
+    },
   },
 ];

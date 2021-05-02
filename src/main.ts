@@ -8,9 +8,11 @@ import Highcharts from "highcharts";
 import Stock from "highcharts/modules/stock";
 import Gantt from "highcharts/modules/gantt";
 import HighchartsVue from "highcharts-vue";
-import { Toast } from "@/common/globals/plugins/sweetalert";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
+import { numberToCash, toPersianString } from "@/common/utils/helpers";
+import { toPersianTime } from "@/common/utils/moment";
+import toast from "@/plugins/toast";
 
 /* -------------------------------------------------------------------------- */
 /*                      START: Register Global Components                     */
@@ -30,6 +32,29 @@ requireComponent.keys().forEach((fileName) => {
 });
 /* --------------------- END: Register Global Components -------------------- */
 
+Vue.mixin({
+  methods: {
+    numberToCash: function (number: number | string): string | 0 {
+      return numberToCash(number);
+    },
+    toPersianString: function (sentence: string | number): string {
+      return toPersianString(sentence);
+    },
+    toPersianTime: function (date: string): string {
+      return toPersianTime(date);
+    },
+  },
+});
+
+// const plugin = {
+//   install() {
+//     Vue.gPluginFun = () => "this is a plugin test"; //Vue.gPluginFun()
+//     Vue.prototype.$gPluginFun = () => "this is a plugin test"; //this.$gPluginFun()
+//   },
+// };
+
+// Vue.use(plugin);
+
 /* -------------------------------------------------------------------------- */
 /*                          START: Vue Configuration                          */
 /* -------------------------------------------------------------------------- */
@@ -44,13 +69,14 @@ if (process.env.NODE_ENV === "production") Vue.config.silent = true;
 Stock(Highcharts);
 Gantt(Highcharts);
 Vue.use(HighchartsVue);
+Vue.use(toast);
 /* -------------------------- END: Register Plugins ------------------------- */
 
 /* -------------------------------------------------------------------------- */
 /*                        START: Error/Warning Handling                       */
 /* -------------------------------------------------------------------------- */
 Vue.config.errorHandler = function (err, vm, info) {
-  Toast("error", `"${err.message}" in "${info}"`);
+  Vue.prototype.$toast("error", `"${err.message}" in "${info}"`);
 };
 
 Vue.config.warnHandler = function (msg, vm, trace) {

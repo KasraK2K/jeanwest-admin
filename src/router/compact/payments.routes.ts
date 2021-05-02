@@ -6,11 +6,17 @@ export const payments = [
     path: "/payments/all",
     name: "AllPayments",
     component: AllPayments,
+    meta: {
+      title: "All Payments",
+    },
   },
   {
     path: "/payments/show/:id",
     name: "ShowPayment",
     component: ShowPayment,
     props: true,
+    meta: {
+      title: "Show Payment",
+    },
   },
 ];

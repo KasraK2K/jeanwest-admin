@@ -14,7 +14,14 @@ import { others } from "@/router/compact/others.routes";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  { path: "/", name: "Home", component: Home },
+  {
+    path: "/",
+    name: "Home",
+    component: Home,
+    meta: {
+      title: "Dashboard",
+    },
+  },
   ...auths,
   ...users,
   ...supports,
@@ -28,6 +35,11 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title || to.name || "jeanwest admin";
+  next();
 });
 
 export default router;

@@ -72,7 +72,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { numberToCash, toPersianString } from "@/common/utils/helpers";
 
 export default Vue.extend({
   data(): Record<string, unknown> {
@@ -91,8 +90,6 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
-      numberToCash,
-      toPersianString,
     };
   },
   methods: {

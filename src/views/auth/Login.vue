@@ -39,7 +39,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { tokenName } from "@/common/globals/globals";
-import { Toast } from "@/common/globals/plugins/sweetalert";
 import { mapState } from "vuex";
 import AuthService from "@/services/Auth.service";
 
@@ -112,7 +111,7 @@ export default Vue.extend({
     checkLogin(): void {
       let token = this.getToken(tokenName);
       if (token) {
-        Toast("success", "لاگین به درستی انجام شد.");
+        Vue.prototype.$toast("success", "لاگین به درستی انجام شد.");
         this.$router.push({ name: "Home" });
       }
     },

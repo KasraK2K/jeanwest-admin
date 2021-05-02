@@ -76,7 +76,6 @@
 import Vue from "vue";
 import SidebarLists from "@/components/SidebarLists.vue";
 import { tokenName } from "@/common/globals/globals";
-import { Toast } from "@/common/globals/plugins/sweetalert";
 import { mapState } from "vuex";
 
 export default Vue.extend({
@@ -108,7 +107,7 @@ export default Vue.extend({
       let token = this.getToken(tokenName);
       const route = document.location.pathname.slice(1);
       if (!token && route !== "login") {
-        Toast("info", "لطفا ابتدا لاگین کنید.");
+        Vue.prototype.$toast("info", "لطفا ابتدا لاگین کنید.");
         this.$router.push({ name: "Login" });
       }
     },

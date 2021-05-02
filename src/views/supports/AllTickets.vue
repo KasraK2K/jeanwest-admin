@@ -54,8 +54,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { toPersianString } from "@/common/utils/helpers";
-import { toPersianTime } from "@/common/utils/moment";
 
 export default Vue.extend({
   data(): Record<string, unknown> {
@@ -74,8 +72,6 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
-      toPersianString,
-      toPersianTime,
     };
   },
   mounted(): void {

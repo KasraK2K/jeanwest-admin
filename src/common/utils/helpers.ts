@@ -1,8 +1,8 @@
 /* -------------------------------------------------------------------------- */
 /*                           convert number to cash                           */
 /* -------------------------------------------------------------------------- */
-export const numberToCash: (number: unknown) => string | 0 = (
-  number: unknown
+export const numberToCash: (number: number | string) => string | 0 = (
+  number: number | string
 ) => {
   const cash = new Number(number).toLocaleString("fa-IR");
   return cash !== "ناعدد" ? cash : 0;
