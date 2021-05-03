@@ -9,8 +9,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "postinstall": "npm run build",
-    "start": "node server.js",
-    "alaki": "nodemon"
+    "start": "node server.js"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.8",
@@ -42,7 +41,7 @@
     "@vue/cli-plugin-pwa": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
-    "@vue/cli-plugin-unit-jest": "^3.12.1",
+    "@vue/cli-plugin-unit-jest": "^4.5.12",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "^4.1.1",
     "@vue/eslint-config-prettier": "^6.0.0",
