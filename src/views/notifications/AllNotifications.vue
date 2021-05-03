@@ -158,6 +158,7 @@
         v-model="page"
         :length="pageCount + 1"
         :total-visible="10"
+        @input="getList(page, limit, filter)"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -211,9 +212,6 @@ export default Vue.extend({
     };
   },
   watch: {
-    page() {
-      this.getList(this.page, this.limit, this.filter);
-    },
     limit() {
       this.page = 1;
       this.getList(this.page, this.limit, this.filter);
