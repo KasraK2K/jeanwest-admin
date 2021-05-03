@@ -3,7 +3,7 @@
     <!------------------------------- START: TopBar ------------------------------->
     <v-app-bar
       app
-      class="primary"
+      class="primary elevation-0"
       dark
       v-model="topbar"
       id="topbar"

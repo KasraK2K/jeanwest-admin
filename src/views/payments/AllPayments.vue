@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
 
     <v-data-table
       :headers="[
