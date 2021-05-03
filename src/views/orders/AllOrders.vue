@@ -17,19 +17,32 @@
         </v-col>
 
         <v-col sm="12" md="3">
-          <v-text-field
+          <v-select
             label="نوع"
             v-model="type"
+            :items="[
+              { text: 'آنلاین', value: 0 },
+              { text: 'آفلاین', value: 1 },
+            ]"
+            item-text="text"
+            item-value="value"
             @change="filterGenerate()"
-          ></v-text-field>
+          ></v-select>
         </v-col>
 
         <v-col sm="12" md="3">
-          <v-text-field
+          <v-select
             label="وضعیت"
             v-model="status"
+            :items="[
+              { text: 'در حال انجام', value: 0 },
+              { text: 'تکمیل شده', value: 1 },
+              { text: 'مرجوعی', value: 2 },
+            ]"
+            item-text="text"
+            item-value="value"
             @change="filterGenerate()"
-          ></v-text-field>
+          ></v-select>
         </v-col>
 
         <v-col sm="12" md="3">
@@ -97,6 +110,12 @@
 
       <template v-slot:[`item.code`]="{ item }">
         {{ item.code }}
+      </template>
+
+      <template v-slot:[`item.type`]="{ item }">
+        <span :class="[item.type === 0 ? 'grey--text' : 'green--text']">
+          {{ getTypeText(item.type) }}
+        </span>
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
@@ -210,7 +229,7 @@ export default Vue.extend({
           {
             no: 1,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c1",
-            type: "آنلاین",
+            type: 1, // آنلاین
             status: 0, // در حال انجام
             code: "‌B54008831",
             price: 1389000,
@@ -220,7 +239,7 @@ export default Vue.extend({
           {
             no: 2,
             id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae2",
-            type: "آنلاین",
+            type: 1, // آنلاین
             status: 1, // تکمیل شده
             code: "‌B54008832",
             price: 198000,
@@ -230,7 +249,7 @@ export default Vue.extend({
           {
             no: 3,
             id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e13",
-            type: "آنلاین",
+            type: 1, // آنلاین
             status: 2, // مرجوعی
             code: "‌B54008833",
             price: 2499000,
@@ -240,7 +259,7 @@ export default Vue.extend({
           {
             no: 4,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c4",
-            type: "آفلاین",
+            type: 0, // آفلاین
             status: 0, // در حال انجام
             code: "‌B54008834",
             price: 460000,
@@ -250,7 +269,7 @@ export default Vue.extend({
           {
             no: 5,
             id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae5",
-            type: "آفلاین",
+            type: 0, // آفلاین
             status: 1, // تکمیل شده
             code: "‌B54008835",
             price: 12000,
@@ -260,7 +279,7 @@ export default Vue.extend({
           {
             no: 6,
             id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e16",
-            type: "آفلاین",
+            type: 0, // آفلاین
             status: 2, // مرجوعی
             code: "‌B54008836",
             price: 48000,
@@ -283,6 +302,14 @@ export default Vue.extend({
         status: this.status,
         mobile: this.mobile,
       };
+    },
+
+    getTypeText(status: number): string | undefined {
+      const allStatus = new Map([
+        [0, "آفلاین"],
+        [1, "آنلاین"],
+      ]);
+      return allStatus.get(status);
     },
     getStatusText(status: number): string | undefined {
       const allStatus = new Map([
