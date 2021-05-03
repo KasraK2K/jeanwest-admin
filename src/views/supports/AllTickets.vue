@@ -78,7 +78,12 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  data(): Record<string, unknown> {
+  data(): {
+    [key: string]: unknown;
+    page: number;
+    pageCount: number;
+    itemsPerPage: number;
+  } {
     const title = "لیست تیکت‌ها";
     return {
       title,
@@ -101,96 +106,97 @@ export default Vue.extend({
     };
   },
   methods: {
-    getList(number: number): void {
-      console.log("input:", number);
+    getList(page: number, limit: number): void {
+      setTimeout((): void => {
+        this.result = true;
+        this.items = [
+          {
+            no: 1,
+            id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
+            title: "مشکل در ثبت سفارش با کارت  سپه",
+            code: "TCK-XA66854",
+            date: "2020/06/11",
+            status: 0,
+          },
+          {
+            no: 2,
+            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c3",
+            title: "لباس خریدم نمیدید چرا",
+            code: "TCK-FC55698",
+            date: "2020/06/10",
+            status: 1,
+          },
+          {
+            no: 3,
+            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
+            title: "لباس خریدم نمیدید چرا",
+            code: "TCK-FC55698",
+            date: "2020/06/10",
+            status: 1,
+          },
+          {
+            no: 4,
+            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c5",
+            title: "لباس خریدم نمیدید چرا",
+            code: "TCK-FC55698",
+            date: "2020/06/10",
+            status: 1,
+          },
+          {
+            no: 5,
+            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c6",
+            title: "لباس خریدم نمیدید چرا",
+            code: "TCK-FC55698",
+            date: "2020/06/10",
+            status: 1,
+          },
+          {
+            no: 6,
+            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c7",
+            title: "لباس خریدم نمیدید چرا",
+            code: "TCK-FC55698",
+            date: "2020/06/10",
+            status: 1,
+          },
+          {
+            no: 7,
+            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c8",
+            title: "لباس خریدم نمیدید چرا",
+            code: "TCK-FC55698",
+            date: "2020/06/10",
+            status: 1,
+          },
+          {
+            no: 8,
+            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c9",
+            title: "لباس خریدم نمیدید چرا",
+            code: "TCK-FC55698",
+            date: "2020/06/10",
+            status: 1,
+          },
+          {
+            no: 9,
+            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed110",
+            title: "لباس خریدم نمیدید چرا",
+            code: "TCK-FC55698",
+            date: "2020/06/10",
+            status: 1,
+          },
+          {
+            no: 10,
+            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed111",
+            title: "لباس خریدم نمیدید چرا",
+            code: "TCK-FC55698",
+            date: "2020/06/10",
+            status: 1,
+          },
+        ];
+      }, 500);
+      console.log(`getList: { page: ${page}, limit: ${limit} }`);
     },
   },
   mounted(): void {
-    setTimeout((): void => {
-      this.result = true;
-      this.items = [
-        {
-          no: 1,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          code: "TCK-XA66854",
-          date: "2020/06/11",
-          status: 0,
-        },
-        {
-          no: 2,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c3",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 3,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 4,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c5",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 5,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c6",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 6,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c7",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 7,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c8",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 8,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c9",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 9,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed110",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-        {
-          no: 10,
-          id: "43b5a236-0bb8-4e11-8aed-7eb06dfed111",
-          title: "لباس خریدم نمیدید چرا",
-          code: "TCK-FC55698",
-          date: "2020/06/10",
-          status: 1,
-        },
-      ];
-    }, 500);
+    this.getList(this.page, this.itemsPerPage);
   },
 });
 </script>

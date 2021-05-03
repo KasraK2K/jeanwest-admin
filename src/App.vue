@@ -15,14 +15,16 @@
       <v-spacer></v-spacer>
 
       <div class="d-flex align-center">
-        <v-img
-          alt="Jeanwest Logo"
-          class="shrink"
-          contain
-          src="@/assets/images/jeanwest-logo.png"
-          transition="scale-transition"
-          width="140"
-        />
+        <router-link :to="{ name: 'Home' }">
+          <v-img
+            alt="Jeanwest Logo"
+            class="shrink"
+            contain
+            src="@/assets/images/jeanwest-logo.png"
+            transition="scale-transition"
+            width="140"
+          />
+        </router-link>
       </div>
     </v-app-bar>
     <!-------------------------------- END: TopBar -------------------------------->
@@ -41,12 +43,12 @@
         <template v-slot:prepend>
           <v-list-item class="disable-hover">
             <v-list-item-avatar>
-              <img src="https://randomuser.me/api/portraits/women/81.jpg" />
+              <img src="https://avatars.githubusercontent.com/u/30779339?v=4" />
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title>Jane Smith</v-list-item-title>
-              <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+              <v-list-item-title>کسری کرمی</v-list-item-title>
+              <v-list-item-subtitle>آنلاین</v-list-item-subtitle>
             </v-list-item-content>
 
             <!-- show/hide TopBar -->

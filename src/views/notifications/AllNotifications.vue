@@ -14,11 +14,14 @@
         { text: 'گزینه‌ها', value: 'status', align: 'center' },
       ]"
       :items="items"
-      :items-per-page="14"
       class="elevation-1"
       item-key="id"
       :loading="!result"
       loading-text="در حال دریافت اطلاعات از سرور ..."
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      hide-default-footer
+      @page-count="pageCount = $event"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -75,6 +78,23 @@
         {{ toPersianString(toPersianTime(item.sent_at)) }}
       </template>
     </v-data-table>
+    <div class="d-flex align-center justify-space-between pt-3">
+      <v-pagination
+        v-model="page"
+        :length="pageCount"
+        :total-visible="10"
+        @input="getList($event)"
+      ></v-pagination>
+      <v-text-field
+        style="max-width: 250px"
+        :value="itemsPerPage"
+        label="آیتم در هر صفحه"
+        type="number"
+        min="-1"
+        max="15"
+        @input="itemsPerPage = parseInt($event, 10)"
+      ></v-text-field>
+    </div>
   </v-container>
 </template>
 
@@ -82,7 +102,12 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  data(): Record<string, unknown> {
+  data(): {
+    [key: string]: unknown;
+    page: number;
+    pageCount: number;
+    itemsPerPage: number;
+  } {
     const title = "لیست اعلانات";
     return {
       title,
@@ -98,9 +123,81 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
+      // pagination
+      page: 1,
+      pageCount: 0,
+      itemsPerPage: 10,
     };
   },
   methods: {
+    getList(page: number, limit: number): void {
+      setTimeout(() => {
+        this.result = true;
+        this.items = [
+          {
+            no: 1,
+            id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c1",
+            type: "آنلاین",
+            status: 0, // در حال انجام
+            code: "‌B54008831",
+            price: 1389000,
+            mobile: "09111111111",
+            count: 7,
+          },
+          {
+            no: 2,
+            id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae2",
+            type: "آنلاین",
+            status: 1, // تکمیل شده
+            code: "‌B54008832",
+            price: 198000,
+            mobile: "09111111112",
+            count: 6,
+          },
+          {
+            no: 3,
+            id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e13",
+            type: "آنلاین",
+            status: 2, // مرجوعی
+            code: "‌B54008833",
+            price: 2499000,
+            mobile: "09111111113",
+            count: 5,
+          },
+          {
+            no: 4,
+            id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c4",
+            type: "غیر آنلاین",
+            status: 0, // در حال انجام
+            code: "‌B54008834",
+            price: 460000,
+            mobile: "09111111114",
+            count: 4,
+          },
+          {
+            no: 5,
+            id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae5",
+            type: "غیر آنلاین",
+            status: 1, // تکمیل شده
+            code: "‌B54008835",
+            price: 12000,
+            mobile: "09111111115",
+            count: 3,
+          },
+          {
+            no: 6,
+            id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e16",
+            type: "غیر آنلاین",
+            status: 2, // مرجوعی
+            code: "‌B54008836",
+            price: 48000,
+            mobile: "09111111116",
+            count: 2,
+          },
+        ];
+      }, 500);
+      console.log(`getList: { page: ${page}, limit: ${limit} }`);
+    },
     canDelete(item: Record<string, unknown>): boolean {
       return item.type !== "SMS" || item.status === 0;
     },
@@ -109,152 +206,8 @@ export default Vue.extend({
       // use service for delete notification with id
     },
   },
-  mounted() {
-    setTimeout(() => {
-      this.result = true;
-      this.items = [
-        {
-          no: 1,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c1",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: true,
-          type: "SMS",
-          created_at: "2021-04-27T14:20:22.783Z",
-          sent_at: "2021-04-28T14:20:22.783Z",
-          status: 0,
-        },
-        {
-          no: 2,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: true,
-          type: "SMS",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 1,
-        },
-        {
-          no: 3,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c3",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: false,
-          type: "PUSH",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 1,
-        },
-        {
-          no: 4,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c4",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: false,
-          type: "PUSH",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 0,
-        },
-        {
-          no: 5,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c5",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: true,
-          type: "PUSH",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 0,
-        },
-        {
-          no: 6,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c6",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: true,
-          type: "PUSH",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 1,
-        },
-        {
-          no: 7,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c7",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: false,
-          type: "PUSH",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 1,
-        },
-        {
-          no: 8,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c8",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: false,
-          type: "PUSH",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 0,
-        },
-        {
-          no: 9,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c9",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: true,
-          type: "PUSH",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 0,
-        },
-        {
-          no: 10,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed110",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: true,
-          type: "SMS",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 1,
-        },
-        {
-          no: 11,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed111",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: false,
-          type: "SMS",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 1,
-        },
-        {
-          no: 12,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed112",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: false,
-          type: "SMS",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 0,
-        },
-        {
-          no: 13,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed113",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: false,
-          type: "PUSH",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 1,
-        },
-        {
-          no: 14,
-          id: "43b5a165-0bb6-4e10-8aec-7eb06dfed114",
-          title: "مشکل در ثبت سفارش با کارت  سپه",
-          image: false,
-          type: "PUSH",
-          created_at: "2020/06/11",
-          sent_at: "2020/06/18",
-          status: 0,
-        },
-      ];
-    }, 500);
+  mounted(): void {
+    this.getList(this.page, this.itemsPerPage);
   },
 });
 </script>
