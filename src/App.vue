@@ -15,6 +15,13 @@
       <v-spacer></v-spacer>
 
       <div class="d-flex align-center">
+        <v-switch
+          v-model="$vuetify.theme.dark"
+          class="mt-5 ml-4"
+          inset
+          persistent-hint
+        ></v-switch>
+
         <router-link :to="{ name: 'Home' }">
           <v-img
             alt="Jeanwest Logo"
@@ -29,48 +36,46 @@
     </v-app-bar>
     <!-------------------------------- END: TopBar -------------------------------->
 
-    <v-card>
-      <!------------------------------ START: Sidebar ------------------------------->
-      <v-navigation-drawer
-        app
-        bottom
-        right
-        v-model="sidebar"
-        class="rounded-0"
-        id="sidebar"
-        v-if="token"
-      >
-        <template v-slot:prepend>
-          <v-list-item class="disable-hover">
-            <v-list-item-avatar>
-              <img src="https://avatars.githubusercontent.com/u/30779339?v=4" />
-            </v-list-item-avatar>
+    <!------------------------------ START: Sidebar ------------------------------->
+    <v-navigation-drawer
+      app
+      bottom
+      right
+      v-model="sidebar"
+      class="rounded-0"
+      id="sidebar"
+      v-if="token"
+    >
+      <template v-slot:prepend>
+        <v-list-item class="disable-hover">
+          <v-list-item-avatar>
+            <img src="https://avatars.githubusercontent.com/u/30779339?v=4" />
+          </v-list-item-avatar>
 
-            <v-list-item-content>
-              <v-list-item-title>کسری کرمی</v-list-item-title>
-              <v-list-item-subtitle>آنلاین</v-list-item-subtitle>
-            </v-list-item-content>
+          <v-list-item-content>
+            <v-list-item-title>کسری کرمی</v-list-item-title>
+            <v-list-item-subtitle>آنلاین</v-list-item-subtitle>
+          </v-list-item-content>
 
-            <!-- show/hide TopBar -->
-            <v-app-bar-nav-icon
-              v-if="showTopMenuBtn"
-              @click.stop="topbar = !topbar"
-            ></v-app-bar-nav-icon>
-          </v-list-item>
-        </template>
+          <!-- show/hide TopBar -->
+          <v-app-bar-nav-icon
+            v-if="showTopMenuBtn"
+            @click.stop="topbar = !topbar"
+          ></v-app-bar-nav-icon>
+        </v-list-item>
+      </template>
 
-        <v-divider></v-divider>
+      <v-divider></v-divider>
 
-        <!-- START: Sidebar Lists -->
-        <SidebarLists @log-out="logOut" />
-        <!-- END: Sidebar Lists -->
-      </v-navigation-drawer>
-      <!------------------------------- END: Sidebar -------------------------------->
+      <!-- START: Sidebar Lists -->
+      <SidebarLists @log-out="logOut" />
+      <!-- END: Sidebar Lists -->
+    </v-navigation-drawer>
+    <!------------------------------- END: Sidebar -------------------------------->
 
-      <v-main>
-        <router-view />
-      </v-main>
-    </v-card>
+    <v-main>
+      <router-view />
+    </v-main>
   </v-app>
 </template>
 
