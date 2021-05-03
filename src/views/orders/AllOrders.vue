@@ -184,10 +184,10 @@ export default Vue.extend({
       limit: 10,
       pageCount: 0,
       // filter
-      code: "",
-      type: "",
-      status: "",
-      mobile: "",
+      code: undefined,
+      type: undefined,
+      status: undefined,
+      mobile: undefined,
       filter: {},
     };
   },
@@ -273,7 +273,9 @@ export default Vue.extend({
         this.loading = false;
       }, 500);
       console.log(
-        `getList: { page: ${page}, limit: ${limit}, filter: ${filter} }`
+        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
+          filter
+        )} }`
       );
     },
     filterGenerate() {
