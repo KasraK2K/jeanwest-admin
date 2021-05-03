@@ -19,6 +19,7 @@
             item-text="text"
             item-value="value"
             @change="filterGenerate()"
+            outlined
           ></v-select>
         </v-col>
 
@@ -33,6 +34,7 @@
             item-text="text"
             item-value="value"
             @change="filterGenerate()"
+            outlined
           ></v-select>
         </v-col>
 
@@ -47,6 +49,7 @@
             item-text="text"
             item-value="value"
             @change="filterGenerate()"
+            outlined
           ></v-select>
         </v-col>
       </v-row>
@@ -153,7 +156,7 @@
     <!-- ------------------------------------------------------------------------ */
     /*                              START: Pagination                             */
     /* ------------------------------------------------------------------------- -->
-    <div class="d-flex align-center justify-space-between pt-3">
+    <div class="d-flex align-center justify-space-between">
       <v-pagination
         v-model="page"
         :length="pageCount + 1"
@@ -162,12 +165,14 @@
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
+        class="mt-7"
         :value="limit"
         label="آیتم در هر صفحه"
         type="number"
         min="-1"
         max="15"
         @input="limit = parseInt($event, 10)"
+        outlined
       ></v-text-field>
     </div>
     <!-- ---------------------------- END: Pagination -------------------------  -->
