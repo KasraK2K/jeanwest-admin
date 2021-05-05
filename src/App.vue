@@ -18,6 +18,7 @@
         <v-switch
           v-model="$vuetify.theme.dark"
           class="mt-5 ml-4"
+          color="white"
           inset
           persistent-hint
         ></v-switch>
