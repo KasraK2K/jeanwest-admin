@@ -8,7 +8,7 @@ export default new Vuetify({
   lang: {
     current: "fa",
     locales: { fa },
-    t: undefined as any,
+    // t: undefined as any,
   },
   rtl: true,
   options: {
