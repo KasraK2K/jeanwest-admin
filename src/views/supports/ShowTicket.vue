@@ -54,7 +54,9 @@
         <v-timeline-item color="purple darken-3" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
-              <img src="https://i.pravatar.cc/64" />
+              <img
+                src="https://cdn2.iconfinder.com/data/icons/people-flat-design/64/Man-Person-People-Avatar-User-Happy-512.png"
+              />
             </v-avatar>
           </template>
           <v-card color="purple darken-3" dark elevation="3" outlined rounded>
@@ -74,7 +76,9 @@
         <v-timeline-item color="purple darken-3" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
-              <img src="https://i.pravatar.cc/64" />
+              <img
+                src="https://cdn2.iconfinder.com/data/icons/people-flat-design/64/Man-Person-People-Avatar-User-Happy-512.png"
+              />
             </v-avatar>
           </template>
           <v-card color="purple darken-3" dark elevation="3" outlined rounded>
@@ -101,7 +105,9 @@
         <v-timeline-item color="indigo" fill-dot left>
           <template v-slot:icon>
             <v-avatar>
-              <img src="https://i.pravatar.cc/64" />
+              <img
+                src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"
+              />
             </v-avatar>
           </template>
           <v-card color="indigo" dark elevation="3" outlined rounded>
@@ -148,7 +154,9 @@
         <v-timeline-item color="purple darken-3" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
-              <img src="https://i.pravatar.cc/64" />
+              <img
+                src="https://cdn2.iconfinder.com/data/icons/people-flat-design/64/Man-Person-People-Avatar-User-Happy-512.png"
+              />
             </v-avatar>
           </template>
           <v-card color="purple darken-3" dark elevation="3" outlined rounded>
