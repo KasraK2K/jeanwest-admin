@@ -2,6 +2,68 @@
   <v-container fluid>
     <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
 
+    <!-- ------------------------------------------------------------------------ */
+    /*                                START: Filter                               */
+    ---------------------------------------------------------------------------- -->
+    <v-card class="mb-8">
+      <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
+      <v-row class="mx-4">
+        <v-col sm="12" md="3">
+          <v-text-field
+            label="توکن"
+            placeholder="لطفا توکن سفارش را وارد کنید."
+            v-model="token"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
+        </v-col>
+
+        <v-col sm="12" md="3">
+          <v-select
+            label="درگاه"
+            v-model="gate"
+            :items="[
+              { text: 'زرین‌پال', value: 1 },
+              { text: 'سامان', value: 2 },
+            ]"
+            item-text="text"
+            item-value="value"
+            @change="filterGenerate()"
+            outlined
+          ></v-select>
+        </v-col>
+
+        <v-col sm="12" md="3">
+          <v-select
+            label="وضعیت"
+            v-model="status"
+            :items="[
+              { text: 'پرداخت نشده', value: 0 },
+              { text: 'پرداخت شده', value: 1 },
+            ]"
+            item-text="text"
+            item-value="value"
+            @change="filterGenerate()"
+            outlined
+          ></v-select>
+        </v-col>
+
+        <v-col sm="12" md="3">
+          <v-text-field
+            label="موبایل"
+            placeholder="لطفا شماره موبایل را وارد کنید."
+            v-model="mobile"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </v-card>
+    <!-- ----------------------------- END: Filter ----------------------------- -->
+
+    <!-- ------------------------------------------------------------------------ */
+    /*                                 START: List                                */
+    /* ------------------------------------------------------------------------- -->
     <v-data-table
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
@@ -16,32 +78,37 @@
       :items="items"
       class="elevation-1"
       item-key="id"
-      :loading="!result"
+      :loading="loading"
       loading-text="در حال دریافت اطلاعات از سرور ..."
+      :search="search"
+      no-results-text="نتیجه‌ای یافت نشد."
       :page.sync="page"
-      :items-per-page="itemsPerPage"
+      :items-per-page="limit"
       hide-default-footer
       @page-count="pageCount = $event"
     >
+      <!-- getGateText
+getGateColor -->
       <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>
-            <div class="d-flex justify-start align-center">
-              <h1 class="blue--text">{{ title }}</h1>
-            </div>
-          </v-toolbar-title>
-        </v-toolbar>
-      </template>
+        <v-row>
+          <v-col sm="12" md="9">
+            <v-toolbar flat>
+              <v-toolbar-title>
+                <div class="d-flex justify-start align-center">
+                  <h1 class="blue--text">{{ title }}</h1>
+                </div>
+              </v-toolbar-title>
+            </v-toolbar>
+          </v-col>
 
-      <template v-slot:[`item.show`]="{ item }">
-        <v-chip color="blue" label outlined>
-          <router-link
-            :to="{ name: 'ShowPayment', params: { id: item.id } }"
-            class="blue--text"
-          >
-            <v-icon>mdi-eye</v-icon>
-          </router-link>
-        </v-chip>
+          <v-col sm="12" md="3">
+            <v-text-field
+              v-model="search"
+              label="جستجو در این صفحه"
+              class="ml-4"
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </template>
 
       <template v-slot:[`item.no`]="{ item }">
@@ -50,6 +117,12 @@
 
       <template v-slot:[`item.token`]="{ item }">
         {{ item.token }}
+      </template>
+
+      <template v-slot:[`item.gate`]="{ item }">
+        <span :class="getGateColor(item.gate)">
+          {{ getGateText(item.gate) }}
+        </span>
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
@@ -69,24 +142,43 @@
       <template v-slot:[`item.updated_at`]="{ item }">
         {{ toPersianString(toPersianTime(item.updated_at)) }}
       </template>
+
+      <template v-slot:[`item.show`]="{ item }">
+        <v-chip color="blue" label outlined>
+          <router-link
+            :to="{ name: 'ShowPayment', params: { id: item.id } }"
+            class="blue--text"
+          >
+            <v-icon>mdi-eye</v-icon>
+          </router-link>
+        </v-chip>
+      </template>
     </v-data-table>
-    <div class="d-flex align-center justify-space-between pt-3">
+    <!-- ------------------------------ END: List ------------------------------ -->
+
+    <!-- ------------------------------------------------------------------------ */
+    /*                              START: Pagination                             */
+    /* ------------------------------------------------------------------------- -->
+    <div class="d-flex align-center justify-space-between">
       <v-pagination
         v-model="page"
-        :length="pageCount"
+        :length="pageCount + 1"
         :total-visible="10"
-        @input="getList($event)"
+        @input="getList(page, limit, filter)"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
-        :value="itemsPerPage"
+        class="mt-7"
+        :value="limit"
         label="آیتم در هر صفحه"
         type="number"
         min="-1"
         max="15"
-        @input="itemsPerPage = parseInt($event, 10)"
+        @input="limit = parseInt($event, 10)"
+        outlined
       ></v-text-field>
     </div>
+    <!-- ---------------------------- END: Pagination -------------------------  -->
   </v-container>
 </template>
 
@@ -98,12 +190,12 @@ export default Vue.extend({
     [key: string]: unknown;
     page: number;
     pageCount: number;
-    itemsPerPage: number;
+    limit: number;
   } {
     const title = "لیست پرداخت‌ها";
     return {
       title,
-      result: false,
+      loading: false,
       items: [],
       breadcrumbs: [
         {
@@ -115,21 +207,38 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
+      search: "",
       // pagination
       page: 1,
+      limit: 10,
       pageCount: 0,
-      itemsPerPage: 10,
+      // filter
+      token: undefined,
+      gate: undefined,
+      status: undefined,
+      mobile: undefined,
+      filter: {},
     };
   },
+  watch: {
+    limit() {
+      this.page = 1;
+      this.getList(this.page, this.limit, this.filter);
+    },
+    filter() {
+      this.page = 1;
+      this.getList(this.page, this.limit, this.filter);
+    },
+  },
   methods: {
-    getList(page: number, limit: number): void {
+    getList(page: number, limit: number, filter?: unknown): void {
       setTimeout(() => {
-        this.result = true;
+        this.loading = true;
         this.items = [
           {
             no: 1,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c1",
-            gate: "زرین‌پال",
+            gate: 1, // زرین‌پال
             status: 0, // در حال انجام
             token: "‌B54008831",
             price: 1389000,
@@ -139,7 +248,7 @@ export default Vue.extend({
           {
             no: 2,
             id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae2",
-            gate: "زرین‌پال",
+            gate: 1, // زرین‌پال
             status: 1, // تکمیل شده
             token: "‌B54008832",
             price: 198000,
@@ -149,7 +258,7 @@ export default Vue.extend({
           {
             no: 3,
             id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e13",
-            gate: "زرین‌پال",
+            gate: 1, // زرین‌پال
             status: 1, // مرجوعی
             token: "‌B54008833",
             price: 2499000,
@@ -159,7 +268,7 @@ export default Vue.extend({
           {
             no: 4,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c4",
-            gate: "سامان",
+            gate: 2, // سامان
             status: 0, // در حال انجام
             token: "‌B54008834",
             price: 460000,
@@ -169,7 +278,7 @@ export default Vue.extend({
           {
             no: 5,
             id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae5",
-            gate: "سامان",
+            gate: 2, // سامان
             status: 1, // تکمیل شده
             token: "‌B54008835",
             price: 12000,
@@ -179,7 +288,7 @@ export default Vue.extend({
           {
             no: 6,
             id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e16",
-            gate: "سامان",
+            gate: 2, // سامان
             status: 1, // مرجوعی
             token: "‌B54008836",
             price: 48000,
@@ -187,8 +296,35 @@ export default Vue.extend({
             updated_at: "2021-04-28T14:20:22.783Z",
           },
         ];
+        this.loading = false;
       }, 500);
-      console.log(`getList: { page: ${page}, limit: ${limit} }`);
+      console.log(
+        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
+          filter
+        )} }`
+      );
+    },
+    filterGenerate() {
+      this.filter = {
+        token: this.token,
+        gate: this.gate,
+        status: this.status,
+        mobile: this.mobile,
+      };
+    },
+    getGateText(status: number): string | undefined {
+      const allStatus = new Map([
+        [1, "زرین‌پال"],
+        [2, "سامان"],
+      ]);
+      return allStatus.get(status);
+    },
+    getGateColor(status: number): string | undefined {
+      const allStatus = new Map([
+        [1, "yellow--text"],
+        [2, "blue--text"],
+      ]);
+      return allStatus.get(status);
     },
     getStatusText(status: number): string | undefined {
       const allStatus = new Map([
@@ -206,7 +342,7 @@ export default Vue.extend({
     },
   },
   mounted(): void {
-    this.getList(this.page, this.itemsPerPage);
+    this.getList(this.page, this.limit);
   },
 });
 </script>

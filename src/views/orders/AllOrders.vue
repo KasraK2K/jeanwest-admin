@@ -52,6 +52,7 @@
         <v-col sm="12" md="3">
           <v-text-field
             label="موبایل"
+            placeholder="لطفا شماره موبایل را وارد کنید."
             v-model="mobile"
             @change="filterGenerate()"
             outlined
@@ -310,7 +311,6 @@ export default Vue.extend({
         mobile: this.mobile,
       };
     },
-
     getTypeText(status: number): string | undefined {
       const allStatus = new Map([
         [0, "آفلاین"],
