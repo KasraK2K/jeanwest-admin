@@ -5,7 +5,7 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8">
+    <v-card class="mb-8" elevation="1" outlined rounded>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col sm="12" md="3">
@@ -87,8 +87,6 @@
       hide-default-footer
       @page-count="pageCount = $event"
     >
-      <!-- getGateText
-getGateColor -->
       <template v-slot:top>
         <v-row>
           <v-col sm="12" md="9">
@@ -232,8 +230,8 @@ export default Vue.extend({
   },
   methods: {
     getList(page: number, limit: number, filter?: unknown): void {
+      this.loading = true;
       setTimeout(() => {
-        this.loading = true;
         this.items = [
           {
             no: 1,

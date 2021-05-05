@@ -57,7 +57,7 @@
               <img src="https://i.pravatar.cc/64" />
             </v-avatar>
           </template>
-          <v-card color="purple darken-3" dark>
+          <v-card color="purple darken-3" dark elevation="3" outlined rounded>
             <v-card-title>حسن حسنی کاربر</v-card-title>
             <v-card-text class="white text--primary py-4">
               <p class="mb-0">
@@ -77,7 +77,7 @@
               <img src="https://i.pravatar.cc/64" />
             </v-avatar>
           </template>
-          <v-card color="purple darken-3" dark>
+          <v-card color="purple darken-3" dark elevation="3" outlined rounded>
             <v-card-title>حسن حسنی کاربر</v-card-title>
             <v-card-text class="white text--primary py-4">
               <p class="mb-0">
@@ -104,7 +104,7 @@
               <img src="https://i.pravatar.cc/64" />
             </v-avatar>
           </template>
-          <v-card color="indigo" dark>
+          <v-card color="indigo" dark elevation="3" outlined rounded>
             <div class="d-flex align-center justify-space-between">
               <v-card-title class="pr-4">کسری کرمی ادمین</v-card-title>
               <router-link
@@ -151,7 +151,7 @@
               <img src="https://i.pravatar.cc/64" />
             </v-avatar>
           </template>
-          <v-card color="purple darken-3" dark>
+          <v-card color="purple darken-3" dark elevation="3" outlined rounded>
             <v-card-title>حسن حسنی کاربر</v-card-title>
             <v-card-text class="white text--primary py-4">
               <p class="mb-0">

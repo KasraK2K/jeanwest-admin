@@ -76,8 +76,8 @@ Vue.config.errorHandler = function (err, vm, info) {
 
 Vue.config.warnHandler = function (msg, vm, trace) {
   console.log("warnHandler msg:", msg);
-  console.log("warnHandler vm:", vm);
-  console.log("warnHandler trace:", trace);
+  // console.log("warnHandler vm:", vm);
+  // console.log("warnHandler trace:", trace);
 };
 /* ----------------------- END: Error/Warning Handling ---------------------- */
 

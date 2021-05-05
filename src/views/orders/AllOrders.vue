@@ -5,7 +5,7 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8">
+    <v-card class="mb-8" elevation="1" outlined rounded>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col sm="12" md="3">

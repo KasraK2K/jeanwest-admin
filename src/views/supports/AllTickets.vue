@@ -1,76 +1,160 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs" class="mb-2"></v-breadcrumbs>
 
-    <div>
-      <v-data-table
-        :headers="[
-          { text: 'شماره', value: 'no', align: 'center' },
-          { text: 'آیدی', value: 'id', align: 'start', sortable: false },
-          { text: 'عنوان', value: 'title', sortable: false },
-          { text: 'کد', value: 'code' },
-          { text: 'زمان ایجاد', value: 'date' },
-          { text: 'وضعیت', value: 'status', align: 'center' },
-        ]"
-        :items="items"
-        class="elevation-1"
-        item-key="id"
-        :loading="!result"
-        loading-text="در حال دریافت اطلاعات از سرور ..."
-        :page.sync="page"
-        :items-per-page="itemsPerPage"
-        hide-default-footer
-        @page-count="pageCount = $event"
-      >
-        <template v-slot:top>
-          <v-toolbar flat>
-            <v-toolbar-title>
-              <h1 class="blue--text">{{ title }}</h1>
-            </v-toolbar-title>
-          </v-toolbar>
-        </template>
+    <!-- ------------------------------------------------------------------------ */
+    /*                                START: Filter                               */
+    ---------------------------------------------------------------------------- -->
+    <v-card class="mb-8" elevation="1" outlined rounded>
+      <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
+      <v-row class="mx-4">
+        <v-col sm="12" md="3">
+          <v-text-field
+            label="کد"
+            placeholder="لطفا کد تیکت را وارد کنید."
+            v-model="code"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
+        </v-col>
 
-        <template v-slot:[`item.no`]="{ item }">
-          {{ toPersianString(item.no) }}
-        </template>
+        <v-col sm="12" md="3">
+          <v-text-field
+            label="موبایل"
+            placeholder="لطفا شماره موبایل را وارد کنید."
+            v-model="mobile"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
+        </v-col>
 
-        <template v-slot:[`item.status`]="{ item }">
-          <v-chip :color="item.status ? 'blue' : 'red'" label outlined>
-            <router-link
-              :to="{ name: 'ShowTicket', params: { id: item.id } }"
-              :class="item.status ? 'blue--text' : 'red--text'"
-            >
-              {{ item.status ? "پاسخ داده شده" : "در انتظار پاسخ" }}
-            </router-link>
-          </v-chip>
-        </template>
+        <v-col sm="12" md="3">
+          <v-menu
+            v-model="datesMenu"
+            :close-on-content-click="false"
+            :nudge-top="20"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="dates"
+                label="تاریخ"
+                placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید."
+                readonly
+                clearable
+                v-bind="attrs"
+                v-on="on"
+                @click:clear="clearDateFilter()"
+                outlined
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="dates"
+              range
+              @change="filterGenerate()"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+      </v-row>
+    </v-card>
+    <!-- ----------------------------- END: Filter ----------------------------- -->
 
-        <template v-slot:[`item.code`]="{ item }">
-          {{ toPersianString(item.code) }}
-        </template>
+    <!-- ------------------------------------------------------------------------ */
+    /*                                 START: List                                */
+    /* ------------------------------------------------------------------------- -->
+    <v-data-table
+      :headers="[
+        { text: 'شماره', value: 'no', align: 'center' },
+        { text: 'آیدی', value: 'id', align: 'start', sortable: false },
+        { text: 'عنوان', value: 'title', sortable: false },
+        { text: 'کد', value: 'code' },
+        { text: 'زمان ایجاد', value: 'date' },
+        { text: 'وضعیت', value: 'status', align: 'center' },
+      ]"
+      :items="items"
+      class="elevation-1"
+      item-key="id"
+      :loading="loading"
+      loading-text="در حال دریافت اطلاعات از سرور ..."
+      :search="search"
+      no-results-text="نتیجه‌ای یافت نشد."
+      :page.sync="page"
+      :items-per-page="limit"
+      hide-default-footer
+      @page-count="pageCount = $event"
+    >
+      <template v-slot:top>
+        <v-row>
+          <v-col sm="12" md="9">
+            <v-toolbar flat>
+              <v-toolbar-title>
+                <div class="d-flex justify-start align-center">
+                  <h1 class="blue--text">{{ title }}</h1>
+                </div>
+              </v-toolbar-title>
+            </v-toolbar>
+          </v-col>
 
-        <template v-slot:[`item.date`]="{ item }">
-          {{ toPersianString(toPersianTime(item.date)) }}
-        </template>
-      </v-data-table>
-      <div class="d-flex align-center justify-space-between pt-3">
-        <v-pagination
-          v-model="page"
-          :length="pageCount"
-          :total-visible="10"
-          @input="getList($event)"
-        ></v-pagination>
-        <v-text-field
-          style="max-width: 250px"
-          :value="itemsPerPage"
-          label="آیتم در هر صفحه"
-          type="number"
-          min="-1"
-          max="15"
-          @input="itemsPerPage = parseInt($event, 10)"
-        ></v-text-field>
-      </div>
+          <v-col sm="12" md="3">
+            <v-text-field
+              v-model="search"
+              label="جستجو در این صفحه"
+              class="ml-4"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </template>
+
+      <template v-slot:[`item.no`]="{ item }">
+        {{ toPersianString(item.no) }}
+      </template>
+
+      <template v-slot:[`item.code`]="{ item }">
+        {{ item.code }}
+      </template>
+
+      <template v-slot:[`item.date`]="{ item }">
+        {{ toPersianString(toPersianTime(item.date)) }}
+      </template>
+
+      <template v-slot:[`item.status`]="{ item }">
+        <v-chip :color="item.status ? 'blue' : 'red'" label outlined>
+          <router-link
+            :to="{ name: 'ShowTicket', params: { id: item.id } }"
+            :class="item.status ? 'blue--text' : 'red--text'"
+          >
+            {{ item.status ? "پاسخ داده شده" : "در انتظار پاسخ" }}
+          </router-link>
+        </v-chip>
+      </template>
+    </v-data-table>
+    <!-- ------------------------------ END: List ------------------------------ -->
+
+    <!-- ------------------------------------------------------------------------ */
+    /*                              START: Pagination                             */
+    /* ------------------------------------------------------------------------- -->
+    <div class="d-flex align-center justify-space-between">
+      <v-pagination
+        v-model="page"
+        :length="pageCount + 1"
+        :total-visible="10"
+        @input="getList(page, limit, filter)"
+      ></v-pagination>
+      <v-text-field
+        style="max-width: 250px"
+        class="mt-7"
+        :value="limit"
+        label="آیتم در هر صفحه"
+        type="number"
+        min="-1"
+        max="15"
+        @input="limit = parseInt($event, 10)"
+        outlined
+      ></v-text-field>
     </div>
+    <!-- ---------------------------- END: Pagination -------------------------  -->
   </v-container>
 </template>
 
@@ -82,12 +166,12 @@ export default Vue.extend({
     [key: string]: unknown;
     page: number;
     pageCount: number;
-    itemsPerPage: number;
+    limit: number;
   } {
     const title = "لیست تیکت‌ها";
     return {
       title,
-      result: false,
+      loading: false,
       items: [],
       breadcrumbs: [
         {
@@ -99,16 +183,33 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
+      search: "",
       // pagination
       page: 1,
+      limit: 10,
       pageCount: 0,
-      itemsPerPage: 10,
+      // filter
+      code: undefined,
+      mobile: undefined,
+      dates: undefined,
+      datesMenu: false,
+      filter: {},
     };
   },
+  watch: {
+    limit() {
+      this.page = 1;
+      this.getList(this.page, this.limit, this.filter);
+    },
+    filter() {
+      this.page = 1;
+      this.getList(this.page, this.limit, this.filter);
+    },
+  },
   methods: {
-    getList(page: number, limit: number): void {
+    getList(page: number, limit: number, filter?: unknown): void {
+      this.loading = true;
       setTimeout((): void => {
-        this.result = true;
         this.items = [
           {
             no: 1,
@@ -191,12 +292,28 @@ export default Vue.extend({
             status: 1,
           },
         ];
+        this.loading = false;
       }, 500);
-      console.log(`getList: { page: ${page}, limit: ${limit} }`);
+      console.log(
+        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
+          filter
+        )} }`
+      );
+    },
+    filterGenerate() {
+      this.filter = {
+        code: this.code,
+        mobile: this.mobile,
+        dates: this.dates,
+      };
+    },
+    clearDateFilter() {
+      this.dates = undefined;
+      this.filterGenerate();
     },
   },
   mounted(): void {
-    this.getList(this.page, this.itemsPerPage);
+    this.getList(this.page, this.limit);
   },
 });
 </script>

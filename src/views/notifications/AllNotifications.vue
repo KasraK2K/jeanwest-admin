@@ -5,10 +5,10 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8">
+    <v-card class="mb-8" elevation="1" outlined rounded>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
-        <v-col sm="12" md="4">
+        <v-col sm="12" md="3">
           <v-select
             label="تصویر"
             v-model="image"
@@ -23,7 +23,7 @@
           ></v-select>
         </v-col>
 
-        <v-col sm="12" md="4">
+        <v-col sm="12" md="3">
           <v-select
             label="نوع"
             v-model="type"
@@ -38,7 +38,7 @@
           ></v-select>
         </v-col>
 
-        <v-col sm="12" md="4">
+        <v-col sm="12" md="3">
           <v-select
             label="وضعیت"
             v-model="status"
@@ -51,6 +51,36 @@
             @change="filterGenerate()"
             outlined
           ></v-select>
+        </v-col>
+
+        <v-col sm="12" md="3">
+          <v-menu
+            v-model="datesMenu"
+            :close-on-content-click="false"
+            :nudge-top="20"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="dates"
+                label="تاریخ ایجاد یا ارسال"
+                placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید."
+                readonly
+                clearable
+                v-bind="attrs"
+                v-on="on"
+                @click:clear="clearDateFilter()"
+                outlined
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="dates"
+              range
+              @change="filterGenerate()"
+            ></v-date-picker>
+          </v-menu>
         </v-col>
       </v-row>
     </v-card>
@@ -212,6 +242,8 @@ export default Vue.extend({
       image: undefined,
       type: undefined,
       status: undefined,
+      dates: undefined,
+      datesMenu: false,
       filter: {},
     };
   },
@@ -344,7 +376,12 @@ export default Vue.extend({
         image: this.image,
         type: this.type,
         status: this.status,
+        dates: this.dates,
       };
+    },
+    clearDateFilter() {
+      this.dates = undefined;
+      this.filterGenerate();
     },
     canDelete(item: Record<string, unknown>): boolean {
       return item.type !== "SMS" || item.status === 0;
