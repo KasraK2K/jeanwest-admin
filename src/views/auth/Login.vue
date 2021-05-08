@@ -1,7 +1,7 @@
 <template>
   <v-container style="height: 100vh" class="d-flex align-center justify-center">
     <v-form v-model="valid" style="min-width: 360px">
-      <v-card class="py-6 px-8">
+      <v-card class="py-6 px-8" elevation="3" outlined rounded>
         <v-card-title>ورود به سایت</v-card-title>
 
         <v-col v-if="showMobile">
