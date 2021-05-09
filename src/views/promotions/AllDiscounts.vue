@@ -192,10 +192,7 @@
       <template v-slot:[`item.status`]="{ item }">
         <!-- edit -->
         <v-chip v-if="canDelete(item)" class="ml-2" color="blue" label outlined>
-          <router-link
-            :to="{ name: 'EditNotification', params: { id: item.id } }"
-            class="blue--text"
-          >
+          <router-link to="/editDiscount" class="blue--text">
             <v-icon>mdi-square-edit-outline</v-icon>
           </router-link>
         </v-chip>
