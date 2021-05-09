@@ -242,7 +242,7 @@ export default Vue.extend({
     pageCount: number;
     limit: number;
   } {
-    const title = "لیست تخفیف‌ها";
+    const title = "لیست پیشنهادات";
     return {
       title,
       loading: false,

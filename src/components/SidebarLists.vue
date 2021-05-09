@@ -71,7 +71,16 @@
             <v-list-item-icon>
               <v-icon>mdi-format-list-numbered-rtl</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>لیست کدهای تخفیف</v-list-item-title>
+            <v-list-item-title>لیست تخفیف‌ها</v-list-item-title>
+          </v-list-item>
+        </router-link>
+        <!-- #2 -->
+        <router-link :to="{ name: 'AllOffers' }">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست پیشنهادات</v-list-item-title>
           </v-list-item>
         </router-link>
       </v-list-group>
