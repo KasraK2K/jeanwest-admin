@@ -60,7 +60,7 @@
       <!-- payment -->
 
       <!-- permision -->
-      <v-list-group :value="false" prepend-icon="mdi-currency-usd">
+      <v-list-group :value="false" prepend-icon="mdi-sale">
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>کمپین‌ها</v-list-item-title>
