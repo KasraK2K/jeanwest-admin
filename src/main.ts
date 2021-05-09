@@ -72,12 +72,18 @@ Vue.use(toast);
 /* -------------------------------------------------------------------------- */
 Vue.config.errorHandler = function (err, vm, info) {
   Vue.prototype.$toast("error", `"${err.message}" in "${info}"`);
+  // FIXME: DELETE THIS CONDITION
+  if (vm) {
+    console.log();
+  }
 };
 
 Vue.config.warnHandler = function (msg, vm, trace) {
-  console.log("warnHandler msg:", msg);
-  // console.log("warnHandler vm:", vm);
-  // console.log("warnHandler trace:", trace);
+  console.log("Warning Handler:", msg);
+  // FIXME: DELETE THIS CONDITION
+  if (vm && trace) {
+    console.log();
+  }
 };
 /* ----------------------- END: Error/Warning Handling ---------------------- */
 
