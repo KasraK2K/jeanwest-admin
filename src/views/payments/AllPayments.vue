@@ -8,7 +8,7 @@
     <v-card class="mb-8" elevation="1" outlined rounded>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
-        <v-col sm="12" md="3">
+        <v-col class="col-12 col-md-3">
           <v-text-field
             label="توکن"
             placeholder="لطفا توکن سفارش را وارد کنید."
@@ -18,7 +18,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col sm="12" md="3">
+        <v-col class="col-12 col-md-3">
           <v-select
             label="درگاه"
             v-model="gate"
@@ -33,7 +33,7 @@
           ></v-select>
         </v-col>
 
-        <v-col sm="12" md="3">
+        <v-col class="col-12 col-md-3">
           <v-select
             label="وضعیت"
             v-model="status"
@@ -48,7 +48,7 @@
           ></v-select>
         </v-col>
 
-        <v-col sm="12" md="3">
+        <v-col class="col-12 col-md-3">
           <v-text-field
             label="موبایل"
             placeholder="لطفا شماره موبایل را وارد کنید."
@@ -99,7 +99,7 @@
             </v-toolbar>
           </v-col>
 
-          <v-col sm="12" md="3">
+          <v-col class="col-12 col-md-3">
             <v-text-field
               v-model="search"
               label="جستجو در این صفحه"

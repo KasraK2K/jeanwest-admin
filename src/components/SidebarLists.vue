@@ -59,6 +59,24 @@
       </v-list-group>
       <!-- payment -->
 
+      <!-- permision -->
+      <v-list-group :value="false" prepend-icon="mdi-currency-usd">
+        <!-- #1 -->
+        <template v-slot:activator>
+          <v-list-item-title>کمپین‌ها</v-list-item-title>
+        </template>
+        <!-- #2 -->
+        <router-link :to="{ name: 'AllDiscounts' }">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست کدهای تخفیف</v-list-item-title>
+          </v-list-item>
+        </router-link>
+      </v-list-group>
+      <!-- permision -->
+
       <!-- support -->
       <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
         <!-- #1 -->

@@ -5,10 +5,10 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8" elevation="1" outlined rounded>
+    <v-card class="mb-8" elevation="1" outlined>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
-        <v-col sm="12" md="4">
+        <v-col class="col-12 col-md-4">
           <v-text-field
             label="کد"
             placeholder="لطفا کد تخفیف را وارد کنید."
@@ -18,7 +18,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col sm="12" md="4">
+        <v-col class="col-12 col-md-4">
           <v-text-field
             label="تعداد"
             placeholder="لطفا تعداد را وارد کنید."
@@ -29,7 +29,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col sm="12" md="4">
+        <v-col class="col-12 col-md-4">
           <v-text-field
             label="محدودیت"
             placeholder="لطفا محدودیت را وارد کنید."
@@ -40,7 +40,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col sm="12" md="4">
+        <v-col class="col-12 col-md-4">
           <v-text-field
             label="حداکثر تخفیف"
             placeholder="لطفا حداکثر تخفیف را وارد کنید."
@@ -51,7 +51,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col sm="12" md="4">
+        <v-col class="col-12 col-md-4">
           <v-select
             label="اعمال همزمان"
             v-model="singularity"
@@ -66,7 +66,7 @@
           ></v-select>
         </v-col>
 
-        <v-col sm="12" md="4">
+        <v-col class="col-12 col-md-4">
           <v-menu
             v-model="datesMenu"
             :close-on-content-click="false"
@@ -143,7 +143,7 @@
             </v-toolbar>
           </v-col>
 
-          <v-col sm="12" md="3">
+          <v-col class="col-12 col-md-3">
             <v-text-field
               v-model="search"
               label="جستجو در این صفحه"

@@ -16,7 +16,7 @@
           </v-text-field>
         </v-col>
 
-        <v-col sm="12" md="4">
+        <v-col class="col-12 col-md-4">
           <v-select
             :items="['در حال پیگیری', 'بسته', 'باز']"
             label="وضعیت"
