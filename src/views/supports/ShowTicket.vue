@@ -51,7 +51,7 @@
     <div class="d-flex flex-column" id="messages">
       <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown">
         <!-- user question -->
-        <v-timeline-item color="purple darken-3" fill-dot right>
+        <v-timeline-item color="indigo" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -59,7 +59,7 @@
               />
             </v-avatar>
           </template>
-          <v-card color="purple darken-3" dark elevation="3" outlined rounded>
+          <v-card color="indigo" dark elevation="3" outlined rounded>
             <v-card-title>حسن حسنی کاربر</v-card-title>
             <v-card-text class="white text--primary py-4">
               <p class="mb-0">
@@ -73,7 +73,7 @@
         </v-timeline-item>
 
         <!-- user question -->
-        <v-timeline-item color="purple darken-3" fill-dot right>
+        <v-timeline-item color="indigo" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -81,7 +81,7 @@
               />
             </v-avatar>
           </template>
-          <v-card color="purple darken-3" dark elevation="3" outlined rounded>
+          <v-card color="indigo" dark elevation="3" outlined rounded>
             <v-card-title>حسن حسنی کاربر</v-card-title>
             <v-card-text class="white text--primary py-4">
               <p class="mb-0">
@@ -102,7 +102,7 @@
         </v-timeline-item>
 
         <!-- admin answere -->
-        <v-timeline-item color="indigo" fill-dot left>
+        <v-timeline-item color="teal" fill-dot left>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -110,7 +110,7 @@
               />
             </v-avatar>
           </template>
-          <v-card color="indigo" dark elevation="3" outlined rounded>
+          <v-card color="teal" dark elevation="3" outlined rounded>
             <div class="d-flex align-center justify-space-between">
               <v-card-title class="pr-4">کسری کرمی ادمین</v-card-title>
               <router-link
@@ -151,7 +151,7 @@
         </v-timeline-item>
 
         <!-- user question -->
-        <v-timeline-item color="purple darken-3" fill-dot right>
+        <v-timeline-item color="indigo" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -159,7 +159,7 @@
               />
             </v-avatar>
           </template>
-          <v-card color="purple darken-3" dark elevation="3" outlined rounded>
+          <v-card color="indigo" dark elevation="3" outlined rounded>
             <v-card-title>حسن حسنی کاربر</v-card-title>
             <v-card-text class="white text--primary py-4">
               <p class="mb-0">
