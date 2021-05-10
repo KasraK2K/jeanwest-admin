@@ -15,6 +15,7 @@
             v-model="token"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -30,6 +31,7 @@
             item-value="value"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-select>
         </v-col>
 
@@ -45,6 +47,7 @@
             item-value="value"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-select>
         </v-col>
 

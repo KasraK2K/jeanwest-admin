@@ -15,6 +15,7 @@
             v-model="code"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -25,6 +26,7 @@
             v-model="name"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -35,6 +37,7 @@
             v-model="erp_name"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -45,6 +48,7 @@
             v-model="group_name"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -56,6 +60,7 @@
             type="number"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -67,6 +72,7 @@
             type="number"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -82,6 +88,7 @@
             item-value="value"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-select>
         </v-col>
 
@@ -97,6 +104,7 @@
             item-value="value"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-select>
         </v-col>
 

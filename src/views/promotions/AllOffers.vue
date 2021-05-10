@@ -15,6 +15,7 @@
             v-model="code"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -25,6 +26,7 @@
             v-model="name"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -40,6 +42,7 @@
             item-value="value"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-select>
         </v-col>
 
@@ -50,6 +53,7 @@
             v-model="target_group"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -60,6 +64,7 @@
             v-model="trigger_group"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 

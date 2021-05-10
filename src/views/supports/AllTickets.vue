@@ -15,6 +15,7 @@
             v-model="code"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
@@ -25,6 +26,7 @@
             v-model="mobile"
             @change="filterGenerate()"
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
 
