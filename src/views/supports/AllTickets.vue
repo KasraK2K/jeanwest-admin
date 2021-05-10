@@ -120,13 +120,14 @@
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
-        <v-chip :color="item.status ? 'blue' : 'red'" link label outlined>
-          <router-link
-            :to="{ name: 'ShowTicket', params: { id: item.id } }"
-            :class="item.status ? 'blue--text' : 'red--text'"
-          >
-            {{ item.status ? "پاسخ داده شده" : "در انتظار پاسخ" }}
-          </router-link>
+        <v-chip
+          :color="item.status ? 'blue' : 'red'"
+          link
+          label
+          outlined
+          :to="{ name: 'ShowTicket', params: { id: item.id } }"
+        >
+          {{ item.status ? "پاسخ داده شده" : "در انتظار پاسخ" }}
         </v-chip>
       </template>
     </v-data-table>

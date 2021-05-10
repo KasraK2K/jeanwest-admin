@@ -11,7 +11,7 @@
         <v-col class="col-12 col-md-4">
           <v-text-field
             label="کد"
-            placeholder="لطفا کد تخفیف را وارد کنید."
+            placeholder="لطفا کد پیشنهاد را وارد کنید."
             v-model="code"
             @change="filterGenerate()"
             outlined
@@ -20,32 +20,9 @@
 
         <v-col class="col-12 col-md-4">
           <v-text-field
-            label="تعداد"
-            placeholder="لطفا تعداد را وارد کنید."
-            v-model="count"
-            type="number"
-            @change="filterGenerate()"
-            outlined
-          ></v-text-field>
-        </v-col>
-
-        <v-col class="col-12 col-md-4">
-          <v-text-field
-            label="محدودیت"
-            placeholder="لطفا محدودیت را وارد کنید."
-            v-model="filterLimit"
-            type="number"
-            @change="filterGenerate()"
-            outlined
-          ></v-text-field>
-        </v-col>
-
-        <v-col class="col-12 col-md-4">
-          <v-text-field
-            label="حداکثر تخفیف"
-            placeholder="لطفا حداکثر تخفیف را وارد کنید."
-            v-model="max_discount"
-            type="number"
+            label="نام"
+            placeholder="لطفا نام پیشنهاد را وارد کنید."
+            v-model="name"
             @change="filterGenerate()"
             outlined
           ></v-text-field>
@@ -53,17 +30,37 @@
 
         <v-col class="col-12 col-md-4">
           <v-select
-            label="اعمال همزمان"
-            v-model="singularity"
+            label="وضعیت"
+            v-model="active"
             :items="[
-              { text: 'بله', value: 1 },
-              { text: 'خیر', value: 0 },
+              { text: 'فعال', value: true },
+              { text: 'غیرفعال', value: false },
             ]"
             item-text="text"
             item-value="value"
             @change="filterGenerate()"
             outlined
           ></v-select>
+        </v-col>
+
+        <v-col class="col-12 col-md-4">
+          <v-text-field
+            label="گروه هدف"
+            placeholder="لطفا گروه هدف را وارد کنید."
+            v-model="target_group"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
+        </v-col>
+
+        <v-col class="col-12 col-md-4">
+          <v-text-field
+            label="گروه پیشنهاد"
+            placeholder="لطفا گروه پیشنهاد را وارد کنید."
+            v-model="trigger_group"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
         </v-col>
 
         <v-col class="col-12 col-md-4">
@@ -105,15 +102,13 @@
     <v-data-table
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
-        { text: 'کد', value: 'code', align: 'start', sortable: false },
-        { text: 'تعداد', value: 'count' },
-        { text: 'محدودیت', value: 'limit' },
-        { text: 'حداکثر تخفیف', value: 'max_discount' },
-        { text: 'اعمال همزمان', value: 'singularity' },
+        { text: 'کد', value: 'code' },
+        { text: 'نام', value: 'name' },
+        { text: 'گروه هدف', value: 'target_group' },
+        { text: 'گروه پیشنهاد', value: 'trigger_group' },
         { text: 'زمان شروع', value: 'start_at' },
         { text: 'زمان پایان', value: 'end_at' },
-        { text: 'وضعیت', value: 'active' },
-        { text: 'گزینه‌ها', value: 'status', align: 'center' },
+        { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
       ]"
       :items="items"
       class="elevation-1"
@@ -135,7 +130,7 @@
                 <div class="d-flex justify-start align-center">
                   <h1 class="blue--text">{{ title }}</h1>
                   <v-divider vertical class="mx-4"></v-divider>
-                  <router-link to="/createDiscount">
+                  <router-link to="/createOffer">
                     <v-icon color="blue" large>mdi-plus-circle</v-icon>
                   </router-link>
                 </div>
@@ -157,22 +152,24 @@
         {{ toPersianString(item.no) }}
       </template>
 
-      <template v-slot:[`item.count`]="{ item }">
-        {{ item.count === -1 ? "نامحدود" : toPersianString(item.count) }}
-      </template>
-
-      <template v-slot:[`item.limit`]="{ item }">
-        {{ item.limit === -1 ? "نامحدود" : toPersianString(item.limit) }}
-      </template>
-
-      <template v-slot:[`item.max_discount`]="{ item }">
-        {{ toPersianString(numberToCash(item.max_discount)) }}
-      </template>
-
-      <template v-slot:[`item.singularity`]="{ item }">
-        <span :class="item.singularity ? 'green--text' : 'red--text'">
-          {{ item.singularity ? "بله" : "خیر" }}
-        </span>
+      <template v-slot:[`item.code`]="{ item }">
+        <v-tooltip
+          top
+          :color="item.active ? 'green' : 'red'"
+          :open-on-hover="false"
+          :open-on-click="true"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <span
+              :class="item.active ? 'green--text' : 'red--text'"
+              v-bind="attrs"
+              v-on="on"
+            >
+              {{ item.code }}
+            </span>
+          </template>
+          <span>{{ item.filter }}</span>
+        </v-tooltip>
       </template>
 
       <template v-slot:[`item.start_at`]="{ item }">
@@ -181,12 +178,6 @@
 
       <template v-slot:[`item.end_at`]="{ item }">
         {{ toPersianString(toPersianTime(item.end_at)) }}
-      </template>
-
-      <template v-slot:[`item.active`]="{ item }">
-        <span :class="item.active ? 'green--text' : 'red--text'">
-          {{ item.active ? "فعال" : "غیرفعال" }}
-        </span>
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
@@ -198,16 +189,27 @@
           link
           label
           outlined
+          close
+          close-icon="mdi-square-edit-outline"
+          @click:close="$router.push({ path: 'editOffer' })"
+          :to="{ path: 'editOffer' }"
         >
-          <router-link to="/editDiscount" class="blue--text">
-            <v-icon>mdi-square-edit-outline</v-icon>
-          </router-link>
+          ویرایش
         </v-chip>
+
         <!-- delete -->
-        <v-chip v-if="canDelete(item)" color="red" link label outlined>
-          <a class="red--text" @click="deleteNotification(item.id)">
-            <v-icon>mdi-delete</v-icon>
-          </a>
+        <v-chip
+          v-if="canDelete(item)"
+          color="red"
+          link
+          label
+          outlined
+          close
+          close-icon="mdi-delete"
+          @click:close="deleteNotification(item.id)"
+          @click="deleteNotification(item.id)"
+        >
+          حذف
         </v-chip>
       </template>
     </v-data-table>
@@ -271,11 +273,10 @@ export default Vue.extend({
       limit: 10,
       // filter
       code: undefined,
-      count: undefined,
-      filterLimit: undefined,
-      max_discount: undefined,
-      singularity: undefined,
-      status: undefined,
+      name: undefined,
+      active: undefined,
+      target_group: undefined,
+      trigger_group: undefined,
       dates: undefined,
       datesMenu: false,
       filter: {},
@@ -299,132 +300,46 @@ export default Vue.extend({
           {
             no: 1,
             code: "Code01",
+            name: "نام پیشنهاد ۱",
             active: true,
-            image: true,
-            count: 1,
-            limit: 3,
-            max_discount: 400000,
-            singularity: true,
+            target_group: "TargetG-01",
+            trigger_group: "TriggerG-01",
             start_at: "2021-04-27T14:20:22.783Z",
-            end_at: "2021-04-28T14:20:22.783Z",
-            status: 0,
+            end_at: "2021-04-28T14:20:23.783Z",
+            filter: { target: "some target", trigger: "some trigger" },
           },
           {
             no: 2,
             code: "Code02",
-            active: true,
-            image: true,
-            count: 5,
-            limit: 7,
-            max_discount: 200000,
-            singularity: false,
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-            status: 1,
+            name: "نام پیشنهاد ۲",
+            active: false,
+            target_group: "TargetG-02",
+            trigger_group: "TriggerG-02",
+            start_at: "2021-04-27T14:20:23.783Z",
+            end_at: "2021-04-28T14:20:24.783Z",
+            filter: { target: "some target", trigger: "some trigger" },
           },
           {
             no: 3,
             code: "Code03",
+            name: "نام پیشنهاد ۳",
             active: false,
-            image: false,
-            count: 4,
-            limit: 12,
-            max_discount: 1400000,
-            singularity: true,
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-            status: 1,
+            target_group: "TargetG-03",
+            trigger_group: "TriggerG-03",
+            start_at: "2021-04-27T14:20:24.783Z",
+            end_at: "2021-04-28T14:20:25.783Z",
+            filter: { target: "some target", trigger: "some trigger" },
           },
           {
             no: 4,
             code: "Code04",
+            name: "نام پیشنهاد ۴",
             active: true,
-            image: false,
-            count: 0,
-            limit: 3,
-            max_discount: 600000,
-            singularity: true,
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-            status: 0,
-          },
-          {
-            no: 5,
-            code: "Code05",
-            active: false,
-            image: true,
-            count: 0,
-            limit: 0,
-            max_discount: 400000,
-            singularity: false,
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-            status: 0,
-          },
-          {
-            no: 6,
-            code: "Code06",
-            active: false,
-            image: true,
-            count: 100,
-            limit: 0,
-            max_discount: 840000,
-            singularity: true,
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-            status: 1,
-          },
-          {
-            no: 7,
-            code: "Code07",
-            active: true,
-            image: false,
-            count: -1,
-            limit: -1,
-            max_discount: 720000,
-            singularity: false,
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-            status: 1,
-          },
-          {
-            no: 8,
-            code: "Code08",
-            active: false,
-            image: false,
-            count: 1,
-            limit: 3,
-            max_discount: 300000,
-            singularity: false,
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-            status: 0,
-          },
-          {
-            no: 9,
-            code: "Code09",
-            active: false,
-            image: true,
-            count: 1,
-            limit: 3,
-            max_discount: 900000,
-            singularity: true,
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-            status: 1,
-          },
-          {
-            no: 10,
-            code: "Code10",
-            active: true,
-            image: true,
-            count: 1,
-            limit: 3,
-            max_discount: 100000,
-            singularity: false,
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-            status: 0,
+            target_group: "TargetG-04",
+            trigger_group: "TriggerG-04",
+            start_at: "2021-04-27T14:20:25.783Z",
+            end_at: "2021-04-28T14:20:26.783Z",
+            filter: { target: "some target", trigger: "some trigger" },
           },
         ];
         this.loading = false;
@@ -438,10 +353,10 @@ export default Vue.extend({
     filterGenerate(): void {
       this.filter = {
         code: this.code,
-        count: this.count,
-        limit: this.filterLimit,
-        max_discount: this.max_discount,
-        singularity: this.singularity,
+        name: this.name,
+        active: this.active,
+        target_group: this.target_group,
+        trigger_group: this.trigger_group,
         dates: this.dates,
       };
     },

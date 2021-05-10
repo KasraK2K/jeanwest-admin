@@ -142,13 +142,19 @@
       </template>
 
       <template v-slot:[`item.show`]="{ item }">
-        <v-chip color="blue" link label outlined>
-          <router-link
-            :to="{ name: 'ShowPayment', params: { id: item.id } }"
-            class="blue--text"
-          >
-            <v-icon>mdi-eye</v-icon>
-          </router-link>
+        <v-chip
+          color="blue"
+          link
+          label
+          outlined
+          close
+          close-icon="mdi-eye"
+          @click:close="
+            $router.push({ name: 'ShowPayment', params: { id: item.id } })
+          "
+          :to="{ name: 'ShowPayment', params: { id: item.id } }"
+        >
+          ویرایش
         </v-chip>
       </template>
     </v-data-table>

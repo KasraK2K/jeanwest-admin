@@ -113,7 +113,7 @@
         { text: 'گروه', value: 'group' },
         { text: 'زمان شروع', value: 'start_at' },
         { text: 'زمان پایان', value: 'end_at' },
-        { text: 'گزینه‌ها', value: 'status', align: 'center' },
+        { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
       ]"
       :items="items"
       class="elevation-1"
@@ -314,7 +314,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2021-04-27T14:20:22.783Z",
             end_at: "2021-04-28T14:20:22.783Z",
-            status: 0,
           },
           {
             no: 2,
@@ -328,7 +327,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
-            status: 1,
           },
           {
             no: 3,
@@ -342,7 +340,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
-            status: 1,
           },
           {
             no: 4,
@@ -356,7 +353,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
-            status: 0,
           },
           {
             no: 5,
@@ -370,7 +366,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
-            status: 0,
           },
           {
             no: 6,
@@ -384,7 +379,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
-            status: 1,
           },
           {
             no: 7,
@@ -398,7 +392,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
-            status: 1,
           },
           {
             no: 8,
@@ -412,7 +405,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
-            status: 0,
           },
           {
             no: 9,
@@ -426,7 +418,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
-            status: 1,
           },
           {
             no: 10,
@@ -440,7 +431,6 @@ export default Vue.extend({
             group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
-            status: 0,
           },
         ];
         this.loading = false;
