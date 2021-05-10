@@ -275,11 +275,11 @@ export default Vue.extend({
     };
   },
   watch: {
-    limit() {
+    limit(): void {
       this.page = 1;
       this.getList(this.page, this.limit, this.filter);
     },
-    filter() {
+    filter(): void {
       this.page = 1;
       this.getList(this.page, this.limit, this.filter);
     },
@@ -428,7 +428,7 @@ export default Vue.extend({
         )} }`
       );
     },
-    filterGenerate() {
+    filterGenerate(): void {
       this.filter = {
         code: this.code,
         count: this.count,
@@ -438,7 +438,7 @@ export default Vue.extend({
         dates: this.dates,
       };
     },
-    clearDateFilter() {
+    clearDateFilter(): void {
       this.dates = undefined;
       this.filterGenerate();
     },
