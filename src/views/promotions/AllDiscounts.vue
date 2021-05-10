@@ -204,16 +204,27 @@
           link
           label
           outlined
+          close
+          close-icon="mdi-square-edit-outline"
+          @click:close="$router.push({ path: 'editDiscount' })"
+          :to="{ path: 'editDiscount' }"
         >
-          <router-link to="/editDiscount" class="blue--text">
-            <v-icon>mdi-square-edit-outline</v-icon>
-          </router-link>
+          ویرایش
         </v-chip>
+
         <!-- delete -->
-        <v-chip v-if="canDelete(item)" color="red" link label outlined>
-          <a class="red--text" @click="deleteNotification(item.id)">
-            <v-icon>mdi-delete</v-icon>
-          </a>
+        <v-chip
+          v-if="canDelete(item)"
+          color="red"
+          link
+          label
+          outlined
+          close
+          close-icon="mdi-delete"
+          @click:close="deleteNotification(item.id)"
+          @click="deleteNotification(item.id)"
+        >
+          حذف
         </v-chip>
       </template>
     </v-data-table>

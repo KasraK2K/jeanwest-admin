@@ -180,6 +180,7 @@
         >
           ویرایش
         </v-chip>
+
         <!-- delete -->
         <v-chip
           v-if="canDelete(item)"
