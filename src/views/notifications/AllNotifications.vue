@@ -164,7 +164,14 @@
 
       <template v-slot:[`item.status`]="{ item }">
         <!-- edit -->
-        <v-chip v-if="canDelete(item)" class="ml-2" color="blue" label outlined>
+        <v-chip
+          v-if="canDelete(item)"
+          class="ml-2"
+          color="blue"
+          link
+          label
+          outlined
+        >
           <router-link
             :to="{ name: 'EditNotification', params: { id: item.id } }"
             class="blue--text"
@@ -173,7 +180,7 @@
           </router-link>
         </v-chip>
         <!-- delete -->
-        <v-chip v-if="canDelete(item)" color="red" label outlined>
+        <v-chip v-if="canDelete(item)" color="red" link label outlined>
           <a class="red--text" @click="deleteNotification(item.id)">
             <v-icon>mdi-delete</v-icon>
           </a>

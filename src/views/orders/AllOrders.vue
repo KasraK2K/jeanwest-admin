@@ -143,7 +143,7 @@
       </template>
 
       <template v-slot:[`item.show`]="{ item }">
-        <v-chip color="blue" label outlined>
+        <v-chip color="blue" link label outlined>
           <router-link
             :to="{ name: 'ShowOrder', params: { id: item.id } }"
             class="blue--text"

@@ -191,13 +191,20 @@
 
       <template v-slot:[`item.status`]="{ item }">
         <!-- edit -->
-        <v-chip v-if="canDelete(item)" class="ml-2" color="blue" label outlined>
+        <v-chip
+          v-if="canDelete(item)"
+          class="ml-2"
+          color="blue"
+          link
+          label
+          outlined
+        >
           <router-link to="/editDiscount" class="blue--text">
             <v-icon>mdi-square-edit-outline</v-icon>
           </router-link>
         </v-chip>
         <!-- delete -->
-        <v-chip v-if="canDelete(item)" color="red" label outlined>
+        <v-chip v-if="canDelete(item)" color="red" link label outlined>
           <a class="red--text" @click="deleteNotification(item.id)">
             <v-icon>mdi-delete</v-icon>
           </a>
@@ -428,7 +435,7 @@ export default Vue.extend({
         )} }`
       );
     },
-    filterGenerate() {
+    filterGenerate(): void {
       this.filter = {
         code: this.code,
         count: this.count,
@@ -438,7 +445,7 @@ export default Vue.extend({
         dates: this.dates,
       };
     },
-    clearDateFilter() {
+    clearDateFilter(): void {
       this.dates = undefined;
       this.filterGenerate();
     },

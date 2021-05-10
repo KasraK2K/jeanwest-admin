@@ -110,6 +110,7 @@
         { text: 'محدودیت', value: 'limit' },
         { text: 'حداکثر تخفیف', value: 'max_discount' },
         { text: 'اعمال همزمان', value: 'singularity' },
+        { text: 'گروه', value: 'group' },
         { text: 'زمان شروع', value: 'start_at' },
         { text: 'زمان پایان', value: 'end_at' },
         { text: 'وضعیت', value: 'active' },
@@ -191,13 +192,20 @@
 
       <template v-slot:[`item.status`]="{ item }">
         <!-- edit -->
-        <v-chip v-if="canDelete(item)" class="ml-2" color="blue" label outlined>
+        <v-chip
+          v-if="canDelete(item)"
+          class="ml-2"
+          color="blue"
+          link
+          label
+          outlined
+        >
           <router-link to="/editDiscount" class="blue--text">
             <v-icon>mdi-square-edit-outline</v-icon>
           </router-link>
         </v-chip>
         <!-- delete -->
-        <v-chip v-if="canDelete(item)" color="red" label outlined>
+        <v-chip v-if="canDelete(item)" color="red" link label outlined>
           <a class="red--text" @click="deleteNotification(item.id)">
             <v-icon>mdi-delete</v-icon>
           </a>
@@ -298,6 +306,7 @@ export default Vue.extend({
             limit: 3,
             max_discount: 400000,
             singularity: true,
+            group: "یک بعلاوه یک",
             start_at: "2021-04-27T14:20:22.783Z",
             end_at: "2021-04-28T14:20:22.783Z",
             status: 0,
@@ -311,6 +320,7 @@ export default Vue.extend({
             limit: 7,
             max_discount: 200000,
             singularity: false,
+            group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
             status: 1,
@@ -324,6 +334,7 @@ export default Vue.extend({
             limit: 12,
             max_discount: 1400000,
             singularity: true,
+            group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
             status: 1,
@@ -337,6 +348,7 @@ export default Vue.extend({
             limit: 3,
             max_discount: 600000,
             singularity: true,
+            group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
             status: 0,
@@ -350,6 +362,7 @@ export default Vue.extend({
             limit: 0,
             max_discount: 400000,
             singularity: false,
+            group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
             status: 0,
@@ -363,6 +376,7 @@ export default Vue.extend({
             limit: 0,
             max_discount: 840000,
             singularity: true,
+            group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
             status: 1,
@@ -376,6 +390,7 @@ export default Vue.extend({
             limit: -1,
             max_discount: 720000,
             singularity: false,
+            group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
             status: 1,
@@ -389,6 +404,7 @@ export default Vue.extend({
             limit: 3,
             max_discount: 300000,
             singularity: false,
+            group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
             status: 0,
@@ -402,6 +418,7 @@ export default Vue.extend({
             limit: 3,
             max_discount: 900000,
             singularity: true,
+            group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
             status: 1,
@@ -415,6 +432,7 @@ export default Vue.extend({
             limit: 3,
             max_discount: 100000,
             singularity: false,
+            group: "یک بعلاوه یک",
             start_at: "2020/06/11",
             end_at: "2020/06/18",
             status: 0,

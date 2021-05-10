@@ -120,7 +120,7 @@
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
-        <v-chip :color="item.status ? 'blue' : 'red'" label outlined>
+        <v-chip :color="item.status ? 'blue' : 'red'" link label outlined>
           <router-link
             :to="{ name: 'ShowTicket', params: { id: item.id } }"
             :class="item.status ? 'blue--text' : 'red--text'"
