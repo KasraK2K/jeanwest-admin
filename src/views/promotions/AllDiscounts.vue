@@ -113,7 +113,6 @@
         { text: 'گروه', value: 'group' },
         { text: 'زمان شروع', value: 'start_at' },
         { text: 'زمان پایان', value: 'end_at' },
-        { text: 'وضعیت', value: 'active' },
         { text: 'گزینه‌ها', value: 'status', align: 'center' },
       ]"
       :items="items"
@@ -156,6 +155,12 @@
 
       <template v-slot:[`item.no`]="{ item }">
         {{ toPersianString(item.no) }}
+      </template>
+
+      <template v-slot:[`item.code`]="{ item }">
+        <span :class="item.active ? 'green--text' : 'red--text'">
+          {{ item.code }}
+        </span>
       </template>
 
       <template v-slot:[`item.count`]="{ item }">
