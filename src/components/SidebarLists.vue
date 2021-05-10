@@ -59,13 +59,13 @@
       </v-list-group>
       <!-- payment -->
 
-      <!-- permision -->
+      <!-- promotions -->
       <v-list-group :value="false" prepend-icon="mdi-sale">
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>کمپین‌ها</v-list-item-title>
         </template>
-        <!-- #2 -->
+        <!-- #2: Discount -->
         <router-link :to="{ name: 'AllDiscounts' }">
           <v-list-item>
             <v-list-item-icon>
@@ -74,7 +74,7 @@
             <v-list-item-title>لیست تخفیف‌ها</v-list-item-title>
           </v-list-item>
         </router-link>
-        <!-- #2 -->
+        <!-- #2: Offers -->
         <router-link :to="{ name: 'AllOffers' }">
           <v-list-item>
             <v-list-item-icon>
@@ -83,8 +83,17 @@
             <v-list-item-title>لیست پیشنهادات</v-list-item-title>
           </v-list-item>
         </router-link>
+        <!-- #2: Offers -->
+        <router-link :to="{ name: 'AllJeanPoints' }">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست امتیازات</v-list-item-title>
+          </v-list-item>
+        </router-link>
       </v-list-group>
-      <!-- permision -->
+      <!-- promotions -->
 
       <!-- support -->
       <v-list-group :value="false" prepend-icon="mdi-lifebuoy">

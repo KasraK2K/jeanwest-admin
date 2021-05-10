@@ -113,7 +113,12 @@
         { text: 'گروه', value: 'group' },
         { text: 'زمان شروع', value: 'start_at' },
         { text: 'زمان پایان', value: 'end_at' },
-        { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
+        {
+          text: 'گزینه‌ها',
+          value: 'options',
+          align: 'center',
+          sortable: false,
+        },
       ]"
       :items="items"
       class="elevation-1"
@@ -195,10 +200,9 @@
         </span>
       </template>
 
-      <template v-slot:[`item.status`]="{ item }">
+      <template v-slot:[`item.options`]="{ item }">
         <!-- edit -->
         <v-chip
-          v-if="canDelete(item)"
           class="ml-2"
           color="blue"
           link
@@ -214,7 +218,6 @@
 
         <!-- delete -->
         <v-chip
-          v-if="canDelete(item)"
           color="red"
           link
           label
@@ -292,7 +295,7 @@ export default Vue.extend({
       filterLimit: undefined,
       max_discount: undefined,
       singularity: undefined,
-      status: undefined,
+      options: undefined,
       dates: undefined,
       datesMenu: false,
       filter: {},
@@ -465,9 +468,6 @@ export default Vue.extend({
     clearDateFilter(): void {
       this.dates = undefined;
       this.filterGenerate();
-    },
-    canDelete(item: Record<string, unknown>): boolean {
-      return item.type !== "SMS" || item.status === 0;
     },
     deleteNotification(id: string): void {
       console.log("delete id:", id);

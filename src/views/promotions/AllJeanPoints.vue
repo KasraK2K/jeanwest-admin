@@ -11,7 +11,7 @@
         <v-col class="col-12 col-md-4">
           <v-text-field
             label="کد"
-            placeholder="لطفا کد پیشنهاد را وارد کنید."
+            placeholder="لطفا کد امتیاز را وارد کنید."
             v-model="code"
             @change="filterGenerate()"
             outlined
@@ -21,11 +21,68 @@
         <v-col class="col-12 col-md-4">
           <v-text-field
             label="نام"
-            placeholder="لطفا نام پیشنهاد را وارد کنید."
+            placeholder="لطفا نام امتیاز را وارد کنید."
             v-model="name"
             @change="filterGenerate()"
             outlined
           ></v-text-field>
+        </v-col>
+
+        <v-col class="col-12 col-md-4">
+          <v-text-field
+            label="نام در ای‌آر‌پی"
+            placeholder="لطفا نام امتیاز در ای‌آر‌پی را وارد کنید."
+            v-model="erp_name"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
+        </v-col>
+
+        <v-col class="col-12 col-md-4">
+          <v-text-field
+            label="نام گروه"
+            placeholder="لطفا نام گروه را وارد کنید."
+            v-model="group_name"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
+        </v-col>
+
+        <v-col class="col-12 col-md-4">
+          <v-text-field
+            label="محدودیت"
+            placeholder="لطفا محدودیت را وارد کنید."
+            v-model="filterLimit"
+            type="number"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
+        </v-col>
+
+        <v-col class="col-12 col-md-4">
+          <v-text-field
+            label="حداقل خرید"
+            placeholder="لطفا حداقل خرید را وارد کنید."
+            v-model="min_total"
+            type="number"
+            @change="filterGenerate()"
+            outlined
+          ></v-text-field>
+        </v-col>
+
+        <v-col class="col-12 col-md-4">
+          <v-select
+            label="اعمال همزمان"
+            v-model="singularity"
+            :items="[
+              { text: 'فعال', value: true },
+              { text: 'غیرفعال', value: false },
+            ]"
+            item-text="text"
+            item-value="value"
+            @change="filterGenerate()"
+            outlined
+          ></v-select>
         </v-col>
 
         <v-col class="col-12 col-md-4">
@@ -41,26 +98,6 @@
             @change="filterGenerate()"
             outlined
           ></v-select>
-        </v-col>
-
-        <v-col class="col-12 col-md-4">
-          <v-text-field
-            label="گروه هدف"
-            placeholder="لطفا گروه هدف را وارد کنید."
-            v-model="target_group"
-            @change="filterGenerate()"
-            outlined
-          ></v-text-field>
-        </v-col>
-
-        <v-col class="col-12 col-md-4">
-          <v-text-field
-            label="گروه پیشنهاد"
-            placeholder="لطفا گروه پیشنهاد را وارد کنید."
-            v-model="trigger_group"
-            @change="filterGenerate()"
-            outlined
-          ></v-text-field>
         </v-col>
 
         <v-col class="col-12 col-md-4">
@@ -104,8 +141,11 @@
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'کد', value: 'code' },
         { text: 'نام', value: 'name' },
-        { text: 'گروه هدف', value: 'target_group' },
-        { text: 'گروه پیشنهاد', value: 'trigger_group' },
+        { text: 'نام در ای‌آر‌پی', value: 'erp_name' },
+        { text: 'نام گروه', value: 'group_name' },
+        { text: 'محدودیت', value: 'limit' },
+        { text: 'حداقل خرید', value: 'min_total' },
+        { text: 'اعمال همزمان', value: 'singularity' },
         { text: 'زمان شروع', value: 'start_at' },
         { text: 'زمان پایان', value: 'end_at' },
         {
@@ -135,7 +175,7 @@
                 <div class="d-flex justify-start align-center">
                   <h1 class="blue--text">{{ title }}</h1>
                   <v-divider vertical class="mx-4"></v-divider>
-                  <router-link to="/createOffer">
+                  <router-link to="/createJeanPoints">
                     <v-icon color="blue" large>mdi-plus-circle</v-icon>
                   </router-link>
                 </div>
@@ -158,23 +198,23 @@
       </template>
 
       <template v-slot:[`item.code`]="{ item }">
-        <v-tooltip
-          top
-          :color="item.active ? 'teal' : 'pink'"
-          :open-on-hover="false"
-          :open-on-click="true"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <span
-              :class="item.active ? 'teal--text' : 'pink--text'"
-              v-bind="attrs"
-              v-on="on"
-            >
-              {{ item.code }}
-            </span>
-          </template>
-          <span>{{ item.filter }}</span>
-        </v-tooltip>
+        <span :class="item.active ? 'teal--text' : 'pink--text'">
+          {{ item.code }}
+        </span>
+      </template>
+
+      <template v-slot:[`item.limit`]="{ item }">
+        {{ toPersianString(item.limit) }}
+      </template>
+
+      <template v-slot:[`item.min_total`]="{ item }">
+        {{ toPersianString(numberToCash(item.min_total)) }}
+      </template>
+
+      <template v-slot:[`item.singularity`]="{ item }">
+        <span :class="item.singularity ? 'green--text' : 'red--text'">
+          {{ item.singularity ? "بله" : "خیر" }}
+        </span>
       </template>
 
       <template v-slot:[`item.start_at`]="{ item }">
@@ -195,8 +235,8 @@
           outlined
           close
           close-icon="mdi-square-edit-outline"
-          @click:close="$router.push({ path: 'editOffer' })"
-          :to="{ path: 'editOffer' }"
+          @click:close="$router.push({ path: 'editJeanPoints' })"
+          :to="{ path: 'editJeanPoints' }"
         >
           ویرایش
         </v-chip>
@@ -254,7 +294,7 @@ export default Vue.extend({
     pageCount: number;
     limit: number;
   } {
-    const title = "لیست پیشنهادات";
+    const title = "لیست امتیازات";
     return {
       title,
       loading: false,
@@ -277,9 +317,12 @@ export default Vue.extend({
       // filter
       code: undefined,
       name: undefined,
+      erp_name: undefined,
+      group_name: undefined,
+      filterLimit: undefined,
+      min_total: undefined,
+      singularity: undefined,
       active: undefined,
-      target_group: undefined,
-      trigger_group: undefined,
       dates: undefined,
       datesMenu: false,
       filter: {},
@@ -303,46 +346,54 @@ export default Vue.extend({
           {
             no: 1,
             code: "Code01",
-            name: "نام پیشنهاد ۱",
+            name: "نام امتیاز ۱",
+            erp_name: "نام در ای‌آر‌پی ۱",
+            group_name: "نام گروه ۱",
+            limit: 3,
+            min_total: "300000",
+            singularity: true,
             active: true,
-            target_group: "TargetG-01",
-            trigger_group: "TriggerG-01",
             start_at: "2021-04-27T14:20:22.783Z",
             end_at: "2021-04-28T14:20:23.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
           },
           {
             no: 2,
             code: "Code02",
-            name: "نام پیشنهاد ۲",
-            active: false,
-            target_group: "TargetG-02",
-            trigger_group: "TriggerG-02",
-            start_at: "2021-04-27T14:20:23.783Z",
-            end_at: "2021-04-28T14:20:24.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
+            name: "نام امتیاز ۲",
+            erp_name: "نام در ای‌آر‌پی ۲",
+            group_name: "نام گروه ۲",
+            limit: 4,
+            min_total: "450000",
+            singularity: false,
+            active: true,
+            start_at: "2021-04-27T14:20:22.783Z",
+            end_at: "2021-04-28T14:20:23.783Z",
           },
           {
             no: 3,
             code: "Code03",
-            name: "نام پیشنهاد ۳",
+            name: "نام امتیاز ۳",
+            erp_name: "نام در ای‌آر‌پی ۳",
+            group_name: "نام گروه ۳",
+            limit: 8,
+            min_total: "3640000",
+            singularity: true,
             active: false,
-            target_group: "TargetG-03",
-            trigger_group: "TriggerG-03",
-            start_at: "2021-04-27T14:20:24.783Z",
-            end_at: "2021-04-28T14:20:25.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
+            start_at: "2021-04-27T14:20:22.783Z",
+            end_at: "2021-04-28T14:20:23.783Z",
           },
           {
             no: 4,
             code: "Code04",
-            name: "نام پیشنهاد ۴",
-            active: true,
-            target_group: "TargetG-04",
-            trigger_group: "TriggerG-04",
-            start_at: "2021-04-27T14:20:25.783Z",
-            end_at: "2021-04-28T14:20:26.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
+            name: "نام امتیاز ۴",
+            erp_name: "نام در ای‌آر‌پی ۴",
+            group_name: "نام گروه ۴",
+            limit: 2,
+            min_total: "130000",
+            singularity: false,
+            active: false,
+            start_at: "2021-04-27T14:20:22.783Z",
+            end_at: "2021-04-28T14:20:23.783Z",
           },
         ];
         this.loading = false;
@@ -357,9 +408,12 @@ export default Vue.extend({
       this.filter = {
         code: this.code,
         name: this.name,
+        erp_name: this.erp_name,
+        group_name: this.group_name,
+        limit: this.filterLimit,
+        min_total: this.min_total,
+        singularity: this.singularity,
         active: this.active,
-        target_group: this.target_group,
-        trigger_group: this.trigger_group,
         dates: this.dates,
       };
     },
