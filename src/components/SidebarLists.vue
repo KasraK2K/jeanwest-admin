@@ -83,13 +83,22 @@
             <v-list-item-title>لیست پیشنهادات</v-list-item-title>
           </v-list-item>
         </router-link>
-        <!-- #2: Offers -->
+        <!-- #2: JeanPoints -->
         <router-link :to="{ name: 'AllJeanPoints' }">
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-format-list-numbered-rtl</v-icon>
             </v-list-item-icon>
             <v-list-item-title>لیست امتیازات</v-list-item-title>
+          </v-list-item>
+        </router-link>
+        <!-- #2: Groups -->
+        <router-link :to="{ name: 'AllGroups' }">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست گروه‌ها</v-list-item-title>
           </v-list-item>
         </router-link>
       </v-list-group>

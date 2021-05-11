@@ -1,11 +1,14 @@
 /* -------------------------------- discount -------------------------------- */
-import AllDiscounts from "@/views/promotions/AllDiscounts.vue";
+import AllDiscounts from "@/views/promotions/discounts/AllDiscounts.vue";
 
 /* --------------------------------- offers --------------------------------- */
-import AllOffers from "@/views/promotions/AllOffers.vue";
+import AllOffers from "@/views/promotions/offers/AllOffers.vue";
 
 /* -------------------------------- jeapoints ------------------------------- */
-import AllJeanPoints from "@/views/promotions/AllJeanPoints.vue";
+import AllJeanPoints from "@/views/promotions/jeanpoints/AllJeanPoints.vue";
+
+/* --------------------------------- groups --------------------------------- */
+import AllGroups from "@/views/promotions/groups/AllGroups.vue";
 
 export const promotions = [
   /* -------------------------------------------------------------------------- */
@@ -41,6 +44,18 @@ export const promotions = [
     component: AllJeanPoints,
     meta: {
       title: "All JeanPoints",
+    },
+  },
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   groups                                   */
+  /* -------------------------------------------------------------------------- */
+  {
+    path: "/promotions/groups/all",
+    name: "AllGroups",
+    component: AllGroups,
+    meta: {
+      title: "All Groups",
     },
   },
 ];

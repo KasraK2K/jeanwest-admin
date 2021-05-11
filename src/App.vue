@@ -46,10 +46,11 @@
       class="rounded-0"
       id="sidebar"
       v-if="token"
+      :mini-variant="variant"
     >
       <template v-slot:prepend>
-        <v-list-item class="disable-hover">
-          <v-list-item-avatar>
+        <v-list-item class="disable-hover px-2">
+          <v-list-item-avatar @click="checkMiniVariant()">
             <img src="https://avatars.githubusercontent.com/u/30779339?v=4" />
           </v-list-item-avatar>
 
@@ -96,6 +97,7 @@ export default Vue.extend({
     return {
       topbar: true,
       sidebar: document.body.clientWidth > 1264,
+      variant: false,
       group: null,
       showTopMenuBtn: document.body.clientWidth > 1264,
     };
@@ -104,6 +106,11 @@ export default Vue.extend({
     ...mapState(["token"]),
   },
   methods: {
+    checkMiniVariant(): void {
+      this.showTopMenuBtn
+        ? (this.variant = !this.variant)
+        : (this.variant = false);
+    },
     getToken(name: string): string | undefined {
       const storageToken = localStorage.getItem(name);
       if (storageToken) {
