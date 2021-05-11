@@ -190,7 +190,7 @@ export default Vue.extend({
       // pagination
       page: 1,
       limit: 10,
-      pageCount: 0,
+      pageCount: 1,
       // filter
       code: undefined,
       mobile: undefined,

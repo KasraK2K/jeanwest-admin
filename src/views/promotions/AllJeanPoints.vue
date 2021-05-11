@@ -320,7 +320,7 @@ export default Vue.extend({
       search: "",
       // pagination
       page: 1,
-      pageCount: 0,
+      pageCount: 1,
       limit: 10,
       // filter
       code: undefined,
