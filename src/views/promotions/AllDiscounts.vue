@@ -244,7 +244,7 @@
     <div class="d-flex align-center justify-space-between">
       <v-pagination
         v-model="page"
-        :length="pageCount + 1"
+        :length="pageCount"
         :total-visible="10"
         @input="getList(page, limit, filter)"
       ></v-pagination>
