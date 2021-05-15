@@ -77,7 +77,7 @@
         { text: 'مبلغ پرداختی', value: 'price' },
         { text: 'شماره تماس', value: 'mobile' },
         { text: 'تعداد کالا', value: 'count' },
-        { text: 'نمایش', value: 'show' },
+        { text: 'گزینه‌ها', value: 'show' },
       ]"
       :items="items"
       class="elevation-1"
@@ -158,7 +158,7 @@
           "
           :to="{ name: 'ShowOrder', params: { id: item.id } }"
         >
-          ویرایش
+          نمایش
         </v-chip>
       </template>
     </v-data-table>

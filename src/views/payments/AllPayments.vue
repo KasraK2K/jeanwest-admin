@@ -76,7 +76,7 @@
         { text: 'مبلغ پرداختی', value: 'price' },
         { text: 'شماره تماس', value: 'mobile' },
         { text: 'تاریخ بروز‌رسانی', value: 'updated_at' },
-        { text: 'نمایش', value: 'show' },
+        { text: 'گزینه‌ها', value: 'show' },
       ]"
       :items="items"
       class="elevation-1"
@@ -157,7 +157,7 @@
           "
           :to="{ name: 'ShowPayment', params: { id: item.id } }"
         >
-          ویرایش
+          نمایش
         </v-chip>
       </template>
     </v-data-table>
