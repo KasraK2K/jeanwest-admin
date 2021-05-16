@@ -10,22 +10,6 @@
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
           <v-select
-            label="تصویر"
-            v-model="image"
-            :items="[
-              { text: 'دارد', value: 1 },
-              { text: 'ندارد', value: 0 },
-            ]"
-            item-text="text"
-            item-value="value"
-            @change="filterGenerate()"
-            outlined
-            hide-details="auto"
-          ></v-select>
-        </v-col>
-
-        <v-col class="col-12 col-md-3">
-          <v-select
             label="نوع"
             v-model="type"
             :items="[
@@ -97,7 +81,6 @@
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'آیدی', value: 'id', align: 'start', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
-        { text: 'تصویر', value: 'image' },
         { text: 'نوع', value: 'type' },
         { text: 'زمان ایجاد', value: 'created_at' },
         { text: 'زمان ارسال', value: 'sent_at' },
@@ -143,12 +126,6 @@
 
       <template v-slot:[`item.no`]="{ item }">
         {{ toPersianString(item.no) }}
-      </template>
-
-      <template v-slot:[`item.image`]="{ item }">
-        <span :class="item.image ? 'green--text' : 'red--text'">
-          {{ item.image ? "دارد" : "ندارد" }}
-        </span>
       </template>
 
       <template v-slot:[`item.type`]="{ item }">
@@ -259,7 +236,6 @@ export default Vue.extend({
       pageCount: 0,
       limit: 10,
       // filter
-      image: undefined,
       type: undefined,
       status: undefined,
       dates: undefined,
@@ -286,7 +262,6 @@ export default Vue.extend({
             no: 1,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c1",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: true,
             type: "SMS",
             created_at: "2021-04-27T14:20:22.783Z",
             sent_at: "2021-04-28T14:20:22.783Z",
@@ -296,7 +271,6 @@ export default Vue.extend({
             no: 2,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: true,
             type: "SMS",
             created_at: "2020/06/11",
             sent_at: "2020/06/18",
@@ -306,7 +280,6 @@ export default Vue.extend({
             no: 3,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c3",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: false,
             type: "PUSH",
             created_at: "2020/06/11",
             sent_at: "2020/06/18",
@@ -316,7 +289,6 @@ export default Vue.extend({
             no: 4,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c4",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: false,
             type: "PUSH",
             created_at: "2020/06/11",
             sent_at: "2020/06/18",
@@ -326,7 +298,6 @@ export default Vue.extend({
             no: 5,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c5",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: true,
             type: "PUSH",
             created_at: "2020/06/11",
             sent_at: "2020/06/18",
@@ -336,7 +307,6 @@ export default Vue.extend({
             no: 6,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c6",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: true,
             type: "PUSH",
             created_at: "2020/06/11",
             sent_at: "2020/06/18",
@@ -346,7 +316,6 @@ export default Vue.extend({
             no: 7,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c7",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: false,
             type: "PUSH",
             created_at: "2020/06/11",
             sent_at: "2020/06/18",
@@ -356,7 +325,6 @@ export default Vue.extend({
             no: 8,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c8",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: false,
             type: "PUSH",
             created_at: "2020/06/11",
             sent_at: "2020/06/18",
@@ -366,7 +334,6 @@ export default Vue.extend({
             no: 9,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c9",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: true,
             type: "SMS",
             created_at: "2020/06/11",
             sent_at: "2020/06/18",
@@ -376,7 +343,6 @@ export default Vue.extend({
             no: 10,
             id: "43b5a165-0bb6-4e10-8aec-7eb06dfed110",
             title: "مشکل در ثبت سفارش با کارت  سپه",
-            image: true,
             type: "SMS",
             created_at: "2020/06/11",
             sent_at: "2020/06/18",
@@ -393,7 +359,6 @@ export default Vue.extend({
     },
     filterGenerate() {
       this.filter = {
-        image: this.image,
         type: this.type,
         status: this.status,
         dates: this.dates,
