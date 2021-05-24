@@ -10,9 +10,8 @@ import Gantt from "highcharts/modules/gantt";
 import HighchartsVue from "highcharts-vue";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
-import { numberToCash, toPersianString } from "@/common/utils/helpers";
-import { toPersianTime } from "@/common/utils/moment";
 import toast from "@/plugins/toast";
+import { methods } from "@/mixins/mixin";
 
 /* -------------------------------------------------------------------------- */
 /*                      START: Register Global Components                     */
@@ -35,19 +34,7 @@ requireComponent.keys().forEach((fileName) => {
 /* -------------------------------------------------------------------------- */
 /*                        START: Register Global Mixins                       */
 /* -------------------------------------------------------------------------- */
-Vue.mixin({
-  methods: {
-    numberToCash: function (number: number | string): string | 0 {
-      return numberToCash(number);
-    },
-    toPersianString: function (sentence: string | number): string {
-      return toPersianString(sentence);
-    },
-    toPersianTime: function (date: string): string {
-      return toPersianTime(date);
-    },
-  },
-});
+Vue.mixin(methods);
 /* ----------------------- END: Register Global Mixins ---------------------- */
 
 /* -------------------------------------------------------------------------- */

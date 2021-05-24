@@ -35,7 +35,7 @@
         </v-col>
       </v-row>
       <!-- Message Body -->
-      <Editor v-model="formContent" />
+      <editor :api-key="tinyApiKey()" :init="tinyInit()" v-model="formContent" />
 
       <!-- Submit Button -->
       <v-btn
@@ -185,6 +185,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import Editor from "@tinymce/tinymce-vue";
 
 export default Vue.extend({
   data(): Record<string, unknown> {
@@ -223,6 +224,9 @@ export default Vue.extend({
       console.log("create ticket data:", data);
       // use service for send data to server
     },
+  },
+  components: {
+    editor: Editor,
   },
 });
 </script>

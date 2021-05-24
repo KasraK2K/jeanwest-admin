@@ -45,7 +45,7 @@
             </v-col>
           </v-row>
           <!-- Message Body -->
-          <Editor v-model="formContent" />
+          <editor :api-key="tinyApiKey()" :init="tinyInit()" v-model="formContent" />
 
           <!-- Submit Button -->
           <v-btn large color="primary" class="mt-4" @click="submitForm"
@@ -73,6 +73,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import Editor from "@tinymce/tinymce-vue";
 
 export default Vue.extend({
   data(): {
@@ -129,6 +130,9 @@ export default Vue.extend({
     formCondition() {
       return this.imageUrl || this.formTitle || this.formContent;
     },
+  },
+  components: {
+    editor: Editor,
   },
 });
 </script>
