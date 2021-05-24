@@ -16,19 +16,19 @@ import { methods } from "@/mixins/mixin";
 /* -------------------------------------------------------------------------- */
 /*                      START: Register Global Components                     */
 /* -------------------------------------------------------------------------- */
-const requireComponent: __WebpackModuleApi.RequireContext = require.context(
-  "./components/Base",
-  true,
-  /[A-Z]\w+\.(vue|js|ts)$/
-);
-requireComponent.keys().forEach((fileName) => {
-  const componentConfig = requireComponent(fileName);
-  let componentName = fileName.split("/").pop();
-  if (typeof componentName === "string") {
-    componentName = upperFirst(camelCase(componentName.replace(/\.\w+$/, "")));
-    Vue.component(componentName, componentConfig.default || componentConfig);
-  }
-});
+// const requireComponent: __WebpackModuleApi.RequireContext = require.context(
+//   "./components/Base",
+//   true,
+//   /[A-Z]\w+\.(vue|js|ts)$/
+// );
+// requireComponent.keys().forEach((fileName) => {
+//   const componentConfig = requireComponent(fileName);
+//   let componentName = fileName.split("/").pop();
+//   if (typeof componentName === "string") {
+//     componentName = upperFirst(camelCase(componentName.replace(/\.\w+$/, "")));
+//     Vue.component(componentName, componentConfig.default || componentConfig);
+//   }
+// });
 /* --------------------- END: Register Global Components -------------------- */
 
 /* -------------------------------------------------------------------------- */

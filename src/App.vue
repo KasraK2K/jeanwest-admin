@@ -143,25 +143,3 @@ a {
   text-decoration: none;
 }
 </style>
-
-<style lang="scss" scoped>
-// a {
-//   display: flex;
-//   .v-list-item__title,
-//   i.v-icon {
-//     color: rgba(0, 0, 0, 0.6) !important;
-//   }
-//   &:hover {
-//     i.v-icon,
-//     .v-list-item__title {
-//       color: white !important;
-//       transition: none;
-//     }
-//   }
-// }
-// .v-list-item:not(.disable-hover) {
-//   &:hover {
-//     background-color: #9575cd;
-//   }
-// }
-</style>
