@@ -5,7 +5,7 @@ import AllDiscounts from "@/views/promotions/discounts/AllDiscounts.vue";
 import AllOffers from "@/views/promotions/offers/AllOffers.vue";
 
 /* -------------------------------- jeapoints ------------------------------- */
-import AllJeanPoints from "@/views/promotions/jeanpoints/AllJeanPoints.vue";
+import AllJeanPoints from "@/views/promotions/jeanspoints/AllJeanPoints.vue";
 
 /* --------------------------------- groups --------------------------------- */
 import AllGroups from "@/views/promotions/groups/AllGroups.vue";
