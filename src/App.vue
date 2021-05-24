@@ -139,6 +139,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+@import "@/assets/scss/vuetify.scss";
 a {
   text-decoration: none;
 }

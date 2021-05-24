@@ -1,0 +1,28 @@
+/* -------------------------------------------------------------------------- */
+/*                                    DARK                                    */
+/* -------------------------------------------------------------------------- */
+.theme--dark.v-application {
+  background-color: var(--v-background-base, #1a1a2f) !important;
+} // application background
+
+.theme--dark.v-card,
+.theme--dark.v-data-table,
+.theme--dark.v-toolbar.v-sheet:not(.v-application--wrap
+    > .theme--dark.v-toolbar.v-sheet) {
+  background-color: var(--v-background-base, #121225) !important;
+} // card, data-table, data-table header
+
+.theme--dark.menuable__content__active > .theme--dark.v-sheet {
+  background-color: var(--v-background-base, #0f0f24) !important;
+} // dropdown
+
+.theme--dark.v-navigation-drawer {
+  background-color: var(--v-background-base, #0f0f22) !important;
+} // sidebar
+
+/* -------------------------------------------------------------------------- */
+/*                                    LIGHT                                   */
+/* -------------------------------------------------------------------------- */
+.theme--light.v-application {
+  background-color: var(--v-background-base, white) !important;
+}
