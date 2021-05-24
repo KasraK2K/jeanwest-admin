@@ -1,24 +1,46 @@
 /* -------------------------------------------------------------------------- */
 /*                                    DARK                                    */
 /* -------------------------------------------------------------------------- */
+$dark-0: #12122c;
+$dark-1: #1a1a2f;
+$dark-2: #121225;
+$dark-3: #0f0f24;
+$dark-4: #0f0f22;
+
 .theme--dark.v-application {
-  background-color: var(--v-background-base, #1a1a2f) !important;
+  background-color: var(--v-background-base, $dark-1) !important;
 } // application background
 
 .theme--dark.v-card,
 .theme--dark.v-data-table,
 .theme--dark.v-toolbar.v-sheet:not(.v-application--wrap
     > .theme--dark.v-toolbar.v-sheet) {
-  background-color: var(--v-background-base, #121225) !important;
+  background-color: var(--v-background-base, $dark-2) !important;
 } // card, data-table, data-table header
 
+.theme--dark.v-data-table
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
+  background-color: var(--v-background-base, $dark-0) !important;
+} // data-table:hover
+
 .theme--dark.menuable__content__active > .theme--dark.v-sheet {
-  background-color: var(--v-background-base, #0f0f24) !important;
+  background-color: var(--v-background-base, $dark-3) !important;
 } // dropdown
 
 .theme--dark.v-navigation-drawer {
-  background-color: var(--v-background-base, #0f0f22) !important;
+  background-color: var(--v-background-base, $dark-4) !important;
 } // sidebar
+
+.v-picker--date.theme--dark > .v-picker__title {
+  background-color: var(--v-background-base, $dark-4) !important;
+} // date-picker header
+
+.theme--dark.v-picker__body {
+  background-color: var(--v-background-base, $dark-2) !important;
+} // date-picker body
 
 /* -------------------------------------------------------------------------- */
 /*                                    LIGHT                                   */
