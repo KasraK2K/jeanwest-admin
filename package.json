@@ -11,6 +11,8 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@sentry/tracing": "^6.4.1",
+    "@sentry/vue": "^6.4.1",
     "@tinymce/tinymce-vue": "^3.2.8",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
