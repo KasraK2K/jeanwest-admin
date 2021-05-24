@@ -39,6 +39,7 @@
                 :items="selectItems"
                 item-text="text"
                 item-value="value"
+                return-object
               >
                 <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
               </v-select>
@@ -128,7 +129,12 @@ export default Vue.extend({
       this.imageUrl = URL.createObjectURL(file);
     },
     formCondition() {
-      return this.imageUrl || this.formTitle || this.formContent;
+      return (
+        this.imageUrl ||
+        this.formTitle ||
+        this.formContent ||
+        this.formType.text
+      );
     },
   },
   components: {
