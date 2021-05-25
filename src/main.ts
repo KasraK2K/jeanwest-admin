@@ -11,6 +11,7 @@ import HighchartsVue from "highcharts-vue";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
 import toast from "@/plugins/toast";
+import math from "@/plugins/math";
 import { methods } from "@/mixins/mixin";
 import * as Sentry from "@sentry/vue";
 import { Integrations } from "@sentry/tracing";
@@ -64,8 +65,7 @@ if (process.env.NODE_ENV === "production") Vue.config.silent = true;
 /* -------------------------------------------------------------------------- */
 Stock(Highcharts);
 Gantt(Highcharts);
-Vue.use(HighchartsVue);
-Vue.use(toast);
+[HighchartsVue, toast, math].forEach((x) => Vue.use(x));
 /* -------------------------- END: Register Plugins ------------------------- */
 
 /* -------------------------------------------------------------------------- */

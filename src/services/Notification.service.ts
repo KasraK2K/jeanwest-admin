@@ -1,24 +1,20 @@
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
 
+const modulePath = "/notification";
+
 export default {
   /**
-   * @param {*} data: { phoneNumber: string }
+   * @param { Record<string, unknown> } filter
    */
   async getList(filter: Record<string, unknown>): Promise<AxiosResponse> {
-    return await apiClient("/notification/list", {
+    return await apiClient(`${modulePath}/list`, {
       method: "POST",
       data: filter,
     });
   },
 
-  async login(data: {
-    phoneNumber: string;
-    pin: string;
-  }): Promise<AxiosResponse> {
-    return await apiClient("/customerAuth", {
-      method: "POST",
-      data,
-    });
+  async findOne(id: string): Promise<AxiosResponse> {
+    return await apiClient.get(`${modulePath}/${id}`);
   },
 };
