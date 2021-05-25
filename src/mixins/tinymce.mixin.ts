@@ -22,7 +22,7 @@ export const tinyInit = function () {
     language: "fa",
     content_style:
       "\
-        body { font-family: IRANSansWeb; font-weight: 300; } \
+        body { font-family: IRANSansWeb; font-weight: 300; background-color: #12122c; } \
         h1, h2, h3, h4, h5, h6, input, textarea, span, p, div, .tox-button, button { font-family: IRANSansWeb !important; } \
         .tox-statusbar__branding { display: none } \
       ",

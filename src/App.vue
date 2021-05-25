@@ -149,4 +149,9 @@ export default Vue.extend({
 a {
   text-decoration: none;
 }
+.tox .tox-toolbar,
+.tox .tox-toolbar__overflow,
+.tox .tox-toolbar__primary {
+  background-color: #1a1a2f !important;
+} // tinymce toolbar color
 </style>
