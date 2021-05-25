@@ -4,6 +4,8 @@ export const tinyApiKey = function () {
 
 export const tinyInit = function () {
   return {
+    skin: "oxide-dark",
+    content_css: "dark",
     height: 300,
     menubar: false,
     statusbar: false,
