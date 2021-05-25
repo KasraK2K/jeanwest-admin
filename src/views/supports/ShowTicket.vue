@@ -18,15 +18,22 @@
 
         <v-col class="col-12 col-md-4">
           <v-select
-            :items="['در حال پیگیری', 'بسته', 'باز']"
+            :items="[
+              { text: 'بسته', value: 0 },
+              { text: 'باز', value: 1 },
+              { text: 'در حال پیگیری', value: 2 },
+            ]"
+            item-text="text"
+            item-value="value"
             label="وضعیت"
             v-model="formStatus"
+            return-object
           >
             <template v-slot:item="{ item, attrs, on }">
               <v-list-item v-bind="attrs" v-on="on">
                 <v-list-item-title
                   :id="attrs['aria-labelledby']"
-                  v-text="item"
+                  v-text="item.text"
                 ></v-list-item-title>
               </v-list-item>
             </template>
@@ -189,13 +196,16 @@ import Editor from "@tinymce/tinymce-vue";
 import { mapGetters } from "vuex";
 
 export default Vue.extend({
-  data(): Record<string, unknown> {
+  data(): {
+    [key: string]: unknown;
+    formStatus: { text: string | undefined; value: number | undefined };
+  } {
     const title = "تیتر سوال کاربر";
     return {
       title,
-      formHint: "",
-      formStatus: "",
-      formContent: "",
+      formHint: undefined,
+      formStatus: { text: undefined, value: undefined },
+      formContent: undefined,
       breadcrumbs: [
         {
           text: "صفحه اصلی",
@@ -218,9 +228,9 @@ export default Vue.extend({
   methods: {
     createTicket(): void {
       const data = {
-        formHint: this.formHint,
-        formStatus: this.formStatus,
-        formContent: this.formContent,
+        hint: this.formHint,
+        status: this.formStatus.value,
+        content: this.formContent,
       };
       console.log("create ticket data:", data);
       // use service for send data to server
