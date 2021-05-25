@@ -206,7 +206,7 @@
       </template>
 
       <template v-slot:[`item.code`]="{ item }">
-        <span :class="item.active ? 'teal--text' : 'pink--text'">
+        <span :class="item.active ? 'green--text' : 'pink--text'">
           {{ item.code }}
         </span>
       </template>

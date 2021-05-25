@@ -1,5 +1,6 @@
 /* -------------------------------- discount -------------------------------- */
 import AllDiscounts from "@/views/promotions/discounts/AllDiscounts.vue";
+import CreateDiscounts from "@/views/promotions/discounts/CreateDiscounts.vue";
 
 /* --------------------------------- offers --------------------------------- */
 import AllOffers from "@/views/promotions/offers/AllOffers.vue";
@@ -20,6 +21,14 @@ export const promotions = [
     component: AllDiscounts,
     meta: {
       title: "All Discounts",
+    },
+  },
+  {
+    path: "/promotions/discount/create",
+    name: "CreateDiscounts",
+    component: CreateDiscounts,
+    meta: {
+      title: "Create Discount",
     },
   },
 

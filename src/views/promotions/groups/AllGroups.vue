@@ -141,13 +141,13 @@
       <template v-slot:[`item.code`]="{ item }">
         <v-tooltip
           top
-          :color="item.active ? 'teal' : 'pink'"
+          :color="item.active ? 'green' : 'pink'"
           :open-on-hover="false"
           :open-on-click="true"
         >
           <template v-slot:activator="{ on, attrs }">
             <span
-              :class="item.active ? 'teal--text' : 'pink--text'"
+              :class="item.active ? 'green--text' : 'pink--text'"
               v-bind="attrs"
               v-on="on"
             >

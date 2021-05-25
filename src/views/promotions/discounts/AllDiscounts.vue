@@ -145,7 +145,7 @@
                 <div class="d-flex justify-start align-center">
                   <h1 class="blue--text">{{ title }}</h1>
                   <v-divider vertical class="mx-4"></v-divider>
-                  <router-link to="/createDiscount">
+                  <router-link :to="{ name: 'CreateDiscounts' }">
                     <v-icon color="blue" large>mdi-plus-circle</v-icon>
                   </router-link>
                 </div>
@@ -168,7 +168,7 @@
       </template>
 
       <template v-slot:[`item.code`]="{ item }">
-        <span :class="item.active ? 'green--text' : 'red--text'">
+        <span :class="item.active ? 'green--text' : 'pink--text'">
           {{ item.code }}
         </span>
       </template>
