@@ -51,7 +51,7 @@
     <div class="d-flex flex-column" id="messages">
       <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown">
         <!-- user question -->
-        <v-timeline-item color="indigo" fill-dot right>
+        <v-timeline-item :color="customerColor()" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -59,9 +59,9 @@
               />
             </v-avatar>
           </template>
-          <v-card color="indigo" dark elevation="3" outlined rounded>
+          <v-card :color="customerColor()" elevation="3" outlined rounded>
             <v-card-title>حسن حسنی کاربر</v-card-title>
-            <v-card-text class="white text--primary py-4">
+            <v-card-text class="py-4">
               <p class="mb-0">
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
                 استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
@@ -73,7 +73,7 @@
         </v-timeline-item>
 
         <!-- user question -->
-        <v-timeline-item color="indigo" fill-dot right>
+        <v-timeline-item :color="customerColor()" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -81,9 +81,9 @@
               />
             </v-avatar>
           </template>
-          <v-card color="indigo" dark elevation="3" outlined rounded>
+          <v-card :color="customerColor()" elevation="3" outlined rounded>
             <v-card-title>حسن حسنی کاربر</v-card-title>
-            <v-card-text class="white text--primary py-4">
+            <v-card-text class="py-4">
               <p class="mb-0">
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
                 استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
@@ -102,7 +102,7 @@
         </v-timeline-item>
 
         <!-- admin answere -->
-        <v-timeline-item color="teal" fill-dot left>
+        <v-timeline-item :color="adminColor()" fill-dot left>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -110,7 +110,7 @@
               />
             </v-avatar>
           </template>
-          <v-card color="teal" dark elevation="3" outlined rounded>
+          <v-card :color="adminColor()" elevation="3" outlined rounded>
             <div class="d-flex align-center justify-space-between">
               <v-card-title class="pr-4">کسری کرمی ادمین</v-card-title>
               <router-link
@@ -121,7 +121,7 @@
                 </v-icon>
               </router-link>
             </div>
-            <v-card-text class="white text--primary py-4">
+            <v-card-text class="py-4">
               <p class="mb-0">
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
                 استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
@@ -138,11 +138,11 @@
               <v-alert
                 v-if="true"
                 color="#2A3B4D"
-                dark
                 icon="mdi-notebook-plus"
                 dense
                 border="left"
                 class="font-italic font-weight-thin mt-2 mb-0"
+                dark
               >
                 خیلی حرف میزنه حال نمی‌کنم باش
               </v-alert>
@@ -151,7 +151,7 @@
         </v-timeline-item>
 
         <!-- user question -->
-        <v-timeline-item color="indigo" fill-dot right>
+        <v-timeline-item :color="customerColor()" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -159,9 +159,9 @@
               />
             </v-avatar>
           </template>
-          <v-card color="indigo" dark elevation="3" outlined rounded>
+          <v-card :color="customerColor()" elevation="3" outlined rounded>
             <v-card-title>حسن حسنی کاربر</v-card-title>
-            <v-card-text class="white text--primary py-4">
+            <v-card-text class="py-4">
               <p class="mb-0">
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
                 استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
@@ -186,6 +186,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
+import { mapGetters } from "vuex";
 
 export default Vue.extend({
   data(): Record<string, unknown> {
@@ -224,9 +225,23 @@ export default Vue.extend({
       console.log("create ticket data:", data);
       // use service for send data to server
     },
+    customerColor(): string {
+      if (this.theme === "dark") return "indigo";
+      else return "indigo lighten-5";
+    },
+    adminColor(): string {
+      if (this.theme === "dark") return "teal";
+      else return "teal lighten-4";
+    },
   },
   components: {
     editor: Editor,
+  },
+  computed: {
+    theme() {
+      return this.$store.state.themeName;
+    },
+    ...mapGetters(["themeName"]),
   },
 });
 </script>

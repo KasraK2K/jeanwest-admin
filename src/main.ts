@@ -18,13 +18,13 @@ import { Integrations } from "@sentry/tracing";
 /* -------------------------------------------------------------------------- */
 /*                           START: Register Sentry                           */
 /* -------------------------------------------------------------------------- */
-Sentry.init({
-  Vue,
-  dsn:
-    "https://de4858be9d054b10885ffc7d8c1c7d38@o496319.ingest.sentry.io/5570496",
-  integrations: [new Integrations.BrowserTracing()],
-  tracesSampleRate: 1.0,
-});
+// Sentry.init({
+//   Vue,
+//   dsn:
+//     "https://de4858be9d054b10885ffc7d8c1c7d38@o496319.ingest.sentry.io/5570496",
+//   integrations: [new Integrations.BrowserTracing()],
+//   tracesSampleRate: 1.0,
+// });
 /* -------------------------- END: Register Sentry -------------------------- */
 
 /* -------------------------------------------------------------------------- */

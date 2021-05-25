@@ -134,6 +134,12 @@ export default Vue.extend({
   },
   created(): void {
     this.checkLogin();
+    this.$store.dispatch("setTheme", "dark");
+  },
+  updated() {
+    this.$vuetify.theme["dark"]
+      ? this.$store.dispatch("setTheme", "dark")
+      : this.$store.dispatch("setTheme", "light");
   },
 });
 </script>
