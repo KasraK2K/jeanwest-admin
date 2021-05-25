@@ -27,5 +27,6 @@ export default new Vuex.Store({
   modules: {},
   getters: {
     tokenGetter: (state): string => state.token,
+    themeGetter: (state): string => state.themeName,
   }, // if we use multiple time some state like this.$store.categories.length whrite here
 });

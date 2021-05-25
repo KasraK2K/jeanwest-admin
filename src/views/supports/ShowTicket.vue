@@ -226,22 +226,17 @@ export default Vue.extend({
       // use service for send data to server
     },
     customerColor(): string {
-      if (this.theme === "dark") return "indigo";
-      else return "indigo lighten-5";
+      return this.themeGetter === "dark" ? "indigo" : "indigo lighten-5";
     },
     adminColor(): string {
-      if (this.theme === "dark") return "teal";
-      else return "teal lighten-4";
+      return this.themeGetter === "dark" ? "teal" : "teal lighten-4";
     },
   },
   components: {
     editor: Editor,
   },
   computed: {
-    theme() {
-      return this.$store.state.themeName;
-    },
-    ...mapGetters(["themeName"]),
+    ...mapGetters(["themeGetter"]),
   },
 });
 </script>
