@@ -128,7 +128,6 @@ export default Vue.extend({
   },
   methods: {
     findOne(id: string): void {
-      // FIXME
       NotificationService.findOne(id).then((response) => {
         const notification: INotifications = response.data.data;
         this.notification = notification;
@@ -152,6 +151,7 @@ export default Vue.extend({
       });
     },
     getSrcFromFile(file: FileReader): void {
+      // FIXME: upload image and set this.image with uploaded image response
       this.imageUrl = URL.createObjectURL(file);
     },
     formCondition(): boolean {
