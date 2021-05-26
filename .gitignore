@@ -25,5 +25,4 @@ pnpm-debug.log*
 *.sw?
 package-lock.json
 /package-lock.json
-/.vscode/settings.json
 yarn.lock

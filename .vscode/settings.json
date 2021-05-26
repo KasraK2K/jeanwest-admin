@@ -1,0 +1,12 @@
+{
+    "rest-client.environmentVariables": {
+
+        "$shared": {
+            "protocol" : "http",
+            "hostname" : "10.0.1.111",
+            "port" : "8000",
+            "api-prefix" : "api",
+            "api-version" : "v1",
+        }
+    }
+}
