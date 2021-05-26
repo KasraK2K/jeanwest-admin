@@ -276,7 +276,7 @@ export default Vue.extend({
         this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
         this.items = data.result;
       });
-      this.loading = false;
+      setTimeout(() => (this.loading = false), 500);
     },
     filterGenerate() {
       this.filter = {
