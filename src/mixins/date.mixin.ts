@@ -6,10 +6,10 @@ export const toPersianTime = (
 ): string =>
   moment(date)
     .locale("fa")
-    .format(dateFormat ? dateFormat : "D MMM YYYY ساعت H:s");
+    .format(dateFormat ? dateFormat : "YYYY/MM/DD - H:mm");
 
 export const toGregorian = async (date: string): Promise<string> =>
   await moment
-    .from(date, "fa", "YYYY/M/D HH:mm")
-    .format("YYYY-M-D HH:mm:ss")
+    .from(date, "fa", "YYYY/MM/DD HH:mm")
+    .format("YYYY/MM/DD - H:mm")
     .toString();
