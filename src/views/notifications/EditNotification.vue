@@ -39,6 +39,7 @@
                 :items="selectItems"
                 item-text="text"
                 item-value="value"
+                disabled
                 return-object
               >
                 <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
@@ -46,7 +47,11 @@
             </v-col>
           </v-row>
           <!-- Message Body -->
-          <editor :api-key="tinyApiKey()" :init="tinyInit()" v-model="formContent" />
+          <editor
+            :api-key="tinyApiKey()"
+            :init="tinyInit()"
+            v-model="formContent"
+          />
 
           <!-- Submit Button -->
           <v-btn large color="primary" class="mt-4" @click="submitData"
@@ -75,6 +80,8 @@
 <script lang="ts">
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
+import NotificationService from "@/services/Notification.service";
+import { INotifications } from "@/interfaces/notification.interface";
 
 export default Vue.extend({
   props: {
@@ -83,10 +90,12 @@ export default Vue.extend({
   data(): {
     formType: { text: string; value: string };
     [key: string]: unknown;
+    notification?: INotifications;
   } {
-    const title = "ویرایش اعلان نام اعلان";
+    const title = "ویرایش اعلان ";
     return {
       title,
+      notification: undefined,
       formTitle: "",
       formContent: "",
       formType: { text: "", value: "" },
@@ -118,15 +127,29 @@ export default Vue.extend({
     };
   },
   methods: {
+    findOne(id: string): void {
+      // FIXME
+      NotificationService.findOne(id).then((response) => {
+        const notification: INotifications = response.data.data;
+        this.notification = notification;
+        this.title += notification.title;
+        this.formTitle = notification.title;
+        this.formContent = notification.body;
+        this.imageUrl = notification.image;
+      });
+    },
     submitData(): void {
       const data = {
-        formTitle: this.formTitle,
-        formContent: this.formContent,
-        formType: this.formType && this.formType.value,
+        title: this.formTitle,
+        body: this.formContent,
+        // type: this.formType && this.formType.value,
+        image: this.imageUrl,
       };
-      console.log("submited", data);
       // use service to upload image 'this.formImage'
-      // use service for send data to server
+      NotificationService.edit(data, this.id).then((response) => {
+        Vue.prototype.$toast("success", "با موفقیت آپدیت شد.");
+        this.$router.go(-1);
+      });
     },
     getSrcFromFile(file: FileReader): void {
       this.imageUrl = URL.createObjectURL(file);
@@ -142,6 +165,9 @@ export default Vue.extend({
   },
   components: {
     editor: Editor,
+  },
+  mounted() {
+    this.findOne(this.id);
   },
 });
 </script>

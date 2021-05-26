@@ -39,6 +39,7 @@
                 :items="selectItems"
                 item-text="text"
                 item-value="value"
+                disabled
                 return-object
               >
                 <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
@@ -46,7 +47,11 @@
             </v-col>
           </v-row>
           <!-- Message Body -->
-          <editor :api-key="tinyApiKey()" :init="tinyInit()" v-model="formContent" />
+          <editor
+            :api-key="tinyApiKey()"
+            :init="tinyInit()"
+            v-model="formContent"
+          />
 
           <!-- Submit Button -->
           <v-btn large color="primary" class="mt-4" @click="submitForm"
@@ -75,6 +80,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
+import NotificationService from "@/services/Notification.service";
 
 export default Vue.extend({
   data(): {
@@ -117,11 +123,15 @@ export default Vue.extend({
   methods: {
     submitForm() {
       const data = {
-        formTitle: this.formTitle,
-        formContent: this.formContent,
-        formType: this.formType.value,
+        title: this.formTitle,
+        body: this.formContent,
+        // formType: this.formType.value,
+        image: this.imageUrl,
       };
-      console.log("submited", data);
+      NotificationService.create(data).then((response) => {
+        Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
+        this.$router.go(-1);
+      });
       // use service to upload image 'this.formImage'
       // use service for send data to server
     },
