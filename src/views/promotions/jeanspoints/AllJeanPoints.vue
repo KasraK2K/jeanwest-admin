@@ -38,13 +38,14 @@
             @change="filterGenerate()"
             outlined
             hide-details="auto"
+            disabled
           ></v-text-field>
         </v-col>
 
         <v-col class="col-12 col-md-3">
           <v-text-field
-            label="محدودیت"
-            placeholder="لطفا محدودیت را وارد کنید."
+            label="محدودیت در تعداد "
+            placeholder="لطفا محدودیت در تعداد را وارد کنید."
             v-model="filterLimit"
             type="number"
             @change="filterGenerate()"
@@ -55,8 +56,8 @@
 
         <v-col class="col-12 col-md-3">
           <v-text-field
-            label="حداقل خرید"
-            placeholder="لطفا حداقل خرید را وارد کنید."
+            label="حداقل مبلغ خرید"
+            placeholder="لطفا حداقل مبلغ خرید را وارد کنید."
             v-model="minTotal"
             type="number"
             @change="filterGenerate()"
@@ -139,8 +140,8 @@
         { text: 'کد', value: 'code' },
         { text: 'نام', value: 'name' },
         { text: 'نام گروه', value: 'groupName' },
-        { text: 'محدودیت', value: 'countLimit' },
-        { text: 'حداقل خرید', value: 'minTotal' },
+        { text: 'محدودیت در تعداد ', value: 'countLimit' },
+        { text: 'حداقل مبلغ خرید', value: 'minTotal' },
         { text: 'اعمال همزمان', value: 'singularity' },
         { text: 'زمان شروع', value: 'start_at' },
         { text: 'زمان پایان', value: 'end_at' },
@@ -287,7 +288,13 @@ export default Vue.extend({
     page: number;
     pageCount: number;
     limit: number;
-    filter: Record<string, unknown>;
+    filter: {
+      option: {
+        page: { eq: number };
+        limit: { eq: number };
+      };
+      filter?: Record<string, unknown>;
+    };
   } {
     const title = "لیست امتیازات";
     return {
@@ -356,16 +363,28 @@ export default Vue.extend({
           page: { eq: this.page },
           limit: { eq: this.limit },
         },
-
-        // code: this.code,
-        // name: this.name,
-        // groupName: this.groupName,
-        // countLimit: this.filterLimit,
-        // minTotal: this.minTotal,
-        // singularity: this.singularity,
-        // active: this.active,
+        filter: {
+          code: { eq: this.code },
+          name: { eq: this.name },
+          groupName: { eq: this.groupName },
+          countLimit: { eq: this.countLimit },
+          minTotal: { eq: this.minTotal },
+          singularity: { eq: this.singularity },
+          active: { eq: this.active },
+        },
         // dates: this.dates,
       };
+      const filterKeys =
+        this.filter && this.filter.filter && Object.keys(this.filter.filter);
+      // delete empty keys
+      if (filterKeys && filterKeys.length) {
+        for (const key of filterKeys)
+          if (this.filter.filter && this.filter.filter[key] && !this[key])
+            delete this.filter.filter[key];
+      }
+      // delete empty filter
+      if (!this.filter.filter || !Object.keys(this.filter.filter).length)
+        delete this.filter.filter;
     },
     clearDateFilter(): void {
       this.dates = undefined;
