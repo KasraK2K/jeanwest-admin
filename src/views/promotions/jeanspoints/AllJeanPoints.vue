@@ -8,7 +8,7 @@
     <v-card class="mb-8" elevation="1" outlined>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
-        <v-col class="col-12 col-md-4">
+        <v-col class="col-12 col-md-3">
           <v-text-field
             label="کد"
             placeholder="لطفا کد امتیاز را وارد کنید."
@@ -19,7 +19,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col class="col-12 col-md-3">
           <v-text-field
             label="نام"
             placeholder="لطفا نام امتیاز را وارد کنید."
@@ -30,29 +30,18 @@
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
-          <v-text-field
-            label="نام در ای‌آر‌پی"
-            placeholder="لطفا نام امتیاز در ای‌آر‌پی را وارد کنید."
-            v-model="erp_name"
-            @change="filterGenerate()"
-            outlined
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col class="col-12 col-md-4">
+        <v-col class="col-12 col-md-3">
           <v-text-field
             label="نام گروه"
             placeholder="لطفا نام گروه را وارد کنید."
-            v-model="group_name"
+            v-model="groupName"
             @change="filterGenerate()"
             outlined
             hide-details="auto"
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col class="col-12 col-md-3">
           <v-text-field
             label="محدودیت"
             placeholder="لطفا محدودیت را وارد کنید."
@@ -64,11 +53,11 @@
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col class="col-12 col-md-3">
           <v-text-field
             label="حداقل خرید"
             placeholder="لطفا حداقل خرید را وارد کنید."
-            v-model="min_total"
+            v-model="minTotal"
             type="number"
             @change="filterGenerate()"
             outlined
@@ -76,7 +65,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col class="col-12 col-md-3">
           <v-select
             label="اعمال همزمان"
             v-model="singularity"
@@ -92,7 +81,7 @@
           ></v-select>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col class="col-12 col-md-3">
           <v-select
             label="وضعیت"
             v-model="active"
@@ -108,7 +97,7 @@
           ></v-select>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col class="col-12 col-md-3">
           <v-menu
             v-model="datesMenu"
             :close-on-content-click="false"
@@ -149,10 +138,9 @@
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'کد', value: 'code' },
         { text: 'نام', value: 'name' },
-        { text: 'نام در ای‌آر‌پی', value: 'erp_name' },
-        { text: 'نام گروه', value: 'group_name' },
-        { text: 'محدودیت', value: 'limit' },
-        { text: 'حداقل خرید', value: 'min_total' },
+        { text: 'نام گروه', value: 'groupName' },
+        { text: 'محدودیت', value: 'countLimit' },
+        { text: 'حداقل خرید', value: 'minTotal' },
         { text: 'اعمال همزمان', value: 'singularity' },
         { text: 'زمان شروع', value: 'start_at' },
         { text: 'زمان پایان', value: 'end_at' },
@@ -173,7 +161,6 @@
       :page.sync="page"
       :items-per-page="limit"
       hide-default-footer
-      @page-count="pageCount = $event"
     >
       <template v-slot:top>
         <v-row>
@@ -207,12 +194,14 @@
         </span>
       </template>
 
-      <template v-slot:[`item.limit`]="{ item }">
-        {{ toPersianString(item.limit) }}
+      <template v-slot:[`item.countLimit`]="{ item }">
+        {{
+          item.countLimit === -1 ? "ندارد" : toPersianString(item.countLimit)
+        }}
       </template>
 
-      <template v-slot:[`item.min_total`]="{ item }">
-        {{ toPersianString(numberToCash(item.min_total)) }}
+      <template v-slot:[`item.minTotal`]="{ item }">
+        {{ toPersianString(numberToCash(item.minTotal)) }}
       </template>
 
       <template v-slot:[`item.singularity`]="{ item }">
@@ -269,8 +258,8 @@
       <v-pagination
         v-model="page"
         :length="pageCount"
-        :total-visible="10"
-        @input="getList(page, limit, filter)"
+        :total-visible="limit"
+        @input="changePage"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -290,6 +279,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import PromotionService from "@/services/Promotion.service";
 
 export default Vue.extend({
   data(): {
@@ -297,6 +287,7 @@ export default Vue.extend({
     page: number;
     pageCount: number;
     limit: number;
+    filter: Record<string, unknown>;
   } {
     const title = "لیست امتیازات";
     return {
@@ -321,117 +312,72 @@ export default Vue.extend({
       // filter
       code: undefined,
       name: undefined,
-      erp_name: undefined,
-      group_name: undefined,
+      groupName: undefined,
       filterLimit: undefined,
-      min_total: undefined,
+      minTotal: undefined,
       singularity: undefined,
       active: undefined,
       dates: undefined,
       datesMenu: false,
-      filter: {},
+      filter: {
+        option: {
+          page: { eq: 1 },
+          limit: { eq: 10 },
+        },
+      },
     };
   },
   watch: {
     limit() {
       this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+      this.getList();
     },
     filter() {
-      this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+      this.getList();
     },
   },
   methods: {
-    getList(page: number, limit: number, filter?: unknown): void {
-      this.loading = true;
-      setTimeout(() => {
-        this.items = [
-          {
-            no: 1,
-            code: "Code01",
-            name: "نام امتیاز ۱",
-            erp_name: "نام در ای‌آر‌پی ۱",
-            group_name: "نام گروه ۱",
-            limit: 3,
-            min_total: "300000",
-            singularity: true,
-            active: true,
-            start_at: "2021-04-27T14:20:22.783Z",
-            end_at: "2021-04-28T14:20:23.783Z",
-          },
-          {
-            no: 2,
-            code: "Code02",
-            name: "نام امتیاز ۲",
-            erp_name: "نام در ای‌آر‌پی ۲",
-            group_name: "نام گروه ۲",
-            limit: 4,
-            min_total: "450000",
-            singularity: false,
-            active: true,
-            start_at: "2021-04-27T14:20:22.783Z",
-            end_at: "2021-04-28T14:20:23.783Z",
-          },
-          {
-            no: 3,
-            code: "Code03",
-            name: "نام امتیاز ۳",
-            erp_name: "نام در ای‌آر‌پی ۳",
-            group_name: "نام گروه ۳",
-            limit: 8,
-            min_total: "3640000",
-            singularity: true,
-            active: false,
-            start_at: "2021-04-27T14:20:22.783Z",
-            end_at: "2021-04-28T14:20:23.783Z",
-          },
-          {
-            no: 4,
-            code: "Code04",
-            name: "نام امتیاز ۴",
-            erp_name: "نام در ای‌آر‌پی ۴",
-            group_name: "نام گروه ۴",
-            limit: 2,
-            min_total: "130000",
-            singularity: false,
-            active: false,
-            start_at: "2021-04-27T14:20:22.783Z",
-            end_at: "2021-04-28T14:20:23.783Z",
-          },
-        ];
-        this.loading = false;
-      }, 500);
-      console.log(
-        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
-          filter
-        )} }`
-      );
+    changePage(page: number) {
+      this.page = page;
+      this.filterGenerate();
     },
-    filterGenerate(): void {
+    getList(): void {
+      this.loading = true;
+      PromotionService.getPointList((this as any).filter).then((response) => {
+        const data = response.data.data;
+        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+        this.items = data.result;
+      });
+      setTimeout(() => (this.loading = false), 500);
+    },
+    filterGenerate() {
       this.filter = {
-        code: this.code,
-        name: this.name,
-        erp_name: this.erp_name,
-        group_name: this.group_name,
-        limit: this.filterLimit,
-        min_total: this.min_total,
-        singularity: this.singularity,
-        active: this.active,
-        dates: this.dates,
+        option: {
+          page: { eq: this.page },
+          limit: { eq: this.limit },
+        },
+
+        // code: this.code,
+        // name: this.name,
+        // groupName: this.groupName,
+        // countLimit: this.filterLimit,
+        // minTotal: this.minTotal,
+        // singularity: this.singularity,
+        // active: this.active,
+        // dates: this.dates,
       };
     },
     clearDateFilter(): void {
       this.dates = undefined;
       this.filterGenerate();
     },
-    deleteNotification(id: string): void {
+    deletePoint(id: string): void {
       console.log("delete id:", id);
       // use service for delete notification with id
     },
   },
   mounted(): void {
-    this.getList(this.page, this.limit);
+    this.getList();
   },
 });
 </script>

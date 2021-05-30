@@ -290,7 +290,7 @@ export default Vue.extend({
         // dates: this.dates,
       };
     },
-    clearDateFilter() {
+    clearDateFilter(): void {
       this.dates = undefined;
       this.filterGenerate();
     },
