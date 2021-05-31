@@ -203,6 +203,11 @@
         </span>
       </template>
 
+      <!-- <template v-slot:[`item.groupName`]="{ item }">
+        <v-icon>mdi-information-outline</v-icon>
+        {{ item.groupName }}
+      </template> -->
+
       <template v-slot:[`item.countLimit`]="{ item }">
         {{
           item.countLimit === -1 ? "ندارد" : toPersianString(item.countLimit)
@@ -268,7 +273,7 @@
         v-model="page"
         :length="pageCount"
         :total-visible="limit"
-        @input="changePage"
+        @input="page = $event"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -294,6 +299,7 @@ import { IPagination } from "@/interfaces/others/pagination.interface";
 export default Vue.extend({
   data(): {
     [key: string]: unknown;
+    items: Record<string, unknown>[];
     page: number;
     pageCount: number;
     limit: number;
@@ -317,8 +323,8 @@ export default Vue.extend({
       search: "",
       // pagination
       page: 1,
-      pageCount: 1,
       limit: 10,
+      pageCount: 1,
       // filter
       code: undefined,
       name: undefined,
@@ -338,20 +344,23 @@ export default Vue.extend({
     };
   },
   watch: {
-    limit() {
+    limit(): void {
       this.page = 1;
+      this.pagination.option.limit = { eq: this.limit };
+      this.getList();
+    },
+    page(): void {
+      this.pagination.option.page = { eq: this.page };
       this.getList();
     },
     pagination(): void {
-      this.page = 1;
       this.getList();
+    },
+    items(): void {
+      this.loading = false;
     },
   },
   methods: {
-    changePage(page: number) {
-      this.page = page;
-      this.paginateGenerator();
-    },
     getList(): void {
       this.loading = true;
       PromotionService.getPointList((this as any).pagination).then(
@@ -361,9 +370,9 @@ export default Vue.extend({
           this.items = data.result;
         }
       );
-      setTimeout(() => (this.loading = false), 500);
     },
     paginateGenerator() {
+      this.page = 1;
       this.pagination = {
         option: {
           page: { eq: this.page },

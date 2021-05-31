@@ -6,7 +6,7 @@ export default {
   }): void {
     Vue.prototype.$PageCount = (total: number, limit: number): number => {
       const remainer = total % limit;
-      const page = Math.round(Math.floor(total / limit));
+      const page = Math.floor(total / limit);
       return remainer > 0 ? page + 1 : page;
     };
   },
