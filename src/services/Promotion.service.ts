@@ -17,6 +17,10 @@ export default {
     });
   },
 
+  async findOnePoint(code: string): Promise<AxiosResponse> {
+    return await apiClient.get(`${modulePath}/point/find?code=${code}`);
+  },
+
   /* -------------------------------------------------------------------------- */
   /*                                    Group                                   */
   /* -------------------------------------------------------------------------- */

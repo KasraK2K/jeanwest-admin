@@ -203,10 +203,21 @@
         </span>
       </template>
 
-      <!-- <template v-slot:[`item.groupName`]="{ item }">
-        <v-icon>mdi-information-outline</v-icon>
-        {{ item.groupName }}
-      </template> -->
+      <template v-slot:[`item.groupName`]="{ item }">
+        <v-tooltip top :open-on-hover="true" color="blue">
+          <template v-slot:activator="{ on, attrs }">
+            <span v-bind="attrs" v-on="on">
+              <v-icon
+                class="blue--text"
+                @mouseover="setGroupData(item.code)"
+                @mouseleave="groupDataName = undefined"
+                >mdi-information-outline</v-icon
+              >
+            </span>
+          </template>
+          <span>{{ groupDataName }}</span>
+        </v-tooltip>
+      </template>
 
       <template v-slot:[`item.countLimit`]="{ item }">
         {{
@@ -341,6 +352,7 @@ export default Vue.extend({
           limit: { eq: 10 },
         },
       },
+      groupDataName: undefined,
     };
   },
   watch: {
@@ -413,6 +425,12 @@ export default Vue.extend({
     clearDateFilter(): void {
       this.dates = undefined;
       this.paginateGenerator();
+    },
+    setGroupData(code: string) {
+      PromotionService.findOnePoint(code).then(
+        (response) =>
+          (this.groupDataName = response.data.data.promotionGroup.name)
+      );
     },
     deletePoint(id: string): void {
       console.log("delete id:", id);
