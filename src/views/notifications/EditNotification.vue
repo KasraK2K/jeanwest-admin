@@ -81,7 +81,7 @@
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import NotificationService from "@/services/Notification.service";
-import { INotifications } from "@/interfaces/notification.interface";
+import { INotifications } from "@/interfaces/entities/notification.interface";
 
 export default Vue.extend({
   props: {

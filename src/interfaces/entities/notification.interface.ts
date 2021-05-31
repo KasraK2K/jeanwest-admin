@@ -1,4 +1,4 @@
-import { Base } from "@/interfaces/base.interface";
+import { Base } from "@/interfaces/entities/base.interface";
 
 export interface INotifications extends Base {
   title: string;

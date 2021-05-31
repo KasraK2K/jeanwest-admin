@@ -82,7 +82,7 @@ Vue.config.warnHandler = function (msg, vm, trace) {
   console.log("Warning Handler:", msg);
   // FIXME: DELETE THIS CONDITION
   if (vm && trace) {
-    console.log();
+    console.log(trace);
   }
 };
 /* ----------------------- END: Error/Warning Handling ---------------------- */

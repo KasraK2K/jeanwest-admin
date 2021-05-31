@@ -13,9 +13,10 @@
             label="کد"
             placeholder="لطفا کد امتیاز را وارد کنید."
             v-model="code"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
@@ -24,9 +25,10 @@
             label="نام"
             placeholder="لطفا نام امتیاز را وارد کنید."
             v-model="name"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
@@ -35,9 +37,10 @@
             label="نام گروه"
             placeholder="لطفا نام گروه را وارد کنید."
             v-model="groupName"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
             disabled
           ></v-text-field>
         </v-col>
@@ -48,9 +51,10 @@
             placeholder="لطفا محدودیت در تعداد را وارد کنید."
             v-model="countLimit"
             type="number"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
@@ -60,9 +64,10 @@
             placeholder="لطفا حداقل مبلغ خرید را وارد کنید."
             v-model="minTotal"
             type="number"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
@@ -76,9 +81,10 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-autocomplete>
         </v-col>
 
@@ -92,9 +98,10 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-autocomplete>
         </v-col>
 
@@ -118,12 +125,13 @@
                 v-on="on"
                 @click:clear="clearDateFilter()"
                 outlined
+                disabled
               ></v-text-field>
             </template>
             <v-date-picker
               v-model="dates"
               range
-              @change="filterGenerate()"
+              @change="paginateGenerator()"
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -281,6 +289,7 @@
 <script lang="ts">
 import Vue from "vue";
 import PromotionService from "@/services/Promotion.service";
+import { IPagination } from "@/interfaces/others/pagination.interface";
 
 export default Vue.extend({
   data(): {
@@ -288,13 +297,7 @@ export default Vue.extend({
     page: number;
     pageCount: number;
     limit: number;
-    filter: {
-      option: {
-        page: { eq: number };
-        limit: { eq: number };
-      };
-      filter?: Record<string, unknown>;
-    };
+    pagination: IPagination;
   } {
     const title = "لیست امتیازات";
     return {
@@ -320,12 +323,13 @@ export default Vue.extend({
       code: undefined,
       name: undefined,
       groupName: undefined,
+      countLimit: undefined,
       minTotal: undefined,
       singularity: undefined,
       active: undefined,
       dates: undefined,
       datesMenu: false,
-      filter: {
+      pagination: {
         option: {
           page: { eq: 1 },
           limit: { eq: 10 },
@@ -338,26 +342,29 @@ export default Vue.extend({
       this.page = 1;
       this.getList();
     },
-    filter() {
+    pagination(): void {
+      this.page = 1;
       this.getList();
     },
   },
   methods: {
     changePage(page: number) {
       this.page = page;
-      this.filterGenerate();
+      this.paginateGenerator();
     },
     getList(): void {
       this.loading = true;
-      PromotionService.getPointList((this as any).filter).then((response) => {
-        const data = response.data.data;
-        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-        this.items = data.result;
-      });
+      PromotionService.getPointList((this as any).pagination).then(
+        (response) => {
+          const data = response.data.data;
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+        }
+      );
       setTimeout(() => (this.loading = false), 500);
     },
-    filterGenerate() {
-      this.filter = {
+    paginateGenerator() {
+      this.pagination = {
         option: {
           page: { eq: this.page },
           limit: { eq: this.limit },
@@ -374,20 +381,29 @@ export default Vue.extend({
         // dates: this.dates,
       };
       const filterKeys =
-        this.filter && this.filter.filter && Object.keys(this.filter.filter);
+        this.pagination &&
+        this.pagination.filter &&
+        Object.keys(this.pagination.filter);
       // delete empty keys
       if (filterKeys && filterKeys.length) {
         for (const key of filterKeys)
-          if (this.filter.filter && this.filter.filter[key] && !this[key])
-            delete this.filter.filter[key];
+          if (
+            this.pagination.filter &&
+            this.pagination.filter[key] &&
+            (this[key] === undefined || this[key] === null)
+          )
+            delete this.pagination.filter[key];
       }
       // delete empty filter
-      if (!this.filter.filter || !Object.keys(this.filter.filter).length)
-        delete this.filter.filter;
+      if (
+        !this.pagination.filter ||
+        !Object.keys(this.pagination.filter).length
+      )
+        delete this.pagination.filter;
     },
     clearDateFilter(): void {
       this.dates = undefined;
-      this.filterGenerate();
+      this.paginateGenerator();
     },
     deletePoint(id: string): void {
       console.log("delete id:", id);

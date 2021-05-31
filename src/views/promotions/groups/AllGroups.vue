@@ -13,9 +13,10 @@
             label="کد"
             placeholder="لطفا کد پیشنهاد را وارد کنید."
             v-model="code"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
@@ -24,9 +25,10 @@
             label="نام"
             placeholder="لطفا نام پیشنهاد را وارد کنید."
             v-model="name"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
@@ -40,9 +42,10 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-autocomplete>
         </v-col>
 
@@ -66,12 +69,13 @@
                 v-on="on"
                 @click:clear="clearDateFilter()"
                 outlined
+                disabled
               ></v-text-field>
             </template>
             <v-date-picker
               v-model="dates"
               range
-              @change="filterGenerate()"
+              @change="paginateGenerator()"
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -154,7 +158,7 @@
               {{ item.code }}
             </span>
           </template>
-          <span>{{ item.filter }}</span>
+          <span>{{ item.target }}</span>
         </v-tooltip>
       </template>
 
@@ -206,8 +210,8 @@
       <v-pagination
         v-model="page"
         :length="pageCount"
-        :total-visible="10"
-        @input="getList(page, limit, filter)"
+        :total-visible="limit"
+        @input="changePage"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -227,6 +231,8 @@
 
 <script lang="ts">
 import Vue from "vue";
+import PromotionService from "@/services/Promotion.service";
+import { IPagination } from "@/interfaces/others/pagination.interface";
 
 export default Vue.extend({
   data(): {
@@ -234,6 +240,7 @@ export default Vue.extend({
     page: number;
     pageCount: number;
     limit: number;
+    pagination: IPagination;
   } {
     const title = "لیست گروه‌ها";
     return {
@@ -261,80 +268,78 @@ export default Vue.extend({
       active: undefined,
       dates: undefined,
       datesMenu: false,
-      filter: {},
+      pagination: {
+        option: {
+          page: { eq: 1 },
+          limit: { eq: 10 },
+        },
+      },
     };
   },
   watch: {
     limit() {
       this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+      this.getList();
     },
-    filter() {
+    pagination(): void {
       this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+      this.getList();
     },
   },
   methods: {
-    getList(page: number, limit: number, filter?: unknown): void {
-      this.loading = true;
-      setTimeout(() => {
-        this.items = [
-          {
-            no: 1,
-            code: "Code01",
-            name: "نام پیشنهاد ۱",
-            active: true,
-            start_at: "2021-04-27T14:20:22.783Z",
-            end_at: "2021-04-28T14:20:23.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
-          },
-          {
-            no: 2,
-            code: "Code02",
-            name: "نام پیشنهاد ۲",
-            active: false,
-            start_at: "2021-04-27T14:20:23.783Z",
-            end_at: "2021-04-28T14:20:24.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
-          },
-          {
-            no: 3,
-            code: "Code03",
-            name: "نام پیشنهاد ۳",
-            active: false,
-            start_at: "2021-04-27T14:20:24.783Z",
-            end_at: "2021-04-28T14:20:25.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
-          },
-          {
-            no: 4,
-            code: "Code04",
-            name: "نام پیشنهاد ۴",
-            active: true,
-            start_at: "2021-04-27T14:20:25.783Z",
-            end_at: "2021-04-28T14:20:26.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
-          },
-        ];
-        this.loading = false;
-      }, 500);
-      console.log(
-        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
-          filter
-        )} }`
-      );
+    changePage(page: number): void {
+      this.page = page;
+      this.paginateGenerator();
     },
-    filterGenerate(): void {
-      this.filter = {
-        code: this.code,
-        name: this.name,
-        active: this.active,
-        dates: this.dates,
+    getList(): void {
+      this.loading = true;
+      PromotionService.getGroupList((this as any).pagination).then(
+        (response) => {
+          const data = response.data.data;
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+        }
+      );
+      setTimeout(() => (this.loading = false), 500);
+    },
+    paginateGenerator() {
+      console.log("asd");
+      this.pagination = {
+        option: {
+          page: { eq: this.page },
+          limit: { eq: this.limit },
+        },
+        filter: {
+          code: { eq: this.code },
+          name: { eq: this.name },
+          active: { eq: this.active },
+        },
+        // dates: this.dates,
       };
+      const filterKeys =
+        this.pagination &&
+        this.pagination.filter &&
+        Object.keys(this.pagination.filter);
+      // delete empty keys
+      if (filterKeys && filterKeys.length) {
+        for (const key of filterKeys)
+          if (
+            this.pagination.filter &&
+            this.pagination.filter[key] &&
+            (this[key] === undefined || this[key] === null)
+          )
+            delete this.pagination.filter[key];
+      }
+      // delete empty filter
+      if (
+        !this.pagination.filter ||
+        !Object.keys(this.pagination.filter).length
+      )
+        delete this.pagination.filter;
     },
     clearDateFilter(): void {
       this.dates = undefined;
-      this.filterGenerate();
+      this.paginateGenerator();
     },
     deleteNotification(id: string): void {
       console.log("delete id:", id);
@@ -342,7 +347,7 @@ export default Vue.extend({
     },
   },
   mounted(): void {
-    this.getList(this.page, this.limit);
+    this.getList();
   },
 });
 </script>

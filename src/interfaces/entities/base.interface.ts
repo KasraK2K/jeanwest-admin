@@ -1,4 +1,4 @@
-import { IDateTime } from "@/interfaces/datetime.interface";
+import { IDateTime } from "@/interfaces/entities/datetime.interface";
 
 export interface Base {
   id: string;

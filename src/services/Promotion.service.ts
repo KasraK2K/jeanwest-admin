@@ -13,4 +13,14 @@ export default {
       data: filter,
     });
   },
+
+  /**
+   * @param { Record<string, unknown> } filter
+   */
+  async getGroupList(filter: Record<string, unknown>): Promise<AxiosResponse> {
+    return await apiClient(`${modulePath}/group/list`, {
+      method: "POST",
+      data: filter,
+    });
+  },
 };
