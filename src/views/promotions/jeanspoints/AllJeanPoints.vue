@@ -46,7 +46,7 @@
           <v-text-field
             label="محدودیت در تعداد "
             placeholder="لطفا محدودیت در تعداد را وارد کنید."
-            v-model="filterLimit"
+            v-model="countLimit"
             type="number"
             @change="filterGenerate()"
             outlined
@@ -67,7 +67,7 @@
         </v-col>
 
         <v-col class="col-12 col-md-3">
-          <v-select
+          <v-autocomplete
             label="اعمال همزمان"
             v-model="singularity"
             :items="[
@@ -79,11 +79,11 @@
             @change="filterGenerate()"
             outlined
             hide-details="auto"
-          ></v-select>
+          ></v-autocomplete>
         </v-col>
 
         <v-col class="col-12 col-md-3">
-          <v-select
+          <v-autocomplete
             label="وضعیت"
             v-model="active"
             :items="[
@@ -95,7 +95,7 @@
             @change="filterGenerate()"
             outlined
             hide-details="auto"
-          ></v-select>
+          ></v-autocomplete>
         </v-col>
 
         <v-col class="col-12 col-md-3">
@@ -320,7 +320,6 @@ export default Vue.extend({
       code: undefined,
       name: undefined,
       groupName: undefined,
-      filterLimit: undefined,
       minTotal: undefined,
       singularity: undefined,
       active: undefined,

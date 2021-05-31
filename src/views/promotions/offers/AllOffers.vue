@@ -31,7 +31,7 @@
         </v-col>
 
         <v-col class="col-12 col-md-4">
-          <v-select
+          <v-autocomplete
             label="وضعیت"
             v-model="active"
             :items="[
@@ -43,7 +43,7 @@
             @change="filterGenerate()"
             outlined
             hide-details="auto"
-          ></v-select>
+          ></v-autocomplete>
         </v-col>
 
         <v-col class="col-12 col-md-4">

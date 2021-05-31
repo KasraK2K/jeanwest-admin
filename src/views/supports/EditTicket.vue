@@ -17,7 +17,7 @@
         </v-col>
 
         <v-col class="col-12 col-md-4">
-          <v-select
+          <v-autocomplete
             :items="[
               { text: 'بسته', value: 0 },
               { text: 'باز', value: 1 },
@@ -38,11 +38,15 @@
               </v-list-item>
             </template>
             <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
-          </v-select>
+          </v-autocomplete>
         </v-col>
       </v-row>
       <!-- Message Body -->
-      <editor :api-key="tinyApiKey()" :init="tinyInit()" v-model="formContent" />
+      <editor
+        :api-key="tinyApiKey()"
+        :init="tinyInit()"
+        v-model="formContent"
+      />
 
       <!-- Submit Button -->
       <v-btn

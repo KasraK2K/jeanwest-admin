@@ -33,7 +33,7 @@
             </v-col>
 
             <v-col sm="12" :md="formCondition() ? '6' : '3'">
-              <v-select
+              <v-autocomplete
                 label="نوع"
                 v-model="formType"
                 :items="selectItems"
@@ -43,7 +43,7 @@
                 return-object
               >
                 <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
-              </v-select>
+              </v-autocomplete>
             </v-col>
           </v-row>
           <!-- Message Body -->

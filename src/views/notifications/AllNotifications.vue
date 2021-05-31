@@ -9,7 +9,7 @@
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
-          <v-select
+          <v-autocomplete
             label="نوع"
             v-model="type"
             :items="[
@@ -21,11 +21,11 @@
             @change="filterGenerate({ page: 1 })"
             outlined
             hide-details="auto"
-          ></v-select>
+          ></v-autocomplete>
         </v-col>
 
         <v-col class="col-12 col-md-3">
-          <v-select
+          <v-autocomplete
             label="وضعیت"
             v-model="status"
             :items="[
@@ -37,7 +37,7 @@
             @change="filterGenerate()"
             outlined
             hide-details="auto"
-          ></v-select>
+          ></v-autocomplete>
         </v-col>
 
         <v-col class="col-12 col-md-3">

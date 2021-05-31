@@ -20,7 +20,7 @@
         </v-col>
 
         <v-col class="col-12 col-md-3">
-          <v-select
+          <v-autocomplete
             label="درگاه"
             v-model="gate"
             :items="[
@@ -32,11 +32,11 @@
             @change="filterGenerate()"
             outlined
             hide-details="auto"
-          ></v-select>
+          ></v-autocomplete>
         </v-col>
 
         <v-col class="col-12 col-md-3">
-          <v-select
+          <v-autocomplete
             label="وضعیت"
             v-model="status"
             :items="[
@@ -48,7 +48,7 @@
             @change="filterGenerate()"
             outlined
             hide-details="auto"
-          ></v-select>
+          ></v-autocomplete>
         </v-col>
 
         <v-col class="col-12 col-md-3">
