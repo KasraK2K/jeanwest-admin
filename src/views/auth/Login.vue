@@ -1,35 +1,66 @@
 <template>
   <v-container style="height: 100vh" class="d-flex align-center justify-center">
-    <v-form v-model="valid" style="min-width: 360px">
+    <!-- get pin -->
+    <v-form v-if="showMobile" v-model="valid" style="min-width: 360px">
       <v-card class="py-6 px-8" elevation="3" outlined rounded>
         <v-card-title>ورود به سایت</v-card-title>
 
-        <v-col v-if="showMobile">
+        <v-col>
           <v-text-field
             type="text"
             v-model="phoneNumber"
             :rules="phoneNumberRules"
             :counter="11"
             label="موبایل"
-            required
-          ></v-text-field>
-        </v-col>
-
-        <v-col v-if="showPin">
-          <v-text-field
-            v-model="pin"
-            :rules="pinRules"
-            :counter="5"
-            label="کد فعالسازی"
+            outlined
+            single-line
+            clearable
             required
           ></v-text-field>
         </v-col>
 
         <v-card-actions class="pt-4">
-          <v-btn color="primary" v-if="showMobile" @click="getPin"
+          <v-btn color="primary" @click="getPin"
             >دریافت کد</v-btn
           >
-          <v-btn color="primary" v-if="showPin" @click="login">ورود</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-form>
+
+    <!-- get token -->
+    <v-form v-if="showPin" v-model="valid" style="min-width: 360px">
+      <v-card class="py-6 px-8" elevation="3" outlined rounded>
+        <v-card-title>ورود به سایت</v-card-title>
+
+        <v-col>
+          <v-text-field
+            type="text"
+            v-model="phoneNumber"
+            :rules="phoneNumberRules"
+            :counter="11"
+            label="موبایل"
+            outlined
+            single-line
+            readonly
+            required
+          ></v-text-field>
+        </v-col>
+
+        <v-col>
+          <v-text-field
+            v-model="pin"
+            :rules="pinRules"
+            :counter="5"
+            label="کد فعالسازی"
+            outlined
+            single-line
+            clearable
+            required
+          ></v-text-field>
+        </v-col>
+
+        <v-card-actions class="pt-4">
+          <v-btn color="primary" @click="login">ورود</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
@@ -53,7 +84,7 @@ export default Vue.extend({
       phoneNumberRules: [
         (v: string) => !!v || "موبایل نباید خالی باشد.",
         (v: string) =>
-          /^(\+98|0)?9\d{9}$/.test(v) || "شماره موبایل صحیح نمی‌باشد.",
+          /^09\d{9}$/.test(v) || "شماره موبایل صحیح نمی‌باشد.",
       ],
       showPin: false,
       pin: "",
@@ -70,8 +101,9 @@ export default Vue.extend({
   methods: {
     getPin(): void {
       const data = {
-        phoneNumber: String(this.phoneNumber),
+        phoneNumber: this.phoneNumberGen(),
       };
+      console.log(data)
       if (this.valid) {
         AuthService.getPin(data)
           .then()
@@ -83,7 +115,7 @@ export default Vue.extend({
     login(): void {
       if (this.valid) {
         const data = {
-          phoneNumber: String(this.phoneNumber),
+          phoneNumber: this.phoneNumberGen(),
           pin: String(this.pin),
         };
         // get jwt with axios
@@ -115,6 +147,9 @@ export default Vue.extend({
         this.$router.push({ name: "Home" });
       }
     },
+    phoneNumberGen() {
+      return `+98${String(this.phoneNumber).slice(1)}`;
+    }
   },
   mounted(): void {
     this.checkLogin();
