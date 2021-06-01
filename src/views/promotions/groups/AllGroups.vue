@@ -21,18 +21,6 @@
         </v-col>
 
         <v-col class="col-12 col-md-3">
-          <v-text-field
-            label="نام"
-            placeholder="لطفا نام پیشنهاد را وارد کنید."
-            v-model="name"
-            @change="paginateGenerator()"
-            outlined
-            hide-details="auto"
-            clearable
-          ></v-text-field>
-        </v-col>
-
-        <v-col class="col-12 col-md-3">
           <v-autocomplete
             label="وضعیت"
             v-model="active"
@@ -90,7 +78,6 @@
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'کد', value: 'code' },
-        { text: 'نام', value: 'name' },
         { text: 'زمان شروع', value: 'start_at' },
         { text: 'زمان پایان', value: 'end_at' },
         {
@@ -117,13 +104,7 @@
           <v-col sm="12" md="9">
             <v-toolbar flat>
               <v-toolbar-title>
-                <div class="d-flex justify-start align-center">
-                  <h1 class="blue--text">{{ title }}</h1>
-                  <v-divider vertical class="mx-4"></v-divider>
-                  <router-link to="/createOffer">
-                    <v-icon color="blue" large>mdi-plus-circle</v-icon>
-                  </router-link>
-                </div>
+                <h1 class="blue--text">{{ title }}</h1>
               </v-toolbar-title>
             </v-toolbar>
           </v-col>
@@ -265,7 +246,6 @@ export default Vue.extend({
       limit: 10,
       // filter
       code: undefined,
-      name: undefined,
       active: undefined,
       dates: undefined,
       datesMenu: false,
@@ -315,7 +295,6 @@ export default Vue.extend({
         },
         filter: {
           code: { eq: this.code },
-          name: { eq: this.name },
           active: { eq: this.active },
         },
         // dates: this.dates,

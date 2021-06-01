@@ -206,6 +206,21 @@
       </template>
 
       <template v-slot:[`item.options`]="{ item }">
+        <!-- edit group -->
+        <v-chip
+          class="ml-2"
+          color="yellow"
+          link
+          label
+          outlined
+          close
+          close-icon="mdi-square-edit-outline"
+          @click:close="$router.push({ path: 'editDiscount' })"
+          :to="{ path: 'editDiscount' }"
+        >
+          گروه
+        </v-chip>
+
         <!-- edit -->
         <v-chip
           class="ml-2"

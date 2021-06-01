@@ -176,9 +176,7 @@
           <v-col sm="12" md="9">
             <v-toolbar flat>
               <v-toolbar-title>
-                <div class="d-flex justify-start align-center">
-                  <h1 class="blue--text">{{ title }}</h1>
-                </div>
+                <h1 class="blue--text">{{ title }}</h1>
               </v-toolbar-title>
             </v-toolbar>
           </v-col>
@@ -244,6 +242,21 @@
       </template>
 
       <template v-slot:[`item.options`]="{ item }">
+        <!-- edit group -->
+        <v-chip
+          class="ml-2"
+          color="yellow"
+          link
+          label
+          outlined
+          close
+          close-icon="mdi-square-edit-outline"
+          @click:close="$router.push({ path: 'editJeanPoints' })"
+          :to="{ path: 'editJeanPoints' }"
+        >
+          گروه
+        </v-chip>
+
         <!-- edit -->
         <v-chip
           class="ml-2"
