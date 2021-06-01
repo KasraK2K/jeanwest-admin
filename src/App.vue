@@ -8,6 +8,7 @@
       v-model="topbar"
       id="topbar"
       v-if="token"
+      v-resize="onResize"
     >
       <!-- show/hide Sidebar -->
       <v-app-bar-nav-icon @click.stop="sidebar = !sidebar"></v-app-bar-nav-icon>
@@ -106,6 +107,9 @@ export default Vue.extend({
     ...mapState(["token"]),
   },
   methods: {
+    onResize() {
+      this.showTopMenuBtn = document.body.clientWidth > 1264;
+    },
     checkMiniVariant(): void {
       this.showTopMenuBtn
         ? (this.variant = !this.variant)
