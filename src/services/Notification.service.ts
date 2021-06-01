@@ -8,10 +8,7 @@ export default {
    * @param { Record<string, unknown> } filter
    */
   async getList(filter: Record<string, unknown>): Promise<AxiosResponse> {
-    return await apiClient(`${modulePath}/list`, {
-      method: "POST",
-      data: filter,
-    });
+    return await apiClient.post(`${modulePath}/list`, filter);
   },
 
   async findOne(id: string): Promise<AxiosResponse> {
@@ -19,14 +16,14 @@ export default {
   },
 
   async create(data: Record<string, unknown>): Promise<AxiosResponse> {
-    return await apiClient(modulePath, { method: "POST", data });
+    return await apiClient.post(modulePath, data);
   },
 
   async edit(
     data: Record<string, unknown>,
     id: string
   ): Promise<AxiosResponse> {
-    return await apiClient(`${modulePath}/${id}`, { method: "PATCH", data });
+    return await apiClient.patch(`${modulePath}/${id}`, data);
   },
 
   // async softDelete() {},
