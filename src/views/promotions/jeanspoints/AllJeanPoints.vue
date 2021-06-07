@@ -147,7 +147,7 @@
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'کد', value: 'code' },
         { text: 'نام', value: 'name' },
-        { text: 'نام گروه', value: 'groupName' },
+        { text: 'نام در ای‌آرپی', value: 'erpName' },
         { text: 'محدودیت در تعداد ', value: 'countLimit' },
         { text: 'حداقل مبلغ خرید', value: 'minTotal' },
         { text: 'اعمال همزمان', value: 'singularity' },
@@ -201,22 +201,6 @@
         </span>
       </template>
 
-      <template v-slot:[`item.groupName`]="{ item }">
-        <v-tooltip top :open-on-hover="true" color="blue">
-          <template v-slot:activator="{ on, attrs }">
-            <span v-bind="attrs" v-on="on">
-              <v-icon
-                class="blue--text"
-                @mouseover="setGroupData(item.code)"
-                @mouseleave="groupDataName = undefined"
-                >mdi-information-outline</v-icon
-              >
-            </span>
-          </template>
-          <span>{{ groupDataName }}</span>
-        </v-tooltip>
-      </template>
-
       <template v-slot:[`item.countLimit`]="{ item }">
         {{
           item.countLimit === -1 ? "ندارد" : toPersianString(item.countLimit)
@@ -242,21 +226,6 @@
       </template>
 
       <template v-slot:[`item.options`]="{ item }">
-        <!-- edit group -->
-        <v-chip
-          class="ml-2"
-          color="yellow"
-          link
-          label
-          outlined
-          close
-          close-icon="mdi-square-edit-outline"
-          @click:close="$router.push({ path: 'editJeanPoints' })"
-          :to="{ path: 'editJeanPoints' }"
-        >
-          گروه
-        </v-chip>
-
         <!-- edit -->
         <v-chip
           class="ml-2"
@@ -438,12 +407,6 @@ export default Vue.extend({
     clearDateFilter(): void {
       this.dates = undefined;
       this.paginateGenerator();
-    },
-    setGroupData(code: string) {
-      PromotionService.findOnePoint(code).then(
-        (response) =>
-          (this.groupDataName = response.data.data.promotionGroup.name)
-      );
     },
     deletePoint(id: string): void {
       console.log("delete id:", id);

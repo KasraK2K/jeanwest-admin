@@ -14,8 +14,8 @@ export default {
     return await apiClient.post(`${modulePath}/point/list`, filter);
   },
 
-  async findOnePoint(code: string): Promise<AxiosResponse> {
-    return await apiClient.get(`${modulePath}/point/find?code=${code}`);
+  async findOnePoint(id: string): Promise<AxiosResponse> {
+    return await apiClient.get(`${modulePath}/point/${id}`);
   },
 
   /* -------------------------------------------------------------------------- */
