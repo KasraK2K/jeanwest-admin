@@ -284,7 +284,6 @@ export default Vue.extend({
           this.items = data.result;
         }
       );
-      setTimeout(() => (this.loading = false), 500);
     },
     paginateGenerator() {
       this.page = 1;

@@ -20,9 +20,7 @@
         </v-col>
 
         <v-card-actions class="pt-4">
-          <v-btn color="primary" @click="getPin"
-            >دریافت کد</v-btn
-          >
+          <v-btn color="primary" @click="getPin">دریافت کد</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
@@ -83,8 +81,7 @@ export default Vue.extend({
       phoneNumber: "",
       phoneNumberRules: [
         (v: string) => !!v || "موبایل نباید خالی باشد.",
-        (v: string) =>
-          /^09\d{9}$/.test(v) || "شماره موبایل صحیح نمی‌باشد.",
+        (v: string) => /^09\d{9}$/.test(v) || "شماره موبایل صحیح نمی‌باشد.",
       ],
       showPin: false,
       pin: "",
@@ -103,7 +100,7 @@ export default Vue.extend({
       const data = {
         phoneNumber: this.phoneNumberGen(),
       };
-      console.log(data)
+      console.log(data);
       if (this.valid) {
         AuthService.getPin(data)
           .then()
@@ -148,13 +145,11 @@ export default Vue.extend({
       }
     },
     phoneNumberGen() {
-      return `+98${String(this.phoneNumber).slice(1)}`;
-    }
+      return String(this.phoneNumber).slice(1);
+    },
   },
   mounted(): void {
     this.checkLogin();
   },
 });
 </script>
-
-<style scoped></style>

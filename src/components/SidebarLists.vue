@@ -146,6 +146,15 @@
           <v-list-item-title>کاربران</v-list-item-title>
         </template>
         <!-- #2 -->
+        <router-link :to="{ name: 'AllCustomers' }">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست کاربران</v-list-item-title>
+          </v-list-item>
+        </router-link>
+        <!-- #2 -->
         <v-list-group :value="false" no-action sub-group>
           <template v-slot:activator>
             <v-list-item-content>

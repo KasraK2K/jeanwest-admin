@@ -10,6 +10,7 @@ import { notifications } from "@/router/compact/notifications.routes";
 import { orders } from "@/router/compact/orders.routes";
 import { payments } from "@/router/compact/payments.routes";
 import { promotions } from "@/router/compact/promotions.routes";
+import { customers } from "@/router/compact/customers.routes";
 import { others } from "@/router/compact/others.routes";
 
 Vue.use(VueRouter);
@@ -30,6 +31,7 @@ const routes: Array<RouteConfig> = [
   ...orders,
   ...payments,
   ...promotions,
+  ...customers,
   ...others,
 ];
 

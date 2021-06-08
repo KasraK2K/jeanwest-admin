@@ -18,7 +18,7 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="paginateGenerator({ page: 1 })"
+            @change="filterGenerate({ page: 1 })"
             outlined
             hide-details="auto"
           ></v-autocomplete>
@@ -34,7 +34,7 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="paginateGenerator()"
+            @change="filterGenerate()"
             outlined
             hide-details="auto"
           ></v-autocomplete>
@@ -65,7 +65,7 @@
             <v-date-picker
               v-model="dates"
               range
-              @change="paginateGenerator()"
+              @change="filterGenerate()"
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -81,8 +81,11 @@
     <v-data-table
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
-        { text: 'عنوان', value: 'title', sortable: false },
-        { text: 'نوع', value: 'type' },
+        { text: 'کد', value: 'code', sortable: false },
+        { text: 'جنسیت', value: 'gender' },
+        { text: 'نام', value: 'firstName' },
+        { text: 'نام خانوادگی', value: 'lastName' },
+        { text: 'آخرین ورود', value: 'loggedInAt' },
         { text: 'زمان ایجاد', value: 'created_at' },
         { text: 'زمان بروزرسانی', value: 'updated_at' },
         { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
@@ -98,19 +101,12 @@
       :items-per-page="limit"
       hide-default-footer
     >
-      <!-- @page-count="console.log($event)" -->
       <template v-slot:top>
         <v-row>
           <v-col sm="12" md="9">
             <v-toolbar flat>
               <v-toolbar-title>
-                <div class="d-flex justify-start align-center">
-                  <h1 class="blue--text">{{ title }}</h1>
-                  <v-divider vertical class="mx-4"></v-divider>
-                  <router-link :to="{ name: 'CreateNotification' }">
-                    <v-icon color="blue" large>mdi-plus-circle</v-icon>
-                  </router-link>
-                </div>
+                <h1 class="blue--text">{{ title }}</h1>
               </v-toolbar-title>
             </v-toolbar>
           </v-col>
@@ -129,10 +125,22 @@
         {{ toPersianString(item.no) }}
       </template>
 
-      <template v-slot:[`item.type`]="{ item }">
+      <template v-slot:[`item.code`]="{ item }">
+        <span :class="[item.active] ? 'green--text' : 'pink--text'">{{
+          toPersianString(item.no)
+        }}</span>
+      </template>
+
+      <template v-slot:[`item.gender`]="{ item }">
         <span :class="item.type === 'SMS' ? 'purple--text' : 'indigo--text'">
-          {{ item.type === "SMS" ? "پیامک" : "اعلان" }}
+          <v-icon :color="item.gender === 0 ? 'pink' : 'blue'" large>{{
+            item.gender === 0 ? "mdi-human-female" : "mdi-human-male"
+          }}</v-icon>
         </span>
+      </template>
+
+      <template v-slot:[`item.loggedInAt`]="{ item }">
+        {{ toPersianString(toPersianTime(item.loggedInAt)) }}
       </template>
 
       <template v-slot:[`item.created_at`]="{ item }">
@@ -143,14 +151,26 @@
         {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
       </template>
 
-      <!-- <template v-slot:[`item.sent_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.sent_at)) }}
-      </template> -->
-
       <template v-slot:[`item.status`]="{ item }">
+        <!-- active/deactive -->
+        <v-chip
+          class="ml-2"
+          :color="item.active ? 'yellow' : 'green'"
+          link
+          label
+          outlined
+          close
+          :close-icon="
+            item.active ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off'
+          "
+          @click:close="toggleActivation(item.id)"
+          @click="toggleActivation(item.id)"
+        >
+          {{ item.active ? "غیر فعال" : "فعال" }}
+        </v-chip>
+
         <!-- edit -->
         <v-chip
-          v-if="canDelete(item)"
           class="ml-2"
           color="blue"
           link
@@ -168,7 +188,6 @@
 
         <!-- delete -->
         <v-chip
-          v-if="canDelete(item)"
           color="red"
           link
           label
@@ -192,7 +211,7 @@
         v-model="page"
         :length="pageCount"
         :total-visible="limit"
-        @input="page = $event"
+        @input="changePage"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -212,19 +231,19 @@
 
 <script lang="ts">
 import Vue from "vue";
-import NotificationService from "@/services/Notification.service";
-import { IPagination } from "@/interfaces/others/pagination.interface";
+import CustomerService from "@/services/Customer.service";
 
 export default Vue.extend({
+  name: "AllCustomers",
+
   data(): {
     [key: string]: unknown;
-    items: Record<string, unknown>[];
     page: number;
     pageCount: number;
     limit: number;
-    pagination: IPagination;
+    filter: Record<string, unknown>;
   } {
-    const title = "لیست اعلانات";
+    const title = "لیست کاربران";
     return {
       title,
       loading: false,
@@ -249,7 +268,7 @@ export default Vue.extend({
       status: undefined,
       dates: undefined,
       datesMenu: false,
-      pagination: {
+      filter: {
         option: {
           page: { eq: 1 },
           limit: { eq: 10 },
@@ -258,73 +277,50 @@ export default Vue.extend({
     };
   },
   watch: {
-    limit(): void {
+    limit() {
       this.page = 1;
-      this.pagination.option.limit = { eq: this.limit };
       this.getList();
     },
-    page(): void {
-      this.pagination.option.page = { eq: this.page };
+    filter() {
       this.getList();
-    },
-    pagination(): void {
-      this.getList();
-    },
-    items(): void {
-      this.loading = false;
     },
   },
   methods: {
     changePage(page: number) {
       this.page = page;
-      this.paginateGenerator();
+      this.filterGenerate();
     },
     getList(): void {
       this.loading = true;
-      NotificationService.getList((this as any).pagination).then((response) => {
-        const data = response.data.data;
-        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-        this.items = data.result;
-      });
+      CustomerService.getList(this.filter, this.$store.state.token).then(
+        (response) => {
+          const data = response.data.data;
+          console.log("response.data.data", response.data.data);
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+          console.log("response.data.data", response.data.data);
+        }
+      );
+      setTimeout(() => (this.loading = false), 500);
     },
-    paginateGenerator() {
-      this.page = 1;
-      this.pagination = {
+    filterGenerate() {
+      this.filter = {
         option: {
           page: { eq: this.page },
           limit: { eq: this.limit },
         },
+
         // type: this.type,
         // status: this.status,
         // dates: this.dates,
       };
-      const filterKeys =
-        this.pagination &&
-        this.pagination.filter &&
-        Object.keys(this.pagination.filter);
-      // delete empty keys
-      if (filterKeys && filterKeys.length) {
-        for (const key of filterKeys)
-          if (
-            this.pagination.filter &&
-            this.pagination.filter[key] &&
-            (this[key] === undefined || this[key] === null)
-          )
-            delete this.pagination.filter[key];
-      }
-      // delete empty filter
-      if (
-        !this.pagination.filter ||
-        !Object.keys(this.pagination.filter).length
-      )
-        delete this.pagination.filter;
     },
     clearDateFilter(): void {
       this.dates = undefined;
-      this.paginateGenerator();
+      this.filterGenerate();
     },
-    canDelete(item: Record<string, unknown>): boolean {
-      return item.type !== "SMS" || item.status === 0;
+    toggleActivation(id: string): void {
+      console.log("toggle activation");
     },
     deleteNotification(id: string): void {
       console.log("delete id:", id);

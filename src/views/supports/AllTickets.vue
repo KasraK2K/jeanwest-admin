@@ -13,7 +13,7 @@
             label="کد"
             placeholder="لطفا کد تیکت را وارد کنید."
             v-model="code"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-text-field>
@@ -24,7 +24,7 @@
             label="موبایل"
             placeholder="لطفا شماره موبایل را وارد کنید."
             v-model="mobile"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-text-field>
@@ -55,7 +55,7 @@
             <v-date-picker
               v-model="dates"
               range
-              @change="filterGenerate()"
+              @change="paginateGenerator()"
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -71,8 +71,9 @@
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'آیدی', value: 'id', align: 'start', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
-        { text: 'کد', value: 'code' },
-        { text: 'زمان ایجاد', value: 'date' },
+        { text: 'کد', value: 'ticketCode' },
+        { text: 'زمان ایجاد', value: 'created_at' },
+        { text: 'زمان بروزرسانی', value: 'updated_at' },
         { text: 'وضعیت', value: 'status', align: 'center' },
       ]"
       :items="items"
@@ -113,23 +114,23 @@
         {{ toPersianString(item.no) }}
       </template>
 
-      <template v-slot:[`item.code`]="{ item }">
-        {{ item.code }}
+      <template v-slot:[`item.created_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.created_at)) }}
       </template>
 
-      <template v-slot:[`item.date`]="{ item }">
-        {{ toPersianString(toPersianTime(item.date)) }}
+      <template v-slot:[`item.updated_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
         <v-chip
-          :color="item.status ? 'blue' : 'red'"
+          :color="statusColor(item.status)"
           link
           label
           outlined
           :to="{ name: 'ShowTicket', params: { id: item.id } }"
         >
-          {{ item.status ? "پاسخ داده شده" : "در انتظار پاسخ" }}
+          {{ statusText(item.status) }}
         </v-chip>
       </template>
     </v-data-table>
@@ -163,13 +164,17 @@
 
 <script lang="ts">
 import Vue from "vue";
+import SupportService from "@/services/Support.service";
+import { IPagination } from "@/interfaces/others/pagination.interface";
 
 export default Vue.extend({
   data(): {
     [key: string]: unknown;
+    items: Record<string, unknown>[];
     page: number;
     pageCount: number;
     limit: number;
+    pagination: IPagination;
   } {
     const title = "لیست تیکت‌ها";
     return {
@@ -196,127 +201,97 @@ export default Vue.extend({
       mobile: undefined,
       dates: undefined,
       datesMenu: false,
-      filter: {},
+      pagination: {
+        option: {
+          page: { eq: 1 },
+          limit: { eq: 10 },
+        },
+      },
     };
   },
   watch: {
-    limit() {
+    limit(): void {
       this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+      this.pagination.option.limit = { eq: this.limit };
+      this.getList();
     },
-    filter() {
-      this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+    page(): void {
+      this.pagination.option.page = { eq: this.page };
+      this.getList();
+    },
+    pagination(): void {
+      this.getList();
+    },
+    items(): void {
+      this.loading = false;
     },
   },
   methods: {
-    getList(page: number, limit: number, filter?: unknown): void {
+    getList(): void {
       this.loading = true;
-      setTimeout((): void => {
-        this.items = [
-          {
-            no: 1,
-            id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c2",
-            title: "مشکل در ثبت سفارش با کارت  سپه",
-            code: "TCK-XA66854",
-            date: "2020/06/11",
-            status: 0,
-          },
-          {
-            no: 2,
-            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c3",
-            title: "لباس خریدم نمیدید چرا",
-            code: "TCK-FC55698",
-            date: "2020/06/10",
-            status: 1,
-          },
-          {
-            no: 3,
-            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c4",
-            title: "لباس خریدم نمیدید چرا",
-            code: "TCK-FC55698",
-            date: "2020/06/10",
-            status: 1,
-          },
-          {
-            no: 4,
-            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c5",
-            title: "لباس خریدم نمیدید چرا",
-            code: "TCK-FC55698",
-            date: "2020/06/10",
-            status: 1,
-          },
-          {
-            no: 5,
-            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c6",
-            title: "لباس خریدم نمیدید چرا",
-            code: "TCK-FC55698",
-            date: "2020/06/10",
-            status: 1,
-          },
-          {
-            no: 6,
-            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c7",
-            title: "لباس خریدم نمیدید چرا",
-            code: "TCK-FC55698",
-            date: "2020/06/10",
-            status: 1,
-          },
-          {
-            no: 7,
-            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c8",
-            title: "لباس خریدم نمیدید چرا",
-            code: "TCK-FC55698",
-            date: "2020/06/10",
-            status: 1,
-          },
-          {
-            no: 8,
-            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed1c9",
-            title: "لباس خریدم نمیدید چرا",
-            code: "TCK-FC55698",
-            date: "2020/06/10",
-            status: 1,
-          },
-          {
-            no: 9,
-            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed110",
-            title: "لباس خریدم نمیدید چرا",
-            code: "TCK-FC55698",
-            date: "2020/06/10",
-            status: 1,
-          },
-          {
-            no: 10,
-            id: "43b5a236-0bb8-4e11-8aed-7eb06dfed111",
-            title: "لباس خریدم نمیدید چرا",
-            code: "TCK-FC55698",
-            date: "2020/06/10",
-            status: 1,
-          },
-        ];
-        this.loading = false;
-      }, 500);
-      console.log(
-        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
-          filter
-        )} }`
-      );
+      SupportService.getList(
+        (this as any).pagination,
+        this.$store.state.token
+      ).then((response) => {
+        const data = response.data.data;
+        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+        this.items = data.result;
+      });
     },
-    filterGenerate() {
-      this.filter = {
-        code: this.code,
-        mobile: this.mobile,
-        dates: this.dates,
+    paginateGenerator() {
+      this.page = 1;
+      this.pagination = {
+        option: {
+          page: { eq: this.page },
+          limit: { eq: this.limit },
+        },
+        filter: {
+          code: { eq: this.code },
+          mobile: { eq: this.mobile },
+          active: { eq: this.active },
+        },
+        // dates: this.dates,
       };
+      const filterKeys =
+        this.pagination &&
+        this.pagination.filter &&
+        Object.keys(this.pagination.filter);
+      // delete empty keys
+      if (filterKeys && filterKeys.length) {
+        for (const key of filterKeys)
+          if (
+            this.pagination.filter &&
+            this.pagination.filter[key] &&
+            (this[key] === undefined || this[key] === null)
+          )
+            delete this.pagination.filter[key];
+      }
+      // delete empty filter
+      if (
+        !this.pagination.filter ||
+        !Object.keys(this.pagination.filter).length
+      )
+        delete this.pagination.filter;
     },
     clearDateFilter() {
       this.dates = undefined;
-      this.filterGenerate();
+      this.paginateGenerator();
+    },
+    statusColor(status: number): string {
+      if (status === 0) return "blue";
+      else if (status === 1) return "red";
+      else if (status === 2) return "yellow";
+      else return "purple";
+    },
+    statusText(status: number): string {
+      if (status === 0) return "بسته";
+      else if (status === 1) return "باز";
+      else if (status === 2) return "پیگیری";
+      else return "تعریف نشده";
     },
   },
   mounted(): void {
-    this.getList(this.page, this.limit);
+    this.getList();
   },
 });
 </script>
