@@ -54,7 +54,7 @@
         large
         color="primary"
         class="mt-4"
-        @click="createTicket()"
+        @click="createReply()"
         >ارسال</v-btn
       >
     </v-card>
@@ -198,11 +198,14 @@
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import { mapGetters } from "vuex";
+import SupportService from "@/services/Support.service";
+import { IPagination } from "@/interfaces/others/pagination.interface";
 
 export default Vue.extend({
   data(): {
     [key: string]: unknown;
     formStatus: { text: string | undefined; value: number | undefined };
+    pagination: IPagination;
   } {
     const title = "تیتر سوال کاربر";
     return {
@@ -210,6 +213,11 @@ export default Vue.extend({
       formHint: undefined,
       formStatus: { text: undefined, value: undefined },
       formContent: undefined,
+      pagination: {
+        option: { page: { eq: 1 }, limit: { eq: 1 } },
+        filter: { id: this.id },
+      },
+      result: [],
       breadcrumbs: [
         {
           text: "صفحه اصلی",
@@ -230,7 +238,15 @@ export default Vue.extend({
     id: { type: String, required: true },
   },
   methods: {
-    createTicket(): void {
+    findOne(): void {
+      SupportService.getList(this.pagination, this.$store.state.token).then(
+        (response) => {
+          const data = response.data.data;
+          this.result = data.result;
+        }
+      );
+    },
+    createReply(): void {
       const data = {
         hint: this.formHint,
         status: this.formStatus.value,
@@ -251,6 +267,9 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters(["themeGetter"]),
+  },
+  mounted() {
+    this.findOne();
   },
 });
 </script>
