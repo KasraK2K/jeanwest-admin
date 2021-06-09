@@ -19,6 +19,10 @@ export default {
     });
   },
 
+  async reply(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return await apiClient.post(`${modulePath}/admin/reply`, data);
+  },
+
   // async findOne(id: string): Promise<AxiosResponse> {
   //   return await apiClient.get(`${modulePath}/${id}`);
   // },

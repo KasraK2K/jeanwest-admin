@@ -21,7 +21,7 @@ export const supports = [
     },
   },
   {
-    path: "/supports/ticket/edit/:id",
+    path: "/supports/ticket/edit/:contextCode",
     name: "EditTicket",
     component: EditTicket,
     props: true,

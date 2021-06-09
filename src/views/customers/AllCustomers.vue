@@ -85,7 +85,6 @@
         { text: 'جنسیت', value: 'gender' },
         { text: 'نام', value: 'firstName' },
         { text: 'نام خانوادگی', value: 'lastName' },
-        { text: 'آخرین ورود', value: 'loggedInAt' },
         { text: 'زمان ایجاد', value: 'created_at' },
         { text: 'زمان بروزرسانی', value: 'updated_at' },
         { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
@@ -127,7 +126,7 @@
 
       <template v-slot:[`item.code`]="{ item }">
         <span :class="[item.active] ? 'green--text' : 'pink--text'">{{
-          toPersianString(item.no)
+          toPersianString(item.code)
         }}</span>
       </template>
 
@@ -137,10 +136,6 @@
             item.gender === 0 ? "mdi-human-female" : "mdi-human-male"
           }}</v-icon>
         </span>
-      </template>
-
-      <template v-slot:[`item.loggedInAt`]="{ item }">
-        {{ toPersianString(toPersianTime(item.loggedInAt)) }}
       </template>
 
       <template v-slot:[`item.created_at`]="{ item }">

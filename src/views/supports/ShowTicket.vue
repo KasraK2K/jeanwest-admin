@@ -42,11 +42,7 @@
         </v-col>
       </v-row>
       <!-- Message Body -->
-      <editor
-        :api-key="tinyApiKey()"
-        :init="tinyInit()"
-        v-model="formContent"
-      />
+      <editor :api-key="tinyApiKey()" :init="tinyInit()" v-model="formText" />
 
       <!-- Submit Button -->
       <v-btn
@@ -61,8 +57,73 @@
 
     <div class="d-flex flex-column" id="messages">
       <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown">
+        <v-timeline-item
+          v-for="(context, i) in result.context"
+          :key="i"
+          :color="context.owner === 'customer' ? customerColor() : adminColor()"
+          fill-dot
+          :right="context.owner === 'customer' ? true : false"
+          :left="context.owner === 'customer' ? false : true"
+        >
+          <!-- <template v-slot:icon>
+            <v-avatar>
+              <img
+                src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"
+              />
+            </v-avatar>
+          </template> -->
+          <v-card
+            :color="
+              context.owner === 'customer' ? customerColor() : adminColor()
+            "
+            elevation="3"
+            outlined
+            rounded
+          >
+            <div class="d-flex align-center justify-space-between">
+              <!-- <v-card-title class="pr-4">کسری کرمی ادمین</v-card-title> -->
+              <v-card-title
+                v-text="
+                  toPersianString(
+                    toPersianTime(
+                      context.created_at,
+                      'ddd D MMM YYYY - HH:mm:ss'
+                    )
+                  )
+                "
+                class="pr-4"
+              />
+              <router-link
+                v-if="context.owner === 'support'"
+                :to="{
+                  name: 'EditTicket',
+                  params: { contextCode: context.contextCode },
+                }"
+              >
+                <v-icon class="float-left pl-4" large>
+                  mdi-notebook-edit
+                </v-icon>
+              </router-link>
+            </div>
+            <v-card-text class="py-4">
+              <p v-html="context.text" class="mb-0" />
+              <v-alert
+                v-if="context.hint"
+                color="#2A3B4D"
+                icon="mdi-notebook-plus"
+                dense
+                border="left"
+                class="font-italic font-weight-thin mt-2 mb-0"
+                dark
+              >
+                {{ context.hint }}
+              </v-alert>
+            </v-card-text>
+          </v-card>
+        </v-timeline-item>
+
         <!-- user question -->
-        <v-timeline-item :color="customerColor()" fill-dot right>
+        <!-- <v-timeline-item :color="customerColor()" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -81,10 +142,10 @@
               </p>
             </v-card-text>
           </v-card>
-        </v-timeline-item>
+        </v-timeline-item> -->
 
         <!-- user question -->
-        <v-timeline-item :color="customerColor()" fill-dot right>
+        <!-- <v-timeline-item :color="customerColor()" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -110,10 +171,10 @@
               </p>
             </v-card-text>
           </v-card>
-        </v-timeline-item>
+        </v-timeline-item> -->
 
         <!-- admin answere -->
-        <v-timeline-item :color="adminColor()" fill-dot left>
+        <!-- <v-timeline-item :color="adminColor()" fill-dot left>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -159,10 +220,10 @@
               </v-alert>
             </v-card-text>
           </v-card>
-        </v-timeline-item>
+        </v-timeline-item> -->
 
         <!-- user question -->
-        <v-timeline-item :color="customerColor()" fill-dot right>
+        <!-- <v-timeline-item :color="customerColor()" fill-dot right>
           <template v-slot:icon>
             <v-avatar>
               <img
@@ -188,7 +249,7 @@
               </p>
             </v-card-text>
           </v-card>
-        </v-timeline-item>
+        </v-timeline-item> -->
       </v-timeline>
     </div>
   </v-container>
@@ -212,10 +273,10 @@ export default Vue.extend({
       title,
       formHint: undefined,
       formStatus: { text: undefined, value: undefined },
-      formContent: undefined,
+      formText: undefined,
       pagination: {
         option: { page: { eq: 1 }, limit: { eq: 1 } },
-        filter: { id: this.id },
+        filter: { id: { eq: this.id } },
       },
       result: [],
       breadcrumbs: [
@@ -241,8 +302,9 @@ export default Vue.extend({
     findOne(): void {
       SupportService.getList(this.pagination, this.$store.state.token).then(
         (response) => {
-          const data = response.data.data;
-          this.result = data.result;
+          let data = response.data.data.result[0];
+          data.context = data.context.reverse();
+          this.result = data;
         }
       );
     },
@@ -250,9 +312,12 @@ export default Vue.extend({
       const data = {
         hint: this.formHint,
         status: this.formStatus.value,
-        content: this.formContent,
+        text: this.formText,
+        code: (this as any).result.code,
       };
-      console.log("create ticket data:", data);
+      SupportService.reply(data).then(() => {
+        this.findOne();
+      });
       // use service for send data to server
     },
     customerColor(): string {

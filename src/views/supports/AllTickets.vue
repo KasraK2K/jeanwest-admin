@@ -71,7 +71,7 @@
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'آیدی', value: 'id', align: 'start', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
-        { text: 'کد', value: 'ticketCode' },
+        { text: 'کد', value: 'code' },
         { text: 'زمان ایجاد', value: 'created_at' },
         { text: 'زمان بروزرسانی', value: 'updated_at' },
         { text: 'وضعیت', value: 'status', align: 'center' },
