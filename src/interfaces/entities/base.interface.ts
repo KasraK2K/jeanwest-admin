@@ -5,4 +5,6 @@ export interface Base {
   active: boolean;
   version: number;
   datetime: IDateTime;
+  seen: number[];
+  status: number;
 }

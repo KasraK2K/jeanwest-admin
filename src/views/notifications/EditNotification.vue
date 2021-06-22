@@ -3,6 +3,13 @@
     <h1 class="blue--text">{{ title }}</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
+    <!-- <v-card class="mb-3">
+      <v-card-title>تغییر وضعیت تیکت</v-card-title>
+      <v-row>
+        
+      </v-row>
+    </v-card> -->
+
     <v-row>
       <v-col
         sm="12"
@@ -24,16 +31,33 @@
                 hide-details="auto"
                 name="notes"
               >
-                <v-icon
-                  slot="prepend"
-                  color="blue"
-                >mdi-format-title</v-icon>
+                <v-icon slot="prepend">mdi-format-title</v-icon>
               </v-text-field>
             </v-col>
 
             <v-col
               sm="12"
-              :md="formCondition() ? '6' : '3'"
+              :md="formCondition() ? '4' : '2'"
+            >
+              <v-autocomplete
+                label="وضعیت"
+                name="status"
+                v-model="formType"
+                :items="selectItems"
+                item-text="text"
+                item-value="value"
+                hide-details="auto"
+                hide-selected
+                return-object
+                @change="updateStatus"
+              >
+                <v-icon slot="prepend">mdi-state-machine</v-icon>
+              </v-autocomplete>
+            </v-col>
+
+            <v-col
+              sm="12"
+              :md="formCondition() ? '4' : '2'"
             >
               <v-file-input
                 v-model="formImage"
@@ -49,7 +73,7 @@
 
             <v-col
               sm="12"
-              :md="formCondition() ? '6' : '3'"
+              :md="formCondition() ? '4' : '2'"
             >
               <v-file-input
                 v-model="formIcon"
@@ -62,26 +86,6 @@
                 @change="getSrcFromFile('iconUrl', formIcon)"
               ></v-file-input>
             </v-col>
-
-            <!-- <v-col
-                sm="12"
-                :md="formCondition() ? '6' : '3'"
-              >
-                <v-autocomplete
-                  label="نوع"
-                  v-model="formType"
-                  :items="selectItems"
-                  item-text="text"
-                  item-value="value"
-                  disabled
-                  return-object
-                >
-                  <v-icon
-                    slot="prepend"
-                    color="blue"
-                  >mdi-alarm-light-off</v-icon>
-                </v-autocomplete>
-              </v-col> -->
           </v-row>
           <!-- Message Body -->
           <editor
@@ -174,8 +178,9 @@ export default Vue.extend({
         },
       ],
       selectItems: [
-        { text: "پیامک", value: "SMS" },
-        { text: "اعلان", value: "PUSH" },
+        { text: "بسته شده", value: "0" },
+        { text: "باز", value: "1" },
+        { text: "در حال پیگیری", value: "2" },
       ],
       rules: [
         (value: string) => !!value || "پر کردن این فیلد الزامیست",
@@ -219,6 +224,10 @@ export default Vue.extend({
               });
             });
         });
+    },
+    updateStatus(status: Record<string, unknown>) {
+      console.log("status:", Number(status.value));
+      // TODO: update ticket status with `id` props
     },
     getSrcFromFile(type: string, file: FileReader): void {
       // FIXME: upload image and set this.image with uploaded image response

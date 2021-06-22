@@ -5,5 +5,4 @@ export interface INotifications extends Base {
   body: string;
   image: string;
   icon: string;
-  seen: number[];
 }
