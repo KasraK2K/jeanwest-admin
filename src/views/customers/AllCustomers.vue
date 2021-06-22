@@ -1,11 +1,19 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
+    <v-breadcrumbs
+      :items="breadcrumbs"
+      class="mb-3"
+    ></v-breadcrumbs>
 
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8" elevation="1" outlined rounded>
+    <v-card
+      class="mb-8"
+      elevation="1"
+      outlined
+      rounded
+    >
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
@@ -42,6 +50,7 @@
 
         <v-col class="col-12 col-md-3">
           <v-menu
+            ref="datesMenu"
             v-model="datesMenu"
             :close-on-content-click="false"
             :nudge-top="20"
@@ -64,7 +73,7 @@
             </template>
             <v-date-picker
               v-model="dates"
-              range
+              multiple
               @change="filterGenerate()"
             ></v-date-picker>
           </v-menu>
@@ -85,8 +94,9 @@
         { text: 'جنسیت', value: 'gender' },
         { text: 'نام', value: 'firstName' },
         { text: 'نام خانوادگی', value: 'lastName' },
-        { text: 'زمان ایجاد', value: 'created_at' },
-        { text: 'زمان بروزرسانی', value: 'updated_at' },
+        { text: 'موبایل', value: 'phoneNumber' },
+        { text: 'سطح عضویت', value: 'erpCustomerType' },
+        { text: 'آخرین ورود', value: 'loggedInAt' },
         { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
       ]"
       :items="items"
@@ -102,7 +112,10 @@
     >
       <template v-slot:top>
         <v-row>
-          <v-col sm="12" md="9">
+          <v-col
+            sm="12"
+            md="9"
+          >
             <v-toolbar flat>
               <v-toolbar-title>
                 <h1 class="blue--text">{{ title }}</h1>
@@ -131,19 +144,24 @@
       </template>
 
       <template v-slot:[`item.gender`]="{ item }">
-        <span :class="item.type === 'SMS' ? 'purple--text' : 'indigo--text'">
-          <v-icon :color="item.gender === 0 ? 'pink' : 'blue'" large>{{
-            item.gender === 0 ? "mdi-human-female" : "mdi-human-male"
-          }}</v-icon>
-        </span>
+        <v-icon
+          :color="item.gender === 0 ? 'pink' : 'blue'"
+          large
+        >
+          {{ item.gender === 0 ? "mdi-human-female" : "mdi-human-male" }}
+        </v-icon>
       </template>
 
-      <template v-slot:[`item.created_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.datetime.created_at)) }}
+      <template v-slot:[`item.phoneNumber`]="{ item }">
+        <pre class="ltr text-right">{{ toPersianString(item.phoneNumber) }}</pre>
       </template>
 
-      <template v-slot:[`item.updated_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
+      <template v-slot:[`item.erpCustomerType`]="{ item }">
+        <pre class="ltr text-right">{{ toPersianString(item.erpCustomerType) }}</pre>
+      </template>
+
+      <template v-slot:[`item.loggedInAt`]="{ item }">
+        <pre class="ltr text-right">{{ item.loggedInAt ? toPersianString(toPersianTime(item.loggedInAt)) : null }}</pre>
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
@@ -172,27 +190,13 @@
           label
           outlined
           close
-          close-icon="mdi-square-edit-outline"
+          close-icon="mdi-eye"
           @click:close="
             $router.push({ name: 'EditNotification', params: { id: item.id } })
           "
           :to="{ name: 'EditNotification', params: { id: item.id } }"
         >
-          ویرایش
-        </v-chip>
-
-        <!-- delete -->
-        <v-chip
-          color="red"
-          link
-          label
-          outlined
-          close
-          close-icon="mdi-delete"
-          @click:close="deleteNotification(item.id)"
-          @click="deleteNotification(item.id)"
-        >
-          حذف
+          نمایش
         </v-chip>
       </template>
     </v-data-table>
@@ -279,6 +283,9 @@ export default Vue.extend({
     filter() {
       this.getList();
     },
+    items(): void {
+      this.loading = false;
+    },
   },
   methods: {
     changePage(page: number) {
@@ -290,13 +297,10 @@ export default Vue.extend({
       CustomerService.getList(this.filter, this.$store.state.token).then(
         (response) => {
           const data = response.data.data;
-          console.log("response.data.data", response.data.data);
           this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
           this.items = data.result;
-          console.log("response.data.data", response.data.data);
         }
       );
-      setTimeout(() => (this.loading = false), 500);
     },
     filterGenerate() {
       this.filter = {
@@ -316,10 +320,6 @@ export default Vue.extend({
     },
     toggleActivation(id: string): void {
       console.log("toggle activation");
-    },
-    deleteNotification(id: string): void {
-      console.log("delete id:", id);
-      // use service for delete notification with id
     },
   },
   mounted(): void {

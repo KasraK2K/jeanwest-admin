@@ -13,8 +13,8 @@ $dark-4: #0f0f22;
 
 .theme--dark.v-card,
 .theme--dark.v-data-table,
-.theme--dark.v-toolbar.v-sheet:not(.v-application--wrap
-    > .theme--dark.v-toolbar.v-sheet) {
+.v-application.v-application--is-rtl.theme--dark .theme--dark.v-toolbar.v-sheet/*:not(.v-application--wrap
+    > .theme--dark.v-toolbar.v-sheet)*/ {
   background-color: var(--v-background-base, $dark-2) !important;
 } // card, data-table, data-table header
 
