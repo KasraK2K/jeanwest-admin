@@ -4,10 +4,19 @@
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
     <v-row>
-      <v-col sm="12" :md="formCondition() ? '9' : '12'">
-        <v-card id="form" class="mt-2 mb-5 pa-4">
+      <v-col
+        sm="12"
+        :md="formCondition() ? '9' : '12'"
+      >
+        <v-card
+          id="form"
+          class="mt-2 mb-5 pa-4"
+        >
           <v-row>
-            <v-col sm="12" :md="formCondition() ? '12' : '6'">
+            <v-col
+              sm="12"
+              :md="formCondition() ? '12' : '6'"
+            >
               <v-text-field
                 label="عنوان"
                 v-model="formTitle"
@@ -15,11 +24,17 @@
                 hide-details="auto"
                 name="notes"
               >
-                <v-icon slot="prepend" color="blue">mdi-format-title</v-icon>
+                <v-icon
+                  slot="prepend"
+                  color="blue"
+                >mdi-format-title</v-icon>
               </v-text-field>
             </v-col>
 
-            <v-col sm="12" :md="formCondition() ? '6' : '3'">
+            <v-col
+              sm="12"
+              :md="formCondition() ? '6' : '3'"
+            >
               <v-file-input
                 v-model="formImage"
                 accept="image/png, image/jpeg, image/bmp"
@@ -32,7 +47,10 @@
               ></v-file-input>
             </v-col>
 
-            <v-col sm="12" :md="formCondition() ? '6' : '3'">
+            <v-col
+              sm="12"
+              :md="formCondition() ? '6' : '3'"
+            >
               <v-autocomplete
                 label="نوع"
                 v-model="formType"
@@ -42,7 +60,10 @@
                 disabled
                 return-object
               >
-                <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
+                <v-icon
+                  slot="prepend"
+                  color="blue"
+                >mdi-alarm-light-off</v-icon>
               </v-autocomplete>
             </v-col>
           </v-row>
@@ -54,22 +75,40 @@
           />
 
           <!-- Submit Button -->
-          <v-btn large color="primary" class="mt-4" @click="submitData"
-            >ارسال</v-btn
-          >
+          <v-btn
+            large
+            color="primary"
+            class="mt-4"
+            @click="submitData"
+          >ارسال</v-btn>
         </v-card>
       </v-col>
 
-      <v-col v-if="formCondition()" sm="12" md="3">
-        <v-card elevation="2" class="mx-auto" max-width="374">
+      <v-col
+        v-if="formCondition()"
+        sm="12"
+        md="3"
+      >
+        <v-card
+          elevation="2"
+          class="mx-auto"
+          max-width="374"
+        >
           <v-card-title>{{ formTitle }}</v-card-title>
 
-          <v-img height="auto" :src="imageUrl"></v-img>
+          <v-img
+            v-if="imageUrl"
+            height="auto"
+            :src="imageUrl"
+          ></v-img>
 
           <v-card-text>
             <span>{{ formType.text }}</span>
 
-            <div class="px-4" v-html="formContent"></div>
+            <div
+              class="px-4"
+              v-html="formContent"
+            ></div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -152,7 +191,8 @@ export default Vue.extend({
     },
     getSrcFromFile(file: FileReader): void {
       // FIXME: upload image and set this.image with uploaded image response
-      this.imageUrl = URL.createObjectURL(file);
+      if (file) this.imageUrl = URL.createObjectURL(file);
+      else this.imageUrl = undefined;
     },
     formCondition(): boolean {
       return !!(
