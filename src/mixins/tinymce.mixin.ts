@@ -12,11 +12,11 @@ export const tinyInit = function () {
     plugins: [
       "advlist autolink lists advlist link image charmap print preview anchor",
       "searchreplace visualblocks code fullscreen",
-      "insertdatetime media table paste code help wordcount",
+      "insertdatetime media table paste code help wordcount emoticons",
     ],
     toolbar:
       "undo redo | formatselect | fontsizeselect | code visualblocks searchreplace | bold italic backcolor | \
-      table numlist bullist insertdatetime charmap | \
+      table numlist bullist emoticons insertdatetime charmap | \
       alignleft aligncenter alignright alignjustify | \
       bullist numlist outdent indent | removeformat | anchor link unlink | fullscreen | preview counter",
     language: "fa",
