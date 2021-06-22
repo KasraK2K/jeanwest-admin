@@ -1,19 +1,11 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      class="mb-3"
-    ></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
 
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card
-      class="mb-8"
-      elevation="1"
-      outlined
-      rounded
-    >
+    <v-card class="mb-8" elevation="1" outlined rounded>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
@@ -112,10 +104,7 @@
     >
       <template v-slot:top>
         <v-row>
-          <v-col
-            sm="12"
-            md="9"
-          >
+          <v-col sm="12" md="9">
             <v-toolbar flat>
               <v-toolbar-title>
                 <h1 class="blue--text">{{ title }}</h1>
@@ -144,24 +133,29 @@
       </template>
 
       <template v-slot:[`item.gender`]="{ item }">
-        <v-icon
-          :color="item.gender === 0 ? 'pink' : 'blue'"
-          large
-        >
+        <v-icon :color="item.gender === 0 ? 'pink' : 'blue'" large>
           {{ item.gender === 0 ? "mdi-human-female" : "mdi-human-male" }}
         </v-icon>
       </template>
 
       <template v-slot:[`item.phoneNumber`]="{ item }">
-        <pre class="ltr text-right">{{ toPersianString(`0${item.phoneNumber}`) }}</pre>
+        <pre class="ltr text-right">{{
+          toPersianString(`0${item.phoneNumber}`)
+        }}</pre>
       </template>
 
       <template v-slot:[`item.erpCustomerType`]="{ item }">
-        <pre class="ltr text-right">{{ toPersianString(item.erpCustomerType) }}</pre>
+        <pre class="ltr text-right">{{
+          toPersianString(item.erpCustomerType)
+        }}</pre>
       </template>
 
       <template v-slot:[`item.loggedInAt`]="{ item }">
-        <pre class="ltr text-right">{{ item.loggedInAt ? toPersianString(toPersianTime(item.loggedInAt)) : null }}</pre>
+        <pre class="ltr text-right">{{
+          item.loggedInAt
+            ? toPersianString(toPersianTime(item.loggedInAt))
+            : null
+        }}</pre>
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
