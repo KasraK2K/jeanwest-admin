@@ -153,7 +153,7 @@
       </template>
 
       <template v-slot:[`item.phoneNumber`]="{ item }">
-        <pre class="ltr text-right">{{ toPersianString(item.phoneNumber) }}</pre>
+        <pre class="ltr text-right">{{ toPersianString(`0${item.phoneNumber}`) }}</pre>
       </template>
 
       <template v-slot:[`item.erpCustomerType`]="{ item }">

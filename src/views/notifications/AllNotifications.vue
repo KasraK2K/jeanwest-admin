@@ -331,6 +331,9 @@ export default Vue.extend({
     deleteNotification(id: string): void {
       NotificationService.softDelete(id).then(() => this.getList());
     },
+    restoreNotification(id: string): void {
+      console.log(`restore ${id}`);
+    },
   },
   mounted(): void {
     this.getList();
