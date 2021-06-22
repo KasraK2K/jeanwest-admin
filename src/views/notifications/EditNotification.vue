@@ -43,7 +43,7 @@
                 color="blue"
                 :show-size="1000"
                 truncate-length="30"
-                @change="getSrcFromFile(formImage)"
+                @change="getSrcFromFile('imageUrl', formImage)"
               ></v-file-input>
             </v-col>
 
@@ -51,21 +51,37 @@
               sm="12"
               :md="formCondition() ? '6' : '3'"
             >
-              <v-autocomplete
-                label="نوع"
-                v-model="formType"
-                :items="selectItems"
-                item-text="text"
-                item-value="value"
-                disabled
-                return-object
-              >
-                <v-icon
-                  slot="prepend"
-                  color="blue"
-                >mdi-alarm-light-off</v-icon>
-              </v-autocomplete>
+              <v-file-input
+                v-model="formIcon"
+                accept="image/png, image/jpeg, image/bmp"
+                placeholder="آیکون اعلان را انتخاب کنید"
+                prepend-icon="mdi-wallpaper"
+                color="blue"
+                :show-size="1000"
+                truncate-length="30"
+                @change="getSrcFromFile('iconUrl', formIcon)"
+              ></v-file-input>
             </v-col>
+
+            <!-- <v-col
+                sm="12"
+                :md="formCondition() ? '6' : '3'"
+              >
+                <v-autocomplete
+                  label="نوع"
+                  v-model="formType"
+                  :items="selectItems"
+                  item-text="text"
+                  item-value="value"
+                  disabled
+                  return-object
+                >
+                  <v-icon
+                    slot="prepend"
+                    color="blue"
+                  >mdi-alarm-light-off</v-icon>
+                </v-autocomplete>
+              </v-col> -->
           </v-row>
           <!-- Message Body -->
           <editor
@@ -120,6 +136,7 @@
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import NotificationService from "@/services/Notification.service";
+import MediaService from "@/services/Media.service";
 import { INotifications } from "@/interfaces/entities/notification.interface";
 
 export default Vue.extend({
@@ -139,7 +156,9 @@ export default Vue.extend({
       formContent: "",
       formType: { text: "", value: "" },
       formImage: null,
+      formIcon: null,
       imageUrl: "",
+      iconUrl: "",
       breadcrumbs: [
         {
           text: "صفحه اصلی",
@@ -174,25 +193,36 @@ export default Vue.extend({
         this.formTitle = notification.title;
         this.formContent = notification.body;
         this.imageUrl = notification.image;
+        this.iconUrl = notification.icon;
       });
     },
     submitData(): void {
       const data = {
         title: this.formTitle,
         body: this.formContent,
-        // type: this.formType && this.formType.value,
-        image: this.imageUrl,
       };
-      // use service to upload image 'this.formImage'
-      NotificationService.edit(data, this.id).then((response) => {
-        Vue.prototype.$toast("success", "با موفقیت آپدیت شد.");
-        this.$router.go(-1);
-      });
+      MediaService.upload("image", this.formImage)
+        .then((response) => {
+          if (response.data.statusCode === 201)
+            Object.assign(data, { image: "/" + response.data.data.image });
+        })
+        .then(() => {
+          MediaService.upload("icon", this.formIcon)
+            .then((response) => {
+              if (response.data.statusCode === 201)
+                Object.assign(data, { icon: "/" + response.data.data.image });
+            })
+            .then(() => {
+              NotificationService.edit(data, this.id).then(() => {
+                Vue.prototype.$toast("success", "با موفقیت آپدیت شد.");
+                this.$router.go(-1);
+              });
+            });
+        });
     },
-    getSrcFromFile(file: FileReader): void {
+    getSrcFromFile(type: string, file: FileReader): void {
       // FIXME: upload image and set this.image with uploaded image response
-      if (file) this.imageUrl = URL.createObjectURL(file);
-      else this.imageUrl = undefined;
+      this[type] = file ? URL.createObjectURL(file) : undefined;
     },
     formCondition(): boolean {
       return !!(
