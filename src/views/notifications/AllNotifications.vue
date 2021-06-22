@@ -8,7 +8,7 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card
+    <!-- <v-card
       class="mb-8"
       elevation="1"
       outlined
@@ -16,21 +16,6 @@
     >
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
-        <v-col class="col-12 col-md-3">
-          <v-autocomplete
-            label="نوع"
-            v-model="type"
-            :items="[
-              { text: 'پیامک', value: 'SMS' },
-              { text: 'اعلان', value: 'PUSH' },
-            ]"
-            item-text="text"
-            item-value="value"
-            @change="paginateGenerator({ page: 1 })"
-            outlined
-            hide-details="auto"
-          ></v-autocomplete>
-        </v-col>
 
         <v-col class="col-12 col-md-3">
           <v-autocomplete
@@ -78,7 +63,7 @@
           </v-menu>
         </v-col>
       </v-row>
-    </v-card>
+    </v-card> -->
     <!-- ----------------------------- END: Filter ----------------------------- -->
 
     <!-- ------------------------------------------------------------------------ */
@@ -90,7 +75,6 @@
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'عنوان', value: 'title', sortable: false },
-        { text: 'نوع', value: 'type' },
         { text: 'زمان ایجاد', value: 'created_at' },
         { text: 'زمان بروزرسانی', value: 'updated_at' },
         { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
@@ -146,12 +130,6 @@
         {{ toPersianString(item.no) }}
       </template>
 
-      <template v-slot:[`item.type`]="{ item }">
-        <span :class="item.type === 'SMS' ? 'purple--text' : 'indigo--text'">
-          {{ item.type === "SMS" ? "پیامک" : "اعلان" }}
-        </span>
-      </template>
-
       <template v-slot:[`item.created_at`]="{ item }">
         {{ toPersianString(toPersianTime(item.datetime.created_at)) }}
       </template>
@@ -167,7 +145,6 @@
       <template v-slot:[`item.status`]="{ item }">
         <!-- edit -->
         <v-chip
-          v-if="canDelete(item)"
           class="ml-2"
           color="blue"
           link
@@ -185,7 +162,6 @@
 
         <!-- delete -->
         <v-chip
-          v-if="canDelete(item)"
           color="red"
           link
           label
@@ -262,7 +238,6 @@ export default Vue.extend({
       pageCount: 1,
       limit: 10,
       // filter
-      type: undefined,
       status: undefined,
       dates: undefined,
       datesMenu: false,
@@ -311,7 +286,6 @@ export default Vue.extend({
           page: { eq: this.page },
           limit: { eq: this.limit },
         },
-        // type: this.type,
         // status: this.status,
         // dates: this.dates,
       };
@@ -339,9 +313,6 @@ export default Vue.extend({
     clearDateFilter(): void {
       this.dates = undefined;
       this.paginateGenerator();
-    },
-    canDelete(item: Record<string, unknown>): boolean {
-      return item.type !== "SMS" || item.status === 0;
     },
     deleteNotification(id: string): void {
       console.log("delete id:", id);
