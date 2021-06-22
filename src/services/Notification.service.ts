@@ -26,5 +26,7 @@ export default {
     return await apiClient.patch(`${modulePath}/${id}`, data);
   },
 
-  // async softDelete() {},
+  async softDelete(id: string): Promise<AxiosResponse> {
+    return await apiClient.delete(`${modulePath}/${id}`);
+  },
 };

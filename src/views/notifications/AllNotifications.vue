@@ -162,6 +162,7 @@
 
         <!-- delete -->
         <v-chip
+          v-if="!item.datetime.deleted_at"
           color="red"
           link
           label
@@ -172,6 +173,19 @@
           @click="deleteNotification(item.id)"
         >
           حذف
+        </v-chip>
+        <v-chip
+          v-else
+          color="green"
+          link
+          label
+          outlined
+          close
+          close-icon="mdi-delete-restore"
+          @click:close="restoreNotification(item.id)"
+          @click="restoreNotification(item.id)"
+        >
+          بازیابی
         </v-chip>
       </template>
     </v-data-table>
@@ -315,8 +329,7 @@ export default Vue.extend({
       this.paginateGenerator();
     },
     deleteNotification(id: string): void {
-      console.log("delete id:", id);
-      // use service for delete notification with id
+      NotificationService.softDelete(id).then(() => this.getList());
     },
   },
   mounted(): void {
