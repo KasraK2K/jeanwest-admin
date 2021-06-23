@@ -173,13 +173,13 @@ export default Vue.extend({
       MediaService.upload("image", this.formImage)
         .then((response) => {
           if (response.data.statusCode === 201)
-            Object.assign(data, { image: "/" + response.data.data.image });
+            Object.assign(data, { image: response.data.data.image });
         })
         .then(() => {
           MediaService.upload("icon", this.formIcon)
             .then((response) => {
               if (response.data.statusCode === 201)
-                Object.assign(data, { icon: "/" + response.data.data.image });
+                Object.assign(data, { icon: response.data.data.image });
             })
             .then(() => {
               NotificationService.edit(data, this.id).then(() => {
