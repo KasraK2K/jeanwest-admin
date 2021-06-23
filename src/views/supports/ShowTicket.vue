@@ -273,7 +273,7 @@ export default Vue.extend({
       title,
       formHint: undefined,
       formStatus: { text: undefined, value: undefined },
-      formText: undefined,
+      formText: "",
       pagination: {
         option: { page: { eq: 1 }, limit: { eq: 1 } },
         filter: { id: { eq: this.id } },
@@ -315,9 +315,14 @@ export default Vue.extend({
         text: this.formText,
         code: (this as any).result.code,
       };
-      SupportService.reply(data).then(() => {
-        this.findOne();
-      });
+      SupportService.reply(data)
+        .then(() => {
+          this.formHint = undefined;
+          this.formText = "";
+        })
+        .then(() => {
+          this.findOne();
+        });
       // use service for send data to server
     },
     customerColor(): string {
