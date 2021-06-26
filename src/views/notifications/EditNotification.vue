@@ -26,24 +26,7 @@
               </v-text-field>
             </v-col>
 
-            <v-col sm="12" :md="formCondition() ? '4' : '2'">
-              <v-autocomplete
-                label="وضعیت"
-                name="status"
-                v-model="formType"
-                :items="selectItems"
-                item-text="text"
-                item-value="value"
-                hide-details="auto"
-                hide-selected
-                return-object
-                @change="updateStatus"
-              >
-                <v-icon slot="prepend">mdi-state-machine</v-icon>
-              </v-autocomplete>
-            </v-col>
-
-            <v-col sm="12" :md="formCondition() ? '4' : '2'">
+            <v-col sm="12" :md="formCondition() ? '6' : '3'">
               <v-file-input
                 v-model="formImage"
                 accept="image/png, image/jpeg, image/bmp"
@@ -56,7 +39,7 @@
               ></v-file-input>
             </v-col>
 
-            <v-col sm="12" :md="formCondition() ? '4' : '2'">
+            <v-col sm="12" :md="formCondition() ? '6' : '3'">
               <v-file-input
                 v-model="formIcon"
                 accept="image/png, image/jpeg, image/bmp"
@@ -104,8 +87,6 @@
           ></v-img>
 
           <v-card-text>
-            <span>{{ formType.text }}</span>
-
             <div class="px-4" v-html="formContent"></div>
           </v-card-text>
         </v-card>
@@ -127,7 +108,6 @@ export default Vue.extend({
     id: { type: String, required: true },
   },
   data(): {
-    formType: { text: string; value: string };
     [key: string]: unknown;
     notification?: INotifications;
   } {
@@ -139,7 +119,6 @@ export default Vue.extend({
       notification: undefined,
       formTitle: "",
       formContent: "",
-      formType: { text: "", value: "" },
       formImage: null,
       formIcon: null,
       imageUrl: "",
@@ -220,8 +199,7 @@ export default Vue.extend({
         this.imageUrl ||
         this.iconUrl ||
         this.formTitle ||
-        this.formContent ||
-        this.formType.text
+        this.formContent
       );
     },
   },
