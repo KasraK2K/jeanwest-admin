@@ -71,6 +71,7 @@
           </v-row>
           <!-- Message Body -->
           <editor
+            v-if="ready"
             :api-key="tinyApiKey()"
             :init="tinyInit()"
             v-model="formContent"
@@ -85,9 +86,22 @@
 
       <v-col v-if="formCondition()" sm="12" md="3">
         <v-card elevation="2" class="mx-auto" max-width="374">
-          <v-card-title>{{ formTitle }}</v-card-title>
+          <v-card-title>
+            <v-img
+              v-if="imageUrl"
+              max-width="48"
+              height="auto"
+              :src="mediaPath(iconUrl)"
+              class="ml-3 rounded-xl"
+            ></v-img>
+            <span>{{ formTitle }}</span>
+          </v-card-title>
 
-          <v-img v-if="imageUrl" height="auto" :src="imageUrl"></v-img>
+          <v-img
+            v-if="imageUrl"
+            height="auto"
+            :src="mediaPath(imageUrl)"
+          ></v-img>
 
           <v-card-text>
             <span>{{ formType.text }}</span>
@@ -106,6 +120,7 @@ import Editor from "@tinymce/tinymce-vue";
 import NotificationService from "@/services/Notification.service";
 import MediaService from "@/services/Media.service";
 import { INotifications } from "@/interfaces/entities/notification.interface";
+import { globals } from "@/common/globals/globals";
 
 export default Vue.extend({
   props: {
@@ -118,6 +133,8 @@ export default Vue.extend({
   } {
     const title = "ویرایش اعلان ";
     return {
+      globals,
+      ready: false,
       title,
       notification: undefined,
       formTitle: "",
@@ -157,6 +174,7 @@ export default Vue.extend({
     findOne(id: string): void {
       NotificationService.findOne(id).then((response) => {
         const notification: INotifications = response.data.data;
+        this.ready = true;
         this.notification = notification;
         this.title += notification.title;
         this.formTitle = notification.title;
@@ -170,7 +188,7 @@ export default Vue.extend({
         title: this.formTitle,
         body: this.formContent,
       };
-      MediaService.upload("image", this.formImage)
+      MediaService.upload("banner", this.formImage)
         .then((response) => {
           if (response.data.statusCode === 201)
             Object.assign(data, { image: response.data.data.image });
@@ -183,6 +201,7 @@ export default Vue.extend({
             })
             .then(() => {
               NotificationService.edit(data, this.id).then(() => {
+                console.log(data);
                 Vue.prototype.$toast("success", "با موفقیت آپدیت شد.");
                 this.$router.go(-1);
               });
@@ -194,12 +213,12 @@ export default Vue.extend({
       // TODO: update ticket status with `id` props
     },
     getSrcFromFile(type: string, file: FileReader): void {
-      // FIXME: upload image and set this.image with uploaded image response
       this[type] = file ? URL.createObjectURL(file) : undefined;
     },
     formCondition(): boolean {
       return !!(
         this.imageUrl ||
+        this.iconUrl ||
         this.formTitle ||
         this.formContent ||
         this.formType.text

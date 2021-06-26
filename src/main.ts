@@ -73,17 +73,17 @@ Gantt(Highcharts);
 Vue.config.errorHandler = function (err, vm, info) {
   Vue.prototype.$toast("error", `"${err.message}" in "${info}"`);
   // FIXME: DELETE THIS CONDITION
-  if (vm) {
-    console.log();
-  }
+  console.log("err:", err);
+  // console.log("vm:", vm);
+  // console.log("info:", info);
 };
 
 Vue.config.warnHandler = function (msg, vm, trace) {
   console.log("Warning Handler:", msg);
   // FIXME: DELETE THIS CONDITION
-  if (vm && trace) {
-    console.log(trace);
-  }
+  console.log("msg:", msg);
+  // console.log("vm:", vm);
+  // console.log("trace:", trace);
 };
 /* ----------------------- END: Error/Warning Handling ---------------------- */
 

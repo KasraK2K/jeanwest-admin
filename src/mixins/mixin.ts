@@ -5,6 +5,7 @@ import {
   toEnlishString,
 } from "@/mixins/string.mixin";
 import { toPersianTime, toGregorian } from "@/mixins/date.mixin";
+import { globals } from "@/common/globals/globals";
 
 export const methods = {
   methods: {
@@ -15,5 +16,6 @@ export const methods = {
     toEnlishString: toEnlishString,
     toPersianTime: toPersianTime,
     toGregorian: toGregorian,
+    mediaPath: (path: string) => globals.mediaServerStatic + path,
   },
 };
