@@ -1,13 +1,14 @@
+import { IRouter } from "@/interfaces/others/route.interface";
 import AllOrders from "@/views/orders/AllOrders.vue";
 import ShowOrder from "@/views/orders/AllOrders.vue";
 
-export const orders = [
+export const orders: IRouter[] = [
   {
     path: "/orders/all",
     name: "AllOrders",
     component: AllOrders,
     meta: {
-      title: "All Orders",
+      title: "لیست سفارشات",
     },
   },
   {
@@ -16,7 +17,7 @@ export const orders = [
     component: ShowOrder,
     props: true,
     meta: {
-      title: "Show Order",
+      title: "نمایش سفارش",
     },
   },
 ];

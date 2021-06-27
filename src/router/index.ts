@@ -21,7 +21,7 @@ const routes: Array<RouteConfig> = [
     name: "Home",
     component: Home,
     meta: {
-      title: "Dashboard",
+      title: "داشبورد",
     },
   },
   ...auths,
@@ -42,7 +42,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title || to.name || "jeanwest admin";
+  document.title = to.meta?.title || to.name || "پنل ادمین جین‌وست";
   next();
 });
 

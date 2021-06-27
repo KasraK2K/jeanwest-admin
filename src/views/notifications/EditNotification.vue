@@ -167,25 +167,25 @@ export default Vue.extend({
         title: this.formTitle,
         body: this.formContent,
       };
-      MediaService.upload("banner", this.formImage)
-        .then((response) => {
-          if (response.data.statusCode === 201)
-            Object.assign(data, { image: response.data.data.image });
-        })
-        .then(() => {
-          MediaService.upload("icon", this.formIcon)
-            .then((response) => {
-              if (response.data.statusCode === 201)
-                Object.assign(data, { icon: response.data.data.image });
-            })
-            .then(() => {
-              NotificationService.edit(data, this.id).then(() => {
-                console.log(data);
-                Vue.prototype.$toast("success", "با موفقیت آپدیت شد.");
-                this.$router.go(-1);
-              });
-            });
+      try {
+        if (this.formImage)
+          MediaService.upload("banner", this.formImage).then((response) => {
+            if (response.data.statusCode === 201)
+              Object.assign(data, { image: response.data.data.image });
+          });
+        if (this.formIcon)
+          MediaService.upload("icon", this.formIcon).then((response) => {
+            if (response.data.statusCode === 201)
+              Object.assign(data, { icon: response.data.data.image });
+          });
+        NotificationService.edit(data, this.id).then(() => {
+          console.log(data);
+          Vue.prototype.$toast("success", "با موفقیت آپدیت شد.");
+          this.$router.go(-1);
         });
+      } catch (error) {
+        Vue.prototype.$toast("error", error.message);
+      }
     },
     updateStatus(status: Record<string, unknown>) {
       console.log("status:", Number(status.value));

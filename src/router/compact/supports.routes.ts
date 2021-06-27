@@ -1,14 +1,15 @@
 import AllTickets from "@/views/supports/AllTickets.vue";
 import ShowTicket from "@/views/supports/ShowTicket.vue";
 import EditTicket from "@/views/supports/EditTicket.vue";
+import { IRouter } from "@/interfaces/others/route.interface";
 
-export const supports = [
+export const supports: IRouter[] = [
   {
     path: "/supports/ticket/all",
     name: "AllTickets",
     component: AllTickets,
     meta: {
-      title: "All Tickets",
+      title: "لیست تیکت‌ها",
     },
   },
   {
@@ -17,7 +18,7 @@ export const supports = [
     component: ShowTicket,
     props: true,
     meta: {
-      title: "Show Ticket",
+      title: "نمایش تیکت",
     },
   },
   {
@@ -26,7 +27,7 @@ export const supports = [
     component: EditTicket,
     props: true,
     meta: {
-      title: "Edit Ticket",
+      title: "ویرایش تیکت",
     },
   },
 ];

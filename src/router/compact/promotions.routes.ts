@@ -1,26 +1,27 @@
-/* -------------------------------- discount -------------------------------- */
+// ─── DISCOUNT ───────────────────────────────────────────────────────────────────
 import AllDiscounts from "@/views/promotions/discounts/AllDiscounts.vue";
 import CreateDiscounts from "@/views/promotions/discounts/CreateDiscounts.vue";
 
-/* --------------------------------- offers --------------------------------- */
+// ─── OFFERS ─────────────────────────────────────────────────────────────────────
 import AllOffers from "@/views/promotions/offers/AllOffers.vue";
 
-/* -------------------------------- jeapoints ------------------------------- */
+// ─── JEAPOINTS ──────────────────────────────────────────────────────────────────
 import AllJeanPoints from "@/views/promotions/jeanspoints/AllJeanPoints.vue";
 
-/* --------------------------------- groups --------------------------------- */
+// ─── GROUPS ─────────────────────────────────────────────────────────────────────
 import AllGroups from "@/views/promotions/groups/AllGroups.vue";
+import { IRouter } from "@/interfaces/others/route.interface";
 
-export const promotions = [
-  /* -------------------------------------------------------------------------- */
-  /*                                  discount                                  */
-  /* -------------------------------------------------------------------------- */
+export const promotions: IRouter[] = [
+  // ──────────────────────────────────────────────────────────────────
+  //   :::::: D I S C O U N T : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────────
   {
     path: "/promotions/discount/all",
     name: "AllDiscounts",
     component: AllDiscounts,
     meta: {
-      title: "All Discounts",
+      title: "لیست تخفیف‌ها",
     },
   },
   {
@@ -28,43 +29,43 @@ export const promotions = [
     name: "CreateDiscounts",
     component: CreateDiscounts,
     meta: {
-      title: "Create Discount",
+      title: "ایجاد تخفیف",
     },
   },
 
-  /* -------------------------------------------------------------------------- */
-  /*                                   offers                                   */
-  /* -------------------------------------------------------------------------- */
+  // ──────────────────────────────────────────────────────────────
+  //   :::::: O F F E R S : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────
   {
     path: "/promotions/offers/all",
     name: "AllOffers",
     component: AllOffers,
     meta: {
-      title: "All Offers",
+      title: "لیست پیشنهادات",
     },
   },
 
-  /* -------------------------------------------------------------------------- */
-  /*                                  jeapoints                                 */
-  /* -------------------------------------------------------------------------- */
+  // ────────────────────────────────────────────────────────────────────
+  //   :::::: J E A P O I N T S : :  :   :    :     :        :          :
+  // ────────────────────────────────────────────────────────────────────
   {
     path: "/promotions/jeanpoints/all",
     name: "AllJeanPoints",
     component: AllJeanPoints,
     meta: {
-      title: "All JeanPoints",
+      title: "لیست امتیازات",
     },
   },
 
-  /* -------------------------------------------------------------------------- */
-  /*                                   groups                                   */
-  /* -------------------------------------------------------------------------- */
+  // ──────────────────────────────────────────────────────────────
+  //   :::::: G R O U P S : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────
   {
     path: "/promotions/groups/all",
     name: "AllGroups",
     component: AllGroups,
     meta: {
-      title: "All Groups",
+      title: "لیست گروه‌ها",
     },
   },
 ];

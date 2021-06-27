@@ -1,13 +1,14 @@
+import { IRouter } from "@/interfaces/others/route.interface";
 import AllPayments from "@/views/payments/AllPayments.vue";
 import ShowPayment from "@/views/payments/AllPayments.vue";
 
-export const payments = [
+export const payments: IRouter[] = [
   {
     path: "/payments/all",
     name: "AllPayments",
     component: AllPayments,
     meta: {
-      title: "All Payments",
+      title: "لیست پرداخت‌ها",
     },
   },
   {
@@ -16,7 +17,7 @@ export const payments = [
     component: ShowPayment,
     props: true,
     meta: {
-      title: "Show Payment",
+      title: "نمایش پرداخت",
     },
   },
 ];

@@ -275,7 +275,7 @@ export default Vue.extend({
     },
     getList(): void {
       this.loading = true;
-      NotificationService.getList((this as any).pagination).then((response) => {
+      NotificationService.getList(this.pagination).then((response) => {
         const data = response.data.data;
         this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
         this.items = data.result;

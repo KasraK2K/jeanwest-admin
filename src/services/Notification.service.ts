@@ -1,3 +1,4 @@
+import { IPagination } from "./../interfaces/others/pagination.interface";
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
 
@@ -7,7 +8,7 @@ export default {
   /**
    * @param { Record<string, unknown> } filter
    */
-  async getList(filter: Record<string, unknown>): Promise<AxiosResponse> {
+  async getList(filter: IPagination): Promise<AxiosResponse> {
     return await apiClient.post(`${modulePath}/list`, filter);
   },
 

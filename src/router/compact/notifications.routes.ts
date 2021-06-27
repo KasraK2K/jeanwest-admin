@@ -1,14 +1,15 @@
+import { IRouter } from "@/interfaces/others/route.interface";
 import AllNotifications from "@/views/notifications/AllNotifications.vue";
 import CreateNotification from "@/views/notifications/CreateNotification.vue";
 import EditNotification from "@/views/notifications/EditNotification.vue";
 
-export const notifications = [
+export const notifications: IRouter[] = [
   {
     path: "/notifications/all",
     name: "AllNotifications",
     component: AllNotifications,
     meta: {
-      title: "All Notifications",
+      title: "لیست اعلانات",
     },
   },
   {
@@ -16,7 +17,7 @@ export const notifications = [
     name: "CreateNotification",
     component: CreateNotification,
     meta: {
-      title: "Create Notification",
+      title: "ایجاد اعلان",
     },
   },
   {
@@ -25,7 +26,7 @@ export const notifications = [
     component: EditNotification,
     props: true,
     meta: {
-      title: "Edit Notification",
+      title: "ویرایش اعلان",
     },
   },
 ];

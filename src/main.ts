@@ -8,13 +8,13 @@ import Highcharts from "highcharts";
 import Stock from "highcharts/modules/stock";
 import Gantt from "highcharts/modules/gantt";
 import HighchartsVue from "highcharts-vue";
-import upperFirst from "lodash/upperFirst";
-import camelCase from "lodash/camelCase";
+// import upperFirst from "lodash/upperFirst";
+// import camelCase from "lodash/camelCase";
 import toast from "@/plugins/toast";
 import math from "@/plugins/math";
 import { methods } from "@/mixins/mixin";
-import * as Sentry from "@sentry/vue";
-import { Integrations } from "@sentry/tracing";
+// import * as Sentry from "@sentry/vue";
+// import { Integrations } from "@sentry/tracing";
 
 /* -------------------------------------------------------------------------- */
 /*                           START: Register Sentry                           */
@@ -72,18 +72,16 @@ Gantt(Highcharts);
 /* -------------------------------------------------------------------------- */
 Vue.config.errorHandler = function (err, vm, info) {
   Vue.prototype.$toast("error", `"${err.message}" in "${info}"`);
-  // FIXME: DELETE THIS CONDITION
   console.log("err:", err);
-  // console.log("vm:", vm);
-  // console.log("info:", info);
+  console.log("vm:", vm);
+  console.log("info:", info);
 };
 
 Vue.config.warnHandler = function (msg, vm, trace) {
   console.log("Warning Handler:", msg);
-  // FIXME: DELETE THIS CONDITION
   console.log("msg:", msg);
-  // console.log("vm:", vm);
-  // console.log("trace:", trace);
+  console.log("vm:", vm);
+  console.log("trace:", trace);
 };
 /* ----------------------- END: Error/Warning Handling ---------------------- */
 

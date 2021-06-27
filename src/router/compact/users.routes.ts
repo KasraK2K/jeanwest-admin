@@ -1,12 +1,13 @@
+import { IRouter } from "@/interfaces/others/route.interface";
 import AllAdmins from "@/views/admins/AllAdmins.vue";
 
-export const users = [
+export const users: IRouter[] = [
   {
     path: "/admins",
     name: "AllAdmins",
     component: AllAdmins,
     meta: {
-      title: "All Admins",
+      title: "لیست ادمین‌ها",
     },
   },
 ];

@@ -1,14 +1,15 @@
+import { IRouter } from "@/interfaces/others/route.interface";
 import AllCustomers from "@/views/customers/AllCustomers.vue";
 // import CreateNotification from "@/views/notifications/CreateNotification.vue";
 // import EditNotification from "@/views/notifications/EditNotification.vue";
 
-export const customers = [
+export const customers: IRouter[] = [
   {
     path: "/customers/all",
     name: "AllCustomers",
     component: AllCustomers,
     meta: {
-      title: "All Customers",
+      title: "لیست کاربران",
     },
   },
   // {

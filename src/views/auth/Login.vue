@@ -1,7 +1,12 @@
 <template>
   <v-container style="height: 100vh" class="d-flex align-center justify-center">
     <!-- get pin -->
-    <v-form v-if="showMobile" v-model="valid" style="min-width: 360px">
+    <v-form
+      v-if="showMobile"
+      v-model="valid"
+      @submit.prevent="getPin"
+      style="min-width: 360px"
+    >
       <v-card class="py-6 px-8" elevation="3" outlined rounded>
         <v-card-title>ورود به سایت</v-card-title>
 
@@ -20,13 +25,18 @@
         </v-col>
 
         <v-card-actions class="pt-4">
-          <v-btn color="primary" @click="getPin">دریافت کد</v-btn>
+          <v-btn type="submit" color="primary">دریافت کد</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
 
     <!-- get token -->
-    <v-form v-if="showPin" v-model="valid" style="min-width: 360px">
+    <v-form
+      v-if="showPin"
+      v-model="valid"
+      @submit.prevent="login"
+      style="min-width: 360px"
+    >
       <v-card class="py-6 px-8" elevation="3" outlined rounded>
         <v-card-title>ورود به سایت</v-card-title>
 
@@ -58,7 +68,7 @@
         </v-col>
 
         <v-card-actions class="pt-4">
-          <v-btn color="primary" @click="login">ورود</v-btn>
+          <v-btn type="submit" color="primary">ورود</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
