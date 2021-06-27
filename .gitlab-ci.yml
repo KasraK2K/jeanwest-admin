@@ -25,8 +25,9 @@ Develop_Stage:
   script:
     - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "pm2 ls"
     - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "pm2 delete jeanswest-admin > /dev/null 2>&1 || FAILED=true"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "rm -rf /home/gitlab/jeanswest-admin"
+    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "rm -rf /home/gitlab/jeanswest-admin/"
     - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/ && git clone git@gitlab.avakatan.ir:K.Karami/jeanwesr-admin.git jeanswest-admin"
+    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && git checkout develop"
     - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && yarn"
     - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && pm2 start 'yarn serve' -p 8080 --name jeanswest-admin"
     - echo "http://JWApp-Dev-0-1.AVAKATAN.ir:8080/"
