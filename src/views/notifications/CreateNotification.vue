@@ -28,22 +28,21 @@
                 color="blue"
                 :show-size="1000"
                 truncate-length="30"
-                @change="getSrcFromFile(formImage)"
+                @change="getSrcFromFile('imageUrl', formImage)"
               ></v-file-input>
             </v-col>
 
             <v-col sm="12" :md="formCondition() ? '6' : '3'">
-              <v-autocomplete
-                label="نوع"
-                v-model="formType"
-                :items="selectItems"
-                item-text="text"
-                item-value="value"
-                disabled
-                return-object
-              >
-                <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
-              </v-autocomplete>
+              <v-file-input
+                v-model="formIcon"
+                accept="image/png, image/jpeg, image/bmp"
+                placeholder="آیکون اعلان را انتخاب کنید"
+                prepend-icon="mdi-wallpaper"
+                color="blue"
+                :show-size="1000"
+                truncate-length="30"
+                @change="getSrcFromFile('iconUrl', formIcon)"
+              ></v-file-input>
             </v-col>
           </v-row>
           <!-- Message Body -->
@@ -62,13 +61,26 @@
 
       <v-col v-if="formCondition()" sm="12" md="3">
         <v-card elevation="2" class="mx-auto" max-width="374">
-          <v-card-title>{{ formTitle }}</v-card-title>
+          <v-card-title>
+            <v-img
+              v-if="imageUrl"
+              max-width="48"
+              height="auto"
+              :src="iconUrl"
+              class="ml-3 rounded-xl"
+            ></v-img>
+            <span>{{ formTitle }}</span>
+          </v-card-title>
 
-          <v-img height="auto" :src="imageUrl"></v-img>
+          <v-img
+            v-if="imageUrl"
+            :max-width="374"
+            :max-height="242"
+            contain
+            :src="imageUrl"
+          ></v-img>
 
           <v-card-text>
-            <span>{{ formType.text }}</span>
-
             <div class="px-4" v-html="formContent"></div>
           </v-card-text>
         </v-card>
@@ -81,20 +93,19 @@
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import NotificationService from "@/services/Notification.service";
+import MediaService from "@/services/Media.service";
 
 export default Vue.extend({
-  data(): {
-    formType: { text: string; value: string };
-    [key: string]: unknown;
-  } {
+  data(): Record<string, unknown> {
     const title = "ایجاد اعلان جدید";
     return {
       title,
       formTitle: "",
       formContent: "",
-      formType: { text: "", value: "" },
       formImage: null,
+      formIcon: null,
       imageUrl: "",
+      iconUrl: "",
       breadcrumbs: [
         {
           text: "صفحه اصلی",
@@ -121,29 +132,41 @@ export default Vue.extend({
     };
   },
   methods: {
-    submitForm() {
-      const data = {
+    async submitForm(): Promise<void> {
+      let data: Record<string, unknown> = {
         title: this.formTitle,
         body: this.formContent,
-        // formType: this.formType.value,
-        image: this.imageUrl,
       };
-      NotificationService.create(data).then((response) => {
-        Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
-        this.$router.go(-1);
-      });
-      // use service to upload image 'this.formImage'
-      // use service for send data to server
+      try {
+        if (this.formImage)
+          await MediaService.upload("banner", this.formImage).then(
+            (response) => {
+              if (response.data.statusCode === 201)
+                data.image = response.data.data.image;
+            }
+          );
+        if (this.formIcon)
+          await MediaService.upload("icon", this.formIcon).then((response) => {
+            if (response.data.statusCode === 201)
+              data.icon = response.data.data.image;
+          });
+        await NotificationService.create(data).then(() => {
+          Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
+          this.$router.go(-1);
+        });
+      } catch (error) {
+        Vue.prototype.$toast("error", error.message);
+      }
     },
-    getSrcFromFile(file: FileReader): void {
-      this.imageUrl = URL.createObjectURL(file);
+    getSrcFromFile(type: string, file: FileReader): void {
+      this[type] = file ? URL.createObjectURL(file) : undefined;
     },
     formCondition() {
-      return (
+      return !!(
         this.imageUrl ||
+        this.iconUrl ||
         this.formTitle ||
-        this.formContent ||
-        this.formType.text
+        this.formContent
       );
     },
   },

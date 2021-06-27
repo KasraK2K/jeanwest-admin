@@ -71,9 +71,9 @@
         <v-card elevation="2" class="mx-auto" max-width="374">
           <v-card-title>
             <v-img
-              v-if="imageUrl"
+              v-if="iconUrl"
               max-width="48"
-              height="auto"
+              height="48"
               :src="mediaPath(iconUrl)"
               class="ml-3 rounded-xl"
             ></v-img>
@@ -82,7 +82,9 @@
 
           <v-img
             v-if="imageUrl"
-            height="auto"
+            :max-width="374"
+            :max-height="242"
+            contain
             :src="mediaPath(imageUrl)"
           ></v-img>
 
@@ -162,23 +164,25 @@ export default Vue.extend({
         this.iconUrl = notification.icon;
       });
     },
-    submitData(): void {
+    async submitData(): Promise<void> {
       const data = {
         title: this.formTitle,
         body: this.formContent,
       };
       try {
         if (this.formImage)
-          MediaService.upload("banner", this.formImage).then((response) => {
-            if (response.data.statusCode === 201)
-              Object.assign(data, { image: response.data.data.image });
-          });
+          await MediaService.upload("banner", this.formImage).then(
+            (response) => {
+              if (response.data.statusCode === 201)
+                Object.assign(data, { image: response.data.data.image });
+            }
+          );
         if (this.formIcon)
-          MediaService.upload("icon", this.formIcon).then((response) => {
+          await MediaService.upload("icon", this.formIcon).then((response) => {
             if (response.data.statusCode === 201)
               Object.assign(data, { icon: response.data.data.image });
           });
-        NotificationService.edit(data, this.id).then(() => {
+        await NotificationService.edit(data, this.id).then(() => {
           console.log(data);
           Vue.prototype.$toast("success", "با موفقیت آپدیت شد.");
           this.$router.go(-1);
@@ -186,10 +190,6 @@ export default Vue.extend({
       } catch (error) {
         Vue.prototype.$toast("error", error.message);
       }
-    },
-    updateStatus(status: Record<string, unknown>) {
-      console.log("status:", Number(status.value));
-      // TODO: update ticket status with `id` props
     },
     getSrcFromFile(type: string, file: FileReader): void {
       this[type] = file ? URL.createObjectURL(file) : undefined;

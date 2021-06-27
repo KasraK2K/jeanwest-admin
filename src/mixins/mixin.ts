@@ -16,6 +16,9 @@ export const methods = {
     toEnlishString: toEnlishString,
     toPersianTime: toPersianTime,
     toGregorian: toGregorian,
-    mediaPath: (path: string) => globals.mediaServerStatic + path,
+    mediaPath: (path: string) => {
+      if (path.slice(0, 5) === "blob:") return path;
+      else return globals.mediaServerStatic + path;
+    },
   },
 };

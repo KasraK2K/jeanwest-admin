@@ -17,6 +17,7 @@ export default {
   },
 
   async create(data: Record<string, unknown>): Promise<AxiosResponse> {
+    console.log(data);
     return await apiClient.post(modulePath, data);
   },
 
