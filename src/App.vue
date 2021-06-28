@@ -148,20 +148,24 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
-@import "@/assets/scss/vuetify.scss";
-a {
-  text-decoration: none;
-}
+<style lang="sass">
+@import "@/assets/scss/vuetify.scss"
+
+a
+  text-decoration: none
+
+// tinymce toolbar color
 .tox .tox-toolbar,
 .tox .tox-toolbar__overflow,
-.tox .tox-toolbar__primary {
-  background-color: #1a1a2f !important;
-} // tinymce toolbar color
-.ltr {
-  direction: ltr !important;
-}
-.rtl {
-  direction: rtl !important;
-}
+.tox .tox-toolbar__primary
+  background-color: #1a1a2f !important
+
+.ltr
+  direction: ltr !important
+
+.rtl
+  direction: rtl !important
+
+.pointer
+  cursor: pointer
 </style>

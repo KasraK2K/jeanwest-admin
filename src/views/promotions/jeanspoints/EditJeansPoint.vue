@@ -12,7 +12,12 @@
           id="jeanspoint"
           class="mt-2 pa-4"
         >
-          <v-card-title>ویرایش امتیاز</v-card-title>
+          <v-card-title>
+            <label
+              for="JPName"
+              class="pointer"
+            >ویرایش امتیاز</label>
+          </v-card-title>
 
           <v-form @submit.prevent="updateJeansPoint">
             <v-row>
@@ -25,6 +30,7 @@
                   v-model="JPName"
                   hide-details="auto"
                   name="name"
+                  id="JPName"
                 />
               </v-col>
 
@@ -41,7 +47,6 @@
                 ]"
                   item-text="text"
                   item-value="value"
-                  outlined
                   hide-details="auto"
                   clearable
                 ></v-autocomplete>
@@ -68,7 +73,12 @@
           id="group"
           class="mt-2 pa-4"
         >
-          <v-card-title>ویرایش گروه</v-card-title>
+          <v-card-title>
+            <label
+              for="GName"
+              class="pointer"
+            >ویرایش گروه</label>
+          </v-card-title>
 
           <v-form @submit.prevent="updateGroup">
             <v-row>
@@ -81,6 +91,7 @@
                   v-model="GName"
                   hide-details="auto"
                   name="name"
+                  id="GName"
                 />
               </v-col>
 
@@ -97,7 +108,6 @@
                 ]"
                   item-text="text"
                   item-value="value"
-                  outlined
                   hide-details="auto"
                   clearable
                 ></v-autocomplete>
