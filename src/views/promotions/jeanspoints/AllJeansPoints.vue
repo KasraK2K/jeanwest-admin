@@ -158,8 +158,8 @@
         { text: 'محدودیت در تعداد ', value: 'countLimit' },
         { text: 'حداقل مبلغ خرید', value: 'minTotal' },
         { text: 'اعمال همزمان', value: 'singularity' },
-        { text: 'زمان شروع', value: 'start_at' },
-        { text: 'زمان پایان', value: 'end_at' },
+        { text: 'زمان ایجاد', value: 'created_at' },
+        { text: 'زمان بروزرسانی', value: 'updated_at' },
         {
           text: 'گزینه‌ها',
           value: 'options',
@@ -227,12 +227,12 @@
         </span>
       </template>
 
-      <template v-slot:[`item.start_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.start_at)) }}
+      <template v-slot:[`item.created_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.created_at)) }}
       </template>
 
-      <template v-slot:[`item.end_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.end_at)) }}
+      <template v-slot:[`item.updated_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
       </template>
 
       <template v-slot:[`item.options`]="{ item }">
