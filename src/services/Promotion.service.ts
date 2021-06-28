@@ -4,9 +4,9 @@ import { apiClient } from "./Axios.service";
 const modulePath = "/promotion";
 
 export default {
-  /* -------------------------------------------------------------------------- */
-  /*                                 JeansPoint                                 */
-  /* -------------------------------------------------------------------------- */
+  // ──────────────────────────────────────────────────────────────────────
+  //   :::::: J E A N S P O I N T : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────────────
   /**
    * @param { Record<string, unknown> } filter
    */
@@ -18,13 +18,17 @@ export default {
     return await apiClient.get(`${modulePath}/point/${id}`);
   },
 
-  /* -------------------------------------------------------------------------- */
-  /*                                    Group                                   */
-  /* -------------------------------------------------------------------------- */
+  // ────────────────────────────────────────────────────────────
+  //   :::::: G R O U P : :  :   :    :     :        :          :
+  // ────────────────────────────────────────────────────────────
   /**
    * @param { Record<string, unknown> } filter
    */
   async getGroupList(filter: Record<string, unknown>): Promise<AxiosResponse> {
     return await apiClient.post(`${modulePath}/group/list`, filter);
+  },
+
+  async groupSoftDelete(id: string): Promise<AxiosResponse> {
+    return await apiClient.delete(`${modulePath}/group/${id}`);
   },
 };

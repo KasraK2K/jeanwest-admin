@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
+    <v-breadcrumbs
+      :items="breadcrumbs"
+      class="mb-3"
+    ></v-breadcrumbs>
 
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
@@ -90,14 +93,23 @@
       <!-- @page-count="console.log($event)" -->
       <template v-slot:top>
         <v-row>
-          <v-col sm="12" md="9">
+          <v-col
+            sm="12"
+            md="9"
+          >
             <v-toolbar flat>
               <v-toolbar-title>
                 <div class="d-flex justify-start align-center">
                   <h1 class="blue--text">{{ title }}</h1>
-                  <v-divider vertical class="mx-4"></v-divider>
+                  <v-divider
+                    vertical
+                    class="mx-4"
+                  ></v-divider>
                   <router-link :to="{ name: 'CreateNotification' }">
-                    <v-icon color="blue" large>mdi-plus-circle</v-icon>
+                    <v-icon
+                      color="blue"
+                      large
+                    >mdi-plus-circle</v-icon>
                   </router-link>
                 </div>
               </v-toolbar-title>
@@ -162,6 +174,8 @@
         >
           حذف
         </v-chip>
+
+        <!-- restore -->
         <v-chip
           v-else
           color="green"

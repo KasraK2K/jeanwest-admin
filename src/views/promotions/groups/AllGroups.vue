@@ -1,11 +1,18 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
+    <v-breadcrumbs
+      :items="breadcrumbs"
+      class="mb-3"
+    ></v-breadcrumbs>
 
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8" elevation="1" outlined>
+    <v-card
+      class="mb-8"
+      elevation="1"
+      outlined
+    >
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
@@ -20,7 +27,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <!-- <v-col class="col-12 col-md-3">
           <v-autocomplete
             label="وضعیت"
             v-model="active"
@@ -35,7 +42,7 @@
             hide-details="auto"
             clearable
           ></v-autocomplete>
-        </v-col>
+        </v-col> -->
 
         <v-col class="col-12 col-md-3">
           <v-menu
@@ -78,8 +85,9 @@
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'کد', value: 'code' },
-        { text: 'زمان شروع', value: 'start_at' },
-        { text: 'زمان پایان', value: 'end_at' },
+        { text: 'نام', value: 'name' },
+        { text: 'زمان ایجاد', value: 'created_at' },
+        { text: 'زمان بروزرسانی', value: 'updated_at' },
         {
           text: 'گزینه‌ها',
           value: 'options',
@@ -101,7 +109,10 @@
     >
       <template v-slot:top>
         <v-row>
-          <v-col sm="12" md="9">
+          <v-col
+            sm="12"
+            md="9"
+          >
             <v-toolbar flat>
               <v-toolbar-title>
                 <h1 class="blue--text">{{ title }}</h1>
@@ -143,12 +154,12 @@
         </v-tooltip>
       </template>
 
-      <template v-slot:[`item.start_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.start_at)) }}
+      <template v-slot:[`item.created_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.created_at)) }}
       </template>
 
-      <template v-slot:[`item.end_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.end_at)) }}
+      <template v-slot:[`item.updated_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
       </template>
 
       <template v-slot:[`item.options`]="{ item }">
@@ -169,6 +180,7 @@
 
         <!-- delete -->
         <v-chip
+          v-if="!item.datetime.deleted_at"
           color="red"
           link
           label
@@ -179,6 +191,21 @@
           @click="deleteNotification(item.id)"
         >
           حذف
+        </v-chip>
+
+        <!-- restore -->
+        <v-chip
+          v-else
+          color="green"
+          link
+          label
+          outlined
+          close
+          close-icon="mdi-delete-restore"
+          @click:close="restoreNotification(item.id)"
+          @click="restoreNotification(item.id)"
+        >
+          بازیابی
         </v-chip>
       </template>
     </v-data-table>
@@ -324,8 +351,11 @@ export default Vue.extend({
       this.paginateGenerator();
     },
     deleteNotification(id: string): void {
-      console.log("delete id:", id);
-      // use service for delete notification with id
+      PromotionService.groupSoftDelete(id).then(() => this.getList());
+    },
+    restoreNotification(id: string): void {
+      // PromotionService.restore(id).then(() => this.getList());
+      console.log(`restore: ${id}`);
     },
   },
   mounted(): void {
