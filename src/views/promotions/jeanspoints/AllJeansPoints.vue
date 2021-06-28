@@ -1,11 +1,18 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
+    <v-breadcrumbs
+      :items="breadcrumbs"
+      class="mb-3"
+    ></v-breadcrumbs>
 
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8" elevation="1" outlined>
+    <v-card
+      class="mb-8"
+      elevation="1"
+      outlined
+    >
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
@@ -173,7 +180,10 @@
     >
       <template v-slot:top>
         <v-row>
-          <v-col sm="12" md="9">
+          <v-col
+            sm="12"
+            md="9"
+          >
             <v-toolbar flat>
               <v-toolbar-title>
                 <h1 class="blue--text">{{ title }}</h1>
@@ -235,24 +245,10 @@
           outlined
           close
           close-icon="mdi-square-edit-outline"
-          @click:close="$router.push({ path: 'editJeanPoints' })"
-          :to="{ path: 'editJeanPoints' }"
+          @click:close="$router.push({ name: 'EditJeansPoint', params: { id: item.id } })"
+          :to="{ name: 'EditJeansPoint', params: { id: item.id } }"
         >
           ویرایش
-        </v-chip>
-
-        <!-- delete -->
-        <v-chip
-          color="red"
-          link
-          label
-          outlined
-          close
-          close-icon="mdi-delete"
-          @click:close="deleteNotification(item.id)"
-          @click="deleteNotification(item.id)"
-        >
-          حذف
         </v-chip>
       </template>
     </v-data-table>

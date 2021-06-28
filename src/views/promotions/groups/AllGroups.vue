@@ -27,7 +27,7 @@
           ></v-text-field>
         </v-col>
 
-        <!-- <v-col class="col-12 col-md-3">
+        <v-col class="col-12 col-md-3">
           <v-autocomplete
             label="وضعیت"
             v-model="active"
@@ -42,7 +42,7 @@
             hide-details="auto"
             clearable
           ></v-autocomplete>
-        </v-col> -->
+        </v-col>
 
         <v-col class="col-12 col-md-3">
           <v-menu
@@ -105,7 +105,6 @@
       :page.sync="page"
       :items-per-page="limit"
       hide-default-footer
-      @page-count="pageCount = $event"
     >
       <template v-slot:top>
         <v-row>
@@ -115,7 +114,19 @@
           >
             <v-toolbar flat>
               <v-toolbar-title>
-                <h1 class="blue--text">{{ title }}</h1>
+                <div class="d-flex justify-start align-center">
+                  <h1 class="blue--text">{{ title }}</h1>
+                  <v-divider
+                    vertical
+                    class="mx-4"
+                  ></v-divider>
+                  <router-link :to="{ name: 'CreateGroup' }">
+                    <v-icon
+                      color="blue"
+                      large
+                    >mdi-plus-circle</v-icon>
+                  </router-link>
+                </div>
               </v-toolbar-title>
             </v-toolbar>
           </v-col>
@@ -163,6 +174,23 @@
       </template>
 
       <template v-slot:[`item.options`]="{ item }">
+        <!-- active/deactive -->
+        <v-chip
+          class="ml-2"
+          :color="item.active ? 'yellow' : 'green'"
+          link
+          label
+          outlined
+          close
+          :close-icon="
+            item.active ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off'
+          "
+          @click:close="toggleActivation(item.id, item.active)"
+          @click="toggleActivation(item.id, item.active)"
+        >
+          {{ item.active ? "غیر فعال" : "فعال" }}
+        </v-chip>
+
         <!-- edit -->
         <v-chip
           class="ml-2"
@@ -349,6 +377,11 @@ export default Vue.extend({
     clearDateFilter(): void {
       this.dates = undefined;
       this.paginateGenerator();
+    },
+    toggleActivation(id: string, active: boolean): void {
+      PromotionService.groupEdit({ id, active: !active }).then(() =>
+        this.getList()
+      );
     },
     deleteNotification(id: string): void {
       PromotionService.groupSoftDelete(id).then(() => this.getList());

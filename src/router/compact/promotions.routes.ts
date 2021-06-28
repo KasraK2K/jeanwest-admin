@@ -6,10 +6,12 @@ import CreateDiscounts from "@/views/promotions/discounts/CreateDiscounts.vue";
 import AllOffers from "@/views/promotions/offers/AllOffers.vue";
 
 // ─── JEAPOINTS ──────────────────────────────────────────────────────────────────
-import AllJeanPoints from "@/views/promotions/jeanspoints/AllJeanPoints.vue";
+import AllJeansPoints from "@/views/promotions/jeanspoints/AllJeansPoints.vue";
+import EditJeansPoint from "@/views/promotions/jeanspoints/EditJeansPoint.vue";
 
 // ─── GROUPS ─────────────────────────────────────────────────────────────────────
 import AllGroups from "@/views/promotions/groups/AllGroups.vue";
+
 import { IRouter } from "@/interfaces/others/route.interface";
 
 export const promotions: IRouter[] = [
@@ -49,11 +51,20 @@ export const promotions: IRouter[] = [
   //   :::::: J E A P O I N T S : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────────────
   {
-    path: "/promotions/jeanpoints/all",
-    name: "AllJeanPoints",
-    component: AllJeanPoints,
+    path: "/promotions/jeanspoints/all",
+    name: "AllJeansPoints",
+    component: AllJeansPoints,
     meta: {
       title: "لیست امتیازات",
+    },
+  },
+  {
+    path: "/promotions/jeanspoints/edit/:id",
+    name: "EditJeansPoint",
+    component: EditJeansPoint,
+    props: true,
+    meta: {
+      title: "ویرایش امتیاز",
     },
   },
 

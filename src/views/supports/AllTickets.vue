@@ -99,7 +99,6 @@
       :page.sync="page"
       :items-per-page="limit"
       hide-default-footer
-      @page-count="pageCount = $event"
     >
       <template v-slot:top>
         <v-row>

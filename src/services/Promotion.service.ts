@@ -28,6 +28,10 @@ export default {
     return await apiClient.post(`${modulePath}/group/list`, filter);
   },
 
+  async groupEdit(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return await apiClient.patch(`${modulePath}/group`, data);
+  },
+
   async groupSoftDelete(id: string): Promise<AxiosResponse> {
     return await apiClient.delete(`${modulePath}/group/${id}`);
   },
