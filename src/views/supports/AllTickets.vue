@@ -1,11 +1,18 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs :items="breadcrumbs" class="mb-2"></v-breadcrumbs>
+    <v-breadcrumbs
+      :items="breadcrumbs"
+      class="mb-2"
+    ></v-breadcrumbs>
 
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8" elevation="1" outlined>
+    <v-card
+      class="mb-8"
+      elevation="1"
+      outlined
+    >
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
@@ -20,14 +27,20 @@
         </v-col>
 
         <v-col class="col-12 col-md-3">
-          <v-text-field
-            label="موبایل"
-            placeholder="لطفا شماره موبایل را وارد کنید."
-            v-model="mobile"
+          <v-autocomplete
+            label="وضعیت"
+            v-model="status"
+            :items="[
+              { text: 'بسته', value: 0 },
+              { text: 'باز', value: 1 },
+            ]"
+            item-text="text"
+            item-value="value"
             @change="paginateGenerator()"
             outlined
             hide-details="auto"
-          ></v-text-field>
+            clearable
+          ></v-autocomplete>
         </v-col>
 
         <v-col class="col-12 col-md-3">
@@ -90,7 +103,10 @@
     >
       <template v-slot:top>
         <v-row>
-          <v-col sm="12" md="9">
+          <v-col
+            sm="12"
+            md="9"
+          >
             <v-toolbar flat>
               <v-toolbar-title>
                 <div class="d-flex justify-start align-center">
@@ -198,7 +214,7 @@ export default Vue.extend({
       pageCount: 1,
       // filter
       code: undefined,
-      mobile: undefined,
+      status: undefined,
       dates: undefined,
       datesMenu: false,
       pagination: {
@@ -246,7 +262,7 @@ export default Vue.extend({
         },
         filter: {
           code: { eq: this.code },
-          mobile: { eq: this.mobile },
+          status: { eq: this.status },
           active: { eq: this.active },
         },
         // dates: this.dates,

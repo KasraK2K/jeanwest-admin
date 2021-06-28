@@ -3,16 +3,25 @@
     <h1 class="blue--text">{{ title }}</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
-    <v-card id="form" class="mt-2 mb-5 pa-4">
+    <v-card
+      id="form"
+      class="mt-2 mb-5 pa-4"
+    >
       <v-row>
-        <v-col sm="12" md="8">
+        <v-col
+          sm="12"
+          md="8"
+        >
           <v-text-field
             label="یادداشت"
             hide-details="auto"
             class="mb-4"
             v-model="formHint"
           >
-            <v-icon slot="prepend" color="blue">mdi-format-title </v-icon>
+            <v-icon
+              slot="prepend"
+              color="blue"
+            >mdi-format-title </v-icon>
           </v-text-field>
         </v-col>
 
@@ -30,19 +39,29 @@
             return-object
           >
             <template v-slot:item="{ item, attrs, on }">
-              <v-list-item v-bind="attrs" v-on="on">
+              <v-list-item
+                v-bind="attrs"
+                v-on="on"
+              >
                 <v-list-item-title
                   :id="attrs['aria-labelledby']"
                   v-text="item.text"
                 ></v-list-item-title>
               </v-list-item>
             </template>
-            <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
+            <v-icon
+              slot="prepend"
+              color="blue"
+            >mdi-alarm-light-off</v-icon>
           </v-autocomplete>
         </v-col>
       </v-row>
       <!-- Message Body -->
-      <editor :api-key="tinyApiKey()" :init="tinyInit()" v-model="formText" />
+      <editor
+        :api-key="tinyApiKey()"
+        :init="tinyInit()"
+        v-model="formText"
+      />
 
       <!-- Submit Button -->
       <v-btn
@@ -51,12 +70,17 @@
         color="primary"
         class="mt-4"
         @click="createReply()"
-        >ارسال</v-btn
-      >
+      >ارسال</v-btn>
     </v-card>
 
-    <div class="d-flex flex-column" id="messages">
-      <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown">
+    <div
+      class="d-flex flex-column"
+      id="messages"
+    >
+      <v-timeline
+        align-top
+        :dense="$vuetify.breakpoint.smAndDown"
+      >
         <v-timeline-item
           v-for="(context, i) in result.context"
           :key="i"
@@ -97,16 +121,22 @@
                 v-if="context.owner === 'support'"
                 :to="{
                   name: 'EditTicket',
-                  params: { contextCode: context.contextCode },
+                  params: { id: result.id,  contextCode: context.contextCode },
                 }"
               >
-                <v-icon class="float-left pl-4" large>
+                <v-icon
+                  class="float-left pl-4"
+                  large
+                >
                   mdi-notebook-edit
                 </v-icon>
               </router-link>
             </div>
             <v-card-text class="py-4">
-              <p v-html="context.text" class="mb-0" />
+              <p
+                v-html="context.text"
+                class="mb-0"
+              />
               <v-alert
                 v-if="context.hint"
                 color="#2A3B4D"
@@ -121,135 +151,6 @@
             </v-card-text>
           </v-card>
         </v-timeline-item>
-
-        <!-- user question -->
-        <!-- <v-timeline-item :color="customerColor()" fill-dot right>
-          <template v-slot:icon>
-            <v-avatar>
-              <img
-                src="https://cdn2.iconfinder.com/data/icons/people-flat-design/64/Man-Person-People-Avatar-User-Happy-512.png"
-              />
-            </v-avatar>
-          </template>
-          <v-card :color="customerColor()" elevation="3" outlined rounded>
-            <v-card-title>حسن حسنی کاربر</v-card-title>
-            <v-card-text class="py-4">
-              <p class="mb-0">
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود.
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-timeline-item> -->
-
-        <!-- user question -->
-        <!-- <v-timeline-item :color="customerColor()" fill-dot right>
-          <template v-slot:icon>
-            <v-avatar>
-              <img
-                src="https://cdn2.iconfinder.com/data/icons/people-flat-design/64/Man-Person-People-Avatar-User-Happy-512.png"
-              />
-            </v-avatar>
-          </template>
-          <v-card :color="customerColor()" elevation="3" outlined rounded>
-            <v-card-title>حسن حسنی کاربر</v-card-title>
-            <v-card-text class="py-4">
-              <p class="mb-0">
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را
-                برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و
-                دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات
-                پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-timeline-item> -->
-
-        <!-- admin answere -->
-        <!-- <v-timeline-item :color="adminColor()" fill-dot left>
-          <template v-slot:icon>
-            <v-avatar>
-              <img
-                src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"
-              />
-            </v-avatar>
-          </template>
-          <v-card :color="adminColor()" elevation="3" outlined rounded>
-            <div class="d-flex align-center justify-space-between">
-              <v-card-title class="pr-4">کسری کرمی ادمین</v-card-title>
-              <router-link
-                :to="{ name: 'EditTicket', params: { id: 'item.id' } }"
-              >
-                <v-icon class="float-left pl-4" large>
-                  mdi-notebook-edit
-                </v-icon>
-              </router-link>
-            </div>
-            <v-card-text class="py-4">
-              <p class="mb-0">
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را
-                برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و
-                دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات
-                پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-              </p>
-              <v-alert
-                v-if="true"
-                color="#2A3B4D"
-                icon="mdi-notebook-plus"
-                dense
-                border="left"
-                class="font-italic font-weight-thin mt-2 mb-0"
-                dark
-              >
-                خیلی حرف میزنه حال نمی‌کنم باش
-              </v-alert>
-            </v-card-text>
-          </v-card>
-        </v-timeline-item> -->
-
-        <!-- user question -->
-        <!-- <v-timeline-item :color="customerColor()" fill-dot right>
-          <template v-slot:icon>
-            <v-avatar>
-              <img
-                src="https://cdn2.iconfinder.com/data/icons/people-flat-design/64/Man-Person-People-Avatar-User-Happy-512.png"
-              />
-            </v-avatar>
-          </template>
-          <v-card :color="customerColor()" elevation="3" outlined rounded>
-            <v-card-title>حسن حسنی کاربر</v-card-title>
-            <v-card-text class="py-4">
-              <p class="mb-0">
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را
-                برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و
-                دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات
-                پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-timeline-item> -->
       </v-timeline>
     </div>
   </v-container>

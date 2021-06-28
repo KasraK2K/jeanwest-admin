@@ -27,9 +27,9 @@ export default {
   //   return await apiClient.get(`${modulePath}/${id}`);
   // },
 
-  // async create(data: Record<string, unknown>): Promise<AxiosResponse> {
-  //   return await apiClient.post(modulePath, data);
-  // },
+  async editReply(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return await apiClient.patch(`${modulePath}/admin/edit`, data);
+  },
 
   // async edit(
   //   data: Record<string, unknown>,

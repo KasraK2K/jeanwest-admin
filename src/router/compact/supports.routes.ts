@@ -22,7 +22,7 @@ export const supports: IRouter[] = [
     },
   },
   {
-    path: "/supports/ticket/edit/:contextCode",
+    path: "/supports/ticket/edit/:id/:contextCode",
     name: "EditTicket",
     component: EditTicket,
     props: true,

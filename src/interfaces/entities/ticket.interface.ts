@@ -3,6 +3,7 @@ import { Base } from "@/interfaces/entities/base.interface";
 export interface ITicket extends Base {
   code: string;
   title: string;
+  hint: string;
   context: IContext[];
 }
 
