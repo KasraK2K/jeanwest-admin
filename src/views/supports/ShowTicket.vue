@@ -70,7 +70,7 @@
         color="primary"
         class="mt-4"
         @click="createReply()"
-      >ارسال</v-btn>
+      >پاسخ</v-btn>
     </v-card>
 
     <div

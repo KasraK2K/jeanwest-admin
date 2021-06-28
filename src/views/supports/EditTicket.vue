@@ -67,7 +67,7 @@
         color="primary"
         class="mt-4"
         @click="submitData()"
-      >ارسال</v-btn>
+      >ویرایش</v-btn>
     </v-card>
   </v-container>
 </template>
