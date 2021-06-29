@@ -379,7 +379,7 @@ export default Vue.extend({
       this.paginateGenerator();
     },
     toggleActivation(id: string, active: boolean): void {
-      PromotionService.groupEdit({ id, active: !active }).then(() =>
+      PromotionService.editGroup({ id, active: !active }).then(() =>
         this.getList()
       );
     },

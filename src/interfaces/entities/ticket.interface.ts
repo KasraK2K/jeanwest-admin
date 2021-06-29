@@ -7,7 +7,8 @@
 //    ##    ##   ####  ##  ##  #####    ##
 //
 //===========================================
-import { Base } from "@/interfaces/entities/base.interface";
+
+import { Base } from "@/interfaces/base/base.interface";
 export interface ITicket extends Base {
   code: string;
   title: string;

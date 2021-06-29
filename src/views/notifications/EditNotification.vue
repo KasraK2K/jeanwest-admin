@@ -131,7 +131,7 @@ import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import NotificationService from "@/services/Notification.service";
 import MediaService from "@/services/Media.service";
-import { INotifications } from "@/interfaces/entities/notification.interface";
+import { INotification } from "@/interfaces/entities/notification.interface";
 import { globals } from "@/common/globals/globals";
 
 export default Vue.extend({
@@ -140,7 +140,7 @@ export default Vue.extend({
   },
   data(): {
     [key: string]: unknown;
-    notification?: INotifications;
+    notification?: INotification;
   } {
     const title = "ویرایش اعلان ";
     return {
@@ -183,7 +183,7 @@ export default Vue.extend({
   methods: {
     findOne(id: string): void {
       NotificationService.findOne(id).then((response) => {
-        const notification: INotifications = response.data.data;
+        const notification: INotification = response.data.data;
         this.ready = true;
         this.notification = notification;
         this.title += notification.title;
@@ -211,11 +211,14 @@ export default Vue.extend({
             if (response.data.statusCode === 201)
               Object.assign(data, { icon: response.data.data.image });
           });
-        await NotificationService.edit(data, this.id).then(() => {
-          console.log(data);
-          Vue.prototype.$toast("success", "با موفقیت آپدیت شد.");
-          this.$router.go(-1);
-        });
+        await NotificationService.edit(data, this.id)
+          .then(() => {
+            Vue.prototype.$toast("success", "اعلان با موفقیت بروزرسانی شد.");
+            this.$router.go(-1);
+          })
+          .catch(() => {
+            Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
+          });
       } catch (error) {
         Vue.prototype.$toast("error", error.message);
       }

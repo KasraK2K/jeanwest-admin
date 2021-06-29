@@ -18,6 +18,10 @@ export default {
     return await apiClient.get(`${modulePath}/point/${id}`);
   },
 
+  async editPoint(data: Record<string, unknown>) {
+    return await apiClient.patch(`${modulePath}/point`, data);
+  },
+
   // ────────────────────────────────────────────────────────────
   //   :::::: G R O U P : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────
@@ -28,7 +32,7 @@ export default {
     return await apiClient.post(`${modulePath}/group/list`, filter);
   },
 
-  async groupEdit(data: Record<string, unknown>): Promise<AxiosResponse> {
+  async editGroup(data: Record<string, unknown>): Promise<AxiosResponse> {
     return await apiClient.patch(`${modulePath}/group`, data);
   },
 

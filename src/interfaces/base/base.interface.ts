@@ -7,7 +7,8 @@
 //  #####   ##   ##  ####   #####        #####  ##     ##    ##    ##    ##       ##
 //
 //======================================================================================
-import { IDateTime } from "@/interfaces/entities/datetime.interface";
+
+import { IDateTime } from "@/interfaces/base/datetime.interface";
 
 export interface Base {
   id: string;

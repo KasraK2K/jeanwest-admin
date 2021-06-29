@@ -7,9 +7,10 @@
 //  ##     ##   #####     ##    ##  ##     ##   ####  ##   ##    ##    ##   #####   ##     ##
 //
 //============================================================================================
-import { Base } from "@/interfaces/entities/base.interface";
 
-export interface INotifications extends Base {
+import { Base } from "@/interfaces/base/base.interface";
+
+export interface INotification extends Base {
   title: string;
   body: string;
   image: string;

@@ -66,7 +66,7 @@
         large
         color="primary"
         class="mt-4"
-        @click="submitData()"
+        @click="updateReply()"
       >ویرایش</v-btn>
     </v-card>
   </v-container>
@@ -111,18 +111,25 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
-      ticket: undefined as unknown as ITicket,
-      context: undefined as unknown as IContext,
+      ticket: {} as unknown as ITicket,
+      context: {} as unknown as IContext,
     };
   },
   methods: {
-    submitData(): void {
+    updateReply(): void {
       const data = {
         text: this.formContent,
         code: this.ticket.code,
         contextCode: this.context.contextCode,
       };
-      SupportService.editReply(data).then(() => this.$router.go(-1));
+      SupportService.editReply(data)
+        .then(() => {
+          Vue.prototype.$toast("success", "پاسخ با موفقیت بروزرسانی شد.");
+          this.$router.go(-1);
+        })
+        .catch(() => {
+          Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
+        });
     },
     findOne() {
       const filter: IPagination = {
