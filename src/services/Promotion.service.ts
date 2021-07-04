@@ -1,3 +1,4 @@
+import { IPagination } from "./../interfaces/others/pagination.interface";
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
 
@@ -10,7 +11,7 @@ export default {
   /**
    * @param { Record<string, unknown> } filter
    */
-  async getPointList(filter: Record<string, unknown>): Promise<AxiosResponse> {
+  async getPointList(filter: IPagination): Promise<AxiosResponse> {
     return await apiClient.post(`${modulePath}/point/list`, filter);
   },
 
@@ -18,7 +19,7 @@ export default {
     return await apiClient.get(`${modulePath}/point/${id}`);
   },
 
-  async editPoint(data: Record<string, unknown>) {
+  async editPoint(data: Record<string, unknown>): Promise<AxiosResponse<any>> {
     return await apiClient.patch(`${modulePath}/point`, data);
   },
 
@@ -28,7 +29,7 @@ export default {
   /**
    * @param { Record<string, unknown> } filter
    */
-  async getGroupList(filter: Record<string, unknown>): Promise<AxiosResponse> {
+  async getGroupList(filter: IPagination): Promise<AxiosResponse> {
     return await apiClient.post(`${modulePath}/group/list`, filter);
   },
 

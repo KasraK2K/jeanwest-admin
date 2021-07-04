@@ -1,8 +1,8 @@
-export const tinyApiKey = function () {
+export const tinyApiKey = (): string => {
   return "pgxbkqy8xfl67jrbzbpzlfv76ove7nzl6nmkxm5kdg1wwyn5";
 };
 
-export const tinyInit = function () {
+export const tinyInit = (): Record<string, unknown> => {
   return {
     skin: "oxide-dark",
     content_css: "dark",

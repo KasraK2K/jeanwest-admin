@@ -8,23 +8,14 @@
     ─────────────────────────────────────────────────────────────────────────────────── -->
     <v-row>
       <v-col>
-        <v-card
-          id="jeanspoint"
-          class="mt-2 pa-4"
-        >
+        <v-card id="jeanspoint" class="mt-2 pa-4">
           <v-card-title>
-            <label
-              for="name"
-              class="pointer"
-            >ویرایش امتیاز</label>
+            <label for="name" class="pointer">ویرایش امتیاز</label>
           </v-card-title>
 
           <v-form @submit.prevent="updateJeansPoint">
             <v-row>
-              <v-col
-                cols="12"
-                md="4"
-              >
+              <v-col cols="12" md="4">
                 <v-text-field
                   label="نام"
                   v-model="jeanspoint.name"
@@ -33,10 +24,7 @@
                 />
               </v-col>
 
-              <v-col
-                cols="12"
-                md="2"
-              >
+              <v-col cols="12" md="2">
                 <v-autocomplete
                   label="وضعیت"
                   v-model="jeanspoint.active"
@@ -51,10 +39,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="2"
-              >
+              <v-col cols="12" md="2">
                 <v-autocomplete
                   label="اعمال همزمان"
                   v-model="jeanspoint.singularity"
@@ -69,10 +54,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="2"
-              >
+              <v-col cols="12" md="2">
                 <v-text-field
                   label="محدودیت در تعداد"
                   v-model="jeanspoint.countLimit"
@@ -81,10 +63,7 @@
                 />
               </v-col>
 
-              <v-col
-                cols="12"
-                md="2"
-              >
+              <v-col cols="12" md="2">
                 <v-text-field
                   label="حداقل مبلغ خرید"
                   v-model="jeanspoint.minTotal"
@@ -103,12 +82,9 @@
               </v-col>
             </v-row>
 
-            <v-btn
-              type="submit"
-              large
-              color="primary"
-              class="mt-4"
-            >ویرایش</v-btn>
+            <v-btn type="submit" large color="primary" class="mt-4"
+              >ویرایش</v-btn
+            >
           </v-form>
         </v-card>
       </v-col>
@@ -119,20 +95,14 @@
     ───────────────────────────────────────────────────────────────────────── -->
     <v-row>
       <v-col>
-        <v-card
-          id="group"
-          class="mt-2 pa-4"
-        >
+        <v-card id="group" class="mt-2 pa-4">
           <v-card-title>
             <label class="pointer">ویرایش گروه</label>
           </v-card-title>
 
           <v-form @submit.prevent="updateGroup">
             <v-row>
-              <v-col
-                cols="12"
-                md="4"
-              >
+              <v-col cols="12" md="4">
                 <v-autocomplete
                   label="گروه"
                   v-model="target.group.eq"
@@ -145,10 +115,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="4"
-              >
+              <v-col cols="12" md="4">
                 <v-autocomplete
                   label="وضعیت"
                   v-model="group.active"
@@ -161,10 +128,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="4"
-              >
+              <v-col cols="12" md="4">
                 <v-autocomplete
                   label="برند"
                   v-model="target.brand.eq"
@@ -177,10 +141,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="4"
-              >
+              <v-col cols="12" md="4">
                 <v-autocomplete
                   label="گروه سنی"
                   v-model="target.ageGroup.eq"
@@ -193,10 +154,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="4"
-              >
+              <v-col cols="12" md="4">
                 <v-autocomplete
                   label="جنسیت"
                   v-model="target.gender.eq"
@@ -209,10 +167,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="4"
-              >
+              <v-col cols="12" md="4">
                 <v-autocomplete
                   label="گروه رنگی"
                   v-model="target.colorFamily.eq"
@@ -225,10 +180,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="6"
-                md="2"
-              >
+              <v-col cols="6" md="2">
                 <v-autocomplete
                   label="تعداد"
                   v-model="quantityType"
@@ -238,10 +190,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="6"
-                md="2"
-              >
+              <v-col cols="6" md="2">
                 <v-text-field
                   label="تعداد"
                   v-model="quantity"
@@ -251,10 +200,7 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col
-                cols="6"
-                md="2"
-              >
+              <v-col cols="6" md="2">
                 <v-autocomplete
                   label="نوع قیمت پایه"
                   v-model="basePriceType"
@@ -264,10 +210,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="6"
-                md="2"
-              >
+              <v-col cols="6" md="2">
                 <v-text-field
                   label="قیمت پایه"
                   v-model="basePrice"
@@ -277,10 +220,7 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col
-                cols="6"
-                md="2"
-              >
+              <v-col cols="6" md="2">
                 <v-autocomplete
                   label="نوع قیمت فروش"
                   v-model="salePriceType"
@@ -290,10 +230,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="6"
-                md="2"
-              >
+              <v-col cols="6" md="2">
                 <v-text-field
                   label="قیمت فروش"
                   v-model="salePrice"
@@ -330,12 +267,9 @@
               </v-col>
             </v-row>
 
-            <v-btn
-              type="submit"
-              large
-              color="primary"
-              class="mt-4"
-            >ویرایش</v-btn>
+            <v-btn type="submit" large color="primary" class="mt-4"
+              >ویرایش</v-btn
+            >
           </v-form>
         </v-card>
       </v-col>

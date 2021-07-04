@@ -3,10 +3,7 @@
     <h1 class="blue--text">{{ title }}</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
-    <v-card
-      id="form"
-      class="mt-2 mb-5 pa-4"
-    >
+    <v-card id="form" class="mt-2 mb-5 pa-4">
       <v-row>
         <v-col>
           <v-text-field
@@ -15,10 +12,7 @@
             class="mb-4"
             v-model="formHint"
           >
-            <v-icon
-              slot="prepend"
-              color="blue"
-            >mdi-format-title </v-icon>
+            <v-icon slot="prepend" color="blue">mdi-format-title </v-icon>
           </v-text-field>
         </v-col>
 
@@ -67,7 +61,8 @@
         color="primary"
         class="mt-4"
         @click="updateReply()"
-      >ویرایش</v-btn>
+        >ویرایش</v-btn
+      >
     </v-card>
   </v-container>
 </template>

@@ -39,7 +39,7 @@ export const toPersianString: (sentence: string | number) => string = (
 /* -------------------------------------------------------------------------- */
 /*                  convert persian number to english number                  */
 /* -------------------------------------------------------------------------- */
-export const toEnlishString: (sentence: string) => string = (
+export const toEnglishString: (sentence: string) => string = (
   sentence: string
 ) => {
   const map = new Map([

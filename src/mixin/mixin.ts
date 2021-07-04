@@ -1,10 +1,10 @@
-import { tinyApiKey, tinyInit } from "@/mixins/tinymce.mixin";
+import { tinyApiKey, tinyInit } from "@/mixin/tinymce.mixin";
 import {
   numberToCash,
   toPersianString,
-  toEnlishString,
-} from "@/mixins/string.mixin";
-import { toPersianTime, toGregorian } from "@/mixins/date.mixin";
+  toEnglishString,
+} from "@/mixin/string.mixin";
+import { toPersianTime, toGregorian } from "@/mixin/date.mixin";
 import { globals } from "@/common/globals/globals";
 
 export const methods = {
@@ -13,10 +13,10 @@ export const methods = {
     tinyInit: tinyInit,
     numberToCash: numberToCash,
     toPersianString: toPersianString,
-    toEnlishString: toEnlishString,
+    toEnglishString: toEnglishString,
     toPersianTime: toPersianTime,
     toGregorian: toGregorian,
-    mediaPath: (path: string) => {
+    mediaPath: (path: string): string => {
       if (path.slice(0, 5) === "blob:") return path;
       else return globals.mediaServerStatic + path;
     },

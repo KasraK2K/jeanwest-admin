@@ -12,7 +12,7 @@ import HighchartsVue from "highcharts-vue";
 // import camelCase from "lodash/camelCase";
 import toast from "@/plugins/toast";
 import math from "@/plugins/math";
-import { methods } from "@/mixins/mixin";
+import { methods } from "@/mixin/mixin";
 // import * as Sentry from "@sentry/vue";
 // import { Integrations } from "@sentry/tracing";
 

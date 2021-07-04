@@ -313,7 +313,7 @@ export default Vue.extend({
       this.filterGenerate();
     },
     toggleActivation(id: string): void {
-      console.log("toggle activation");
+      console.log(`toggle activation ${id}`);
     },
   },
   mounted(): void {

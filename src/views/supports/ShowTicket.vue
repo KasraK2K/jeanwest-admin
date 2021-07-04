@@ -3,25 +3,16 @@
     <h1 class="blue--text">{{ title }}</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
-    <v-card
-      id="form"
-      class="mt-2 mb-5 pa-4"
-    >
+    <v-card id="form" class="mt-2 mb-5 pa-4">
       <v-row>
-        <v-col
-          sm="12"
-          md="8"
-        >
+        <v-col sm="12" md="8">
           <v-text-field
             label="یادداشت"
             hide-details="auto"
             class="mb-4"
             v-model="formHint"
           >
-            <v-icon
-              slot="prepend"
-              color="blue"
-            >mdi-format-title </v-icon>
+            <v-icon slot="prepend" color="blue">mdi-format-title </v-icon>
           </v-text-field>
         </v-col>
 
@@ -39,29 +30,19 @@
             return-object
           >
             <template v-slot:item="{ item, attrs, on }">
-              <v-list-item
-                v-bind="attrs"
-                v-on="on"
-              >
+              <v-list-item v-bind="attrs" v-on="on">
                 <v-list-item-title
                   :id="attrs['aria-labelledby']"
                   v-text="item.text"
                 ></v-list-item-title>
               </v-list-item>
             </template>
-            <v-icon
-              slot="prepend"
-              color="blue"
-            >mdi-alarm-light-off</v-icon>
+            <v-icon slot="prepend" color="blue">mdi-alarm-light-off</v-icon>
           </v-autocomplete>
         </v-col>
       </v-row>
       <!-- Message Body -->
-      <editor
-        :api-key="tinyApiKey()"
-        :init="tinyInit()"
-        v-model="formText"
-      />
+      <editor :api-key="tinyApiKey()" :init="tinyInit()" v-model="formText" />
 
       <!-- Submit Button -->
       <v-btn
@@ -70,17 +51,12 @@
         color="primary"
         class="mt-4"
         @click="createReply()"
-      >پاسخ</v-btn>
+        >پاسخ</v-btn
+      >
     </v-card>
 
-    <div
-      class="d-flex flex-column"
-      id="messages"
-    >
-      <v-timeline
-        align-top
-        :dense="$vuetify.breakpoint.smAndDown"
-      >
+    <div class="d-flex flex-column" id="messages">
+      <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown">
         <v-timeline-item
           v-for="(context, i) in result.context"
           :key="i"
@@ -121,22 +97,16 @@
                 v-if="context.owner === 'support'"
                 :to="{
                   name: 'EditTicket',
-                  params: { id: result.id,  contextCode: context.contextCode },
+                  params: { id: result.id, contextCode: context.contextCode },
                 }"
               >
-                <v-icon
-                  class="float-left pl-4"
-                  large
-                >
+                <v-icon class="float-left pl-4" large>
                   mdi-notebook-edit
                 </v-icon>
               </router-link>
             </div>
             <v-card-text class="py-4">
-              <p
-                v-html="context.text"
-                class="mb-0"
-              />
+              <p v-html="context.text" class="mb-0" />
               <v-alert
                 v-if="context.hint"
                 color="#2A3B4D"
