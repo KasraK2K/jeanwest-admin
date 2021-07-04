@@ -136,7 +136,7 @@
                 <v-autocomplete
                   label="گروه"
                   v-model="target.group.eq"
-                  :items="firstKey(GC.group)"
+                  :items="objectFirstValue(defaultData.group)"
                   chips
                   deletable-chips
                   multiple
@@ -152,7 +152,7 @@
                 <v-autocomplete
                   label="وضعیت"
                   v-model="group.active"
-                  :items="GC.active"
+                  :items="defaultData.active"
                   item-text="text"
                   item-value="value"
                   chips
@@ -168,7 +168,7 @@
                 <v-autocomplete
                   label="برند"
                   v-model="target.brand.eq"
-                  :items="firstKey(GC.brand)"
+                  :items="objectFirstValue(defaultData.brand)"
                   chips
                   deletable-chips
                   multiple
@@ -184,7 +184,7 @@
                 <v-autocomplete
                   label="گروه سنی"
                   v-model="target.ageGroup.eq"
-                  :items="firstKey(GC.ageGroup)"
+                  :items="objectFirstValue(defaultData.ageGroup)"
                   chips
                   deletable-chips
                   multiple
@@ -200,7 +200,7 @@
                 <v-autocomplete
                   label="جنسیت"
                   v-model="target.gender.eq"
-                  :items="firstKey(GC.gender)"
+                  :items="objectFirstValue(defaultData.gender)"
                   chips
                   deletable-chips
                   multiple
@@ -216,7 +216,7 @@
                 <v-autocomplete
                   label="گروه رنگی"
                   v-model="target.colorFamily.eq"
-                  :items="firstKey(GC.colorFamily)"
+                  :items="objectFirstValue(defaultData.colorFamily)"
                   chips
                   deletable-chips
                   multiple
@@ -230,7 +230,7 @@
                 md="2"
               >
                 <v-autocomplete
-                  label="نوع تعداد"
+                  label="تعداد"
                   v-model="quantityType"
                   :items="['gt', 'gte', 'lt', 'lte', 'eq']"
                   height="42"
@@ -244,7 +244,7 @@
               >
                 <v-text-field
                   label="تعداد"
-                  v-model="target.quantity"
+                  v-model="quantity"
                   type="number"
                   height="42"
                   clearable
@@ -270,7 +270,7 @@
               >
                 <v-text-field
                   label="قیمت پایه"
-                  v-model="target.basePrice"
+                  v-model="basePrice"
                   type="number"
                   height="42"
                   clearable
@@ -296,7 +296,7 @@
               >
                 <v-text-field
                   label="قیمت فروش"
-                  v-model="target.salePrice"
+                  v-model="salePrice"
                   type="number"
                   height="42"
                   clearable
@@ -307,7 +307,7 @@
                 <v-autocomplete
                   label="زیر گروه"
                   v-model="target.subGroup.eq"
-                  :items="firstKey(GC.subGroup)"
+                  :items="objectFirstValue(defaultData.subGroup)"
                   chips
                   deletable-chips
                   multiple
@@ -320,7 +320,7 @@
                 <v-autocomplete
                   label="سایز"
                   v-model="target.size.ct"
-                  :items="firstKey(GC.size)"
+                  :items="objectFirstValue(defaultData.size)"
                   chips
                   deletable-chips
                   multiple
@@ -349,7 +349,7 @@ import Editor from "@tinymce/tinymce-vue";
 import PromotionService from "@/services/Promotion.service";
 import { IJeansPoint } from "@/interfaces/entities/jeanspoint.interface";
 import { IGroup, ITarget } from "@/interfaces/entities/group.interface";
-import { CPromotionGroup } from "@/common/globals/constant/promotion-group";
+import { DefaultPromotionGroupData as DefaultData } from "@/common/globals/constant/promotion-group";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import * as _ from "lodash";
 
@@ -361,7 +361,7 @@ export default Vue.extend({
     [key: string]: unknown;
     jeanspoint: IJeansPoint;
     group: IGroup;
-    GC: IPromotionGroup;
+    defaultData: IPromotionGroup;
     target: ITarget;
   } {
     const title = "ویرایش امتیاز ";
@@ -392,13 +392,13 @@ export default Vue.extend({
         brand: { eq: [] },
         ageGroup: { eq: [] },
         colorFamily: { eq: [] },
-        quantity: { eq: 0 },
-        basePrice: { eq: 0 },
-        salePrice: { eq: 0 },
       },
-      GC: CPromotionGroup,
+      defaultData: DefaultData,
+      quantity: undefined,
       quantityType: "",
+      basePrice: undefined,
       basePriceType: "",
+      salePrice: undefined,
       salePriceType: "",
     };
   },
@@ -408,7 +408,18 @@ export default Vue.extend({
         this.jeanspoint = response.data.data;
         this.group = this.jeanspoint.promotionGroup;
         _.assign(this.target, this.jeanspoint.promotionGroup.target);
-        // this.target = this.jeanspoint.promotionGroup.target;
+
+        this.quantity =
+          this.objectFirstValue(this.target.quantity) || undefined;
+        this.basePrice =
+          this.objectFirstValue(this.target.basePrice) || undefined;
+        this.salePrice =
+          this.objectFirstValue(this.target.salePrice) || undefined;
+
+        this.quantityType = this.objectFirstKey(this.target.quantity);
+        this.basePriceType = this.objectFirstKey(this.target.salePrice);
+        this.salePriceType = this.objectFirstKey(this.target.salePrice);
+
         this.ready = true;
       });
     },
@@ -422,7 +433,23 @@ export default Vue.extend({
         });
     },
     updateGroup() {
+      if (this.quantity)
+        this.target.quantity = {
+          [String(this.quantityType)]: Number(this.quantity),
+        };
+
+      if (this.basePrice)
+        this.target.basePrice = {
+          [String(this.basePriceType)]: Number(this.basePrice),
+        };
+
+      if (this.salePrice)
+        this.target.salePrice = {
+          [String(this.salePriceType)]: Number(this.salePrice),
+        };
+
       _.assign(this.group.target, this.target);
+
       for (const item of _.entries(this.group.target)) {
         const key = item[0];
         const value = item[1];
@@ -433,16 +460,20 @@ export default Vue.extend({
         )
           delete (this as any).group.target[key];
       }
-      // PromotionService.editGroup({ ...this.group })
-      //   .then(() => {
-      //     Vue.prototype.$toast("success", "گروه با موفقیت بروزرسانی شد.");
-      //   })
-      //   .catch(() => {
-      //     Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
-      //   });
+
+      PromotionService.editGroup({ ...this.group })
+        .then(() => {
+          Vue.prototype.$toast("success", "گروه با موفقیت بروزرسانی شد.");
+        })
+        .catch(() => {
+          Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
+        });
     },
-    firstKey(data: Record<string, unknown>): unknown {
-      return data[_.keys(data)[0]];
+    objectFirstValue(data: Record<string, unknown> | undefined): unknown {
+      if (typeof data !== "undefined") return data[_.keys(data)[0]];
+    },
+    objectFirstKey(data: Record<string, unknown> | undefined): unknown {
+      if (typeof data !== "undefined") return _.keys(data)[0];
     },
   },
   components: {

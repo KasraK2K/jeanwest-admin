@@ -11,7 +11,7 @@
 import { ActiveConstant } from "./active";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 
-export const CPromotionGroup: IPromotionGroup = {
+export const DefaultPromotionGroupData: IPromotionGroup = {
   active: ActiveConstant,
   group: {
     eq: ["لباس", "کيف و کفش", "اکسسوري"],
