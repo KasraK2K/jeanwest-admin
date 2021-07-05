@@ -8,11 +8,16 @@ import Highcharts from "highcharts";
 import Stock from "highcharts/modules/stock";
 import Gantt from "highcharts/modules/gantt";
 import HighchartsVue from "highcharts-vue";
-// import upperFirst from "lodash/upperFirst";
-// import camelCase from "lodash/camelCase";
 import toast from "@/plugins/toast";
 import math from "@/plugins/math";
 import { methods } from "@/mixin/mixin";
+import ECharts from "vue-echarts";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { BarChart } from "echarts/charts";
+import { GridComponent, TooltipComponent } from "echarts/components";
+// import upperFirst from "lodash/upperFirst";
+// import camelCase from "lodash/camelCase";
 // import * as Sentry from "@sentry/vue";
 // import { Integrations } from "@sentry/tracing";
 
@@ -43,6 +48,8 @@ import { methods } from "@/mixin/mixin";
 //   }
 // });
 
+Vue.component("v-chart", ECharts);
+
 // ──────────────────────────────────────────────────────────────────────────────────────────────
 //   :::::: R E G I S T E R   G L O B A L   M I X I N S : :  :   :    :     :        :          :
 // ──────────────────────────────────────────────────────────────────────────────────────────────
@@ -61,6 +68,7 @@ if (process.env.NODE_ENV === "production") Vue.config.silent = true;
 Stock(Highcharts);
 Gantt(Highcharts);
 [HighchartsVue, toast, math].forEach((x) => Vue.use(x));
+use([CanvasRenderer, BarChart, GridComponent, TooltipComponent]);
 
 // ──────────────────────────────────────────────────────────────────────────────────
 //   :::::: W A R N I N G   H A N D L I N G : :  :   :    :     :        :          :

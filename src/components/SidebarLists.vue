@@ -1,6 +1,9 @@
 <template>
   <v-list shaped>
-    <v-list-item-group v-model="selectedItem" color="primary">
+    <v-list-item-group
+      v-model="selectedItem"
+      color="primary"
+    >
       <!-- dashboard -->
       <router-link :to="{ name: 'Home' }">
         <v-list-item>
@@ -12,19 +15,11 @@
       </router-link>
       <!-- dashboard -->
 
-      <!-- card -->
-      <router-link :to="{ name: 'Card' }">
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon>mdi-widgets</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>کارت‌ها</v-list-item-title>
-        </v-list-item>
-      </router-link>
-      <!-- card -->
-
       <!-- order -->
-      <v-list-group :value="false" prepend-icon="mdi-cart">
+      <v-list-group
+        :value="false"
+        prepend-icon="mdi-cart"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>سفارشات</v-list-item-title>
@@ -42,7 +37,10 @@
       <!-- order -->
 
       <!-- payment -->
-      <v-list-group :value="false" prepend-icon="mdi-currency-usd">
+      <v-list-group
+        :value="false"
+        prepend-icon="mdi-currency-usd"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>پرداخت‌ها</v-list-item-title>
@@ -60,7 +58,10 @@
       <!-- payment -->
 
       <!-- promotions -->
-      <v-list-group :value="false" prepend-icon="mdi-sale">
+      <v-list-group
+        :value="false"
+        prepend-icon="mdi-sale"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>کمپین‌ها</v-list-item-title>
@@ -105,7 +106,10 @@
       <!-- promotions -->
 
       <!-- support -->
-      <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
+      <v-list-group
+        :value="false"
+        prepend-icon="mdi-lifebuoy"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>تیکت‌ها</v-list-item-title>
@@ -122,7 +126,10 @@
       </v-list-group>
 
       <!-- notification -->
-      <v-list-group :value="false" prepend-icon="mdi-bell-ring">
+      <v-list-group
+        :value="false"
+        prepend-icon="mdi-bell-ring"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>اعلانات</v-list-item-title>
@@ -140,7 +147,10 @@
       <!-- notification -->
 
       <!-- users -->
-      <v-list-group :value="false" prepend-icon="mdi-account-circle">
+      <v-list-group
+        :value="false"
+        prepend-icon="mdi-account-circle"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>کاربران</v-list-item-title>
@@ -155,7 +165,11 @@
           </v-list-item>
         </router-link>
         <!-- #2 -->
-        <v-list-group :value="false" no-action sub-group>
+        <v-list-group
+          :value="false"
+          no-action
+          sub-group
+        >
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>ادمین‌ها</v-list-item-title>

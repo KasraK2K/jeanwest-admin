@@ -1,34 +1,21 @@
 <template>
-  <v-container fluid>
+  <v-container
+    fluid
+    v-if="ready"
+  >
     <v-row>
-      <v-col sm="6">
-        <v-card>
-          <v-sparkline
-            :value="value"
-            :gradient="gradient"
-            :smooth="radius || false"
-            :padding="padding"
-            :line-width="width"
-            :stroke-linecap="lineCap"
-            :gradient-direction="gradientDirection"
-            :fill="fill"
-            :type="type"
-            :auto-line-width="autoLineWidth"
-            auto-draw
-          ></v-sparkline>
-        </v-card>
+      <v-col cols="12">
+        <v-chart
+          class="priChart rtl"
+          :option="pirChartOptions"
+        />
       </v-col>
 
-      <v-col sm="6">
-        <v-card>
-          <StockChart :chartData="StockChartData" />
-        </v-card>
-      </v-col>
-
-      <v-col sm="12">
-        <v-card>
-          <GanttChart :chartOptions="GanttChartOptions" />
-        </v-card>
+      <v-col cols="12">
+        <v-chart
+          class="sankeyChart rtl"
+          :option="sankeyChartOptions"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -36,90 +23,122 @@
 
 <script lang="ts">
 import Vue from "vue";
-import StockChart from "@/components/charts/StockChart.vue";
-import GanttChart from "@/components/charts/GanttChart.vue";
+import { sankeyData } from "@/components/charts/mock/sankey";
+import VChart, { THEME_KEY } from "vue-echarts";
+import "echarts";
 
-const gradients = [
-  ["#222"],
-  ["#42b3f4"],
-  ["red", "orange", "yellow"],
-  ["purple", "violet"],
-  ["#00c6ff", "#F0F", "#FF0"],
-  ["#f72047", "#ffd200", "#1feaea"],
-];
+const pirChartOptions = {
+  textStyle: {
+    fontFamily: "IRANSans",
+  },
+  dispatchAction: {
+    type: "dataZoom",
+    start: 20,
+    end: 30,
+  },
+  title: {
+    text: "منابع ترافیکی",
+    left: "center",
+    top: "10%",
+  },
+  tooltip: {
+    trigger: "item",
+    formatter: "{a} <br/>{b} : {c} ({d}%)",
+  },
+  legend: {
+    orient: "vertical",
+    left: "left",
+    data: [
+      "مستقیم",
+      "پست الکترونیک",
+      "شبکه‌های تبلیغاتی",
+      "تبلیغات ویدیویی",
+      "موتورهای جستجو",
+    ],
+  },
+  series: [
+    {
+      name: "منابع ترافیکی",
+      type: "pie",
+      radius: "55%",
+      center: ["50%", "60%"],
+      data: [
+        { value: 335, name: "مستقیم" },
+        { value: 310, name: "پست الکترونیک" },
+        { value: 234, name: "شبکه‌های تبلیغاتی" },
+        { value: 135, name: "تبلیغات ویدیویی" },
+        { value: 1548, name: "موتورهای جستجو" },
+      ],
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: "rgba(0, 0, 0, 0.5)",
+        },
+      },
+    },
+  ],
+};
+
+const sankeyChartOptions = {
+  textStyle: {
+    fontFamily: "IRANSans",
+  },
+  title: {
+    text: "نمودار انرژی",
+    left: "center",
+    top: "5%",
+  },
+  tooltip: {
+    trigger: "item",
+    triggerOn: "mousemove",
+  },
+  series: [
+    {
+      type: "sankey",
+      left: "5%",
+      top: "10%",
+      right: "20%",
+      bottom: "5%",
+      data: sankeyData.nodes,
+      links: sankeyData.links,
+      emphasis: {
+        focus: "adjacency",
+      },
+      lineStyle: {
+        color: "gradient",
+        curveness: 0.5,
+      },
+    },
+  ],
+};
 
 export default Vue.extend({
-  data(): Record<string, unknown> {
-    return {
-      width: 2,
-      radius: 10,
-      padding: 8,
-      lineCap: "round",
-      gradient: gradients[5],
-      value: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
-      gradientDirection: "bottom",
-      // gradients,
-      fill: false,
-      type: "trend",
-      autoLineWidth: false,
-      StockChartData: [1, 2, 3],
-      GanttChartOptions: {
-        title: {
-          text: "Gantt Chart with Progress Indicators",
-        },
-        xAxis: {
-          min: Date.UTC(2014, 10, 17),
-          max: Date.UTC(2014, 10, 30),
-        },
-
-        series: [
-          {
-            name: "Project 1",
-            data: [
-              {
-                name: "Start prototype",
-                start: Date.UTC(2014, 10, 18),
-                end: Date.UTC(2014, 10, 25),
-                completed: 0.25,
-              },
-              {
-                name: "Test prototype",
-                start: Date.UTC(2014, 10, 27),
-                end: Date.UTC(2014, 10, 29),
-              },
-              {
-                name: "Develop",
-                start: Date.UTC(2014, 10, 20),
-                end: Date.UTC(2014, 10, 25),
-                completed: {
-                  amount: 0.12,
-                  fill: "#fa0",
-                },
-              },
-              {
-                name: "Run acceptance tests",
-                start: Date.UTC(2014, 10, 23),
-                end: Date.UTC(2014, 10, 26),
-              },
-            ],
-          },
-        ],
-      },
-    };
+  provide: {
+    [THEME_KEY]: "dark",
   },
   components: {
-    StockChart,
-    GanttChart,
+    VChart,
   },
-  methods: {
-    handler() {
-      var args = arguments;
-      for (var arg of args) {
-        if (arg instanceof Function) {
-          arg();
-        }
-      }
-    },
+  mounted() {
+    this.ready = true;
+  },
+  data(): Record<string, unknown> {
+    return {
+      ready: false,
+      pirChartOptions,
+      sankeyChartOptions,
+    };
   },
 });
 </script>
+
+<style scoped>
+.priChart {
+  height: 400px;
+}
+
+.sankeyChart {
+  height: 900px;
+}
+</style>
