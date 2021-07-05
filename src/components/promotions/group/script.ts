@@ -22,11 +22,11 @@ export default class EditPromotionGroup extends Vue {
     colorFamily: { eq: [] },
   };
   quantity: number | undefined;
-  quantityType: string | undefined;
+  quantityType!: string;
   basePrice: number | undefined;
-  basePriceType: string | undefined;
+  basePriceType!: string;
   salePrice: number | undefined;
-  salePriceType: string | undefined;
+  salePriceType!: string;
 
   private init() {
     _.assign(this.target, this.group.target);
