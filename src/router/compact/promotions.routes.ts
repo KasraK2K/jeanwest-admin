@@ -11,6 +11,7 @@ import EditJeansPoint from "@/views/promotions/jeanspoints/EditJeansPoint.vue";
 
 // ─── GROUPS ─────────────────────────────────────────────────────────────────────
 import AllGroups from "@/views/promotions/groups/AllGroups.vue";
+import EditGroup from "@/components/EditGroup.vue";
 
 import { IRouter } from "@/interfaces/others/route.interface";
 
@@ -79,4 +80,13 @@ export const promotions: IRouter[] = [
       title: "لیست گروه‌ها",
     },
   },
+  // {
+  //   path: "/promotions/groups/edit/:id/:promotion",
+  //   name: "EditGroup",
+  //   component: EditGroup,
+  //   props: true,
+  //   meta: {
+  //     title: "ویرایش گروه",
+  //   },
+  // },
 ];
