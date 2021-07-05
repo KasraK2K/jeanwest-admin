@@ -1,8 +1,5 @@
 <template>
-  <v-container
-    fluid
-    v-if="ready"
-  >
+  <v-container fluid v-if="ready">
     <h1 class="blue--text">{{ title }}</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
@@ -11,23 +8,14 @@
     ─────────────────────────────────────────────────────────────────────────────────── -->
     <v-row>
       <v-col>
-        <v-card
-          id="jeanspoint"
-          class="mt-2 pa-4"
-        >
+        <v-card id="jeanspoint" class="mt-2 pa-4">
           <v-card-title>
-            <label
-              for="name"
-              class="pointer"
-            >ویرایش امتیاز</label>
+            <label for="name" class="pointer">ویرایش امتیاز</label>
           </v-card-title>
 
           <v-form @submit.prevent="updateJeansPoint">
             <v-row>
-              <v-col
-                cols="12"
-                md="4"
-              >
+              <v-col cols="12" md="4">
                 <v-text-field
                   label="نام"
                   v-model="jeanspoint.name"
@@ -36,10 +24,7 @@
                 />
               </v-col>
 
-              <v-col
-                cols="12"
-                md="2"
-              >
+              <v-col cols="12" md="2">
                 <v-autocomplete
                   label="وضعیت"
                   v-model="jeanspoint.active"
@@ -54,10 +39,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="2"
-              >
+              <v-col cols="12" md="2">
                 <v-autocomplete
                   label="اعمال همزمان"
                   v-model="jeanspoint.singularity"
@@ -72,10 +54,7 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="2"
-              >
+              <v-col cols="12" md="2">
                 <v-text-field
                   label="محدودیت در تعداد"
                   v-model="jeanspoint.countLimit"
@@ -84,10 +63,7 @@
                 />
               </v-col>
 
-              <v-col
-                cols="12"
-                md="2"
-              >
+              <v-col cols="12" md="2">
                 <v-text-field
                   label="حداقل مبلغ خرید"
                   v-model="jeanspoint.minTotal"
@@ -106,12 +82,9 @@
               </v-col>
             </v-row>
 
-            <v-btn
-              type="submit"
-              large
-              color="primary"
-              class="mt-4"
-            >ویرایش</v-btn>
+            <v-btn type="submit" large color="primary" class="mt-4"
+              >ویرایش</v-btn
+            >
           </v-form>
         </v-card>
       </v-col>
@@ -120,17 +93,14 @@
     <!-- ────────────────────────────────────────────────────────────────────────
     //   :::::: U P D A T E   G R O U P : :  :   :    :     :        :          :
     ───────────────────────────────────────────────────────────────────────── -->
-    <EditPromotionGroup
-      :default-data="defaultData"
-      :group="group"
-    />
+    <EditGroup :default-data="defaultData" :group="group" />
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
-import EditPromotionGroup from "@/components/promotions/EditPromotionGroup.vue";
+import EditGroup from "@/components/promotions/group/EditGroup.vue";
 import PromotionService from "@/services/Promotion.service";
 import { DefaultPromotionGroupData as DefaultData } from "@/common/globals/constant/promotion-group";
 import { IJeansPoint } from "@/interfaces/entities/jeanspoint.interface";
@@ -191,7 +161,7 @@ export default Vue.extend({
   },
   components: {
     editor: Editor,
-    EditPromotionGroup,
+    EditGroup,
   },
   mounted() {
     this.findOne();

@@ -1,0 +1,179 @@
+<v-row v-if="ready">
+  <v-col>
+    <v-card id="group" class="mt-2 pa-4">
+      <v-card-title>
+        <label class="pointer">ویرایش گروه</label>
+      </v-card-title>
+
+      <v-form @submit.prevent="updateGroup">
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-autocomplete
+              label="گروه"
+              v-model="target.group.eq"
+              :items="firstValue(defaultData.group)"
+              chips
+              deletable-chips
+              multiple
+              clearable
+              hide-selected
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-autocomplete
+              label="وضعیت"
+              v-model="group.active"
+              :items="defaultData.active"
+              item-text="text"
+              item-value="value"
+              chips
+              clearable
+              hide-selected
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-autocomplete
+              label="برند"
+              v-model="target.brand.eq"
+              :items="firstValue(defaultData.brand)"
+              chips
+              deletable-chips
+              multiple
+              clearable
+              hide-selected
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-autocomplete
+              label="گروه سنی"
+              v-model="target.ageGroup.eq"
+              :items="firstValue(defaultData.ageGroup)"
+              chips
+              deletable-chips
+              multiple
+              clearable
+              hide-selected
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-autocomplete
+              label="جنسیت"
+              v-model="target.gender.eq"
+              :items="firstValue(defaultData.gender)"
+              chips
+              deletable-chips
+              multiple
+              clearable
+              hide-selected
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-autocomplete
+              label="گروه رنگی"
+              v-model="target.colorFamily.eq"
+              :items="firstValue(defaultData.colorFamily)"
+              chips
+              deletable-chips
+              multiple
+              clearable
+              hide-selected
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="6" md="2">
+            <v-autocomplete
+              label="تعداد"
+              v-model="quantityType"
+              :items="['gt', 'gte', 'lt', 'lte', 'eq']"
+              height="42"
+              clearable
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="6" md="2">
+            <v-text-field
+              label="تعداد"
+              v-model="quantity"
+              type="number"
+              height="42"
+              clearable
+            ></v-text-field>
+          </v-col>
+
+          <v-col cols="6" md="2">
+            <v-autocomplete
+              label="نوع قیمت پایه"
+              v-model="basePriceType"
+              :items="['gt', 'gte', 'lt', 'lte', 'eq']"
+              height="42"
+              clearable
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="6" md="2">
+            <v-text-field
+              label="قیمت پایه"
+              v-model="basePrice"
+              type="number"
+              height="42"
+              clearable
+            ></v-text-field>
+          </v-col>
+
+          <v-col cols="6" md="2">
+            <v-autocomplete
+              label="نوع قیمت فروش"
+              v-model="salePriceType"
+              :items="['gt', 'gte', 'lt', 'lte', 'eq']"
+              height="42"
+              clearable
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="6" md="2">
+            <v-text-field
+              label="قیمت فروش"
+              v-model="salePrice"
+              type="number"
+              height="42"
+              clearable
+            ></v-text-field>
+          </v-col>
+
+          <v-col cols="12">
+            <v-autocomplete
+              label="زیر گروه"
+              v-model="target.subGroup.eq"
+              :items="firstValue(defaultData.subGroup)"
+              chips
+              deletable-chips
+              multiple
+              clearable
+              hide-selected
+            ></v-autocomplete>
+          </v-col>
+
+          <v-col cols="12">
+            <v-autocomplete
+              label="سایز"
+              v-model="target.size.ct"
+              :items="firstValue(defaultData.size)"
+              chips
+              deletable-chips
+              multiple
+              clearable
+              hide-selected
+            ></v-autocomplete>
+          </v-col>
+        </v-row>
+
+        <v-btn type="submit" large color="primary" class="mt-4">ویرایش</v-btn>
+      </v-form>
+    </v-card>
+  </v-col>
+</v-row>
