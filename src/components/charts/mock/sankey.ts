@@ -1,4 +1,4 @@
-export const sankeyData = {
+const sankeyData = {
   nodes: [
     {
       name: "زباله های کشاورزی",
@@ -485,6 +485,39 @@ export const sankeyData = {
       source: "باد",
       target: "شبکه برق",
       value: 289.366,
+    },
+  ],
+};
+
+export const sankeyChartOptions = {
+  textStyle: {
+    fontFamily: "IRANSans",
+  },
+  title: {
+    text: "نمودار انرژی",
+    left: "center",
+    top: "5%",
+  },
+  tooltip: {
+    trigger: "item",
+    triggerOn: "mousemove",
+  },
+  series: [
+    {
+      type: "sankey",
+      left: "5%",
+      top: "10%",
+      right: "20%",
+      bottom: "5%",
+      data: sankeyData.nodes,
+      links: sankeyData.links,
+      emphasis: {
+        focus: "adjacency",
+      },
+      lineStyle: {
+        color: "gradient",
+        curveness: 0.5,
+      },
     },
   ],
 };
