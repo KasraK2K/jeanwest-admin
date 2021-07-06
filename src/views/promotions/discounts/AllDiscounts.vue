@@ -8,70 +8,130 @@
     <v-card class="mb-8" elevation="1" outlined>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
-        <v-col class="col-12 col-md-4">
+        <v-col cols="12" md="4">
           <v-text-field
             label="کد"
             placeholder="لطفا کد تخفیف را وارد کنید."
-            v-model="code"
-            @change="filterGenerate()"
+            v-model.trim="code"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col cols="12" md="4">
           <v-text-field
-            label="تعداد"
-            placeholder="لطفا تعداد را وارد کنید."
-            v-model="count"
+            label="نام"
+            placeholder="لطفا نام تخفیف را وارد کنید."
+            v-model.trim="name"
+            @change="paginateGenerator()"
+            outlined
+            hide-details="auto"
+            clearable
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="4">
+          <v-text-field
+            label="مقدار"
+            placeholder="لطفا مقدار تخفیف را وارد کنید."
+            v-model.number="reductionPrice"
             type="number"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col cols="12" md="4">
+          <v-autocomplete
+            label="نوع"
+            v-model="isPercentage"
+            :items="[
+              { text: 'درصدی', value: true },
+              { text: 'مبلغی', value: false },
+            ]"
+            item-text="text"
+            item-value="value"
+            @change="paginateGenerator()"
+            outlined
+            hide-details="auto"
+            clearable
+          ></v-autocomplete>
+        </v-col>
+
+        <v-col cols="12" md="4">
           <v-text-field
-            label="محدودیت"
-            placeholder="لطفا محدودیت را وارد کنید."
-            v-model="filterLimit"
+            label="محدودیت تعداد"
+            placeholder="لطفا محدودیت تعداد تخفیف را وارد کنید."
+            v-model.number="countLimit"
             type="number"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col cols="12" md="4">
           <v-text-field
-            label="حداکثر تخفیف"
+            label="دفعات استفاده"
+            placeholder="لطفا دفعات استفاده تخفیف را وارد کنید."
+            v-model.number="usageCount"
+            type="number"
+            @change="paginateGenerator()"
+            outlined
+            hide-details="auto"
+            clearable
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="3">
+          <v-text-field
+            label="حداکثر"
             placeholder="لطفا حداکثر تخفیف را وارد کنید."
-            v-model="max_discount"
+            v-model.number="maxTotal"
             type="number"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col cols="12" md="3">
+          <v-text-field
+            label="حداقل"
+            placeholder="لطفا حداقل تخفیف را وارد کنید."
+            v-model.number="minTotal"
+            type="number"
+            @change="paginateGenerator()"
+            outlined
+            hide-details="auto"
+            clearable
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="3">
           <v-autocomplete
             label="اعمال همزمان"
             v-model="singularity"
             :items="[
-              { text: 'بله', value: 1 },
-              { text: 'خیر', value: 0 },
+              { text: 'بله', value: true },
+              { text: 'خیر', value: false },
             ]"
             item-text="text"
             item-value="value"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
+            clearable
           ></v-autocomplete>
         </v-col>
 
-        <v-col class="col-12 col-md-4">
+        <v-col cols="12" md="3">
           <v-menu
             v-model="datesMenu"
             :close-on-content-click="false"
@@ -90,13 +150,14 @@
                 v-bind="attrs"
                 v-on="on"
                 @click:clear="clearDateFilter()"
+                disabled
                 outlined
               ></v-text-field>
             </template>
             <v-date-picker
               v-model="dates"
               multiple
-              @change="filterGenerate()"
+              @change="paginateGenerator()"
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -111,13 +172,16 @@
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'کد', value: 'code', align: 'start', sortable: false },
-        { text: 'تعداد', value: 'count' },
-        { text: 'محدودیت', value: 'limit' },
-        { text: 'حداکثر تخفیف', value: 'max_discount' },
+        { text: 'نام', value: 'name' },
+        { text: 'مقدار تخفیف', value: 'reductionPrice' },
+        { text: 'نوع تخفیف', value: 'isPercentage' },
+        { text: 'محدودیت تعداد', value: 'countLimit' },
+        { text: 'دفعات استفاده', value: 'usageCount' },
+        { text: 'حداکثر تخفیف', value: 'maxTotal' },
+        { text: 'حداقل تخفیف', value: 'minTotal' },
         { text: 'اعمال همزمان', value: 'singularity' },
-        { text: 'گروه', value: 'group' },
-        { text: 'زمان شروع', value: 'start_at' },
-        { text: 'زمان پایان', value: 'end_at' },
+        { text: 'زمان شروع', value: 'startDate' },
+        { text: 'زمان پایان', value: 'expirationDate' },
         {
           text: 'گزینه‌ها',
           value: 'options',
@@ -172,16 +236,38 @@
         </span>
       </template>
 
-      <template v-slot:[`item.count`]="{ item }">
-        {{ item.count === -1 ? "نامحدود" : toPersianString(item.count) }}
+      <template v-slot:[`item.reductionPrice`]="{ item }">
+        {{ toPersianString(item.reductionPrice) }}
       </template>
 
-      <template v-slot:[`item.limit`]="{ item }">
-        {{ item.limit === -1 ? "نامحدود" : toPersianString(item.limit) }}
+      <template v-slot:[`item.isPercentage`]="{ item }">
+        <span :class="item.isPercentage ? 'yellow--text' : 'accent--text'">
+          {{ item.isPercentage ? "درصدی" : "مبلغی" }}
+        </span>
       </template>
 
-      <template v-slot:[`item.max_discount`]="{ item }">
-        {{ toPersianString(numberToCash(item.max_discount)) }}
+      <template v-slot:[`item.countLimit`]="{ item }">
+        {{
+          item.countLimit === -1 ? "نامحدود" : toPersianString(item.countLimit)
+        }}
+      </template>
+
+      <template v-slot:[`item.usageCount`]="{ item }">
+        {{
+          item.usageCount === -1 ? "نامحدود" : toPersianString(item.usageCount)
+        }}
+      </template>
+
+      <template v-slot:[`item.maxTotal`]="{ item }">
+        {{
+          item.maxTotal === -1 ? "تعیین نشده" : toPersianString(item.maxTotal)
+        }}
+      </template>
+
+      <template v-slot:[`item.minTotal`]="{ item }">
+        {{
+          item.minTotal === -1 ? "تعیین نشده" : toPersianString(item.minTotal)
+        }}
       </template>
 
       <template v-slot:[`item.singularity`]="{ item }">
@@ -190,12 +276,15 @@
         </span>
       </template>
 
-      <template v-slot:[`item.start_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.start_at)) }}
+      <template v-slot:[`item.startDate`]="{ item }">
+        {{ item.startDate && toPersianString(toPersianTime(item.startDate)) }}
       </template>
 
-      <template v-slot:[`item.end_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.end_at)) }}
+      <template v-slot:[`item.expirationDate`]="{ item }">
+        {{
+          item.expirationDate &&
+          toPersianString(toPersianTime(item.expirationDate))
+        }}
       </template>
 
       <template v-slot:[`item.active`]="{ item }">
@@ -205,21 +294,6 @@
       </template>
 
       <template v-slot:[`item.options`]="{ item }">
-        <!-- edit group -->
-        <v-chip
-          class="ml-2"
-          color="yellow"
-          link
-          label
-          outlined
-          close
-          close-icon="mdi-square-edit-outline"
-          @click:close="$router.push({ path: 'editDiscount' })"
-          :to="{ path: 'editDiscount' }"
-        >
-          گروه
-        </v-chip>
-
         <!-- edit -->
         <v-chip
           class="ml-2"
@@ -259,8 +333,8 @@
       <v-pagination
         v-model="page"
         :length="pageCount"
-        :total-visible="10"
-        @input="getList(page, limit, filter)"
+        :total-visible="limit"
+        @input="page = $event"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -280,6 +354,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import PromotionService from "@/services/Promotion.service";
+import { IPagination } from "@/interfaces/others/pagination.interface";
+import * as _ from "lodash";
 
 export default Vue.extend({
   data(): {
@@ -287,6 +364,7 @@ export default Vue.extend({
     page: number;
     pageCount: number;
     limit: number;
+    pagination: IPagination;
   } {
     const title = "لیست تخفیف‌ها";
     return {
@@ -310,191 +388,101 @@ export default Vue.extend({
       limit: 10,
       // filter
       code: undefined,
-      count: undefined,
-      filterLimit: undefined,
-      max_discount: undefined,
+      name: undefined,
+      reductionPrice: undefined,
+      isPercentage: undefined,
+      countLimit: undefined,
+      usageCount: undefined,
+      maxTotal: undefined,
+      minTotal: undefined,
       singularity: undefined,
-      options: undefined,
       dates: undefined,
       datesMenu: false,
-      filter: {},
+      pagination: {
+        option: {
+          page: { eq: 1 },
+          limit: { eq: 10 },
+        },
+      },
     };
   },
   watch: {
     limit(): void {
       this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+      this.pagination.option.limit = { eq: this.limit };
+      this.getList();
     },
-    filter(): void {
-      this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+    page(): void {
+      this.pagination.option.page = { eq: this.page };
+      this.getList();
+    },
+    pagination(): void {
+      this.getList();
+    },
+    items(): void {
+      this.loading = false;
     },
   },
   methods: {
-    getList(page: number, limit: number, filter?: unknown): void {
+    getList(): void {
       this.loading = true;
-      setTimeout(() => {
-        this.items = [
-          {
-            no: 1,
-            code: "Code01",
-            active: true,
-            image: true,
-            count: 1,
-            limit: 3,
-            max_discount: 400000,
-            singularity: true,
-            group: "یک بعلاوه یک",
-            start_at: "2021-04-27T14:20:22.783Z",
-            end_at: "2021-04-28T14:20:22.783Z",
-          },
-          {
-            no: 2,
-            code: "Code02",
-            active: true,
-            image: true,
-            count: 5,
-            limit: 7,
-            max_discount: 200000,
-            singularity: false,
-            group: "یک بعلاوه یک",
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-          },
-          {
-            no: 3,
-            code: "Code03",
-            active: false,
-            image: false,
-            count: 4,
-            limit: 12,
-            max_discount: 1400000,
-            singularity: true,
-            group: "یک بعلاوه یک",
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-          },
-          {
-            no: 4,
-            code: "Code04",
-            active: true,
-            image: false,
-            count: 0,
-            limit: 3,
-            max_discount: 600000,
-            singularity: true,
-            group: "یک بعلاوه یک",
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-          },
-          {
-            no: 5,
-            code: "Code05",
-            active: false,
-            image: true,
-            count: 0,
-            limit: 0,
-            max_discount: 400000,
-            singularity: false,
-            group: "یک بعلاوه یک",
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-          },
-          {
-            no: 6,
-            code: "Code06",
-            active: false,
-            image: true,
-            count: 100,
-            limit: 0,
-            max_discount: 840000,
-            singularity: true,
-            group: "یک بعلاوه یک",
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-          },
-          {
-            no: 7,
-            code: "Code07",
-            active: true,
-            image: false,
-            count: -1,
-            limit: -1,
-            max_discount: 720000,
-            singularity: false,
-            group: "یک بعلاوه یک",
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-          },
-          {
-            no: 8,
-            code: "Code08",
-            active: false,
-            image: false,
-            count: 1,
-            limit: 3,
-            max_discount: 300000,
-            singularity: false,
-            group: "یک بعلاوه یک",
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-          },
-          {
-            no: 9,
-            code: "Code09",
-            active: false,
-            image: true,
-            count: 1,
-            limit: 3,
-            max_discount: 900000,
-            singularity: true,
-            group: "یک بعلاوه یک",
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-          },
-          {
-            no: 10,
-            code: "Code10",
-            active: true,
-            image: true,
-            count: 1,
-            limit: 3,
-            max_discount: 100000,
-            singularity: false,
-            group: "یک بعلاوه یک",
-            start_at: "2020/06/11",
-            end_at: "2020/06/18",
-          },
-        ];
-        this.loading = false;
-      }, 500);
-      console.log(
-        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
-          filter
-        )} }`
-      );
+      PromotionService.getDiscountList(this.pagination).then((response) => {
+        const data = response.data.data;
+        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+        this.items = data.result;
+      });
     },
-    filterGenerate(): void {
-      this.filter = {
-        code: this.code,
-        count: this.count,
-        limit: this.filterLimit,
-        max_discount: this.max_discount,
-        singularity: this.singularity,
-        dates: this.dates,
+    paginateGenerator(): void {
+      this.page = 1;
+      this.pagination = {
+        option: {
+          page: { eq: this.page },
+          limit: { eq: this.limit },
+        },
+        filter: {
+          code: { eq: this.code },
+          name: { eq: this.name },
+          reductionPrice: { eq: this.reductionPrice },
+          isPercentage: { eq: this.isPercentage },
+          countLimit: { eq: this.countLimit },
+          usageCount: { eq: this.usageCount },
+          maxTotal: { eq: this.maxTotal },
+          minTotal: { eq: this.minTotal },
+          singularity: { eq: this.singularity },
+        },
+        // dates: this.dates,
       };
+      const filterKeys =
+        this.pagination &&
+        this.pagination.filter &&
+        _.keys(this.pagination.filter);
+      // delete empty keys
+      if (filterKeys && filterKeys.length) {
+        for (const key of filterKeys)
+          if (
+            this.pagination.filter &&
+            this.pagination.filter[key] &&
+            (this[key] === undefined || this[key] === null)
+          )
+            delete this.pagination.filter[key];
+      }
+      // delete empty filter
+      if (
+        !this.pagination.filter ||
+        !Object.keys(this.pagination.filter).length
+      )
+        delete this.pagination.filter;
     },
     clearDateFilter(): void {
       this.dates = undefined;
-      this.filterGenerate();
+      this.paginateGenerator();
     },
     deleteNotification(id: string): void {
-      console.log("delete id:", id);
-      // use service for delete notification with id
+      PromotionService.discountSoftDelete(id).then(() => this.getList());
     },
   },
   mounted(): void {
-    this.getList(this.page, this.limit);
+    this.getList();
   },
 });
 </script>
