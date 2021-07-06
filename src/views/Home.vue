@@ -1,34 +1,16 @@
 <template>
-  <v-container
-    fluid
-    v-if="ready"
-  >
+  <v-container fluid v-if="ready">
     <v-row>
-      <v-col
-        cols="12"
-        lg="6"
-      >
-        <v-chart
-          class="scatterChart rtl"
-          :option="scatterChartOptions"
-        />
+      <v-col cols="12" lg="6">
+        <v-chart class="scatterChart rtl" :option="scatterChartOptions" />
       </v-col>
 
-      <v-col
-        cols="12"
-        lg="6"
-      >
-        <v-chart
-          class="priChart rtl"
-          :option="pirChartOptions"
-        />
+      <v-col cols="12" lg="6">
+        <v-chart class="priChart rtl" :option="pirChartOptions" />
       </v-col>
 
       <v-col cols="12">
-        <v-chart
-          class="sankeyChart rtl"
-          :option="sankeyChartOptions"
-        />
+        <v-chart class="sankeyChart rtl" :option="sankeyChartOptions" />
       </v-col>
     </v-row>
   </v-container>
