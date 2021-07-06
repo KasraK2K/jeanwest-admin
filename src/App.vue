@@ -56,7 +56,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>کسری کرمی</v-list-item-title>
+            <v-list-item-title>ادمین</v-list-item-title>
             <v-list-item-subtitle>آنلاین</v-list-item-subtitle>
           </v-list-item-content>
 

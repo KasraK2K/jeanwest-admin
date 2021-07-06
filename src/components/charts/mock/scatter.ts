@@ -60,7 +60,7 @@ export const scatterChartOptions = {
   },
   brush: {},
   legend: {
-    data: ["خانم", "مزد"],
+    data: ["خانم", "آقا"],
     left: "center",
     bottom: 10,
   },

@@ -64,14 +64,14 @@
           </v-list-item>
         </router-link>
         <!-- #2: Offers -->
-        <router-link :to="{ name: 'AllOffers' }">
+        <!-- <router-link :to="{ name: 'AllOffers' }">
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-format-list-numbered-rtl</v-icon>
             </v-list-item-icon>
             <v-list-item-title>لیست پیشنهادات</v-list-item-title>
           </v-list-item>
-        </router-link>
+        </router-link> -->
         <!-- #2: JeansPoints -->
         <router-link :to="{ name: 'AllJeansPoints' }">
           <v-list-item>
@@ -82,14 +82,14 @@
           </v-list-item>
         </router-link>
         <!-- #2: Groups -->
-        <router-link :to="{ name: 'AllGroups' }">
+        <!-- <router-link :to="{ name: 'AllGroups' }">
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-format-list-numbered-rtl</v-icon>
             </v-list-item-icon>
             <v-list-item-title>لیست گروه‌ها</v-list-item-title>
           </v-list-item>
-        </router-link>
+        </router-link> -->
       </v-list-group>
       <!-- promotions -->
 
