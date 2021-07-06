@@ -127,7 +127,7 @@ export default Vue.extend({
         });
     },
     findOne() {
-      const filter: IPagination = {
+      const pagination: IPagination = {
         option: {
           page: { eq: 1 },
           limit: { eq: 1 },
@@ -136,7 +136,7 @@ export default Vue.extend({
           id: { eq: this.id },
         },
       };
-      SupportService.getList(filter, this.$store.state.token).then(
+      SupportService.getList(pagination, this.$store.state.token).then(
         (response) => {
           this.ticket = response.data.data.result[0];
           this.context = _.filter(this.ticket.context, [

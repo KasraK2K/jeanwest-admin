@@ -6,10 +6,10 @@ const modulePath = "/notification";
 
 export default {
   /**
-   * @param { Record<string, unknown> } filter
+   * @param { Record<string, unknown> } pagination
    */
-  async getList(filter: IPagination): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/list`, filter);
+  async getList(pagination: IPagination): Promise<AxiosResponse> {
+    return await apiClient.post(`${modulePath}/list`, pagination);
   },
 
   async findOne(id: string): Promise<AxiosResponse> {

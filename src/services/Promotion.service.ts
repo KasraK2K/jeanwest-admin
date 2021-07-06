@@ -9,10 +9,10 @@ export default {
   //   :::::: J E A N S P O I N T : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────────────────
   /**
-   * @param { Record<string, unknown> } filter
+   * @param { Record<string, unknown> } pagination
    */
-  async getPointList(filter: IPagination): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/point/list`, filter);
+  async getPointList(pagination: IPagination): Promise<AxiosResponse> {
+    return await apiClient.post(`${modulePath}/point/list`, pagination);
   },
 
   async findOnePoint(id: string): Promise<AxiosResponse> {
@@ -23,14 +23,44 @@ export default {
     return await apiClient.patch(`${modulePath}/point`, data);
   },
 
+  // ──────────────────────────────────────────────────────────────────
+  //   :::::: D I S C O U N T : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────────
+
+  async createDiscount(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return await apiClient.post(`${modulePath}/discount/admin/create`, data);
+  },
+
+  /**
+   * @param { Record<string, unknown> } pagination
+   */
+  async getDiscountList(pagination: IPagination): Promise<AxiosResponse> {
+    return await apiClient.post(
+      `${modulePath}/discount/admin/list`,
+      pagination
+    );
+  },
+
+  async findOneDiscount(id: string): Promise<AxiosResponse> {
+    return await apiClient.get(`${modulePath}/discount/admin/${id}`);
+  },
+
+  async editDiscount(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return await apiClient.patch(`${modulePath}/discount/admin/edit`, data);
+  },
+
+  async discountSoftDelete(id: string): Promise<AxiosResponse> {
+    return await apiClient.delete(`${modulePath}/discount/admin/delete/${id}`);
+  },
+
   // ────────────────────────────────────────────────────────────
   //   :::::: G R O U P : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────
   /**
-   * @param { Record<string, unknown> } filter
+   * @param { Record<string, unknown> } pagination
    */
-  async getGroupList(filter: IPagination): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/group/list`, filter);
+  async getGroupList(pagination: IPagination): Promise<AxiosResponse> {
+    return await apiClient.post(`${modulePath}/group/list`, pagination);
   },
 
   async editGroup(data: Record<string, unknown>): Promise<AxiosResponse> {
