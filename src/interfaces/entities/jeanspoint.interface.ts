@@ -19,6 +19,6 @@ export interface IJeansPoint extends Base {
   singularity: string;
   countLimit: number;
   minTotal: number;
-  description: string;
+  description: { context: string };
   promotionGroup: IGroup;
 }

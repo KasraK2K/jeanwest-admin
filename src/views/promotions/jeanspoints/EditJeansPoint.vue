@@ -1,5 +1,8 @@
 <template>
-  <v-container fluid v-if="ready">
+  <v-container
+    fluid
+    v-if="ready"
+  >
     <h1 class="blue--text">{{ title }}</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
@@ -8,14 +11,23 @@
     ─────────────────────────────────────────────────────────────────────────────────── -->
     <v-row>
       <v-col>
-        <v-card id="jeanspoint" class="mt-2 pa-4">
+        <v-card
+          id="jeanspoint"
+          class="mt-2 pa-4"
+        >
           <v-card-title>
-            <label for="name" class="pointer">ویرایش امتیاز</label>
+            <label
+              for="name"
+              class="pointer"
+            >ویرایش امتیاز</label>
           </v-card-title>
 
           <v-form @submit.prevent="updateJeansPoint">
             <v-row>
-              <v-col cols="12" md="4">
+              <v-col
+                cols="12"
+                md="4"
+              >
                 <v-text-field
                   label="نام"
                   v-model="jeanspoint.name"
@@ -24,7 +36,10 @@
                 />
               </v-col>
 
-              <v-col cols="12" md="2">
+              <v-col
+                cols="12"
+                md="2"
+              >
                 <v-autocomplete
                   label="وضعیت"
                   v-model="jeanspoint.active"
@@ -39,7 +54,10 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col cols="12" md="2">
+              <v-col
+                cols="12"
+                md="2"
+              >
                 <v-autocomplete
                   label="اعمال همزمان"
                   v-model="jeanspoint.singularity"
@@ -54,7 +72,10 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col cols="12" md="2">
+              <v-col
+                cols="12"
+                md="2"
+              >
                 <v-text-field
                   label="محدودیت در تعداد"
                   v-model="jeanspoint.countLimit"
@@ -63,7 +84,10 @@
                 />
               </v-col>
 
-              <v-col cols="12" md="2">
+              <v-col
+                cols="12"
+                md="2"
+              >
                 <v-text-field
                   label="حداقل مبلغ خرید"
                   v-model="jeanspoint.minTotal"
@@ -77,14 +101,17 @@
                   v-if="ready"
                   :api-key="tinyApiKey()"
                   :init="tinyInit()"
-                  v-model="jeanspoint.description"
+                  v-model="context"
                 />
               </v-col>
             </v-row>
 
-            <v-btn type="submit" large color="primary" class="mt-4"
-              >ویرایش</v-btn
-            >
+            <v-btn
+              type="submit"
+              large
+              color="primary"
+              class="mt-4"
+            >ویرایش</v-btn>
           </v-form>
         </v-card>
       </v-col>
@@ -93,7 +120,10 @@
     <!-- ────────────────────────────────────────────────────────────────────────
     //   :::::: U P D A T E   G R O U P : :  :   :    :     :        :          :
     ───────────────────────────────────────────────────────────────────────── -->
-    <EditGroup :default-data="defaultData" :group="group" />
+    <EditGroup
+      :default-data="defaultData"
+      :group="group"
+    />
   </v-container>
 </template>
 
@@ -117,6 +147,7 @@ export default Vue.extend({
     jeanspoint: IJeansPoint;
     group: IGroup;
     defaultData: IPromotionGroup;
+    context: string;
   } {
     const title = "ویرایش امتیاز ";
     return {
@@ -138,6 +169,7 @@ export default Vue.extend({
       ready: false,
       jeanspoint: {} as unknown as IJeansPoint,
       group: {} as unknown as IGroup,
+      context: "",
       defaultData: DefaultData,
     };
   },
@@ -146,10 +178,13 @@ export default Vue.extend({
       PromotionService.findOnePoint(this.id).then((response) => {
         this.jeanspoint = response.data.data;
         this.group = this.jeanspoint.promotionGroup;
+        this.context =
+          this.jeanspoint.description && this.jeanspoint.description.context;
         this.ready = true;
       });
     },
     updateJeansPoint() {
+      this.jeanspoint.description = { context: this.context };
       PromotionService.editPoint({ ...this.jeanspoint })
         .then(() => {
           Vue.prototype.$toast("success", "امتیاز با موفقیت بروزرسانی شد.");
