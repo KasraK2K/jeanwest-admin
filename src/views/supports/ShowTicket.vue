@@ -65,13 +65,17 @@
           :right="context.owner === 'customer' ? true : false"
           :left="context.owner === 'customer' ? false : true"
         >
-          <!-- <template v-slot:icon>
-            <v-avatar>
+          <template v-slot:icon>
+            <v-avatar width="30" height="30">
               <img
-                src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"
+                :src="
+                  require(context.owner === 'customer'
+                    ? '@/assets/images/user.png'
+                    : '@/assets/images/admin.png')
+                "
               />
             </v-avatar>
-          </template> -->
+          </template>
           <v-card
             :color="
               context.owner === 'customer' ? customerColor() : adminColor()
@@ -81,7 +85,9 @@
             rounded
           >
             <div class="d-flex align-center justify-space-between">
-              <!-- <v-card-title class="pr-4">کسری کرمی ادمین</v-card-title> -->
+              <v-card-title class="pr-4">{{
+                context.owner === "customer" ? "کاربر" : "ادمین"
+              }}</v-card-title>
               <v-card-title
                 v-text="
                   toPersianString(

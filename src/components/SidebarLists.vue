@@ -1,8 +1,8 @@
 <template>
   <v-list shaped>
-    <v-list-item-group v-model="selectedItem" color="primary">
+    <v-list-item-group v-model="selectedMenu" color="primary">
       <!-- dashboard -->
-      <router-link :to="{ name: 'Home' }">
+      <router-link :to="{ name: 'Home' }" @click="selectedMenu = 0">
         <v-list-item>
           <v-list-item-icon>
             <v-icon>mdi-home</v-icon>
@@ -13,7 +13,11 @@
       <!-- dashboard -->
 
       <!-- order -->
-      <v-list-group :value="false" prepend-icon="mdi-cart">
+      <v-list-group
+        :value="nameToValue(['AllOrders'])"
+        prepend-icon="mdi-cart"
+        @click="selectedMenu = 1"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>سفارشات</v-list-item-title>
@@ -24,14 +28,20 @@
             <v-list-item-icon>
               <v-icon>mdi-format-list-numbered-rtl</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>لیست سفارشات</v-list-item-title>
+            <v-list-item-title :to="{ name: 'AllOrders' }"
+              >لیست سفارشات</v-list-item-title
+            >
           </v-list-item>
         </router-link>
       </v-list-group>
       <!-- order -->
 
       <!-- payment -->
-      <v-list-group :value="false" prepend-icon="mdi-currency-usd">
+      <v-list-group
+        :value="nameToValue(['AllPayments'])"
+        prepend-icon="mdi-currency-usd"
+        @click="selectedMenu = 2"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>پرداخت‌ها</v-list-item-title>
@@ -49,7 +59,11 @@
       <!-- payment -->
 
       <!-- promotions -->
-      <v-list-group :value="false" prepend-icon="mdi-sale">
+      <v-list-group
+        :value="nameToValue(['AllDiscounts', 'AllJeansPoints'])"
+        prepend-icon="mdi-sale"
+        @click="selectedMenu = 3"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>کمپین‌ها</v-list-item-title>
@@ -94,7 +108,11 @@
       <!-- promotions -->
 
       <!-- support -->
-      <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
+      <v-list-group
+        :value="nameToValue(['AllTickets'])"
+        prepend-icon="mdi-lifebuoy"
+        @click="selectedMenu = 4"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>تیکت‌ها</v-list-item-title>
@@ -111,7 +129,11 @@
       </v-list-group>
 
       <!-- notification -->
-      <v-list-group :value="false" prepend-icon="mdi-bell-ring">
+      <v-list-group
+        :value="nameToValue(['AllNotifications'])"
+        prepend-icon="mdi-bell-ring"
+        @click="selectedMenu = 5"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>اعلانات</v-list-item-title>
@@ -129,7 +151,11 @@
       <!-- notification -->
 
       <!-- users -->
-      <v-list-group :value="false" prepend-icon="mdi-account-circle">
+      <v-list-group
+        :value="nameToValue(['AllCustomers'])"
+        prepend-icon="mdi-account-circle"
+        @click="selectedMenu = 6"
+      >
         <!-- #1 -->
         <template v-slot:activator>
           <v-list-item-title>کاربران</v-list-item-title>
@@ -189,7 +215,7 @@ export default Vue.extend({
 
   data(): Record<string, unknown> {
     return {
-      selectedItem: 0,
+      selectedMenu: undefined,
       admins: [
         ["نمایش", "mdi-account-multiple-outline", "AllAdmins"],
         ["دسترسی", "mdi-account-multiple-outline", "AllAdmins"],
@@ -200,6 +226,21 @@ export default Vue.extend({
     logOut(): void {
       this.$emit("log-out");
     },
+    nameToValue(pathnames: string[]) {
+      for (const pathname of pathnames)
+        if (pathname === (this as any).$router.history.current.name)
+          return true;
+      return false;
+    },
   },
 });
 </script>
+
+<style lang="sass" scoped>
+a.router-link-exact-active.router-link-active > .v-list-item
+  background-color: #0066d0 !important
+  color: white
+
+.theme--dark.v-list-item--active:hover::before, .theme--dark.v-list-item--active::before
+  opacity: 0
+</style>

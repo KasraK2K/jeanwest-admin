@@ -311,16 +311,32 @@
 
         <!-- delete -->
         <v-chip
+          v-if="!item.datetime.deleted_at"
           color="red"
           link
           label
           outlined
           close
           close-icon="mdi-delete"
-          @click:close="deleteNotification(item.id)"
-          @click="deleteNotification(item.id)"
+          @click:close="deleteDiscount(item.id)"
+          @click="deleteDiscount(item.id)"
         >
           حذف
+        </v-chip>
+
+        <!-- restore -->
+        <v-chip
+          v-else
+          color="green"
+          link
+          label
+          outlined
+          close
+          close-icon="mdi-delete-restore"
+          @click:close="restoreDiscount(item.id)"
+          @click="restoreDiscount(item.id)"
+        >
+          بازیابی
         </v-chip>
       </template>
     </v-data-table>
@@ -477,8 +493,12 @@ export default Vue.extend({
       this.dates = undefined;
       this.paginateGenerator();
     },
-    deleteNotification(id: string): void {
+    deleteDiscount(id: string): void {
       PromotionService.discountSoftDelete(id).then(() => this.getList());
+    },
+    restoreDiscount(id: string): void {
+      // PromotionService.discountRestore(id).then(() => this.getList());
+      console.log(`restore discount with id: ${id}`);
     },
   },
   mounted(): void {
