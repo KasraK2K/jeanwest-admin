@@ -491,7 +491,7 @@ const sankeyData = {
 
 export const sankeyChartOptions = {
   textStyle: {
-    fontFamily: "IRANSans",
+    fontFamily: "IRANSansFaNum",
   },
   title: {
     text: "نمودار انرژی",
@@ -507,7 +507,7 @@ export const sankeyChartOptions = {
       type: "sankey",
       left: "5%",
       top: "10%",
-      right: "20%",
+      right: "15%",
       bottom: "5%",
       data: sankeyData.nodes,
       links: sankeyData.links,

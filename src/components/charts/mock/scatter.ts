@@ -1,7 +1,7 @@
 import { toPersianString } from "./../../../mixin/string.mixin";
 export const scatterChartOptions = {
   textStyle: {
-    fontFamily: "IRANSans",
+    fontFamily: "IRANSansFaNum",
   },
   title: {
     text: "توزیع قد و وزن آقایان و بانوان",

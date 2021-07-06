@@ -45,16 +45,16 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-.priChart {
-  height: 500px;
-}
+<style lang="sass" scoped>
+canvas
+  font-family: "IRANSansFaNum" !important
 
-.sankeyChart {
-  height: 900px;
-}
+.priChart
+  height: 500px
 
-.scatterChart {
-  height: 500px;
-}
+.sankeyChart
+  height: 900px
+
+.scatterChart
+  height: 500px
 </style>

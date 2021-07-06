@@ -1,6 +1,6 @@
 export const pirChartOptions = {
   textStyle: {
-    fontFamily: "IRANSans",
+    fontFamily: "IRANSansFaNum",
   },
   dispatchAction: {
     type: "dataZoom",
