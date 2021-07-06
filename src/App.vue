@@ -52,7 +52,7 @@
       <template v-slot:prepend>
         <v-list-item class="disable-hover px-2">
           <v-list-item-avatar @click="checkMiniVariant()">
-            <img src="https://avatars.githubusercontent.com/u/30779339?v=4" />
+            <img :src="require('@/assets/images/admin.png')" />
           </v-list-item-avatar>
 
           <v-list-item-content>
