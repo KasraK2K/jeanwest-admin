@@ -13,7 +13,7 @@
             label="توکن"
             placeholder="لطفا توکن سفارش را وارد کنید."
             v-model="token"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-text-field>
@@ -29,7 +29,7 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-autocomplete>
@@ -45,7 +45,7 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-autocomplete>
@@ -56,7 +56,7 @@
             label="موبایل"
             placeholder="لطفا شماره موبایل را وارد کنید."
             v-model="mobile"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
           ></v-text-field>
         </v-col>
@@ -310,7 +310,7 @@ export default Vue.extend({
         )} }`
       );
     },
-    filterGenerate() {
+    paginateGenerator() {
       this.filter = {
         token: this.token,
         gate: this.gate,

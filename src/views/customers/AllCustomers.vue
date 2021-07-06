@@ -18,7 +18,7 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="filterGenerate({ page: 1 })"
+            @change="paginateGenerator({ page: 1 })"
             outlined
             hide-details="auto"
           ></v-autocomplete>
@@ -34,7 +34,7 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-autocomplete>
@@ -66,7 +66,7 @@
             <v-date-picker
               v-model="dates"
               multiple
-              @change="filterGenerate()"
+              @change="paginateGenerator()"
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -225,6 +225,7 @@
 <script lang="ts">
 import Vue from "vue";
 import CustomerService from "@/services/Customer.service";
+import { IPagination } from "@/interfaces/others/pagination.interface";
 
 export default Vue.extend({
   name: "AllCustomers",
@@ -234,7 +235,7 @@ export default Vue.extend({
     page: number;
     pageCount: number;
     limit: number;
-    filter: Record<string, unknown>;
+    pagination: IPagination;
   } {
     const title = "لیست کاربران";
     return {
@@ -261,7 +262,7 @@ export default Vue.extend({
       status: undefined,
       dates: undefined,
       datesMenu: false,
-      filter: {
+      pagination: {
         option: {
           page: { eq: 1 },
           limit: { eq: 10 },
@@ -274,7 +275,7 @@ export default Vue.extend({
       this.page = 1;
       this.getList();
     },
-    filter() {
+    pagination() {
       this.getList();
     },
     items(): void {
@@ -284,11 +285,11 @@ export default Vue.extend({
   methods: {
     changePage(page: number) {
       this.page = page;
-      this.filterGenerate();
+      this.paginateGenerator();
     },
     getList(): void {
       this.loading = true;
-      CustomerService.getList(this.filter, this.$store.state.token).then(
+      CustomerService.getList(this.pagination, this.$store.state.token).then(
         (response) => {
           const data = response.data.data;
           this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
@@ -296,8 +297,8 @@ export default Vue.extend({
         }
       );
     },
-    filterGenerate() {
-      this.filter = {
+    paginateGenerator() {
+      this.pagination = {
         option: {
           page: { eq: this.page },
           limit: { eq: this.limit },
@@ -310,7 +311,7 @@ export default Vue.extend({
     },
     clearDateFilter(): void {
       this.dates = undefined;
-      this.filterGenerate();
+      this.paginateGenerator();
     },
     toggleActivation(id: string): void {
       console.log(`toggle activation ${id}`);

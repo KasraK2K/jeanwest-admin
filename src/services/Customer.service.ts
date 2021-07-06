@@ -1,3 +1,4 @@
+import { IPagination } from "@/interfaces/others/pagination.interface";
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
 
@@ -5,13 +6,13 @@ const modulePath = "/customer";
 
 export default {
   /**
-   * @param { Record<string, unknown> } filter
+   * @param { Record<string, unknown> } pagination
    */
   async getList(
-    filter: Record<string, unknown>,
+    pagination: IPagination,
     token: string
   ): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/list`, filter, {
+    return await apiClient.post(`${modulePath}/list`, pagination, {
       headers: {
         authorization: `Bearer ${token}`,
       },

@@ -13,7 +13,7 @@
             label="کد"
             placeholder="لطفا کد پیشنهاد را وارد کنید."
             v-model="code"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-text-field>
@@ -24,7 +24,7 @@
             label="نام"
             placeholder="لطفا نام پیشنهاد را وارد کنید."
             v-model="name"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-text-field>
@@ -40,7 +40,7 @@
             ]"
             item-text="text"
             item-value="value"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-autocomplete>
@@ -51,7 +51,7 @@
             label="گروه هدف"
             placeholder="لطفا گروه هدف را وارد کنید."
             v-model="target_group"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-text-field>
@@ -62,7 +62,7 @@
             label="گروه پیشنهاد"
             placeholder="لطفا گروه پیشنهاد را وارد کنید."
             v-model="trigger_group"
-            @change="filterGenerate()"
+            @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-text-field>
@@ -93,7 +93,7 @@
             <v-date-picker
               v-model="dates"
               multiple
-              @change="filterGenerate()"
+              @change="paginateGenerator()"
             ></v-date-picker>
           </v-menu>
         </v-col>
@@ -372,7 +372,7 @@ export default Vue.extend({
         )} }`
       );
     },
-    filterGenerate(): void {
+    paginateGenerator(): void {
       this.filter = {
         code: this.code,
         name: this.name,
@@ -384,7 +384,7 @@ export default Vue.extend({
     },
     clearDateFilter(): void {
       this.dates = undefined;
-      this.filterGenerate();
+      this.paginateGenerator();
     },
     deleteNotification(id: string): void {
       console.log("delete id:", id);
