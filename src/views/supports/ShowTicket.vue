@@ -5,7 +5,7 @@
 
     <v-card id="form" class="mt-2 mb-5 pa-4">
       <v-row>
-        <v-col sm="12" md="8">
+        <v-col cols="12" md="8">
           <v-text-field
             label="یادداشت"
             hide-details="auto"

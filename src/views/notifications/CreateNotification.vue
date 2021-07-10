@@ -4,10 +4,10 @@
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
     <v-row>
-      <v-col sm="12" :md="formCondition() ? '9' : '12'">
+      <v-col cols="12" :md="formCondition() ? '9' : '12'">
         <v-card id="form" class="mt-2 mb-5 pa-4">
           <v-row>
-            <v-col sm="12" :md="formCondition() ? '12' : '6'">
+            <v-col cols="12" :md="formCondition() ? '12' : '6'">
               <v-text-field
                 label="عنوان"
                 v-model="formTitle"
@@ -19,7 +19,7 @@
               </v-text-field>
             </v-col>
 
-            <v-col sm="12" :md="formCondition() ? '6' : '3'">
+            <v-col cols="12" :md="formCondition() ? '6' : '3'">
               <v-file-input
                 v-model="formImage"
                 accept="image/png, image/jpeg, image/bmp"
@@ -32,7 +32,7 @@
               ></v-file-input>
             </v-col>
 
-            <v-col sm="12" :md="formCondition() ? '6' : '3'">
+            <v-col cols="12" :md="formCondition() ? '6' : '3'">
               <v-file-input
                 v-model="formIcon"
                 accept="image/png, image/jpeg, image/bmp"
@@ -59,7 +59,7 @@
         </v-card>
       </v-col>
 
-      <v-col v-if="formCondition()" sm="12" md="3">
+      <v-col v-if="formCondition()" cols="12" md="3">
         <v-card elevation="2" class="mx-auto" max-width="374">
           <v-card-title>
             <v-img

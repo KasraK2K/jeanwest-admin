@@ -1,4 +1,4 @@
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Inject } from "vue-property-decorator";
 import PromotionService from "@/services/Promotion.service";
 import { ITarget } from "@/interfaces/entities/group.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
@@ -6,13 +6,13 @@ import { IGroup } from "@/interfaces/entities/group.interface";
 import * as _ from "lodash";
 
 @Component({ name: "EditPromotionGroup" })
-export default class EditPromotionGroup extends Vue {
+class EditPromotionGroup extends Vue {
   @Prop(Object) readonly defaultData!: IPromotionGroup;
   @Prop(Object) readonly group!: IGroup;
 
-  ready = false;
-  updateGroupData!: IGroup;
-  target: ITarget = {
+  private ready = false;
+  private updateGroupData!: IGroup;
+  private target: ITarget = {
     group: { eq: [] },
     subGroup: { eq: [] },
     size: { ct: [] },
@@ -21,12 +21,16 @@ export default class EditPromotionGroup extends Vue {
     ageGroup: { eq: [] },
     colorFamily: { eq: [] },
   };
-  quantity: number | undefined;
-  quantityType!: string;
-  basePrice: number | undefined;
-  basePriceType!: string;
-  salePrice: number | undefined;
-  salePriceType!: string;
+  private quantity: number | undefined;
+  private quantityType!: string;
+  private basePrice: number | undefined;
+  private basePriceType!: string;
+  private salePrice: number | undefined;
+  private salePriceType!: string;
+
+  private mounted() {
+    this.init();
+  }
 
   private init() {
     _.assign(this.target, this.group.target);
@@ -49,7 +53,7 @@ export default class EditPromotionGroup extends Vue {
     this.ready = true;
   }
 
-  public updateGroup() {
+  private updateGroup() {
     this.sanitize();
     this.update();
   }
@@ -110,8 +114,6 @@ export default class EditPromotionGroup extends Vue {
     if (typeof data !== "undefined") return _.keys(data)[0];
     else undefined;
   }
-
-  private mounted() {
-    this.init();
-  }
 }
+
+export default EditPromotionGroup;

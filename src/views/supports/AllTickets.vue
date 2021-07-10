@@ -95,7 +95,7 @@
     >
       <template v-slot:top>
         <v-row>
-          <v-col sm="12" md="9">
+          <v-col cols="12" md="9">
             <v-toolbar flat>
               <v-toolbar-title>
                 <div class="d-flex justify-start align-center">
@@ -110,6 +110,7 @@
               v-model="search"
               label="جستجو در این صفحه"
               class="ml-4"
+              clearable
             ></v-text-field>
           </v-col>
         </v-row>

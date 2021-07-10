@@ -91,7 +91,7 @@
     >
       <template v-slot:top>
         <v-row>
-          <v-col sm="12" md="9">
+          <v-col cols="12" md="9">
             <v-toolbar flat>
               <v-toolbar-title>
                 <div class="d-flex justify-start align-center">

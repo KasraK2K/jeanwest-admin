@@ -1,6 +1,7 @@
 import { IPagination } from "./../interfaces/others/pagination.interface";
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
+import { IDiscount } from "@/interfaces/entities/discount.interface";
 
 const modulePath = "/promotion";
 
@@ -27,7 +28,7 @@ export default {
   //   :::::: D I S C O U N T : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────────────
 
-  async createDiscount(data: Record<string, unknown>): Promise<AxiosResponse> {
+  async createDiscount(data: IDiscount): Promise<AxiosResponse> {
     return await apiClient.post(`${modulePath}/discount/admin/create`, data);
   },
 
