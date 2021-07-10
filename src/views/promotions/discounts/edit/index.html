@@ -1,0 +1,180 @@
+<v-container fluid>
+  <h1 class="blue--text">{{ title }}</h1>
+  <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
+
+  <v-row>
+    <v-col cols="12">
+      <v-card class="mt-2 mb-5 pa-4">
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-text-field
+              label="نام"
+              v-model.trim="discount.name"
+              hide-details="auto"
+              type="text"
+              clearable
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="کد"
+              v-model.trim="discount.code"
+              hide-details="auto"
+              type="text"
+              clearable
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="مقدار تخفیف"
+              v-model.trim="discount.reductionPrice"
+              hide-details="auto"
+              type="number"
+              clearable
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-autocomplete
+              label="نوع تخفیف"
+              v-model="discount.isPercentage"
+              :items="[
+                { text: 'درصدی', value: true },
+                { text: 'مبلغی', value: false },
+              ]"
+              item-text="text"
+              item-value="value"
+              hide-details="auto"
+              clearable
+            >
+            </v-autocomplete>
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-autocomplete
+              label="اعمال همزمان"
+              v-model="discount.singularity"
+              :items="[
+                { text: 'بله', value: true },
+                { text: 'خیر', value: false },
+              ]"
+              item-text="text"
+              item-value="value"
+              hide-details="auto"
+              clearable
+            >
+            </v-autocomplete>
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="محدودیت تعداد"
+              v-model.numeric="discount.countLimit"
+              hide-details="auto"
+              type="number"
+              clearable
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="دفعات استفاده"
+              v-model.numeric="discount.usageCount"
+              hide-details="auto"
+              type="number"
+              clearable
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="حداکثر تخفیف"
+              v-model.numeric="discount.maxTotal"
+              hide-details="auto"
+              type="number"
+              clearable
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="حداقل تخفیف"
+              v-model.numeric="discount.minTotal"
+              hide-details="auto"
+              type="number"
+              clearable
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col class="col-12 col-md-3">
+            <v-menu
+              v-model="startDateMenu"
+              :nudge-top="20"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="discount.startDate"
+                  label="تاریخ شروع"
+                  placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید."
+                  readonly
+                  clearable
+                  v-bind="attrs"
+                  v-on="on"
+                  @click:clear="discount.startDate = ''"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="discount.startDate"></v-date-picker>
+            </v-menu>
+          </v-col>
+
+          <v-col class="col-12 col-md-3">
+            <v-menu
+              v-model="expirationDateMenu"
+              :nudge-top="20"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="discount.expirationDate"
+                  label="تاریخ انقضا"
+                  placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید."
+                  readonly
+                  clearable
+                  v-bind="attrs"
+                  v-on="on"
+                  @click:clear="discount.expirationDate = ''"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="discount.expirationDate"></v-date-picker>
+            </v-menu>
+          </v-col>
+
+          <v-col cols="12">
+            <editor
+              :api-key="tinyApiKey()"
+              :init="tinyInit()"
+              v-model="discount.description.context"
+            />
+          </v-col>
+        </v-row>
+        <v-btn large color="primary" class="mt-4" @click="editDiscount"
+          >ایجاد</v-btn
+        >
+      </v-card>
+    </v-col>
+  </v-row>
+</v-container>

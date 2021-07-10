@@ -303,8 +303,10 @@
           outlined
           close
           close-icon="mdi-square-edit-outline"
-          @click:close="$router.push({ path: 'editDiscount' })"
-          :to="{ path: 'editDiscount' }"
+          @click:close="
+            $router.push({ name: 'EditDiscount', params: { id: item.id } })
+          "
+          :to="{ name: 'EditDiscount', params: { id: item.id } }"
         >
           ویرایش
         </v-chip>

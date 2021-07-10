@@ -31,10 +31,6 @@ class CreateDiscount extends Vue {
   private expirationDateMenu = false;
   private startDateMenu = false;
 
-  private components = {
-    editor: Editor,
-  };
-
   private createDiscount() {
     PromotionService.createDiscount(this.discount).then(() => {
       Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");

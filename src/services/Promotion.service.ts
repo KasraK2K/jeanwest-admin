@@ -46,7 +46,7 @@ export default {
     return await apiClient.get(`${modulePath}/discount/admin/${id}`);
   },
 
-  async editDiscount(data: Record<string, unknown>): Promise<AxiosResponse> {
+  async editDiscount(data: IDiscount): Promise<AxiosResponse> {
     return await apiClient.patch(`${modulePath}/discount/admin/edit`, data);
   },
 

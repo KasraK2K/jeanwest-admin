@@ -1,6 +1,7 @@
 // ─── DISCOUNT ───────────────────────────────────────────────────────────────────
 import AllDiscounts from "@/views/promotions/discounts/AllDiscounts.vue";
 import CreateDiscount from "@/views/promotions/discounts/create/CreateDiscount.vue";
+import EditDiscount from "@/views/promotions/discounts/edit/EditDiscount.vue";
 
 // ─── OFFERS ─────────────────────────────────────────────────────────────────────
 import AllOffers from "@/views/promotions/offers/AllOffers.vue";
@@ -33,6 +34,15 @@ export const promotions: IRouter[] = [
     component: CreateDiscount,
     meta: {
       title: "ایجاد تخفیف",
+    },
+  },
+  {
+    path: "/promotions/discount/edit/:id",
+    name: "EditDiscount",
+    component: EditDiscount,
+    props: true,
+    meta: {
+      title: "ویرایش تخفیف",
     },
   },
 

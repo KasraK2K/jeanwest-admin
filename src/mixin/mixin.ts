@@ -4,7 +4,7 @@ import {
   toPersianString,
   toEnglishString,
 } from "@/mixin/string.mixin";
-import { toPersianTime, toGregorian } from "@/mixin/date.mixin";
+import { toPersianTime, toGregorian, formatDate } from "@/mixin/date.mixin";
 import { globals } from "@/common/globals/globals";
 
 export const methods = {
@@ -16,6 +16,7 @@ export const methods = {
     toEnglishString: toEnglishString,
     toPersianTime: toPersianTime,
     toGregorian: toGregorian,
+    formatDate: formatDate,
     mediaPath: (path: string): string => {
       if (path.slice(0, 5) === "blob:") return path;
       else return globals.mediaServerStatic + path;
