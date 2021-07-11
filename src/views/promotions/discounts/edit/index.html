@@ -6,7 +6,7 @@
     <v-col cols="12">
       <v-card class="mt-2 mb-5 pa-4">
         <v-row>
-          <v-col cols="12" md="6">
+          <v-col cols="12">
             <v-text-field
               label="نام"
               v-model.trim="discount.name"
@@ -132,10 +132,43 @@
                   clearable
                   v-bind="attrs"
                   v-on="on"
+                  hide-details="auto"
                   @click:clear="discount.startDate = ''"
                 ></v-text-field>
               </template>
               <v-date-picker v-model="discount.startDate"></v-date-picker>
+            </v-menu>
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-menu
+              ref="startTimeMenu"
+              v-model="startTimePickerMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="startTime"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="startTime"
+                  label="زمان شروع"
+                  v-bind="attrs"
+                  v-on="on"
+                  hide-details="auto"
+                  clearable
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="startTimePickerMenu"
+                v-model="startTime"
+                format="24hr"
+                @click:minute="$refs.startTimeMenu.save(startTime)"
+                scrollable
+              ></v-time-picker>
             </v-menu>
           </v-col>
 
@@ -156,15 +189,48 @@
                   clearable
                   v-bind="attrs"
                   v-on="on"
+                  hide-details="auto"
                   @click:clear="discount.expirationDate = ''"
                 ></v-text-field>
               </template>
               <v-date-picker v-model="discount.expirationDate"></v-date-picker>
             </v-menu>
           </v-col>
+
+          <v-col cols="12" md="3">
+            <v-menu
+              ref="expirationTimeMenu"
+              v-model="expirationTimePickerMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="expirationTime"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="expirationTime"
+                  label="زمان انقضا"
+                  v-bind="attrs"
+                  v-on="on"
+                  hide-details="auto"
+                  clearable
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="expirationTimePickerMenu"
+                v-model="expirationTime"
+                format="24hr"
+                @click:minute="$refs.expirationTimeMenu.save(expirationTime)"
+                scrollable
+              ></v-time-picker>
+            </v-menu>
+          </v-col>
         </v-row>
         <v-btn large color="primary" class="mt-4" @click="editDiscount"
-          >ایجاد</v-btn
+          >ویرایش</v-btn
         >
       </v-card>
     </v-col>

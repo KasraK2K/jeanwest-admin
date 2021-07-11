@@ -36,10 +36,16 @@ class CreateDiscount extends Vue {
   ];
   ready = false;
   private discount: IDiscount = {} as unknown as IDiscount;
-  private expirationDateMenu = false;
   private startDateMenu = false;
+  private expirationDateMenu = false;
   private defaultData: IPromotionGroup = DefaultData;
   private group: IGroup = {} as unknown as IGroup;
+  private startTime = "";
+  private startTimeMenu = false;
+  private startTimePickerMenu = false;
+  private expirationTime = "";
+  private expirationTimeMenu = false;
+  private expirationTimePickerMenu = false;
 
   private mounted() {
     this.findOneDiscount();
@@ -49,13 +55,20 @@ class CreateDiscount extends Vue {
     PromotionService.findOneDiscount(this.id)
       .then((response) => {
         this.discount = _.assign(this.discount, response.data.data);
-        // edit resived date format
-        if (this.discount.startDate)
+        // edit resived date and set time from resived date
+        if (this.discount.startDate) {
+          this.startTime = formatDate(this.discount.startDate, "HH:mm");
           this.discount.startDate = formatDate(this.discount.startDate);
-        if (this.discount.expirationDate)
+        }
+        if (this.discount.expirationDate) {
+          this.expirationTime = formatDate(
+            this.discount.expirationDate,
+            "HH:mm"
+          );
           this.discount.expirationDate = formatDate(
             this.discount.expirationDate
           );
+        }
         this.group = this.discount.promotionGroup;
         this.ready = true;
       })
@@ -66,6 +79,11 @@ class CreateDiscount extends Vue {
   }
 
   private editDiscount() {
+    if (this.discount.startDate)
+      this.discount.startDate = `${this.discount.startDate} ${this.startTime}`;
+    if (this.discount.expirationDate)
+      this.discount.expirationDate = `${this.discount.expirationDate} ${this.expirationTime}`;
+
     PromotionService.editDiscount(this.discount)
       .then(() => {
         Vue.prototype.$toast("success", "با موفقیت بروزرسانی شد.");
