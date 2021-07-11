@@ -25,9 +25,7 @@ class CreateDiscount extends Vue {
       to: document.location.pathname,
     },
   ];
-  private discount: IDiscount = {
-    description: { context: "" },
-  } as unknown as IDiscount;
+  private discount: IDiscount = {} as unknown as IDiscount;
   private expirationDateMenu = false;
   private startDateMenu = false;
 

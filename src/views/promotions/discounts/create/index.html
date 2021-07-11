@@ -162,14 +162,6 @@
               <v-date-picker v-model="discount.expirationDate"></v-date-picker>
             </v-menu>
           </v-col>
-
-          <v-col cols="12">
-            <editor
-              :api-key="tinyApiKey()"
-              :init="tinyInit()"
-              v-model="discount.description.context"
-            />
-          </v-col>
         </v-row>
         <v-btn large color="primary" class="mt-4" @click="createDiscount"
           >ایجاد</v-btn

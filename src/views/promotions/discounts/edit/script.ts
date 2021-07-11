@@ -2,14 +2,19 @@ import { toGregorian } from "@/mixin/date.mixin";
 import PromotionService from "@/services/Promotion.service";
 import { IDiscount } from "@/interfaces/entities/discount.interface";
 import Editor from "@tinymce/tinymce-vue";
+import EditGroup from "@/components/promotions/group/EditGroup.vue";
+import { DefaultPromotionGroupData as DefaultData } from "@/common/globals/constant/promotion-group";
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { formatDate } from "@/mixin/date.mixin";
+import { Datetime } from "vue-datetime";
 import * as _ from "lodash";
+import { IPromotionGroup } from "@/interfaces/constant/group.interface";
+import { IGroup } from "@/interfaces/entities/group.interface";
 
 @Component({
-  name: "CreateDiscount",
+  name: "EditDiscount",
   components: {
-    editor: Editor,
+    EditGroup,
   },
 })
 class CreateDiscount extends Vue {
@@ -30,11 +35,12 @@ class CreateDiscount extends Vue {
       to: document.location.pathname,
     },
   ];
-  private discount: IDiscount = {
-    description: { context: "" },
-  } as unknown as IDiscount;
+  ready = false;
+  private discount: IDiscount = {} as unknown as IDiscount;
   private expirationDateMenu = false;
   private startDateMenu = false;
+  private defaultData: IPromotionGroup = DefaultData;
+  private group: IGroup = {} as unknown as IGroup;
 
   private mounted() {
     this.findOneDiscount();
@@ -44,6 +50,8 @@ class CreateDiscount extends Vue {
     PromotionService.findOneDiscount(this.id)
       .then((response) => {
         this.discount = _.assign(this.discount, response.data.data);
+        this.group = this.discount.promotionGroup;
+        this.ready = true;
       })
       .catch((error) => {
         Vue.prototype.$toast("error", error.message);
