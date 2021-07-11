@@ -6,7 +6,6 @@ import EditGroup from "@/components/promotions/group/EditGroup.vue";
 import { DefaultPromotionGroupData as DefaultData } from "@/common/globals/constant/promotion-group";
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { formatDate } from "@/mixin/date.mixin";
-import { Datetime } from "vue-datetime";
 import * as _ from "lodash";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
