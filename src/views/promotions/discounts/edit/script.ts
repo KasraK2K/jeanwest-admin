@@ -49,6 +49,13 @@ class CreateDiscount extends Vue {
     PromotionService.findOneDiscount(this.id)
       .then((response) => {
         this.discount = _.assign(this.discount, response.data.data);
+        // edit resived date format
+        if (this.discount.startDate)
+          this.discount.startDate = formatDate(this.discount.startDate);
+        if (this.discount.expirationDate)
+          this.discount.expirationDate = formatDate(
+            this.discount.expirationDate
+          );
         this.group = this.discount.promotionGroup;
         this.ready = true;
       })

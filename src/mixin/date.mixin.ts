@@ -23,7 +23,7 @@ export const toGregorian = async (date: string): Promise<string | null> => {
 
 export const formatDate = (
   date: string | Date,
-  dateFormat = "YYYY/MM/DD"
+  dateFormat = "YYYY-MM-DD"
 ): string => {
   return moment(date).format(dateFormat).toString();
 };
