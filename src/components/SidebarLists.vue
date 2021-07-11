@@ -169,27 +169,6 @@
             <v-list-item-title>لیست کاربران</v-list-item-title>
           </v-list-item>
         </router-link>
-        <!-- #2 -->
-        <v-list-group :value="false" no-action sub-group>
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>ادمین‌ها</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <!-- #3 -->
-          <router-link
-            v-for="([title, icon, link], i) in admins"
-            :key="i"
-            :to="{ name: link }"
-          >
-            <v-list-item link>
-              <v-list-item-icon>
-                <v-icon v-text="icon"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-title v-text="title"></v-list-item-title>
-            </v-list-item>
-          </router-link>
-        </v-list-group>
       </v-list-group>
       <!-- users -->
 

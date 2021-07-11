@@ -149,7 +149,6 @@
               :return-value.sync="startTime"
               transition="scale-transition"
               offset-y
-              max-width="290px"
               min-width="290px"
             >
               <template v-slot:activator="{ on, attrs }">
@@ -165,8 +164,10 @@
               <v-time-picker
                 v-if="startTimePickerMenu"
                 v-model="startTime"
+                ampm-in-title
                 format="24hr"
                 @click:minute="$refs.startTimeMenu.save(startTime)"
+                landscape
                 scrollable
               ></v-time-picker>
             </v-menu>
@@ -206,7 +207,6 @@
               :return-value.sync="expirationTime"
               transition="scale-transition"
               offset-y
-              max-width="290px"
               min-width="290px"
             >
               <template v-slot:activator="{ on, attrs }">
@@ -224,6 +224,7 @@
                 v-model="expirationTime"
                 format="24hr"
                 @click:minute="$refs.expirationTimeMenu.save(expirationTime)"
+                landscape
                 scrollable
               ></v-time-picker>
             </v-menu>
