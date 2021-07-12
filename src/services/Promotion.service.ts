@@ -9,9 +9,6 @@ export default {
   // ──────────────────────────────────────────────────────────────────────
   //   :::::: J E A N S P O I N T : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────────────────
-  /**
-   * @param { Record<string, unknown> } pagination
-   */
   async getPointList(pagination: IPagination): Promise<AxiosResponse> {
     return await apiClient.post(`${modulePath}/point/list`, pagination);
   },
@@ -27,14 +24,10 @@ export default {
   // ──────────────────────────────────────────────────────────────────
   //   :::::: D I S C O U N T : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────────────
-
   async createDiscount(data: IDiscount): Promise<AxiosResponse> {
     return await apiClient.post(`${modulePath}/discount/admin/create`, data);
   },
 
-  /**
-   * @param { Record<string, unknown> } pagination
-   */
   async getDiscountList(pagination: IPagination): Promise<AxiosResponse> {
     return await apiClient.post(
       `${modulePath}/discount/admin/list`,
@@ -57,9 +50,6 @@ export default {
   // ────────────────────────────────────────────────────────────
   //   :::::: G R O U P : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────
-  /**
-   * @param { Record<string, unknown> } pagination
-   */
   async getGroupList(pagination: IPagination): Promise<AxiosResponse> {
     return await apiClient.post(`${modulePath}/group/list`, pagination);
   },

@@ -5,9 +5,6 @@ import { apiClient } from "./Axios.service";
 const modulePath = "/customer";
 
 export default {
-  /**
-   * @param { Record<string, unknown> } pagination
-   */
   async getList(
     pagination: IPagination,
     token: string

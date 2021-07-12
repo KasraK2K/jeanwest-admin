@@ -3,9 +3,6 @@ import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
 
 export default {
-  /**
-   * @param { Record<string, unknown> } filter
-   */
   async upload(path: string, file: any): Promise<AxiosResponse> {
     const formData = new FormData();
     formData.append("path", path);
