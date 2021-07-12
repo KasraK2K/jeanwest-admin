@@ -375,6 +375,7 @@ import Vue from "vue";
 import PromotionService from "@/services/Promotion.service";
 import { IPagination } from "@/interfaces/others/pagination.interface";
 import * as _ from "lodash";
+import { IDiscount } from "@/interfaces/entities/discount.interface";
 
 export default Vue.extend({
   data(): {
@@ -383,6 +384,7 @@ export default Vue.extend({
     pageCount: number;
     limit: number;
     pagination: IPagination;
+    items: IDiscount[];
   } {
     const title = "لیست تخفیف‌ها";
     return {

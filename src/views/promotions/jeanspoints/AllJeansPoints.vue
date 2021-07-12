@@ -276,15 +276,16 @@
 import Vue from "vue";
 import PromotionService from "@/services/Promotion.service";
 import { IPagination } from "@/interfaces/others/pagination.interface";
+import { IJeansPoint } from "@/interfaces/entities/jeanspoint.interface";
 
 export default Vue.extend({
   data(): {
     [key: string]: unknown;
-    items: Record<string, unknown>[];
     page: number;
     pageCount: number;
     limit: number;
     pagination: IPagination;
+    items: IJeansPoint[];
   } {
     const title = "لیست امتیازات";
     return {
@@ -345,13 +346,11 @@ export default Vue.extend({
   methods: {
     getList(): void {
       this.loading = true;
-      PromotionService.getPointList((this as any).pagination).then(
-        (response) => {
-          const data = response.data.data;
-          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-          this.items = data.result;
-        }
-      );
+      PromotionService.getPointList(this.pagination).then((response) => {
+        const data = response.data.data;
+        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+        this.items = data.result;
+      });
     },
     paginateGenerator() {
       this.page = 1;

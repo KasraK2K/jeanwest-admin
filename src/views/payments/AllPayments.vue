@@ -169,8 +169,8 @@
       <v-pagination
         v-model="page"
         :length="pageCount"
-        :total-visible="10"
-        @input="getList(page, limit, filter)"
+        :total-visible="limit"
+        @input="page = $event"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -189,7 +189,11 @@
 </template>
 
 <script lang="ts">
+import { IPagination } from "@/interfaces/others/pagination.interface";
+import PaymentService from "@/services/Payment.service";
 import Vue from "vue";
+import * as _ from "lodash";
+import { ITransaction } from "@/interfaces/entities/transaction.interface";
 
 export default Vue.extend({
   data(): {
@@ -197,6 +201,8 @@ export default Vue.extend({
     page: number;
     pageCount: number;
     limit: number;
+    pagination: IPagination;
+    items: ITransaction[];
   } {
     const title = "لیست پرداخت‌ها";
     return {
@@ -223,100 +229,79 @@ export default Vue.extend({
       gate: undefined,
       status: undefined,
       mobile: undefined,
-      filter: {},
+      pagination: {
+        option: {
+          page: { eq: 1 },
+          limit: { eq: 10 },
+        },
+      },
     };
   },
   watch: {
-    limit() {
+    limit(): void {
       this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+      this.pagination.option.limit = { eq: this.limit };
+      this.getList();
     },
-    filter() {
-      this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+    page(): void {
+      this.pagination.option.page = { eq: this.page };
+      this.getList();
+    },
+    pagination(): void {
+      this.getList();
+    },
+    items(): void {
+      this.loading = false;
     },
   },
   methods: {
-    getList(page: number, limit: number, filter?: unknown): void {
+    getList(): void {
       this.loading = true;
-      setTimeout(() => {
-        this.items = [
-          {
-            no: 1,
-            id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c1",
-            gate: 1, // زرین‌پال
-            status: 0, // در حال انجام
-            token: "‌B54008831",
-            price: 1389000,
-            mobile: "09111111111",
-            updated_at: "2021-04-28T14:20:22.783Z",
-          },
-          {
-            no: 2,
-            id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae2",
-            gate: 1, // زرین‌پال
-            status: 1, // تکمیل شده
-            token: "‌B54008832",
-            price: 198000,
-            mobile: "09111111112",
-            updated_at: "2021-04-28T14:20:22.783Z",
-          },
-          {
-            no: 3,
-            id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e13",
-            gate: 1, // زرین‌پال
-            status: 1, // مرجوعی
-            token: "‌B54008833",
-            price: 2499000,
-            mobile: "09111111113",
-            updated_at: "2021-04-28T14:20:22.783Z",
-          },
-          {
-            no: 4,
-            id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c4",
-            gate: 2, // سامان
-            status: 0, // در حال انجام
-            token: "‌B54008834",
-            price: 460000,
-            mobile: "09111111114",
-            updated_at: "2021-04-28T14:20:22.783Z",
-          },
-          {
-            no: 5,
-            id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae5",
-            gate: 2, // سامان
-            status: 1, // تکمیل شده
-            token: "‌B54008835",
-            price: 12000,
-            mobile: "09111111115",
-            updated_at: "2021-04-28T14:20:22.783Z",
-          },
-          {
-            no: 6,
-            id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e16",
-            gate: 2, // سامان
-            status: 1, // مرجوعی
-            token: "‌B54008836",
-            price: 48000,
-            mobile: "09111111116",
-            updated_at: "2021-04-28T14:20:22.783Z",
-          },
-        ];
-        this.loading = false;
-      }, 500);
-      console.log(
-        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
-          filter
-        )} }`
-      );
+      PaymentService.getList(this.pagination).then((response) => {
+        const data = response.data.data;
+        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+        this.items = data.result;
+      });
     },
     paginateGenerator() {
-      this.filter = {
-        token: this.token,
-        gate: this.gate,
-        status: this.status,
-        mobile: this.mobile,
+      this.page = 1;
+      this.pagination = {
+        option: {
+          page: { eq: this.page },
+          limit: { eq: this.limit },
+        },
+        filter: {
+          gateId: { eq: this.code },
+          type: { eq: this.type },
+          amount: { eq: this.amount },
+          payment_status: { eq: this.payment_status },
+        },
+        // dates: this.dates,
       };
+      const filterKeys =
+        this.pagination &&
+        this.pagination.filter &&
+        _.keys(this.pagination.filter);
+      // delete empty keys
+      if (filterKeys && filterKeys.length) {
+        for (const key of filterKeys)
+          if (
+            this.pagination.filter &&
+            this.pagination.filter[key] &&
+            (this[key] === undefined || this[key] === null)
+          )
+            delete this.pagination.filter[key];
+      }
+      // delete empty filter
+      if (
+        !this.pagination.filter ||
+        !Object.keys(this.pagination.filter).length
+      )
+        delete this.pagination.filter;
+    },
+    clearDateFilter(): void {
+      this.dates = undefined;
+      this.paginateGenerator();
     },
     getGateText(status: number): string | undefined {
       const allStatus = new Map([
@@ -348,7 +333,7 @@ export default Vue.extend({
     },
   },
   mounted(): void {
-    this.getList(this.page, this.limit);
+    this.getList();
   },
 });
 </script>
