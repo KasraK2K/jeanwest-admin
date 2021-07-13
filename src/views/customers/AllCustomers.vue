@@ -127,9 +127,9 @@
       </template>
 
       <template v-slot:[`item.code`]="{ item }">
-        <span :class="[item.active] ? 'green--text' : 'pink--text'">{{
-          toPersianString(item.code)
-        }}</span>
+        <span :class="[item.active] ? 'green--text' : 'pink--text'">
+          {{ item.code }}
+        </span>
       </template>
 
       <template v-slot:[`item.gender`]="{ item }">

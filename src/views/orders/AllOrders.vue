@@ -5,7 +5,7 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8" elevation="1" outlined>
+    <!-- <v-card class="mb-8" elevation="1" outlined>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
@@ -62,7 +62,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-    </v-card>
+    </v-card> -->
     <!-- ----------------------------- END: Filter ----------------------------- -->
 
     <!-- ------------------------------------------------------------------------ */
@@ -72,12 +72,15 @@
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'کد', value: 'code', sortable: false },
-        { text: 'نوع', value: 'type', sortable: false },
         { text: 'وضعیت', value: 'status' },
-        { text: 'مبلغ پرداختی', value: 'price' },
-        { text: 'شماره تماس', value: 'mobile' },
-        { text: 'تعداد کالا', value: 'count' },
-        { text: 'گزینه‌ها', value: 'show' },
+        { text: 'مبلغ پرداختی', value: 'cost' },
+        { text: 'مبلغ کل', value: 'total' },
+        { text: 'لجستیکی', value: 'logistic' },
+        { text: 'تخفیف', value: 'reduction' },
+        { text: 'تعداد اقلام', value: 'item' },
+        { text: 'تاریخ ایجاد', value: 'created_at' },
+        { text: 'تاریخ بروز‌رسانی', value: 'updated_at' },
+        { text: 'گزینه‌ها', value: 'options', sortable: false },
       ]"
       :items="items"
       class="elevation-1"
@@ -117,34 +120,44 @@
       </template>
 
       <template v-slot:[`item.code`]="{ item }">
-        {{ item.code }}
-      </template>
-
-      <template v-slot:[`item.type`]="{ item }">
-        <span :class="[item.type === 0 ? 'grey--text' : 'green--text']">
-          {{ getTypeText(item.type) }}
+        <span :class="[item.active] ? 'green--text' : 'pink--text'">
+          {{ item.code }}
         </span>
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
-        <span :class="getStatusColor(item.status)">
-          {{ getStatusText(item.status) }}
-        </span>
+        {{ toPersianString(item.status) }}
       </template>
 
-      <template v-slot:[`item.price`]="{ item }">
-        {{ numberToCash(item.price) }}
+      <template v-slot:[`item.cost`]="{ item }">
+        {{ toPersianString(numberToCash(item.cost)) }}
       </template>
 
-      <template v-slot:[`item.mobile`]="{ item }">
-        {{ toPersianString(item.mobile) }}
+      <template v-slot:[`item.total`]="{ item }">
+        {{ toPersianString(numberToCash(item.total)) }}
       </template>
 
-      <template v-slot:[`item.count`]="{ item }">
-        {{ toPersianString(item.count) }}
+      <template v-slot:[`item.logistic`]="{ item }">
+        {{ toPersianString(numberToCash(item.logistic)) }}
       </template>
 
-      <template v-slot:[`item.show`]="{ item }">
+      <template v-slot:[`item.reduction`]="{ item }">
+        {{ toPersianString(numberToCash(item.reduction)) }}
+      </template>
+
+      <template v-slot:[`item.item`]="{ item }">
+        {{ toPersianString(item.item.length) }}
+      </template>
+
+      <template v-slot:[`item.created_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.created_at)) }}
+      </template>
+
+      <template v-slot:[`item.updated_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
+      </template>
+
+      <template v-slot:[`item.options`]="{ item }">
         <v-chip
           color="blue"
           link
@@ -170,8 +183,8 @@
       <v-pagination
         v-model="page"
         :length="pageCount"
-        :total-visible="10"
-        @input="getList(page, limit, filter)"
+        :total-visible="limit"
+        @input="page = $event"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -190,161 +203,137 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { Vue, Component, Watch } from "vue-property-decorator";
+import OrderService from "@/services/Order.service";
+import {
+  IFilters,
+  IOptions,
+  IPagination,
+} from "@/interfaces/others/pagination.interface";
+import { IOrder } from "@/interfaces/entities/order.interface";
+import { paginationGenerator } from "@/common/utils/pagination.utils";
 
-export default Vue.extend({
-  data(): {
-    [key: string]: unknown;
-    page: number;
-    pageCount: number;
-    limit: number;
-  } {
-    const title = "لیست سفارشات";
-    return {
-      title,
-      loading: false,
-      items: [],
-      breadcrumbs: [
-        {
-          text: "صفحه اصلی",
-          to: "/",
-        },
-        {
-          text: title,
-          to: document.location.pathname,
-        },
-      ],
-      search: "",
-      // pagination
-      page: 1,
-      limit: 10,
-      pageCount: 1,
-      // filter
-      code: undefined,
-      type: undefined,
-      status: undefined,
-      mobile: undefined,
-      filter: {},
+@Component({ name: "AllOrders" })
+export class AllOrders extends Vue {
+  // ──────────────────────────────────────────────────────────
+  //   :::::: D A T A : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────
+  private title = "لیست سفارشات";
+  private loading = false;
+  private items: IOrder[] = [];
+  private breadcrumbs = [
+    {
+      text: "صفحه اصلی",
+      to: "/",
+    },
+    {
+      text: this.title,
+      to: document.location.pathname,
+    },
+  ];
+  private search = "";
+  // pagination
+  private page = 1;
+  private limit = 10;
+  private pageCount = 1;
+  // filter
+  private code = "";
+  private type: number = null as unknown as number;
+  private status: number = null as unknown as number;
+  private mobile: number = null as unknown as number;
+  private pagination: IPagination = {
+    option: {
+      page: { eq: 1 },
+      limit: { eq: 10 },
+    },
+  };
+
+  // ────────────────────────────────────────────────────────────
+  //   :::::: W A T C H : :  :   :    :     :        :          :
+  // ────────────────────────────────────────────────────────────
+  @Watch("limit")
+  onLimitChanged(val: string, oldVal: string): void {
+    this.page = 1;
+    this.pagination.option.limit = { eq: this.limit };
+    this.getList();
+  }
+
+  @Watch("page")
+  onPageChanged(val: string, oldVal: string): void {
+    this.pagination.option.page = { eq: this.page };
+    this.getList();
+  }
+
+  @Watch("pagination")
+  onPaginationChanged(val: string, oldVal: string): void {
+    this.getList();
+  }
+
+  @Watch("items")
+  onItemsChanged(val: string, oldVal: string): void {
+    this.loading = false;
+  }
+
+  // ────────────────────────────────────────────────────────────────────
+  //   :::::: L I F E S Y C L E : :  :   :    :     :        :          :
+  // ────────────────────────────────────────────────────────────────────
+  private mounted(): void {
+    this.getList();
+  }
+
+  // ──────────────────────────────────────────────────────────────
+  //   :::::: M E T H O D : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────
+  getList(): void {
+    this.loading = true;
+    OrderService.getList(this.pagination).then((response) => {
+      const data = response.data.data;
+      this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+      this.items = data.result;
+    });
+  }
+
+  paginateGenerator() {
+    this.page = 1;
+    const options: IOptions = {
+      page: { eq: this.page },
+      limit: { eq: this.limit },
     };
-  },
-  watch: {
-    limit() {
-      this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
-    },
-    filter() {
-      this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
-    },
-  },
-  methods: {
-    getList(page: number, limit: number, filter?: unknown): void {
-      this.loading = true;
-      setTimeout(() => {
-        this.items = [
-          {
-            no: 1,
-            id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c1",
-            type: 1, // آنلاین
-            status: 0, // در حال انجام
-            code: "‌B54008831",
-            price: 1389000,
-            mobile: "09111111111",
-            count: 7,
-          },
-          {
-            no: 2,
-            id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae2",
-            type: 1, // آنلاین
-            status: 1, // تکمیل شده
-            code: "‌B54008832",
-            price: 198000,
-            mobile: "09111111112",
-            count: 6,
-          },
-          {
-            no: 3,
-            id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e13",
-            type: 1, // آنلاین
-            status: 2, // مرجوعی
-            code: "‌B54008833",
-            price: 2499000,
-            mobile: "09111111113",
-            count: 5,
-          },
-          {
-            no: 4,
-            id: "43b5a165-0bb6-4e10-8aec-7eb06dfed1c4",
-            type: 0, // آفلاین
-            status: 0, // در حال انجام
-            code: "‌B54008834",
-            price: 460000,
-            mobile: "09111111114",
-            count: 4,
-          },
-          {
-            no: 5,
-            id: "43b5a165-0bb6-4e10-7eb06dfed1c2-8ae5",
-            type: 0, // آفلاین
-            status: 1, // تکمیل شده
-            code: "‌B54008835",
-            price: 12000,
-            mobile: "09111111115",
-            count: 3,
-          },
-          {
-            no: 6,
-            id: "43b5a165-0bb6-7eb06dfed1c2-8aec-4e16",
-            type: 0, // آفلاین
-            status: 2, // مرجوعی
-            code: "‌B54008836",
-            price: 48000,
-            mobile: "09111111116",
-            count: 2,
-          },
-        ];
-        this.loading = false;
-      }, 500);
-      console.log(
-        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
-          filter
-        )} }`
-      );
-    },
-    paginateGenerator() {
-      this.filter = {
-        code: this.code,
-        type: this.type,
-        status: this.status,
-        mobile: this.mobile,
-      };
-    },
-    getTypeText(status: number): string | undefined {
-      const allStatus = new Map([
-        [0, "آفلاین"],
-        [1, "آنلاین"],
-      ]);
-      return allStatus.get(status);
-    },
-    getStatusText(status: number): string | undefined {
-      const allStatus = new Map([
-        [0, "در حال انجام"],
-        [1, "تکمیل شده"],
-        [2, "مرجوعی"],
-      ]);
-      return allStatus.get(status);
-    },
-    getStatusColor(status: number): string | undefined {
-      const allStatus = new Map([
-        [0, "blue--text"],
-        [1, "green--text"],
-        [2, "red--text"],
-      ]);
-      return allStatus.get(status);
-    },
-  },
-  mounted(): void {
-    this.getList(this.page, this.limit);
-  },
-});
+    const filters: IFilters = {
+      code: { eq: this.code },
+      type: { eq: this.type },
+      status: { eq: this.status },
+      mobile: { eq: this.mobile },
+    };
+    this.pagination = paginationGenerator(options, filters);
+  }
+
+  getTypeText(status: number): string | undefined {
+    const allStatus = new Map([
+      [0, "آفلاین"],
+      [1, "آنلاین"],
+    ]);
+    return allStatus.get(status);
+  }
+
+  getStatusText(status: number): string | undefined {
+    const allStatus = new Map([
+      [0, "در حال انجام"],
+      [1, "تکمیل شده"],
+      [2, "مرجوعی"],
+    ]);
+    return allStatus.get(status);
+  }
+
+  getStatusColor(status: number): string | undefined {
+    const allStatus = new Map([
+      [0, "blue--text"],
+      [1, "green--text"],
+      [2, "red--text"],
+    ]);
+    return allStatus.get(status);
+  }
+}
+
+export default AllOrders;
 </script>
