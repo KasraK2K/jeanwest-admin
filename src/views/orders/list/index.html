@@ -1,0 +1,217 @@
+<v-container fluid>
+  <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
+
+  <!-- ------------------------------------------------------------------------ */
+  /*                                START: Filter                               */
+  ---------------------------------------------------------------------------- -->
+  <v-card class="mb-8" elevation="1" outlined>
+    <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
+    <v-row class="mx-4">
+      <v-col class="col-12 col-md-3">
+        <v-text-field
+          label="کد"
+          placeholder="لطفا کد سفارش را وارد کنید."
+          v-model.trim="code"
+          @change="paginateGenerator()"
+          clearable
+          outlined
+          hide-details="auto"
+        ></v-text-field>
+      </v-col>
+
+      <v-col class="col-12 col-md-3">
+        <v-autocomplete
+          label="وضعیت جین‌وست"
+          v-model.number="status"
+          :items="[
+              { text: 'در انتظار', value: 0 },
+              { text: 'کنسل بدون پرداخت', value: 1 },
+              { text: 'پرداخت شده', value: 2 },
+              { text: 'کنسل توسط ادمین', value: 3 },
+            ]"
+          item-text="text"
+          item-value="value"
+          @change="paginateGenerator()"
+          clearable
+          outlined
+          hide-details="auto"
+        ></v-autocomplete>
+      </v-col>
+
+      <v-col class="col-12 col-md-3">
+        <v-autocomplete
+          label="وضعیت بانی مد"
+          v-model.number="banimodeStatus"
+          :items="[
+              { text: 'ارسال نشده', value: 0 },
+              { text: 'در انتظار', value: 1 },
+              { text: 'تحویل به مشتری', value: 2 },
+              { text: 'کنسل شده', value: 3 },
+            ]"
+          item-text="text"
+          item-value="value"
+          @change="paginateGenerator()"
+          clearable
+          outlined
+          hide-details="auto"
+        ></v-autocomplete>
+      </v-col>
+
+      <v-col class="col-12 col-md-3">
+        <v-text-field
+          label="مبلغ پرداختی"
+          placeholder="لطفا شماره موبایل را وارد کنید."
+          v-model.number="cost"
+          @change="paginateGenerator()"
+          clearable
+          outlined
+        ></v-text-field>
+      </v-col>
+    </v-row>
+  </v-card>
+  <!-- ----------------------------- END: Filter ----------------------------- -->
+
+  <!-- ------------------------------------------------------------------------ */
+  /*                                 START: List                                */
+  /* ------------------------------------------------------------------------- -->
+  <!-- { text: 'مبلغ کل', value: 'total' },
+  { text: 'حمل و نقل', value: 'logistic' },
+  { text: 'تخفیف', value: 'reduction' }, -->
+  <v-data-table
+    :headers="[
+        { text: 'شماره', value: 'no', align: 'center' },
+        { text: 'کد', value: 'code', sortable: false },
+        { text: 'وضعیت', value: 'status' },
+        { text: 'وضعیت بانی‌مد', value: 'banimodeStatus' },
+        { text: 'تحویل گیرنده', value: 'receiverFullName' },
+        { text: 'موبایل تحویل گیرنده', value: 'receiverMobile' },
+        { text: 'مبلغ پرداختی', value: 'cost' },
+        { text: 'تاریخ بروز‌رسانی', value: 'updated_at' },
+        { text: 'گزینه‌ها', value: 'options', sortable: false },
+      ]"
+    :items="items"
+    class="elevation-1"
+    item-key="id"
+    :loading="loading"
+    loading-text="در حال دریافت اطلاعات از سرور ..."
+    :search="search"
+    no-results-text="نتیجه‌ای یافت نشد."
+    :page.sync="page"
+    :items-per-page="limit"
+    hide-default-footer
+  >
+    <template v-slot:top>
+      <v-row>
+        <v-col cols="12" md="9">
+          <v-toolbar flat>
+            <v-toolbar-title>
+              <div class="d-flex justify-start align-center">
+                <h1 class="blue--text">{{ title }}</h1>
+              </div>
+            </v-toolbar-title>
+          </v-toolbar>
+        </v-col>
+
+        <v-col class="col-12 col-md-3">
+          <v-text-field
+            v-model="search"
+            label="جستجو در این صفحه"
+            class="ml-4"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </template>
+
+    <template v-slot:[`item.no`]="{ item }">
+      {{ toPersianString(item.no) }}
+    </template>
+
+    <template v-slot:[`item.code`]="{ item }">
+      <span :class="[item.active] ? 'green--text' : 'pink--text'">
+        {{ item.code }}
+      </span>
+    </template>
+
+    <template v-slot:[`item.status`]="{ item }">
+      <span :class="jeanswestStatusGen(item.status).class">
+        {{ jeanswestStatusGen(item.status).text }}
+      </span>
+    </template>
+
+    <template v-slot:[`item.banimodeStatus`]="{ item }">
+      <span :class="banimodeStatusGen(item.banimodeStatus).class">
+        {{ banimodeStatusGen(item.banimodeStatus).text }}
+      </span>
+    </template>
+
+    <template v-slot:[`item.receiverFullName`]="{ item }">
+      {{ item.address.receiverFullName }}
+    </template>
+
+    <template v-slot:[`item.receiverMobile`]="{ item }">
+      {{ toPersianString(`0${item.address.receiverMobile}`) }}
+    </template>
+
+    <template v-slot:[`item.cost`]="{ item }">
+      {{ toPersianString(numberToCash(item.cost)) }}
+    </template>
+
+    <!-- <template v-slot:[`item.total`]="{ item }">
+      {{ toPersianString(numberToCash(item.total)) }}
+    </template>
+
+    <template v-slot:[`item.logistic`]="{ item }">
+      {{ toPersianString(numberToCash(item.logistic)) }}
+    </template>
+
+    <template v-slot:[`item.reduction`]="{ item }">
+      {{ toPersianString(numberToCash(item.reduction)) }}
+    </template> -->
+
+    <template v-slot:[`item.updated_at`]="{ item }">
+      {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
+    </template>
+
+    <template v-slot:[`item.options`]="{ item }">
+      <v-chip
+        color="blue"
+        link
+        label
+        outlined
+        close
+        close-icon="mdi-eye"
+        @click:close="
+            $router.push({ name: 'ShowOrder', params: { id: item.id } })
+          "
+        :to="{ name: 'ShowOrder', params: { id: item.id } }"
+      >
+        نمایش
+      </v-chip>
+    </template>
+  </v-data-table>
+  <!-- ------------------------------ END: List ------------------------------ -->
+
+  <!-- ------------------------------------------------------------------------ */
+  /*                              START: Pagination                             */
+  /* ------------------------------------------------------------------------- -->
+  <div class="d-flex align-center justify-space-between">
+    <v-pagination
+      v-model="page"
+      :length="pageCount"
+      :total-visible="limit"
+      @input="page = $event"
+    ></v-pagination>
+    <v-text-field
+      style="max-width: 250px"
+      class="mt-7"
+      :value="limit"
+      label="آیتم در هر صفحه"
+      type="number"
+      min="-1"
+      max="15"
+      @input="limit = parseInt($event, 10)"
+      outlined
+    ></v-text-field>
+  </div>
+  <!-- ---------------------------- END: Pagination -------------------------  -->
+</v-container>

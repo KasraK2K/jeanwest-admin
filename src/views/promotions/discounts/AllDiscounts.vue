@@ -168,6 +168,7 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                 START: List                                */
     /* ------------------------------------------------------------------------- -->
+    <!-- { text: 'محدودیت تعداد', value: 'countLimit' }, -->
     <v-data-table
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
@@ -175,7 +176,6 @@
         { text: 'نام', value: 'name' },
         { text: 'مقدار تخفیف', value: 'reductionPrice' },
         { text: 'نوع تخفیف', value: 'isPercentage' },
-        { text: 'محدودیت تعداد', value: 'countLimit' },
         { text: 'دفعات استفاده', value: 'usageCount' },
         { text: 'حداکثر تخفیف', value: 'maxTotal' },
         { text: 'حداقل تخفیف', value: 'minTotal' },
@@ -246,11 +246,11 @@
         </span>
       </template>
 
-      <template v-slot:[`item.countLimit`]="{ item }">
+      <!-- <template v-slot:[`item.countLimit`]="{ item }">
         {{
           item.countLimit === -1 ? "نامحدود" : toPersianString(item.countLimit)
         }}
-      </template>
+      </template> -->
 
       <template v-slot:[`item.usageCount`]="{ item }">
         {{
