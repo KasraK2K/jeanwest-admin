@@ -4,7 +4,7 @@ import Home from "../views/Home.vue";
 
 // routes
 import { auths } from "@/router/compact/auths.routes";
-import { users } from "@/router/compact/users.routes";
+import { admins } from "@/router/compact/admins.routes";
 import { supports } from "@/router/compact/supports.routes";
 import { notifications } from "@/router/compact/notifications.routes";
 import { orders } from "@/router/compact/orders.routes";
@@ -25,7 +25,7 @@ const routes: Array<RouteConfig> = [
     },
   },
   ...auths,
-  ...users,
+  ...admins,
   ...supports,
   ...notifications,
   ...orders,

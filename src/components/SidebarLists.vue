@@ -195,10 +195,6 @@ export default Vue.extend({
   data(): Record<string, unknown> {
     return {
       selectedMenu: undefined,
-      admins: [
-        ["نمایش", "mdi-account-multiple-outline", "AllAdmins"],
-        ["دسترسی", "mdi-account-multiple-outline", "AllAdmins"],
-      ],
     };
   },
   methods: {
