@@ -373,9 +373,14 @@
 <script lang="ts">
 import Vue from "vue";
 import PromotionService from "@/services/Promotion.service";
-import { IPagination } from "@/interfaces/others/pagination.interface";
+import {
+  IFilters,
+  IOptions,
+  IPagination,
+} from "@/interfaces/others/pagination.interface";
 import * as _ from "lodash";
 import { IDiscount } from "@/interfaces/entities/discount.interface";
+import { paginationGenerator } from "@/common/utils/pagination.utils";
 
 export default Vue.extend({
   data(): {
@@ -454,44 +459,22 @@ export default Vue.extend({
     },
     paginateGenerator(): void {
       this.page = 1;
-      this.pagination = {
-        option: {
-          page: { eq: this.page },
-          limit: { eq: this.limit },
-        },
-        filter: {
-          code: { eq: this.code },
-          name: { eq: this.name },
-          reductionPrice: { eq: this.reductionPrice },
-          isPercentage: { eq: this.isPercentage },
-          countLimit: { eq: this.countLimit },
-          usageCount: { eq: this.usageCount },
-          maxTotal: { eq: this.maxTotal },
-          minTotal: { eq: this.minTotal },
-          singularity: { eq: this.singularity },
-        },
-        // dates: this.dates,
+      const options: IOptions = {
+        page: { eq: this.page },
+        limit: { eq: this.limit },
       };
-      const filterKeys =
-        this.pagination &&
-        this.pagination.filter &&
-        _.keys(this.pagination.filter);
-      // delete empty keys
-      if (filterKeys && filterKeys.length) {
-        for (const key of filterKeys)
-          if (
-            this.pagination.filter &&
-            this.pagination.filter[key] &&
-            (this[key] === undefined || this[key] === null)
-          )
-            delete this.pagination.filter[key];
-      }
-      // delete empty filter
-      if (
-        !this.pagination.filter ||
-        !Object.keys(this.pagination.filter).length
-      )
-        delete this.pagination.filter;
+      const filters: IFilters = {
+        code: { eq: this.code },
+        name: { eq: this.name },
+        reductionPrice: { eq: this.reductionPrice },
+        isPercentage: { eq: this.isPercentage },
+        countLimit: { eq: this.countLimit },
+        usageCount: { eq: this.usageCount },
+        maxTotal: { eq: this.maxTotal },
+        minTotal: { eq: this.minTotal },
+        singularity: { eq: this.singularity },
+      };
+      this.pagination = paginationGenerator(options, filters);
     },
     clearDateFilter(): void {
       this.dates = undefined;

@@ -1,9 +1,13 @@
 export interface IPagination {
   option: IOptions;
-  filter?: Record<string, unknown>;
+  filter?: IFilters;
 }
 
-interface IOptions {
+export interface IOptions {
   page: { eq: number };
   limit: { eq: number };
+}
+
+export interface IFilters {
+  [key: string]: Record<string, unknown>;
 }

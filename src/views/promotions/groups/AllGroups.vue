@@ -252,7 +252,12 @@
 <script lang="ts">
 import Vue from "vue";
 import PromotionService from "@/services/Promotion.service";
-import { IPagination } from "@/interfaces/others/pagination.interface";
+import {
+  IFilters,
+  IOptions,
+  IPagination,
+} from "@/interfaces/others/pagination.interface";
+import { paginationGenerator } from "@/common/utils/pagination.utils";
 
 export default Vue.extend({
   data(): {
@@ -324,37 +329,15 @@ export default Vue.extend({
     },
     paginateGenerator() {
       this.page = 1;
-      this.pagination = {
-        option: {
-          page: { eq: this.page },
-          limit: { eq: this.limit },
-        },
-        filter: {
-          code: { eq: this.code },
-          active: { eq: this.active },
-        },
-        // dates: this.dates,
+      const options: IOptions = {
+        page: { eq: this.page },
+        limit: { eq: this.limit },
       };
-      const filterKeys =
-        this.pagination &&
-        this.pagination.filter &&
-        Object.keys(this.pagination.filter);
-      // delete empty keys
-      if (filterKeys && filterKeys.length) {
-        for (const key of filterKeys)
-          if (
-            this.pagination.filter &&
-            this.pagination.filter[key] &&
-            (this[key] === undefined || this[key] === null)
-          )
-            delete this.pagination.filter[key];
-      }
-      // delete empty filter
-      if (
-        !this.pagination.filter ||
-        !Object.keys(this.pagination.filter).length
-      )
-        delete this.pagination.filter;
+      const filters: IFilters = {
+        code: { eq: this.code },
+        active: { eq: this.active },
+      };
+      this.pagination = paginationGenerator(options, filters);
     },
     clearDateFilter(): void {
       this.dates = undefined;

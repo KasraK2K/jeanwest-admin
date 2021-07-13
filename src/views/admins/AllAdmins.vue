@@ -1,129 +1,329 @@
 <template>
-  <!-- <v-card> -->
   <v-container fluid>
+    <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
+
+    <!-- ------------------------------------------------------------------------ */
+    /*                                START: Filter                               */
+    ---------------------------------------------------------------------------- -->
+    <!-- <v-card class="mb-8" elevation="1" outlined rounded>
+      <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
+      <v-row class="mx-4">
+        <v-col class="col-12 col-md-3">
+          <v-autocomplete
+            label="نوع"
+            v-model="type"
+            :items="[
+              { text: 'پیامک', value: 'SMS' },
+              { text: 'اعلان', value: 'PUSH' },
+            ]"
+            item-text="text"
+            item-value="value"
+            @change="paginateGenerator({ page: 1 })"
+            outlined
+            hide-details="auto"
+          ></v-autocomplete>
+        </v-col>
+
+        <v-col class="col-12 col-md-3">
+          <v-autocomplete
+            label="وضعیت"
+            v-model="status"
+            :items="[
+              { text: 'ارسال شده', value: 1 },
+              { text: 'ارسال نشده', value: 0 },
+            ]"
+            item-text="text"
+            item-value="value"
+            @change="paginateGenerator()"
+            outlined
+            hide-details="auto"
+          ></v-autocomplete>
+        </v-col>
+
+        <v-col class="col-12 col-md-3">
+          <v-menu
+            ref="datesMenu"
+            v-model="datesMenu"
+            :close-on-content-click="false"
+            :nudge-top="20"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="dates"
+                label="تاریخ ایجاد یا ارسال"
+                placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید."
+                readonly
+                clearable
+                v-bind="attrs"
+                v-on="on"
+                @click:clear="clearDateFilter()"
+                outlined
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="dates"
+              multiple
+              @change="paginateGenerator()"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+      </v-row>
+    </v-card> -->
+    <!-- ----------------------------- END: Filter ----------------------------- -->
+
+    <!-- ------------------------------------------------------------------------ */
+    /*                                 START: List                                */
+    /* ------------------------------------------------------------------------- -->
+    <!-- { text: 'زمان ارسال', value: 'sent_at' }, -->
+    <!-- { text: 'آیدی', value: 'id', align: 'start', sortable: false }, -->
     <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :items-per-page="5"
+      :headers="[
+        { text: 'شماره', value: 'no', align: 'center' },
+        { text: 'کد', value: 'code', sortable: false },
+        { text: 'جنسیت', value: 'gender' },
+        { text: 'نام', value: 'firstName' },
+        { text: 'نام خانوادگی', value: 'lastName' },
+        { text: 'موبایل', value: 'phoneNumber' },
+        { text: 'سطح عضویت', value: 'erpCustomerType' },
+        { text: 'آخرین ورود', value: 'loggedInAt' },
+        { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
+      ]"
+      :items="items"
       class="elevation-1"
-      item-key="name"
-      :loading="!result"
+      item-key="id"
+      :loading="loading"
       loading-text="در حال دریافت اطلاعات از سرور ..."
-    ></v-data-table>
+      :search="search"
+      no-results-text="نتیجه‌ای یافت نشد."
+      :page.sync="page"
+      :items-per-page="limit"
+      hide-default-footer
+    >
+      <template v-slot:top>
+        <v-row>
+          <v-col cols="12" md="9">
+            <v-toolbar flat>
+              <v-toolbar-title>
+                <h1 class="blue--text">{{ title }}</h1>
+              </v-toolbar-title>
+            </v-toolbar>
+          </v-col>
+
+          <v-col class="col-12 col-md-3">
+            <v-text-field
+              v-model="search"
+              label="جستجو در این صفحه"
+              class="ml-4"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </template>
+
+      <template v-slot:[`item.no`]="{ item }">
+        {{ toPersianString(item.no) }}
+      </template>
+
+      <template v-slot:[`item.code`]="{ item }">
+        <span :class="[item.active] ? 'green--text' : 'pink--text'">{{
+          toPersianString(item.code)
+        }}</span>
+      </template>
+
+      <template v-slot:[`item.gender`]="{ item }">
+        <v-icon :color="item.gender === 0 ? 'pink' : 'blue'" large>
+          {{ item.gender === 0 ? "mdi-human-female" : "mdi-human-male" }}
+        </v-icon>
+      </template>
+
+      <template v-slot:[`item.phoneNumber`]="{ item }">
+        <pre class="ltr text-right">{{
+          toPersianString(`0${item.phoneNumber}`)
+        }}</pre>
+      </template>
+
+      <template v-slot:[`item.erpCustomerType`]="{ item }">
+        <pre class="ltr text-right">{{
+          toPersianString(item.erpCustomerType)
+        }}</pre>
+      </template>
+
+      <template v-slot:[`item.loggedInAt`]="{ item }">
+        <pre class="ltr text-right">{{
+          item.loggedInAt
+            ? toPersianString(toPersianTime(item.loggedInAt))
+            : null
+        }}</pre>
+      </template>
+
+      <template v-slot:[`item.status`]="{ item }">
+        <!-- active/deactive -->
+        <v-chip
+          class="ml-2"
+          :color="item.active ? 'yellow' : 'green'"
+          link
+          label
+          outlined
+          close
+          :close-icon="
+            item.active ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off'
+          "
+          @click:close="toggleActivation(item.id)"
+          @click="toggleActivation(item.id)"
+        >
+          {{ item.active ? "غیر فعال" : "فعال" }}
+        </v-chip>
+
+        <!-- edit -->
+        <v-chip
+          class="ml-2"
+          color="blue"
+          link
+          label
+          outlined
+          close
+          close-icon="mdi-eye"
+          @click:close="
+            $router.push({ name: 'EditNotification', params: { id: item.id } })
+          "
+          :to="{ name: 'EditNotification', params: { id: item.id } }"
+        >
+          نمایش
+        </v-chip>
+      </template>
+    </v-data-table>
+    <!-- ------------------------------ END: List ------------------------------ -->
+
+    <!-- ------------------------------------------------------------------------ */
+    /*                              START: Pagination                             */
+    /* ------------------------------------------------------------------------- -->
+    <div class="d-flex align-center justify-space-between">
+      <v-pagination
+        v-model="page"
+        :length="pageCount"
+        :total-visible="limit"
+        @input="page = $event"
+      ></v-pagination>
+      <v-text-field
+        style="max-width: 250px"
+        class="mt-7"
+        :value="limit"
+        label="آیتم در هر صفحه"
+        type="number"
+        min="-1"
+        max="15"
+        @input="limit = parseInt($event, 10)"
+        outlined
+      ></v-text-field>
+    </div>
+    <!-- ---------------------------- END: Pagination -------------------------  -->
   </v-container>
-  <!-- </v-card> -->
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import AdminService from "@/services/Admin.service";
+import {
+  IFilters,
+  IOptions,
+  IPagination,
+} from "@/interfaces/others/pagination.interface";
+import { IAdmin } from "@/interfaces/entities/admin.interface";
+import { paginationGenerator } from "@/common/utils/pagination.utils";
 
 export default Vue.extend({
-  data(): Record<string, unknown> {
+  name: "AllCustomers",
+
+  data(): {
+    [key: string]: unknown;
+    page: number;
+    pageCount: number;
+    limit: number;
+    pagination: IPagination;
+    items: IAdmin[];
+  } {
+    const title = "لیست ادمین‌ها";
     return {
-      result: false,
-      headers: undefined,
-      desserts: undefined,
+      title,
+      loading: false,
+      items: [],
+      breadcrumbs: [
+        {
+          text: "صفحه اصلی",
+          to: "/",
+        },
+        {
+          text: title,
+          to: document.location.pathname,
+        },
+      ],
+      search: "",
+      // pagination
+      page: 1,
+      pageCount: 1,
+      limit: 10,
+      // filter
+      type: undefined,
+      status: undefined,
+      dates: undefined,
+      datesMenu: false,
+      pagination: {
+        option: {
+          page: { eq: 1 },
+          limit: { eq: 10 },
+        },
+      },
     };
   },
-  mounted() {
-    setTimeout(() => {
-      this.result = true;
-      this.headers = [
-        {
-          text: "Dessert (100g serving)",
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-        { text: "Calories", value: "calories" },
-        { text: "Fat (g)", value: "fat" },
-        { text: "Carbs (g)", value: "carbs" },
-        { text: "Protein (g)", value: "protein" },
-        { text: "Iron (%)", value: "iron" },
-      ];
-      this.desserts = [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%",
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: "1%",
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: "7%",
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: "8%",
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: "16%",
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: "0%",
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: "2%",
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: "45%",
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
-      ];
-    }, 500);
+  watch: {
+    limit(): void {
+      this.page = 1;
+      this.pagination.option.limit = { eq: this.limit };
+      this.getList();
+    },
+    page(): void {
+      this.pagination.option.page = { eq: this.page };
+      this.getList();
+    },
+    pagination(): void {
+      this.getList();
+    },
+    items(): void {
+      this.loading = false;
+    },
+  },
+  methods: {
+    getList(): void {
+      this.loading = true;
+      AdminService.getList(this.pagination, this.$store.state.token).then(
+        (response) => {
+          const data = response.data.data;
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+        }
+      );
+    },
+    paginateGenerator() {
+      this.page = 1;
+      const options: IOptions = {
+        page: { eq: this.page },
+        limit: { eq: this.limit },
+      };
+      const filters: IFilters = {};
+      this.pagination = paginationGenerator(options, filters);
+    },
+    clearDateFilter(): void {
+      this.dates = undefined;
+      this.paginateGenerator();
+    },
+    toggleActivation(id: string): void {
+      console.log(`toggle activation ${id}`);
+    },
+  },
+  mounted(): void {
+    this.getList();
   },
 });
 </script>

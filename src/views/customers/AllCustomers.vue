@@ -5,7 +5,7 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8" elevation="1" outlined rounded>
+    <!-- <v-card class="mb-8" elevation="1" outlined rounded>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
@@ -27,10 +27,10 @@
         <v-col class="col-12 col-md-3">
           <v-autocomplete
             label="وضعیت"
-            v-model="status"
+            v-model="pagination.filter.active.eq"
             :items="[
-              { text: 'ارسال شده', value: 1 },
-              { text: 'ارسال نشده', value: 0 },
+              { text: 'فعال', value: true },
+              { text: 'غیرفعال', value: false },
             ]"
             item-text="text"
             item-value="value"
@@ -71,7 +71,7 @@
           </v-menu>
         </v-col>
       </v-row>
-    </v-card>
+    </v-card> -->
     <!-- ----------------------------- END: Filter ----------------------------- -->
 
     <!-- ------------------------------------------------------------------------ */
@@ -204,7 +204,7 @@
         v-model="page"
         :length="pageCount"
         :total-visible="limit"
-        @input="changePage"
+        @input="page = $event"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -225,7 +225,13 @@
 <script lang="ts">
 import Vue from "vue";
 import CustomerService from "@/services/Customer.service";
-import { IPagination } from "@/interfaces/others/pagination.interface";
+import {
+  IFilters,
+  IOptions,
+  IPagination,
+} from "@/interfaces/others/pagination.interface";
+import { ICustomer } from "@/interfaces/entities/customer.interface";
+import { paginationGenerator } from "@/common/utils/pagination.utils";
 
 export default Vue.extend({
   name: "AllCustomers",
@@ -236,6 +242,7 @@ export default Vue.extend({
     pageCount: number;
     limit: number;
     pagination: IPagination;
+    items: ICustomer[];
   } {
     const title = "لیست کاربران";
     return {
@@ -283,10 +290,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    changePage(page: number) {
-      this.page = page;
-      this.paginateGenerator();
-    },
     getList(): void {
       this.loading = true;
       CustomerService.getList(this.pagination, this.$store.state.token).then(
@@ -298,16 +301,13 @@ export default Vue.extend({
       );
     },
     paginateGenerator() {
-      this.pagination = {
-        option: {
-          page: { eq: this.page },
-          limit: { eq: this.limit },
-        },
-
-        // type: this.type,
-        // status: this.status,
-        // dates: this.dates,
+      this.page = 1;
+      const options: IOptions = {
+        page: { eq: this.page },
+        limit: { eq: this.limit },
       };
+      const filters: IFilters = {};
+      this.pagination = paginationGenerator(options, filters);
     },
     clearDateFilter(): void {
       this.dates = undefined;
