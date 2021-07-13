@@ -150,7 +150,7 @@
       </v-list-group>
       <!-- notification -->
 
-      <!-- users -->
+      <!-- custommers -->
       <v-list-group
         :value="nameToValue(['AllCustomers'])"
         prepend-icon="mdi-account-circle"
@@ -170,7 +170,29 @@
           </v-list-item>
         </router-link>
       </v-list-group>
-      <!-- users -->
+      <!-- custommers -->
+
+      <!-- admins -->
+      <v-list-group
+        :value="nameToValue(['AllAdmins'])"
+        prepend-icon="mdi-headset"
+        @click="selectedMenu = 6"
+      >
+        <!-- #1 -->
+        <template v-slot:activator>
+          <v-list-item-title>ادمین‌ها</v-list-item-title>
+        </template>
+        <!-- #2 -->
+        <router-link :to="{ name: 'AllAdmins' }">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-numbered-rtl</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>لیست ادمین‌ها</v-list-item-title>
+          </v-list-item>
+        </router-link>
+      </v-list-group>
+      <!-- admins -->
 
       <!-- exit -->
       <a @click="logOut">

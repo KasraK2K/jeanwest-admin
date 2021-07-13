@@ -24,12 +24,9 @@ export default {
   //   return await apiClient.post(modulePath, data);
   // },
 
-  // async edit(
-  //   data: Record<string, unknown>,
-  //   id: string
-  // ): Promise<AxiosResponse> {
-  //   return await apiClient.patch(`${modulePath}/${id}`, data);
-  // },
+  async edit(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return await apiClient.patch(`${modulePath}/edit`, data);
+  },
 
   // async softDelete() {},
 };

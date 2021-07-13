@@ -78,16 +78,15 @@
   /* ------------------------------------------------------------------------- -->
   <v-data-table
     :headers="[
-        { text: 'شماره', value: 'no', align: 'center' },
-        { text: 'کد', value: 'code', sortable: false },
-        { text: 'جنسیت', value: 'gender' },
-        { text: 'نام', value: 'firstName' },
-        { text: 'نام خانوادگی', value: 'lastName' },
-        { text: 'موبایل', value: 'phoneNumber' },
-        { text: 'سطح عضویت', value: 'erpCustomerType' },
-        { text: 'آخرین ورود', value: 'loggedInAt' },
-        { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
-      ]"
+      { text: 'شماره', value: 'no', align: 'center' },
+      { text: 'نام', value: 'firstName' },
+      { text: 'نام خانوادگی', value: 'lastName' },
+      { text: 'موبایل', value: 'phoneNumber' },
+      { text: 'وضعیت', value: 'active' },
+      { text: 'زمان ایجاد', value: 'created_at' },
+      { text: 'زمان بروزرسانی', value: 'updated_at' },
+      { text: 'گزینه‌ها', value: 'options', align: 'center', sortable: false },
+    ]"
     :items="items"
     class="elevation-1"
     item-key="id"
@@ -123,45 +122,27 @@
       {{ toPersianString(item.no) }}
     </template>
 
-    <template v-slot:[`item.code`]="{ item }">
-      <span :class="[item.active] ? 'green--text' : 'pink--text'"
-        >{{ toPersianString(item.code) }}</span
-      >
-    </template>
-
-    <template v-slot:[`item.gender`]="{ item }">
-      <v-icon :color="item.gender === 0 ? 'pink' : 'blue'" large>
-        {{ item.gender === 0 ? "mdi-human-female" : "mdi-human-male" }}
-      </v-icon>
-    </template>
-
     <template v-slot:[`item.phoneNumber`]="{ item }">
-      <pre class="ltr text-right">
-{{
-          toPersianString(`0${item.phoneNumber}`)
-        }}</pre
-      >
+      {{ toPersianString(`0${item.phoneNumber}`) }}
     </template>
 
-    <template v-slot:[`item.erpCustomerType`]="{ item }">
-      <pre class="ltr text-right">
-{{
-          toPersianString(item.erpCustomerType)
-        }}</pre
-      >
+    <template v-slot:[`item.active`]="{ item }">
+      <span :class="item.active ? 'teal--text' : 'pink--text'">
+        {{ item.active ? 'فعال' : 'غیرفعال' }}
+      </span>
     </template>
 
-    <template v-slot:[`item.loggedInAt`]="{ item }">
-      <pre class="ltr text-right">
-{{
-          item.loggedInAt
-            ? toPersianString(toPersianTime(item.loggedInAt))
-            : null
-        }}</pre
-      >
+    <template v-slot:[`item.created_at`]="{ item }">
+      {{ item.datetime.created_at ?
+      toPersianString(toPersianTime(item.datetime.created_at)) : null }}
     </template>
 
-    <template v-slot:[`item.status`]="{ item }">
+    <template v-slot:[`item.updated_at`]="{ item }">
+      {{ item.datetime.updated_at ?
+      toPersianString(toPersianTime(item.datetime.updated_at)) : null }}
+    </template>
+
+    <template v-slot:[`item.options`]="{ item }">
       <!-- active/deactive -->
       <v-chip
         class="ml-2"
@@ -173,27 +154,10 @@
         :close-icon="
             item.active ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off'
           "
-        @click:close="toggleActivation(item.id)"
-        @click="toggleActivation(item.id)"
+        @click:close="toggleActivation(item.id, item.active)"
+        @click="toggleActivation(item.id, item.active)"
       >
         {{ item.active ? "غیر فعال" : "فعال" }}
-      </v-chip>
-
-      <!-- edit -->
-      <v-chip
-        class="ml-2"
-        color="blue"
-        link
-        label
-        outlined
-        close
-        close-icon="mdi-eye"
-        @click:close="
-            $router.push({ name: 'EditNotification', params: { id: item.id } })
-          "
-        :to="{ name: 'EditNotification', params: { id: item.id } }"
-      >
-        نمایش
       </v-chip>
     </template>
   </v-data-table>

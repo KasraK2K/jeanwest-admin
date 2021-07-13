@@ -175,23 +175,6 @@
         >
           {{ item.active ? "غیر فعال" : "فعال" }}
         </v-chip>
-
-        <!-- edit -->
-        <v-chip
-          class="ml-2"
-          color="blue"
-          link
-          label
-          outlined
-          close
-          close-icon="mdi-eye"
-          @click:close="
-            $router.push({ name: 'EditNotification', params: { id: item.id } })
-          "
-          :to="{ name: 'EditNotification', params: { id: item.id } }"
-        >
-          نمایش
-        </v-chip>
       </template>
     </v-data-table>
     <!-- ------------------------------ END: List ------------------------------ -->

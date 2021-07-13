@@ -32,10 +32,10 @@ class AllAdmins extends Vue {
   private pageCount = 1;
   private limit = 10;
   // filter
-  private type = undefined;
-  private status = undefined;
-  private dates = undefined;
-  private datesMenu = false;
+  // private type = undefined;
+  // private status = undefined;
+  // private dates = undefined;
+  // private datesMenu = false;
   private pagination = {
     option: {
       page: { eq: 1 },
@@ -105,8 +105,8 @@ class AllAdmins extends Vue {
     this.paginateGenerator();
   }
 
-  private toggleActivation(id: string): void {
-    console.log(`toggle activation ${id}`);
+  private toggleActivation(id: string, active: boolean): void {
+    AdminService.edit({ id, active: !active }).then(() => this.getList());
   }
 }
 
