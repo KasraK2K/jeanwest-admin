@@ -167,7 +167,7 @@
           outlined
           close
           :close-icon="
-            item.active ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off'
+            item.active ? 'mdi-toggle-switch-off' : 'mdi-toggle-switch'
           "
           @click:close="toggleActivation(item.id, item.active)"
           @click="toggleActivation(item.id, item.active)"
