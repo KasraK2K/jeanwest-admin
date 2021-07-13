@@ -5,7 +5,7 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <!-- <v-card class="mb-8" elevation="1" outlined>
+    <v-card class="mb-8" elevation="1" outlined>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
         <v-col class="col-12 col-md-3">
@@ -14,6 +14,7 @@
             placeholder="لطفا کد سفارش را وارد کنید."
             v-model="code"
             @change="paginateGenerator()"
+            clearable
             outlined
             hide-details="auto"
           ></v-text-field>
@@ -21,15 +22,18 @@
 
         <v-col class="col-12 col-md-3">
           <v-autocomplete
-            label="نوع"
-            v-model="type"
+            label="وضعیت جین‌وست"
+            v-model="status"
             :items="[
-              { text: 'آنلاین', value: 0 },
-              { text: 'آفلاین', value: 1 },
+              { text: 'در انتظار', value: 0 },
+              { text: 'کنسل بدون پرداخت', value: 1 },
+              { text: 'پرداخت شده', value: 2 },
+              { text: 'کنسل توسط ادمین', value: 3 },
             ]"
             item-text="text"
             item-value="value"
             @change="paginateGenerator()"
+            clearable
             outlined
             hide-details="auto"
           ></v-autocomplete>
@@ -37,16 +41,18 @@
 
         <v-col class="col-12 col-md-3">
           <v-autocomplete
-            label="وضعیت"
-            v-model="status"
+            label="وضعیت بانی مد"
+            v-model="banimodeStatus"
             :items="[
-              { text: 'در حال انجام', value: 0 },
-              { text: 'تکمیل شده', value: 1 },
-              { text: 'مرجوعی', value: 2 },
+              { text: 'ارسال نشده', value: 0 },
+              { text: 'در انتظار', value: 1 },
+              { text: 'تحویل به مشتری', value: 2 },
+              { text: 'کنسل شده', value: 3 },
             ]"
             item-text="text"
             item-value="value"
             @change="paginateGenerator()"
+            clearable
             outlined
             hide-details="auto"
           ></v-autocomplete>
@@ -54,15 +60,30 @@
 
         <v-col class="col-12 col-md-3">
           <v-text-field
-            label="موبایل"
+            label="مبلغ پرداختی"
             placeholder="لطفا شماره موبایل را وارد کنید."
-            v-model="mobile"
+            v-model="cost"
             @change="paginateGenerator()"
+            clearable
             outlined
+            hide-details="auto"
           ></v-text-field>
         </v-col>
+
+        <v-col class="col-12 col-md-3">
+          <v-autocomplete
+            label="وضعیت"
+            v-model="active"
+            :items="ActiveConstant"
+            item-text="text"
+            item-value="value"
+            @change="paginateGenerator()"
+            clearable
+            outlined
+          ></v-autocomplete>
+        </v-col>
       </v-row>
-    </v-card> -->
+    </v-card>
     <!-- ----------------------------- END: Filter ----------------------------- -->
 
     <!-- ------------------------------------------------------------------------ */
@@ -212,6 +233,8 @@ import {
 } from "@/interfaces/others/pagination.interface";
 import { IOrder } from "@/interfaces/entities/order.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
+import { ActiveConstant } from "@/common/globals/constant/active";
+import { IActive } from "@/interfaces/constant/base";
 
 @Component({ name: "AllOrders" })
 export class AllOrders extends Vue {
@@ -238,15 +261,17 @@ export class AllOrders extends Vue {
   private pageCount = 1;
   // filter
   private code = "";
-  private type: number = null as unknown as number;
   private status: number = null as unknown as number;
-  private mobile: number = null as unknown as number;
+  private banimodeStatus: number = null as unknown as number;
+  private cost: number = null as unknown as number;
+  private active: boolean = null as unknown as boolean;
   private pagination: IPagination = {
     option: {
       page: { eq: 1 },
       limit: { eq: 10 },
     },
   };
+  private ActiveConstant: IActive[] = ActiveConstant;
 
   // ────────────────────────────────────────────────────────────
   //   :::::: W A T C H : :  :   :    :     :        :          :
@@ -301,9 +326,10 @@ export class AllOrders extends Vue {
     };
     const filters: IFilters = {
       code: { eq: this.code },
-      type: { eq: this.type },
       status: { eq: this.status },
-      mobile: { eq: this.mobile },
+      banimodeStatus: { eq: this.banimodeStatus },
+      cost: { eq: this.cost },
+      active: { eq: this.active },
     };
     this.pagination = paginationGenerator(options, filters);
   }
