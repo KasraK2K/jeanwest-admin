@@ -33,9 +33,9 @@ class AllPayments extends Vue {
   private limit = 10;
   private pageCount = 1;
   // filter
-  private token: string | null = null;
-  private gateId: number | null = null;
-  private payment_status: number | null = null;
+  private token: string = null as unknown as string;
+  private gateId: number = null as unknown as number;
+  private payment_status: number = null as unknown as number;
   private pagination: IPagination = {
     option: {
       page: { eq: 1 },
