@@ -1,6 +1,6 @@
 import { IRouter } from "@/interfaces/others/route.interface";
-import AllPayments from "@/views/payments/AllPayments.vue";
-import ShowPayment from "@/views/payments/AllPayments.vue";
+import AllPayments from "@/views/payments/list/AllPayments.vue";
+import ShowPayment from "@/views/payments/list/AllPayments.vue";
 
 export const payments: IRouter[] = [
   {

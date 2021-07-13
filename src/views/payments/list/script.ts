@@ -1,21 +1,22 @@
-import { Vue, Component, Watch } from "vue-property-decorator";
-import AdminService from "@/services/Admin.service";
 import {
   IFilters,
   IOptions,
   IPagination,
 } from "@/interfaces/others/pagination.interface";
-import { IAdmin } from "@/interfaces/entities/admin.interface";
+import PaymentService from "@/services/Payment.service";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import * as _ from "lodash";
+import { ITransaction } from "@/interfaces/entities/transaction.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 
-@Component({ name: "AllAdmins" })
-class AllAdmins extends Vue {
+@Component({ name: "AllPayments" })
+class AllPayments extends Vue {
   // ──────────────────────────────────────────────────────────
   //   :::::: D A T A : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────
-  private title = "لیست ادمین‌ها";
+  private title = "لیست پرداخت‌ها";
   private loading = false;
-  private items: IAdmin[] = [];
+  private items: ITransaction[] = [];
   private breadcrumbs = [
     {
       text: "صفحه اصلی",
@@ -29,14 +30,13 @@ class AllAdmins extends Vue {
   private search = "";
   // pagination
   private page = 1;
-  private pageCount = 1;
   private limit = 10;
+  private pageCount = 1;
   // filter
-  // private type = undefined;
-  // private status = undefined;
-  // private dates = undefined;
-  // private datesMenu = false;
-  private pagination = {
+  private token: string | null = null;
+  private gateId: number | null = null;
+  private payment_status: number | null = null;
+  private pagination: IPagination = {
     option: {
       page: { eq: 1 },
       limit: { eq: 10 },
@@ -81,22 +81,24 @@ class AllAdmins extends Vue {
   // ──────────────────────────────────────────────────────────────
   private getList(): void {
     this.loading = true;
-    AdminService.getList(this.pagination, this.$store.state.token).then(
-      (response) => {
-        const data = response.data.data;
-        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-        this.items = data.result;
-      }
-    );
+    PaymentService.getList(this.pagination).then((response) => {
+      const data = response.data.data;
+      this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+      this.items = data.result;
+    });
   }
 
-  private paginateGenerator(): void {
+  private paginateGenerator() {
     this.page = 1;
     const options: IOptions = {
       page: { eq: this.page },
       limit: { eq: this.limit },
     };
-    const filters: IFilters = {};
+    const filters: IFilters = {
+      gateId: { eq: this.gateId },
+      payment_status: { eq: this.payment_status },
+    };
+    if (this.token) filters["doc->>token"] = { eq: this.token };
     this.pagination = paginationGenerator(options, filters);
   }
 
@@ -105,9 +107,37 @@ class AllAdmins extends Vue {
     this.paginateGenerator();
   }
 
-  private toggleActivation(id: string, active: boolean): void {
-    AdminService.edit({ id, active: !active }).then(() => this.getList());
+  private getGateText(gateId: number): string | undefined {
+    const gateName = new Map([
+      [1, "زرین‌پال"],
+      [2, "سامان"],
+    ]);
+    return gateName.get(gateId);
+  }
+
+  private getGateColor(gateId: number): string | undefined {
+    const gateColor = new Map([
+      [1, "yellow--text"],
+      [2, "blue--text"],
+    ]);
+    return gateColor.get(gateId);
+  }
+
+  private getStatusText(status: number): string | undefined {
+    const allStatus = new Map([
+      [0, "پرداخت نشده"],
+      [1, "پرداخت شده"],
+    ]);
+    return allStatus.get(status);
+  }
+
+  private getStatusColor(status: number): string | undefined {
+    const allStatus = new Map([
+      [0, "red--text"],
+      [1, "green--text"],
+    ]);
+    return allStatus.get(status);
   }
 }
 
-export default AllAdmins;
+export default AllPayments;
