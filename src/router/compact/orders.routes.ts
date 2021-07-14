@@ -1,6 +1,6 @@
 import { IRouter } from "@/interfaces/others/route.interface";
 import AllOrders from "@/views/orders/list/AllOrders.vue";
-import ShowOrder from "@/views/orders/list/AllOrders.vue";
+import ShowOrder from "@/views/orders/show/ShowOrder.vue";
 
 export const orders: IRouter[] = [
   {
