@@ -9,9 +9,9 @@
     <v-row class="mx-4">
       <v-col class="col-12 col-md-3">
         <v-text-field
-          label="توکن"
-          placeholder="لطفا توکن سفارش را وارد کنید."
-          v-model.trim="token"
+          label="کد"
+          placeholder="لطفا کد سفارش را وارد کنید."
+          v-model.trim="code"
           @change="paginateGenerator()"
           outlined
           clearable
@@ -61,10 +61,11 @@
   <v-data-table
     :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
-        { text: 'توکن', value: 'token', sortable: false },
+        { text: 'کد', value: 'code', sortable: false },
         { text: 'درگاه', value: 'gateId' },
         { text: 'وضعیت', value: 'payment_status' },
         { text: 'مبلغ پرداختی', value: 'amount' },
+        { text: 'موبایل', value: 'phoneNumber' },
         { text: 'تاریخ ایجاد', value: 'created_at' },
         { text: 'تاریخ بروز‌رسانی', value: 'updated_at' },
       ]"
@@ -105,9 +106,9 @@
       {{ toPersianString(item.no) }}
     </template>
 
-    <template v-slot:[`item.token`]="{ item }">
+    <template v-slot:[`item.code`]="{ item }">
       <span :class="item.active ? 'green--text' : 'pink--text'">
-        {{ item.doc.token }}
+        {{ item.code }}
       </span>
     </template>
 

@@ -20,12 +20,12 @@ export interface IOrder extends Base {
   banimodeCode: string;
   cost: number;
   costDetail: Record<string, unknown>;
-  item: { barcode: string; count: number; active: boolean }[];
+  item: Record<string, unknown>[];
   itemDetail: Record<string, unknown>[];
-  returnDetail: Record<string, unknown>;
   logistic: Record<string, unknown>;
-  delivery: Record<string, unknown>;
   address: Record<string, unknown>;
   promotion: Record<string, unknown>;
   customer: ICustomer;
+  returnDetail: Record<string, unknown>;
+  delivery: Record<string, unknown>;
 }

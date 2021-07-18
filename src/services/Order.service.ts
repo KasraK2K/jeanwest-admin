@@ -8,4 +8,8 @@ export default {
   async getList(pagination: IPagination): Promise<AxiosResponse> {
     return await apiClient.post(`${modulePath}/list`, pagination);
   },
+
+  async findOne(id: string): Promise<AxiosResponse> {
+    return await apiClient.get(`${modulePath}/${id}`);
+  },
 };
