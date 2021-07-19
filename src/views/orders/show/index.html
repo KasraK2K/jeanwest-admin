@@ -1,1 +1,242 @@
+<v-container fluid v-if="ready">
+  <h1 class="blue--text">{{ title }}</h1>
+  <v-breadcrumbs :items="breadcrumbs" class="mb-3"></v-breadcrumbs>
 
+  <v-card elevation="2" outlined rounded class="mb-3">
+    <v-row>
+      <!-- ------------------------------------------------------------------------ */
+        /*                                   reciver                                  */
+        /* ------------------------------------------------------------------------- -->
+      <v-col cols="12" md="6" lg="3" class="justify-center">
+        <v-card-title class="blue--text">اطلاعات تحویل گیرنده</v-card-title>
+
+        <v-card-text>
+          <p>
+            <span>تحویل گیرنده:</span>
+            <span class="font-weight-bold mr-2"
+              >{{ order.address.receiverFullName }}</span
+            >
+          </p>
+          <p>
+            <span>شماره تماس:</span>
+            <span class="font-weight-bold mr-2"
+              >{{ toPersianString(`0${order.address.receiverMobile}`) }}</span
+            >
+          </p>
+          <p>
+            <span>آدرس:</span>
+            <span class="font-weight-bold mr-2">
+              {{ order.address.address }}
+            </span>
+          </p>
+
+          <v-alert color="blue" class="mb-0" text outlined>
+            <div class="d-flex justify-space-between">
+              <span class="mr-auto ml-5">کد تحویل به مامور ارسال:</span>
+              <span class="font-weight-bold ml-auto"
+                >{{ order.delivery.code ? order.delivery.code : "ندارد" }}</span
+              >
+            </div>
+          </v-alert>
+        </v-card-text>
+      </v-col>
+
+      <!-- ------------------------------------------------------------------------ */
+        /*                                    post                                    */
+        /* ------------------------------------------------------------------------- -->
+      <v-col cols="12" md="6" lg="3">
+        <v-card-title class="blue--text">اطلاعات بسته ارسالی</v-card-title>
+
+        <v-card-text>
+          <p>
+            <span>نوع ارسال:</span>
+            <span class="font-weight-bold mr-2">{{ order.logistic.name }}</span>
+          </p>
+          <p>
+            <span>تاریخ ثبت سفارش:</span>
+            <span class="font-weight-bold mr-2">
+              {{ toPersianString( toPersianTime( order.datetime.created_at,
+              "HH:mm | YYYY/MM/DD" ) ) }}
+            </span>
+          </p>
+          <p>
+            <span>تاریخ تحویل سفارش:</span>
+            <span class="font-weight-bold mr-2">
+              {{ order.delivery.date ? toPersianString(
+              toPersianTime(order.delivery.date, "ddd | YYYY/MM/DD") ) : "ندارد"
+              }}
+            </span>
+          </p>
+          <p>
+            <span>زمان تحویل سفارش:</span>
+            <span class="font-weight-bold mr-2">
+              {{ order.delivery.date ? toPersianString(
+              toPersianTime(order.delivery.date, "HH:mm:ss") ) : "ندارد" }}
+            </span>
+          </p>
+          <p class="mb-0">
+            <span>وضعیت پرداخت:</span>
+            <span
+              class="font-weight-bold primary--text mr-2"
+              :class="transaction(order.transaction).gateClass"
+            >
+              درگاه پرداخت {{ transaction(order.transaction).gateName }}
+            </span>
+          </p>
+        </v-card-text>
+      </v-col>
+
+      <!-- ------------------------------------------------------------------------ */
+        /*                               payment detail                               */
+        /* ------------------------------------------------------------------------- -->
+      <v-col cols="12" md="6" lg="3" class="justify-center">
+        <v-card-title class="blue--text">جزییات پرداخت</v-card-title>
+
+        <v-card-text>
+          <p>
+            <span>مبلغ کل:</span>
+            <span class="font-weight-bold mr-2">
+              {{ numberToCash(order.costDetail.total / 10) }} تومان
+            </span>
+          </p>
+          <p>
+            <span>سود شما:</span>
+            <span class="font-weight-bold mr-2">
+              {{ numberToCash(order.costDetail.reduction / 10) }} تومان
+            </span>
+          </p>
+          <p>
+            <span>هزینه ارسال:</span>
+            <span class="font-weight-bold mr-2">
+              {{ order.costDetail.logistic ?
+              numberToCash(order.costDetail.logistic / 10) + " تومان" : "رایگان"
+              }}
+            </span>
+          </p>
+
+          <v-alert color="green" class="mb-0" text outlined>
+            <div class="d-flex justify-space-between">
+              <span class="mr-auto ml-5">مبلغ پرداخت شده:</span>
+              <span class="font-weight-bold ml-auto">
+                {{ numberToCash(order.cost / 10) }} تومان
+              </span>
+            </div>
+          </v-alert>
+        </v-card-text>
+      </v-col>
+
+      <!-- ------------------------------------------------------------------------ */
+        /*                                payment info                                */
+        /* ------------------------------------------------------------------------- -->
+      <v-col cols="12" md="6" lg="3" class="justify-center">
+        <v-card-title class="blue--text">اطلاعات پرداخت</v-card-title>
+
+        <v-card-text>
+          <p>
+            <span>نحوه پرداخت:</span>
+            <span
+              class="font-weight-bold mr-2"
+              :class="transaction(order.transaction).gateClass"
+            >
+              درگاه پرداخت {{ transaction(order.transaction).gateName }}
+            </span>
+          </p>
+          <p>
+            <span>تاریخ و زمان پرداخت:</span>
+            <span class="font-weight-bold mr-2">
+              {{ order.transaction ? toPersianString( toPersianTime(
+              order.transaction.datetime.updated_at, "HH:mm | YYYY/MM/DD" ) ) :
+              "ندارد" }}
+            </span>
+          </p>
+          <p>
+            <span>کد پیگیری پرداخت:</span>
+            <span class="font-weight-bold mr-2">
+              {{ transaction(order.transaction).code }}
+            </span>
+          </p>
+        </v-card-text>
+      </v-col>
+    </v-row>
+  </v-card>
+
+  <v-row>
+    <v-col
+      v-for="(item, index) in order.itemDetail"
+      :key="index"
+      cols="12"
+      md="4"
+    >
+      <v-card elevation="2" outlined rounded class="mb-3">
+        <v-list-item>
+          <v-img
+            class="ml-4"
+            max-width="200"
+            :src="item.banimodeDetails.images"
+            contain
+          />
+
+          <v-list-item-content>
+            <v-card-title>
+              <span>
+                {{ item.banimodeDetails.product_manufacturer_name }}
+              </span>
+              <v-spacer></v-spacer>
+              <v-chip
+                v-if="item.returned"
+                color="red"
+                label
+                outlined
+                class="mr-3"
+                >مرجوع شده</v-chip
+              >
+            </v-card-title>
+            <v-list-item-title class="mb-5">
+              <span class="font-weight-bold mb-3">
+                {{ item.banimodeDetails.product_name }}
+              </span>
+            </v-list-item-title>
+            <p class="mb-3">
+              <span>رنگ:</span>
+              <span
+                class="font-weight-bold mr-2"
+                :style="`color: ${item.banimodeDetails.color_value}`"
+              >
+                {{ item.banimodeDetails.color_name }} ({{
+                toPersianString(item.erpDetails.colorCode) }})
+              </span>
+            </p>
+            <p class="mb-3">
+              <span>سایز:</span>
+              <span class="font-weight-bold mr-2"> {{ item.size }} </span>
+            </p>
+            <p class="mb-3">
+              <span>کد کالا:</span>
+              <span class="font-weight-bold mr-2"> {{ item.code }} </span>
+            </p>
+            <p class="mb-3">
+              <span>قیمت واحد:</span>
+              <span class="font-weight-bold mr-2">
+                {{ numberToCash(item.basePrice / 10) }} تومان
+              </span>
+            </p>
+            <p class="mb-3">
+              <span>تعداد:</span>
+              <span class="font-weight-bold mr-2">
+                {{ toPersianString(item.count) }}
+              </span>
+            </p>
+            <v-alert outlined text>
+              <div class="d-flex">
+                <span>قیمت نهایی:</span>
+                <span class="font-weight-bold mr-auto">
+                  {{ numberToCash(item.salePrice / 10) }} تومان
+                </span>
+              </div>
+            </v-alert>
+          </v-list-item-content>
+        </v-list-item>
+      </v-card>
+    </v-col>
+  </v-row>
+</v-container>

@@ -8,7 +8,7 @@
     ─────────────────────────────────────────────────────────────────────────────────── -->
     <v-row>
       <v-col>
-        <v-card id="jeanspoint" class="mt-2 pa-4">
+        <v-card elevation="2" outlined id="jeanspoint" class="mt-2 pa-4">
           <v-card-title>
             <label for="name" class="pointer">ویرایش امتیاز</label>
           </v-card-title>

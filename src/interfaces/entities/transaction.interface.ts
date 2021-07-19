@@ -15,5 +15,6 @@ export interface ITransaction extends Base {
   type: number;
   amount: number;
   payment_status: number;
+  code: string;
   doc: Record<string, unknown>;
 }

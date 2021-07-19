@@ -8,7 +8,7 @@ import AllOffers from "@/views/promotions/offers/AllOffers.vue";
 
 // ─── JEAPOINTS ──────────────────────────────────────────────────────────────────
 import AllJeansPoints from "@/views/promotions/jeanspoints/AllJeansPoints.vue";
-import EditJeansPoint from "@/views/promotions/jeanspoints/EditJeansPoint.vue";
+import EditJeansPoint from "@/views/promotions/jeanspoints/edit/EditJeansPoint.vue";
 
 // ─── GROUPS ─────────────────────────────────────────────────────────────────────
 import AllGroups from "@/views/promotions/groups/AllGroups.vue";
