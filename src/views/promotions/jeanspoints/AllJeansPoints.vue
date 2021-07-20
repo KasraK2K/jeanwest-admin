@@ -208,7 +208,7 @@
       </template>
 
       <template v-slot:[`item.minTotal`]="{ item }">
-        {{ toPersianString(numberToCash(item.minTotal)) }}
+        {{ toPersianString(numberToCash(item.minTotal / 10)) }}
       </template>
 
       <template v-slot:[`item.singularity`]="{ item }">
