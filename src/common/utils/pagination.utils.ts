@@ -20,7 +20,12 @@ export const paginationGenerator = (
     for (const key of filterKeys) {
       if (pagination.filter && pagination.filter[key]) {
         const eachFilterValue = _.values(pagination.filter[key])[0];
-        if (!key || (!eachFilterValue && eachFilterValue !== false))
+        if (
+          !key ||
+          (!eachFilterValue &&
+            eachFilterValue !== false &&
+            eachFilterValue !== 0)
+        )
           delete pagination.filter[key];
       }
     }
