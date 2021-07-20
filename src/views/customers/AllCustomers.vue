@@ -145,9 +145,11 @@
       </template>
 
       <template v-slot:[`item.erpCustomerType`]="{ item }">
-        <pre class="ltr text-right">{{
-          toPersianString(item.erpCustomerType)
-        }}</pre>
+        <pre
+          class="ltr text-right"
+          :style="'color: ' + customerType(item.erpCustomerType).color"
+          >{{ customerType(item.erpCustomerType).name }}</pre
+        >
       </template>
 
       <template v-slot:[`item.loggedInAt`]="{ item }">
@@ -215,6 +217,8 @@ import {
 } from "@/interfaces/others/pagination.interface";
 import { ICustomer } from "@/interfaces/entities/customer.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
+import { MapCustomerType } from "@/constant/customer-type";
+import { IMapCustomerType } from "@/interfaces/constant/map.interface";
 
 export default Vue.extend({
   name: "AllCustomers",
@@ -298,6 +302,11 @@ export default Vue.extend({
     },
     toggleActivation(id: string): void {
       console.log(`toggle activation ${id}`);
+    },
+    customerType(type: string): IMapCustomerType {
+      return MapCustomerType.has(type)
+        ? (MapCustomerType.get(type) as IMapCustomerType)
+        : { erpName: "تعریف نشده", name: "تعریف نشده", color: "" };
     },
   },
   mounted(): void {

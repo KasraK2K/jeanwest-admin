@@ -1,4 +1,4 @@
-import { Vue, Component, Prop, Inject } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import PromotionService from "@/services/Promotion.service";
 import { ITarget } from "@/interfaces/entities/group.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";

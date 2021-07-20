@@ -102,7 +102,7 @@ import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import EditGroup from "@/components/promotions/group/EditGroup.vue";
 import PromotionService from "@/services/Promotion.service";
-import { DefaultPromotionGroupData as DefaultData } from "@/common/globals/constant/promotion-group";
+import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-group";
 import { IJeansPoint } from "@/interfaces/entities/jeanspoint.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
