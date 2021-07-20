@@ -83,8 +83,8 @@
       { text: 'نام خانوادگی', value: 'lastName' },
       { text: 'موبایل', value: 'phoneNumber' },
       { text: 'وضعیت', value: 'active' },
-      { text: 'زمان ایجاد', value: 'created_at' },
-      { text: 'زمان بروزرسانی', value: 'updated_at' },
+      { text: 'زمان ایجاد', value: 'datetime.created_at' },
+      { text: 'زمان بروزرسانی', value: 'datetime.updated_at' },
       { text: 'گزینه‌ها', value: 'options', align: 'center', sortable: false },
     ]"
     :items="items"
@@ -132,12 +132,12 @@
       </span>
     </template>
 
-    <template v-slot:[`item.created_at`]="{ item }">
+    <template v-slot:[`item.datetime.created_at`]="{ item }">
       {{ item.datetime.created_at ?
       toPersianString(toPersianTime(item.datetime.created_at)) : null }}
     </template>
 
-    <template v-slot:[`item.updated_at`]="{ item }">
+    <template v-slot:[`item.datetime.updated_at`]="{ item }">
       {{ item.datetime.updated_at ?
       toPersianString(toPersianTime(item.datetime.updated_at)) : null }}
     </template>

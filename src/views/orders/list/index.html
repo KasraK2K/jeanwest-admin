@@ -83,10 +83,10 @@
         { text: 'کد', value: 'code', sortable: false },
         { text: 'وضعیت', value: 'status' },
         { text: 'وضعیت بانی‌مد', value: 'banimodeStatus' },
-        { text: 'تحویل گیرنده', value: 'receiverFullName' },
-        { text: 'موبایل تحویل گیرنده', value: 'receiverMobile' },
+        { text: 'تحویل گیرنده', value: 'address.receiverFullName' },
+        { text: 'موبایل تحویل گیرنده', value: 'address.receiverMobile' },
         { text: 'مبلغ پرداختی', value: 'cost' },
-        { text: 'تاریخ بروز‌رسانی', value: 'updated_at' },
+        { text: 'تاریخ بروز‌رسانی', value: 'datetime.updated_at' },
         { text: 'گزینه‌ها', value: 'options', sortable: false },
       ]"
     :items="items"
@@ -144,16 +144,16 @@
       </span>
     </template>
 
-    <template v-slot:[`item.receiverFullName`]="{ item }">
+    <template v-slot:[`item.address.receiverFullName`]="{ item }">
       {{ item.address.receiverFullName }}
     </template>
 
-    <template v-slot:[`item.receiverMobile`]="{ item }">
+    <template v-slot:[`item.address.receiverMobile`]="{ item }">
       {{ toPersianString(`0${item.address.receiverMobile}`) }}
     </template>
 
     <template v-slot:[`item.cost`]="{ item }">
-      {{ toPersianString(numberToCash(item.cost)) }}
+      {{ toPersianString(numberToCash(item.cost / 10)) }}
     </template>
 
     <!-- <template v-slot:[`item.total`]="{ item }">
@@ -168,7 +168,7 @@
       {{ toPersianString(numberToCash(item.reduction)) }}
     </template> -->
 
-    <template v-slot:[`item.updated_at`]="{ item }">
+    <template v-slot:[`item.datetime.updated_at`]="{ item }">
       {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
     </template>
 

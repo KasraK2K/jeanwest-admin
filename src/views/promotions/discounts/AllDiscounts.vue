@@ -260,13 +260,17 @@
 
       <template v-slot:[`item.maxTotal`]="{ item }">
         {{
-          item.maxTotal === -1 ? "تعیین نشده" : toPersianString(item.maxTotal)
+          item.maxTotal === -1
+            ? "تعیین نشده"
+            : cashOrPercent(item.maxTotal, item.isPercentage)
         }}
       </template>
 
       <template v-slot:[`item.minTotal`]="{ item }">
         {{
-          item.minTotal === -1 ? "تعیین نشده" : toPersianString(item.minTotal)
+          item.minTotal === -1
+            ? "تعیین نشده"
+            : cashOrPercent(item.minTotal, item.isPercentage)
         }}
       </template>
 
@@ -381,6 +385,7 @@ import {
 import * as _ from "lodash";
 import { IDiscount } from "@/interfaces/entities/discount.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
+import { numberToCash, toPersianString } from "@/mixin/string.mixin";
 
 export default Vue.extend({
   data(): {
@@ -486,6 +491,10 @@ export default Vue.extend({
     restoreDiscount(id: string): void {
       // PromotionService.discountRestore(id).then(() => this.getList());
       console.log(`restore discount with id: ${id}`);
+    },
+    cashOrPercent(amount: number, isPercentage: boolean) {
+      if (isPercentage) return toPersianString(amount + "%");
+      else return toPersianString(numberToCash(amount / 10));
     },
   },
   mounted(): void {

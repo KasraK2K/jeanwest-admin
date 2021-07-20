@@ -66,8 +66,8 @@
         { text: 'وضعیت', value: 'payment_status' },
         { text: 'مبلغ پرداختی', value: 'amount' },
         { text: 'موبایل', value: 'phoneNumber' },
-        { text: 'تاریخ ایجاد', value: 'created_at' },
-        { text: 'تاریخ بروز‌رسانی', value: 'updated_at' },
+        { text: 'تاریخ ایجاد', value: 'datetime.created_at' },
+        { text: 'تاریخ بروز‌رسانی', value: 'datetime.updated_at' },
       ]"
     :items="items"
     class="elevation-1"
@@ -125,14 +125,14 @@
     </template>
 
     <template v-slot:[`item.amount`]="{ item }">
-      {{ numberToCash(item.amount) }}
+      {{ numberToCash(item.amount / 10) }}
     </template>
 
-    <template v-slot:[`item.created_at`]="{ item }">
+    <template v-slot:[`item.datetime.created_at`]="{ item }">
       {{ toPersianString(toPersianTime(item.datetime.created_at)) }}
     </template>
 
-    <template v-slot:[`item.updated_at`]="{ item }">
+    <template v-slot:[`item.datetime.updated_at`]="{ item }">
       {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
     </template>
   </v-data-table>

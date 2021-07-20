@@ -33,7 +33,7 @@ class AllPayments extends Vue {
   private limit = 10;
   private pageCount = 1;
   // filter
-  private token = "";
+  private code = "";
   private gateId: number = null as unknown as number;
   private payment_status: number = null as unknown as number;
   private pagination: IPagination = {
@@ -97,8 +97,8 @@ class AllPayments extends Vue {
     const filters: IFilters = {
       gateId: { eq: this.gateId },
       payment_status: { eq: this.payment_status },
+      code: { eq: this.code },
     };
-    if (this.token) filters["doc->>token"] = { eq: this.token };
     this.pagination = paginationGenerator(options, filters);
   }
 

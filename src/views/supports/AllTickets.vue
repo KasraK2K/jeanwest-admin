@@ -78,8 +78,8 @@
         { text: 'آیدی', value: 'id', align: 'start', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
         { text: 'کد', value: 'code' },
-        { text: 'زمان ایجاد', value: 'created_at' },
-        { text: 'زمان بروزرسانی', value: 'updated_at' },
+        { text: 'زمان ایجاد', value: 'datetime.created_at' },
+        { text: 'زمان بروزرسانی', value: 'datetime.updated_at' },
         { text: 'وضعیت', value: 'status', align: 'center' },
       ]"
       :items="items"
@@ -120,11 +120,11 @@
         {{ toPersianString(item.no) }}
       </template>
 
-      <template v-slot:[`item.created_at`]="{ item }">
+      <template v-slot:[`item.datetime.created_at`]="{ item }">
         {{ toPersianString(toPersianTime(item.datetime.created_at)) }}
       </template>
 
-      <template v-slot:[`item.updated_at`]="{ item }">
+      <template v-slot:[`item.datetime.updated_at`]="{ item }">
         {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
       </template>
 
