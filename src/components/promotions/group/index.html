@@ -87,7 +87,7 @@
 
           <v-col cols="6" md="2">
             <v-autocomplete
-              label="تعداد"
+              label="بازه موجودی"
               v-model="quantityType"
               :items="['gt', 'gte', 'lt', 'lte', 'eq']"
               height="42"
@@ -97,7 +97,7 @@
 
           <v-col cols="6" md="2">
             <v-text-field
-              label="تعداد"
+              label="تعداد موجودی"
               v-model="quantity"
               type="number"
               height="42"
@@ -107,7 +107,7 @@
 
           <v-col cols="6" md="2">
             <v-autocomplete
-              label="نوع قیمت پایه"
+              label="بازه قیمت پایه"
               v-model="basePriceType"
               :items="['gt', 'gte', 'lt', 'lte', 'eq']"
               height="42"
@@ -127,7 +127,7 @@
 
           <v-col cols="6" md="2">
             <v-autocomplete
-              label="نوع قیمت فروش"
+              label="بازه قیمت فروش"
               v-model="salePriceType"
               :items="['gt', 'gte', 'lt', 'lte', 'eq']"
               height="42"

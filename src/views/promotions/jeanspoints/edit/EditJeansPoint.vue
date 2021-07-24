@@ -44,8 +44,8 @@
                   label="اعمال همزمان"
                   v-model="jeanspoint.singularity"
                   :items="[
-                    { text: 'فعال', value: false },
-                    { text: 'غیرفعال', value: true },
+                    { text: 'بله', value: false },
+                    { text: 'خیر', value: true },
                   ]"
                   item-text="text"
                   item-value="value"

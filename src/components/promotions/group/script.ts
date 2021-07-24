@@ -42,6 +42,9 @@ class EditPromotionGroup extends Vue {
     this.salePrice =
       Number(this.firstValue(this.target.salePrice)) || undefined;
 
+    this.basePrice = this.basePrice && this.basePrice / 10;
+    this.salePrice = this.salePrice && this.salePrice / 10;
+
     // set numerical types
     this.quantityType = String(this.firstKey(this.target.quantity));
     this.basePriceType = String(this.firstKey(this.target.basePrice));
@@ -74,12 +77,12 @@ class EditPromotionGroup extends Vue {
 
     if (this.basePrice && this.basePriceType)
       this.updateGroupData.target.basePrice = {
-        [this.basePriceType]: Number(this.basePrice),
+        [this.basePriceType]: Number(this.basePrice * 10),
       };
 
     if (this.salePrice && this.salePriceType)
       this.updateGroupData.target.salePrice = {
-        [this.salePriceType]: Number(this.salePrice),
+        [this.salePriceType]: Number(this.salePrice * 10),
       };
 
     for (const item of _.entries(this.updateGroupData.target as ITarget)) {
