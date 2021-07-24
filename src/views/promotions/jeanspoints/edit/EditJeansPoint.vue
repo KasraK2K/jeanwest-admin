@@ -10,7 +10,7 @@
       <v-col>
         <v-card elevation="2" outlined id="jeanspoint" class="mt-2 pa-4">
           <v-card-title>
-            <label for="name" class="pointer">ویرایش امتیاز</label>
+            <label for="name" class="pointer">ویرایش جین‌پوینت</label>
           </v-card-title>
 
           <v-form @submit.prevent="updateJeansPoint">
@@ -18,7 +18,7 @@
               <v-col cols="12" md="4">
                 <v-text-field
                   label="نام"
-                  v-model="jeanspoint.name"
+                  v-model.trim="jeanspoint.name"
                   hide-details="auto"
                   id="name"
                 />
@@ -44,8 +44,8 @@
                   label="اعمال همزمان"
                   v-model="jeanspoint.singularity"
                   :items="[
-                    { text: 'فعال', value: true },
-                    { text: 'غیرفعال', value: false },
+                    { text: 'فعال', value: false },
+                    { text: 'غیرفعال', value: true },
                   ]"
                   item-text="text"
                   item-value="value"
@@ -57,18 +57,18 @@
               <v-col cols="12" md="2">
                 <v-text-field
                   label="محدودیت در تعداد"
-                  v-model="jeanspoint.countLimit"
-                  hide-details="auto"
+                  v-model.number="jeanspoint.countLimit"
                   type="number"
+                  hide-details="auto"
                 />
               </v-col>
 
               <v-col cols="12" md="2">
                 <v-text-field
                   label="حداقل مبلغ خرید"
-                  v-model="jeanspoint.minTotal"
-                  hide-details="auto"
+                  v-model.number="jeanspoint.minTotal"
                   type="number"
+                  hide-details="auto"
                 />
               </v-col>
 
@@ -77,7 +77,7 @@
                   v-if="ready"
                   :api-key="tinyApiKey()"
                   :init="tinyInit()"
-                  v-model="context"
+                  v-model.trim="context"
                 />
               </v-col>
             </v-row>
@@ -119,7 +119,7 @@ export default Vue.extend({
     defaultData: IPromotionGroup;
     context: string;
   } {
-    const title = "ویرایش امتیاز ";
+    const title = "ویرایش جین‌پوینت ";
     return {
       title,
       breadcrumbs: [
@@ -128,7 +128,7 @@ export default Vue.extend({
           to: "/",
         },
         {
-          text: "لیست امتیازات",
+          text: "لیست جین‌پوینت‌ها",
           to: { name: "AllJeansPoints" },
         },
         {
@@ -147,6 +147,7 @@ export default Vue.extend({
     findOne() {
       PromotionService.findOnePoint(this.id).then((response) => {
         this.jeanspoint = response.data.data;
+        this.divisionTen();
         this.group = this.jeanspoint.promotionGroup;
         this.context =
           this.jeanspoint.description && this.jeanspoint.description.context;
@@ -155,13 +156,24 @@ export default Vue.extend({
     },
     updateJeansPoint() {
       this.jeanspoint.description = { context: this.context };
+      this.multiplyTen();
       PromotionService.editPoint({ ...this.jeanspoint })
         .then(() => {
-          Vue.prototype.$toast("success", "امتیاز با موفقیت بروزرسانی شد.");
+          Vue.prototype.$toast("success", "جین‌پوینت با موفقیت بروزرسانی شد.");
         })
         .catch(() => {
           Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
         });
+    },
+    multiplyTen() {
+      _.assign(this.discount, {
+        minTotal: this.jeanspoint.minTotal * 10,
+      });
+    },
+    divisionTen() {
+      _.assign(this.discount, {
+        minTotal: this.jeanspoint.minTotal / 10,
+      });
     },
   },
   components: {

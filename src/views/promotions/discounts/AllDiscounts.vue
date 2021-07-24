@@ -88,7 +88,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="4">
           <v-text-field
             label="حداکثر"
             placeholder="لطفا حداکثر تخفیف را وارد کنید."
@@ -101,10 +101,10 @@
           ></v-text-field>
         </v-col>
 
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="4">
           <v-text-field
             label="حداقل"
-            placeholder="لطفا حداقل تخفیف را وارد کنید."
+            placeholder="لطفا حداقل خرید را وارد کنید."
             v-model.number="minTotal"
             type="number"
             @change="paginateGenerator()"
@@ -114,24 +114,23 @@
           ></v-text-field>
         </v-col>
 
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="4">
           <v-autocomplete
             label="اعمال همزمان"
             v-model="singularity"
             :items="[
-              { text: 'بله', value: true },
-              { text: 'خیر', value: false },
+              { text: 'بله', value: false },
+              { text: 'خیر', value: true },
             ]"
             item-text="text"
             item-value="value"
             @change="paginateGenerator()"
             outlined
-            hide-details="auto"
             clearable
           ></v-autocomplete>
         </v-col>
 
-        <v-col cols="12" md="3">
+        <!-- <v-col cols="12" md="3">
           <v-menu
             v-model="datesMenu"
             :close-on-content-click="false"
@@ -160,7 +159,7 @@
               @change="paginateGenerator()"
             ></v-date-picker>
           </v-menu>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-card>
     <!-- ----------------------------- END: Filter ----------------------------- -->
@@ -178,7 +177,7 @@
         { text: 'نوع تخفیف', value: 'isPercentage' },
         { text: 'دفعات استفاده', value: 'usageCount' },
         { text: 'حداکثر تخفیف', value: 'maxTotal' },
-        { text: 'حداقل تخفیف', value: 'minTotal' },
+        { text: 'حداقل خرید', value: 'minTotal' },
         { text: 'اعمال همزمان', value: 'singularity' },
         { text: 'زمان شروع', value: 'startDate' },
         { text: 'زمان پایان', value: 'expirationDate' },
@@ -237,7 +236,11 @@
       </template>
 
       <template v-slot:[`item.reductionPrice`]="{ item }">
-        {{ toPersianString(item.reductionPrice) }}
+        {{
+          item.isPercentage
+            ? toPersianString(`${item.reductionPrice}%`)
+            : toPersianString(numberToCash(item.reductionPrice / 10))
+        }}
       </template>
 
       <template v-slot:[`item.isPercentage`]="{ item }">
@@ -259,24 +262,16 @@
       </template>
 
       <template v-slot:[`item.maxTotal`]="{ item }">
-        {{
-          item.maxTotal === -1
-            ? "تعیین نشده"
-            : cashOrPercent(item.maxTotal, item.isPercentage)
-        }}
+        {{ toPersianString(numberToCash(item.maxTotal / 10)) }}
       </template>
 
       <template v-slot:[`item.minTotal`]="{ item }">
-        {{
-          item.minTotal === -1
-            ? "تعیین نشده"
-            : cashOrPercent(item.minTotal, item.isPercentage)
-        }}
+        {{ toPersianString(numberToCash(item.minTotal / 10)) }}
       </template>
 
       <template v-slot:[`item.singularity`]="{ item }">
-        <span :class="item.singularity ? 'green--text' : 'red--text'">
-          {{ item.singularity ? "بله" : "خیر" }}
+        <span :class="item.singularity ? 'red--text' : 'green--text'">
+          {{ item.singularity ? "خیر" : "بله" }}
         </span>
       </template>
 

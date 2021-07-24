@@ -38,6 +38,7 @@
             transition="scale-transition"
             offset-y
             min-width="auto"
+            :close-on-content-click="false"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field

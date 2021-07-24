@@ -54,6 +54,7 @@ class CreateDiscount extends Vue {
     PromotionService.findOneDiscount(this.id)
       .then((response) => {
         this.discount = _.assign(this.discount, response.data.data);
+        this.divisionTen();
         // edit resived date and set time from resived date
         if (this.discount.startDate) {
           this.startTime = formatDate(this.discount.startDate, "HH:mm");
@@ -83,6 +84,8 @@ class CreateDiscount extends Vue {
     if (this.discount.expirationDate)
       this.discount.expirationDate = `${this.discount.expirationDate} ${this.expirationTime}`;
 
+    this.multiplyTen();
+
     PromotionService.editDiscount(this.discount)
       .then(() => {
         Vue.prototype.$toast("success", "با موفقیت بروزرسانی شد.");
@@ -92,6 +95,26 @@ class CreateDiscount extends Vue {
         Vue.prototype.$toast("error", error.message);
         this.$router.go(-1);
       });
+  }
+
+  private multiplyTen() {
+    _.assign(this.discount, {
+      reductionPrice: this.discount.isPercentage
+        ? this.discount.reductionPrice
+        : this.discount.reductionPrice * 10,
+      maxTotal: this.discount.maxTotal && this.discount.maxTotal * 10,
+      minTotal: this.discount.minTotal && this.discount.minTotal * 10,
+    });
+  }
+
+  private divisionTen() {
+    _.assign(this.discount, {
+      reductionPrice: this.discount.isPercentage
+        ? this.discount.reductionPrice
+        : this.discount.reductionPrice / 10,
+      maxTotal: this.discount.maxTotal && this.discount.maxTotal / 10,
+      minTotal: this.discount.minTotal && this.discount.minTotal / 10,
+    });
   }
 }
 

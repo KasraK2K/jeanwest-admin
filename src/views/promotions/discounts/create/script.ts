@@ -2,7 +2,7 @@ import PromotionService from "@/services/Promotion.service";
 import { IDiscount } from "@/interfaces/entities/discount.interface";
 import Editor from "@tinymce/tinymce-vue";
 import { Vue, Component } from "vue-property-decorator";
-
+import * as _ from "lodash";
 @Component({
   name: "CreateDiscount",
   components: {
@@ -30,9 +30,20 @@ class CreateDiscount extends Vue {
   private startDateMenu = false;
 
   private createDiscount() {
+    this.multiplyTen();
     PromotionService.createDiscount(this.discount).then(() => {
       Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
       this.$router.go(-1);
+    });
+  }
+
+  private multiplyTen() {
+    _.assign(this.discount, {
+      reductionPrice: this.discount.isPercentage
+        ? this.discount.reductionPrice
+        : this.discount.reductionPrice * 10,
+      maxTotal: this.discount.maxTotal && this.discount.maxTotal * 10,
+      minTotal: this.discount.minTotal && this.discount.minTotal * 10,
     });
   }
 }
