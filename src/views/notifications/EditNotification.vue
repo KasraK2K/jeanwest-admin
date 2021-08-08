@@ -12,7 +12,7 @@
 
     <v-row>
       <v-col cols="12" :md="formCondition() ? '9' : '12'">
-        <v-card id="form" class="mt-2 mb-5 pa-4">
+        <v-card id="form" class="mt-2 pa-4">
           <v-row>
             <v-col cols="12" :md="formCondition() ? '12' : '6'">
               <v-text-field
@@ -67,7 +67,7 @@
         </v-card>
       </v-col>
 
-      <v-col v-if="formCondition()" cols="12" md="3">
+      <v-col v-if="formCondition()" cols="12" md="3" class="mb-5">
         <v-card elevation="2" class="mx-auto" max-width="374">
           <v-card-title>
             <v-img

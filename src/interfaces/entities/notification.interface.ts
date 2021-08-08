@@ -16,3 +16,10 @@ export interface INotification extends Base {
   image: string;
   icon: string;
 }
+
+export interface IPushNotification extends INotification {
+  name: string;
+  click_action: string;
+  erpCustomerType: number[];
+  sent: boolean;
+}

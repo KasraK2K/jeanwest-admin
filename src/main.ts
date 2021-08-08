@@ -16,10 +16,14 @@ import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { BarChart } from "echarts/charts";
 import { GridComponent, TooltipComponent } from "echarts/components";
+// import firebase from "firebase";
+// import { firebaseConfig } from "./common/globals/plugins/firebase";
 // import upperFirst from "lodash/upperFirst";
 // import camelCase from "lodash/camelCase";
 // import * as Sentry from "@sentry/vue";
 // import { Integrations } from "@sentry/tracing";
+
+// firebase.initializeApp(firebaseConfig);
 
 // ────────────────────────────────────────────────────────────────────────────────
 //   :::::: R E G I S T E R   S E N T R Y : :  :   :    :     :        :          :

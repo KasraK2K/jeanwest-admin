@@ -35,3 +35,98 @@ export const MapCustomerType: Map<string, IMapCustomerType> = new Map([
   ["11", { erpName: "Tourist15", name: "Tourist15", color: "" }],
   ["12", { erpName: "Tourist20", name: "Tourist20", color: "" }],
 ]);
+
+export const CustomerTypes = [
+  {
+    text: "Gold B2B",
+    value: -11,
+  },
+  {
+    text: "Silver B2B",
+    value: -10,
+  },
+  {
+    text: "پرسنل سطح ۷",
+    value: -9,
+  },
+  {
+    text: "پرسنل سطح ۶",
+    value: -8,
+  },
+  {
+    text: "پرسنل سطح ۵",
+    value: -7,
+  },
+  {
+    text: "پرسنل سطح ۴",
+    value: -6,
+  },
+  {
+    text: "پرسنل سطح ۳",
+    value: -5,
+  },
+  {
+    text: "پرسنل سطح ۲",
+    value: -4,
+  },
+  {
+    text: "پرسنل سطح ۱",
+    value: -3,
+  },
+  {
+    text: "Tourist10",
+    value: -2,
+  },
+  {
+    text: "Tourist15",
+    value: -1,
+  },
+  {
+    text: "Tourist20",
+    value: 0,
+  },
+  {
+    text: "عادی",
+    value: 1,
+  },
+  {
+    text: "كارمند",
+    value: 2,
+  },
+  {
+    text: "Blue",
+    value: 3,
+  },
+  {
+    text: "Blue+",
+    value: 4,
+  },
+  {
+    text: "Blue2+",
+    value: 5,
+  },
+  {
+    text: "Silver",
+    value: 6,
+  },
+  {
+    text: "Gold",
+    value: 7,
+  },
+  {
+    text: "Platinum",
+    value: 8,
+  },
+  {
+    text: "Tourist10",
+    value: 10,
+  },
+  {
+    text: "Tourist15",
+    value: 11,
+  },
+  {
+    text: "Tourist20",
+    value: 12,
+  },
+];
