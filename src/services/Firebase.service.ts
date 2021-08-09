@@ -1,7 +1,14 @@
+import { IPushNotification } from "./../interfaces/entities/notification.interface";
+import { globals } from "@/common/globals/globals";
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
-import { firebaseConfig } from "@/common/globals/plugins/firebase";
+import {
+  firebaseConfig,
+  fcmServerKey,
+} from "@/common/globals/plugins/firebase";
 import firebase from "firebase";
+import * as _ from "lodash";
+import { formatDate } from "@/mixin/date.mixin";
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -71,11 +78,34 @@ export default {
   // ────────────────────────────────────────────────────────────────────────────────
   //   :::::: C L O U D   M E S S A G I N G : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────────────────────────
-  async sendPushToToken(collection: string, token: string) {
-    console.log("send notif to token");
+  async sendPushToToken(
+    notification: IPushNotification,
+    token: string
+  ): Promise<AxiosResponse> {
+    const data = JSON.stringify({ notification, to: token });
+    return await apiClient.post(globals.fcmBaseUrl, data, {
+      headers: { Authorization: `key=${fcmServerKey}` },
+    });
   },
 
-  async sendPushToQuery(collection: string) {
-    console.log("send notif to token");
+  async sendPushToQuery(
+    collection: string,
+    where: { fieldPath: string; opStr: any; value: any },
+    notification: IPushNotification
+    // schedule: Date
+  ) {
+    const results = await this.getAllByQuery(collection, where);
+    const tokens = _.map(results, "token");
+    // const scheduledTime = formatDate(schedule, "YYYY-MM-DD HH:MM:SS");
+    const data = JSON.stringify({
+      notification,
+      registration_ids: tokens,
+      topic: notification.id,
+    });
+    // isScheduled: true,
+    // scheduledTime: scheduledTime,
+    return await apiClient.post(globals.fcmBaseUrl, data, {
+      headers: { Authorization: `key=${fcmServerKey}` },
+    });
   },
 };

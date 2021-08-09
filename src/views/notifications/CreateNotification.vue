@@ -174,7 +174,7 @@ export default Vue.extend({
               if (response.data.statusCode === 201) {
                 data.image = response.data.data.image;
                 this.notification.image =
-                  globals.mediaServerStatic + response.data.data.image;
+                  globals.mediaServerStatic + data.image;
               }
             }
           );
@@ -182,8 +182,7 @@ export default Vue.extend({
           await MediaService.upload("icon", this.formIcon).then((response) => {
             if (response.data.statusCode === 201) {
               data.icon = response.data.data.image;
-              this.notification.icon =
-                globals.mediaServerStatic + response.data.data.icon;
+              this.notification.icon = globals.mediaServerStatic + data.icon;
             }
           });
         await NotificationService.create(data).then((response) => {
@@ -227,25 +226,24 @@ export default Vue.extend({
     },
 
     async sendPushNotification() {
-      // get users token
-      const users = await FirebaseService.getAllByQuery(
+      await FirebaseService.sendPushToQuery(
         FirebaseCollectionsEnum.USERS,
         {
           fieldPath: "erpCustomerType",
           opStr: "in",
           value: this.notification.erpCustomerType,
-        }
+        },
+        this.notification
+        // new Date()
       );
-      const usersTokens = _.map(users, "token");
-
-      // send notification
 
       // update notification and make sent true
-      // await FirebaseService.upsert(
-      //   FirebaseCollectionsEnum.NOTIFICATIONS,
-      //   this.notification.id,
-      //   { sent: true }
-      // ).then(() => console.log("Notification Sent True"));
+      this.notification.sent = true;
+      await FirebaseService.upsert(
+        FirebaseCollectionsEnum.NOTIFICATIONS,
+        this.notification.id,
+        this.notification
+      ).then(() => console.log("Notification Sent True"));
     },
   },
 

@@ -1,4 +1,7 @@
-export const firebaseConfig = {
+importScripts("https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.2.7/firebase-messaging.js");
+
+var firebaseConfig = {
   apiKey: "AIzaSyAsQpQHHcgaEhz0BeJ1lj9cuuHMcaXbGHY",
   authDomain: "test-jeanswest.firebaseapp.com",
   projectId: "test-jeanswest",
@@ -8,5 +11,4 @@ export const firebaseConfig = {
   measurementId: "G-HJJN0B1KKX",
 };
 
-export const fcmServerKey =
-  "AAAAwqqOtM8:APA91bHyy1hvs4jKmbbMz5SPzWVf-OnAuRmljfr2ZELI9UWUsVAMyKBhvVwKFZS8FM68lI8pBlYaQYvdKZ9QDTQjM8YGG5oq9PqUM021NpChPWP64yLC_cM36KtiYpE9TUhGPM8iiyMD";
+const app = firebase.initializeApp(firebaseConfig);
