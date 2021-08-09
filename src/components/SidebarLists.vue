@@ -66,7 +66,7 @@
       >
         <!-- #1 -->
         <template v-slot:activator>
-          <v-list-item-title>کمپین‌ها</v-list-item-title>
+          <v-list-item-title>پروموشن‌ها</v-list-item-title>
         </template>
         <!-- #2: Discount -->
         <router-link :to="{ name: 'AllDiscounts' }">
@@ -92,7 +92,7 @@
             <v-list-item-icon>
               <v-icon>mdi-format-list-numbered-rtl</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>لیست امتیازات</v-list-item-title>
+            <v-list-item-title>لیست جین‌پوینت‌ها</v-list-item-title>
           </v-list-item>
         </router-link>
         <!-- #2: Groups -->

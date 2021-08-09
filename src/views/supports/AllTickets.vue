@@ -12,14 +12,14 @@
           <v-text-field
             label="کد"
             placeholder="لطفا کد تیکت را وارد کنید."
-            v-model="code"
+            v-model.trim="code"
             @change="paginateGenerator()"
             outlined
             hide-details="auto"
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <v-col cols="12" md="3">
           <v-autocomplete
             label="وضعیت"
             v-model="status"
@@ -31,12 +31,11 @@
             item-value="value"
             @change="paginateGenerator()"
             outlined
-            hide-details="auto"
             clearable
           ></v-autocomplete>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <!-- <v-col class="col-12 col-md-3">
           <v-menu
             v-model="datesMenu"
             :close-on-content-click="false"
@@ -64,7 +63,7 @@
               @change="paginateGenerator()"
             ></v-date-picker>
           </v-menu>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-card>
     <!-- ----------------------------- END: Filter ----------------------------- -->
@@ -72,10 +71,10 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                 START: List                                */
     /* ------------------------------------------------------------------------- -->
+    <!-- { text: 'آیدی', value: 'id', align: 'start', sortable: false }, -->
     <v-data-table
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
-        { text: 'آیدی', value: 'id', align: 'start', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
         { text: 'کد', value: 'code' },
         { text: 'زمان ایجاد', value: 'datetime.created_at' },

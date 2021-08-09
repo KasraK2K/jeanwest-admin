@@ -60,8 +60,8 @@
               label="اعمال همزمان"
               v-model="discount.singularity"
               :items="[
-                { text: 'بله', value: true },
-                { text: 'خیر', value: false },
+                { text: 'بله', value: false },
+                { text: 'خیر', value: true },
               ]"
               item-text="text"
               item-value="value"
@@ -74,7 +74,7 @@
           <v-col cols="12" md="3">
             <v-text-field
               label="محدودیت تعداد"
-              v-model.numeric="discount.countLimit"
+              v-model.number="discount.countLimit"
               hide-details="auto"
               type="number"
               clearable
@@ -85,7 +85,7 @@
           <v-col cols="12" md="3">
             <v-text-field
               label="دفعات استفاده"
-              v-model.numeric="discount.usageCount"
+              v-model.number="discount.usageCount"
               hide-details="auto"
               type="number"
               clearable
@@ -96,7 +96,7 @@
           <v-col cols="12" md="3">
             <v-text-field
               label="حداکثر تخفیف"
-              v-model.numeric="discount.maxTotal"
+              v-model.number="discount.maxTotal"
               hide-details="auto"
               type="number"
               clearable
@@ -106,8 +106,8 @@
 
           <v-col cols="12" md="3">
             <v-text-field
-              label="حداقل تخفیف"
-              v-model.numeric="discount.minTotal"
+              label="حداقل خرید"
+              v-model.number="discount.minTotal"
               hide-details="auto"
               type="number"
               clearable
@@ -122,6 +122,7 @@
               transition="scale-transition"
               offset-y
               min-width="auto"
+              :close-on-content-click="false"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
@@ -180,6 +181,7 @@
               transition="scale-transition"
               offset-y
               min-width="auto"
+              :close-on-content-click="false"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field

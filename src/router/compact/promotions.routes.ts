@@ -66,7 +66,7 @@ export const promotions: IRouter[] = [
     name: "AllJeansPoints",
     component: AllJeansPoints,
     meta: {
-      title: "لیست امتیازات",
+      title: "لیست جین‌پوینت‌ها",
     },
   },
   {
@@ -75,7 +75,7 @@ export const promotions: IRouter[] = [
     component: EditJeansPoint,
     props: true,
     meta: {
-      title: "ویرایش امتیاز",
+      title: "ویرایش جین‌پوینت",
     },
   },
 

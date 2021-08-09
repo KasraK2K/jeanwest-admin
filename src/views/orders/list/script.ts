@@ -98,7 +98,7 @@ export class AllOrders extends Vue {
       code: { eq: this.code },
       status: { eq: this.status },
       banimodeStatus: { eq: this.banimodeStatus },
-      cost: { eq: this.cost },
+      cost: { eq: this.cost && this.cost * 10 },
     };
     this.pagination = paginationGenerator(options, filters);
   }

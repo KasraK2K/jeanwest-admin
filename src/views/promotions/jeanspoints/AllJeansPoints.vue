@@ -8,11 +8,11 @@
     <v-card class="mb-8" elevation="1" outlined>
       <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
       <v-row class="mx-4">
-        <v-col class="col-12 col-md-3">
+        <v-col cols="12" md="4">
           <v-text-field
             label="کد"
-            placeholder="لطفا کد امتیاز را وارد کنید."
-            v-model="code"
+            placeholder="لطفا کد جین‌پوینت را وارد کنید."
+            v-model.trim="code"
             @change="paginateGenerator()"
             outlined
             hide-details="auto"
@@ -20,11 +20,11 @@
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <v-col cols="12" md="4">
           <v-text-field
             label="نام"
-            placeholder="لطفا نام امتیاز را وارد کنید."
-            v-model="name"
+            placeholder="لطفا نام جین‌پوینت را وارد کنید."
+            v-model.trim="name"
             @change="paginateGenerator()"
             outlined
             hide-details="auto"
@@ -32,7 +32,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <!-- <v-col cols="12" md="4">
           <v-text-field
             label="نام گروه"
             placeholder="لطفا نام گروه را وارد کنید."
@@ -43,13 +43,13 @@
             clearable
             disabled
           ></v-text-field>
-        </v-col>
+        </v-col> -->
 
-        <v-col class="col-12 col-md-3">
+        <v-col cols="12" md="4">
           <v-text-field
             label="محدودیت در تعداد "
             placeholder="لطفا محدودیت در تعداد را وارد کنید."
-            v-model="countLimit"
+            v-model.number="countLimit"
             type="number"
             @change="paginateGenerator()"
             outlined
@@ -58,11 +58,11 @@
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <v-col cols="12" md="4">
           <v-text-field
             label="حداقل مبلغ خرید"
             placeholder="لطفا حداقل مبلغ خرید را وارد کنید."
-            v-model="minTotal"
+            v-model.number="minTotal"
             type="number"
             @change="paginateGenerator()"
             outlined
@@ -71,13 +71,13 @@
           ></v-text-field>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <v-col cols="12" md="4">
           <v-autocomplete
             label="اعمال همزمان"
             v-model="singularity"
             :items="[
-              { text: 'فعال', value: true },
-              { text: 'غیرفعال', value: false },
+              { text: 'فعال', value: false },
+              { text: 'غیرفعال', value: true },
             ]"
             item-text="text"
             item-value="value"
@@ -88,7 +88,7 @@
           ></v-autocomplete>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <v-col cols="12" md="4">
           <v-autocomplete
             label="وضعیت"
             v-model="active"
@@ -100,12 +100,11 @@
             item-value="value"
             @change="paginateGenerator()"
             outlined
-            hide-details="auto"
             clearable
           ></v-autocomplete>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <!-- <v-col cols="12" md="4">
           <v-menu
             v-model="datesMenu"
             :close-on-content-click="false"
@@ -134,7 +133,7 @@
               @change="paginateGenerator()"
             ></v-date-picker>
           </v-menu>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-card>
     <!-- ----------------------------- END: Filter ----------------------------- -->
@@ -212,8 +211,8 @@
       </template>
 
       <template v-slot:[`item.singularity`]="{ item }">
-        <span :class="item.singularity ? 'green--text' : 'red--text'">
-          {{ item.singularity ? "بله" : "خیر" }}
+        <span :class="item.singularity ? 'red--text' : 'green--text'">
+          {{ item.singularity ? "خیر" : "بله" }}
         </span>
       </template>
 
@@ -291,8 +290,9 @@ export default Vue.extend({
     limit: number;
     pagination: IPagination;
     items: IJeansPoint[];
+    minTotal: number;
   } {
-    const title = "لیست امتیازات";
+    const title = "لیست جین‌پوینت‌ها";
     return {
       title,
       loading: false,
@@ -317,7 +317,7 @@ export default Vue.extend({
       name: undefined,
       groupName: undefined,
       countLimit: undefined,
-      minTotal: undefined,
+      minTotal: undefined as unknown as number,
       singularity: undefined,
       active: undefined,
       dates: undefined,
@@ -368,7 +368,7 @@ export default Vue.extend({
         name: { eq: this.name },
         groupName: { eq: this.groupName },
         countLimit: { eq: this.countLimit },
-        minTotal: { eq: this.minTotal },
+        minTotal: { eq: this.minTotal * 10 },
         singularity: { eq: this.singularity },
         active: { eq: this.active },
       };
