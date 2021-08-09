@@ -191,7 +191,7 @@ export default Vue.extend({
           Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
           this.firebaseInsertNotification();
           this.sendPushNotification();
-          // this.$router.go(-1);
+          this.$router.go(-1);
         });
 
         Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
@@ -246,14 +246,6 @@ export default Vue.extend({
       ).then(() => console.log("Notification Sent True"));
     },
   },
-
-  // async mounted() {
-  //   this.notification = {
-  //     id: "myNotifId",
-  //     erpCustomerType: [2],
-  //   } as IPushNotification;
-  //   await this.sendPushNotification();
-  // },
 
   components: {
     editor: Editor,
