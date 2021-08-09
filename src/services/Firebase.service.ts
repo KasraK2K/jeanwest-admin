@@ -8,7 +8,7 @@ import {
 } from "@/common/globals/plugins/firebase";
 import firebase from "firebase";
 import * as _ from "lodash";
-import { formatDate } from "@/mixin/date.mixin";
+// import { formatDate } from "@/mixin/date.mixin";
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -95,17 +95,19 @@ export default {
     // schedule: Date
   ) {
     const results = await this.getAllByQuery(collection, where);
-    const tokens = _.map(results, "token");
-    // const scheduledTime = formatDate(schedule, "YYYY-MM-DD HH:MM:SS");
-    const data = JSON.stringify({
-      notification,
-      registration_ids: tokens,
-      topic: notification.id,
-    });
-    // isScheduled: true,
-    // scheduledTime: scheduledTime,
-    return await apiClient.post(globals.fcmBaseUrl, data, {
-      headers: { Authorization: `key=${fcmServerKey}` },
-    });
+    if (results && results.length) {
+      const tokens = _.map(results, "token");
+      // const scheduledTime = formatDate(schedule, "YYYY-MM-DD HH:MM:SS");
+      const data = JSON.stringify({
+        notification,
+        to: tokens[0],
+        topic: notification.id,
+        // isScheduled: true,
+        // scheduledTime: scheduledTime,
+      });
+      return await apiClient.post(globals.fcmBaseUrl, data, {
+        headers: { Authorization: `key=${fcmServerKey}` },
+      });
+    }
   },
 };

@@ -4,7 +4,7 @@
 
     <v-card-text>
       <v-row>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="6">
           <v-text-field
             label="نام پوش‌نوتیفیکیشن"
             placeholder="لطفا نام پوش‌نوتیفیکیشن را وارد کنید."
@@ -16,7 +16,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col cols="12" md="4">
+        <!-- <v-col cols="12" md="4">
           <v-text-field
             label="اکشن کلیک"
             placeholder="لطفا یک آدرس اینترنتی برای اکشن وارد کنید."
@@ -26,9 +26,9 @@
             outlined
             hide-details="auto"
           ></v-text-field>
-        </v-col>
+        </v-col> -->
 
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="6">
           <v-autocomplete
             label="گروه‌های کاربری"
             v-model="erpCustomerType"
@@ -62,7 +62,7 @@ export default Vue.extend({
     return {
       pageTitle: "ایجاد پوش‌نوتیفیکیشن",
       name: "",
-      click_action: "",
+      // click_action: "",
       erpCustomerType: [],
     };
   },
@@ -71,7 +71,7 @@ export default Vue.extend({
     exportNotification() {
       const notification = {
         name: this.name,
-        click_action: this.click_action,
+        // click_action: this.click_action,
         erpCustomerType: this.erpCustomerType,
       };
       this.$emit("export-notification", notification);
