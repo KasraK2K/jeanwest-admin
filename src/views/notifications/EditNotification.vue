@@ -22,7 +22,7 @@
                 hide-details="auto"
                 name="notes"
               >
-                <v-icon slot="prepend">mdi-format-title</v-icon>
+                <v-icon slot="prepend" color="blue">mdi-format-title</v-icon>
               </v-text-field>
             </v-col>
 
@@ -36,6 +36,7 @@
                 :show-size="1000"
                 truncate-length="30"
                 @change="getSrcFromFile('imageUrl', formImage)"
+                hide-details="auto"
               ></v-file-input>
             </v-col>
 
@@ -49,7 +50,12 @@
                 :show-size="1000"
                 truncate-length="30"
                 @change="getSrcFromFile('iconUrl', formIcon)"
+                hide-details="auto"
               ></v-file-input>
+            </v-col>
+
+            <v-col cols="12" md="1">
+              <v-switch v-model="push" label="پوش‌نوتیفیکیشن" inset></v-switch>
             </v-col>
           </v-row>
           <!-- Message Body -->
@@ -68,7 +74,7 @@
       </v-col>
 
       <v-col v-if="formCondition()" cols="12" md="3" class="mb-5">
-        <v-card elevation="2" class="mx-auto" max-width="374">
+        <v-card elevation="2" class="mx-auto mt-2" max-width="374">
           <v-card-title>
             <v-img
               v-if="iconUrl"
@@ -94,6 +100,12 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <PushNotification
+      v-if="push"
+      class="mt-4"
+      @export-notification="notificationEvent"
+    />
   </v-container>
 </template>
 
@@ -102,8 +114,13 @@ import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import NotificationService from "@/services/Notification.service";
 import MediaService from "@/services/Media.service";
+import PushNotification from "./PushNotification.vue";
 import { INotification } from "@/interfaces/entities/notification.interface";
 import { globals } from "@/common/globals/globals";
+import { IPushNotification } from "@/interfaces/entities/notification.interface";
+import FirebaseService from "@/services/Firebase.service";
+import { FirebaseCollectionsEnum } from "@/enums/firebase";
+import * as _ from "lodash";
 
 export default Vue.extend({
   props: {
@@ -111,13 +128,16 @@ export default Vue.extend({
   },
   data(): {
     [key: string]: unknown;
-    notification?: INotification;
+    notification: INotification;
+    pushNotification: IPushNotification;
+    time_to_live: number;
   } {
     const title = "ویرایش اعلان ";
     return {
       globals,
-      ready: false,
       title,
+      push: false,
+      ready: false,
       notification: undefined,
       formTitle: "",
       formContent: "",
@@ -149,14 +169,23 @@ export default Vue.extend({
         (value: string) =>
           (value && value.length >= 3) || "وارد کردن حداقل ۳ کاراکتر الزامیست",
       ],
+      pushNotification: {} as IPushNotification,
+      time_to_live: 2419200,
     };
   },
+
   methods: {
     findOne(id: string): void {
       NotificationService.findOne(id).then((response) => {
         const notification: INotification = response.data.data;
         this.ready = true;
         this.notification = notification;
+
+        this.pushNotification.icon =
+          globals.mediaServerStatic + this.notification.icon;
+        this.pushNotification.image =
+          globals.mediaServerStatic + this.notification.image;
+
         this.title += notification.title;
         this.formTitle = notification.title;
         this.formContent = notification.body;
@@ -164,27 +193,45 @@ export default Vue.extend({
         this.iconUrl = notification.icon;
       });
     },
+
     async submitData(): Promise<void> {
-      const data = {
+      if (this.push && (!this.formTitle || !this.formContent)) {
+        Vue.prototype.$toast("error", "اطلاعات وارد شده کافی نیست.");
+        return;
+      }
+      let data: Record<string, unknown> = {
         title: this.formTitle,
         body: this.formContent,
       };
+      this.pushNotification = _.assign(this.pushNotification, data);
       try {
         if (this.formImage)
           await MediaService.upload("banner", this.formImage).then(
             (response) => {
-              if (response.data.statusCode === 201)
-                Object.assign(data, { image: response.data.data.image });
+              if (response.data.statusCode === 201) {
+                data.image = response.data.data.image;
+                this.pushNotification.image =
+                  globals.mediaServerStatic + data.image;
+              }
             }
           );
         if (this.formIcon)
           await MediaService.upload("icon", this.formIcon).then((response) => {
-            if (response.data.statusCode === 201)
-              Object.assign(data, { icon: response.data.data.image });
+            if (response.data.statusCode === 201) {
+              data.icon = response.data.data.image;
+              this.pushNotification.icon =
+                globals.mediaServerStatic + data.icon;
+            }
           });
         await NotificationService.edit(data, this.id)
-          .then(() => {
+          .then(async () => {
+            this.pushNotification.id = this.notification.id;
+            this.pushNotification.sent = false;
             Vue.prototype.$toast("success", "اعلان با موفقیت بروزرسانی شد.");
+            if (this.push) {
+              await this.firebaseInsertNotification();
+              await this.sendPushNotification();
+            }
             this.$router.go(-1);
           })
           .catch(() => {
@@ -194,9 +241,11 @@ export default Vue.extend({
         Vue.prototype.$toast("error", error.message);
       }
     },
+
     getSrcFromFile(type: string, file: FileReader): void {
       this[type] = file ? URL.createObjectURL(file) : undefined;
     },
+
     formCondition(): boolean {
       return !!(
         this.imageUrl ||
@@ -205,10 +254,49 @@ export default Vue.extend({
         this.formContent
       );
     },
+
+    notificationEvent(event: Record<string, unknown>) {
+      this.time_to_live = Number(event.time_to_live);
+      event = _.omit(event, "time_to_live");
+      this.pushNotification = _.assign(this.pushNotification, event);
+    },
+
+    async firebaseInsertNotification() {
+      await FirebaseService.upsert(
+        FirebaseCollectionsEnum.NOTIFICATIONS,
+        this.pushNotification.id,
+        this.pushNotification
+      ).then(() => console.log("New Notification Created"));
+    },
+
+    async sendPushNotification() {
+      await FirebaseService.sendPushToQuery(
+        FirebaseCollectionsEnum.USERS,
+        {
+          fieldPath: "erpCustomerType",
+          opStr: "in",
+          value: this.pushNotification.erpCustomerType,
+        },
+        this.pushNotification,
+        this.time_to_live
+        // new Date()
+      );
+
+      // update notification and make sent true
+      this.pushNotification.sent = true;
+      await FirebaseService.upsert(
+        FirebaseCollectionsEnum.NOTIFICATIONS,
+        this.pushNotification.id,
+        this.pushNotification
+      ).then(() => console.log("Notification Sent True"));
+    },
   },
+
   components: {
     editor: Editor,
+    PushNotification,
   },
+
   mounted() {
     this.findOne(this.id);
   },

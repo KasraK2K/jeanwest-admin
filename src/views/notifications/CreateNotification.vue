@@ -69,7 +69,7 @@
         <v-card elevation="2" class="mx-auto mt-2" max-width="374">
           <v-card-title>
             <v-img
-              v-if="imageUrl"
+              v-if="iconUrl"
               max-width="48"
               height="auto"
               :src="iconUrl"
@@ -112,12 +112,12 @@ import { globals } from "@/common/globals/globals";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
 import FirebaseService from "@/services/Firebase.service";
 import { FirebaseCollectionsEnum } from "@/enums/firebase";
-import { notifications } from "@/router/compact/notifications.routes";
 
 export default Vue.extend({
   data(): {
     [key: string]: unknown;
-    notification: IPushNotification;
+    pushNotification: IPushNotification;
+    time_to_live: number;
   } {
     const title = "ایجاد اعلان جدید";
     return {
@@ -152,7 +152,8 @@ export default Vue.extend({
         (value: string) =>
           (value && value.length >= 3) || "وارد کردن حداقل ۳ کاراکتر الزامیست",
       ],
-      notification: {} as IPushNotification,
+      pushNotification: {} as IPushNotification,
+      time_to_live: 2419200,
     };
   },
 
@@ -166,14 +167,14 @@ export default Vue.extend({
         title: this.formTitle,
         body: this.formContent,
       };
-      this.notification = _.assign(this.notification, data);
+      this.pushNotification = _.assign(this.pushNotification, data);
       try {
         if (this.formImage)
           await MediaService.upload("banner", this.formImage).then(
             (response) => {
               if (response.data.statusCode === 201) {
                 data.image = response.data.data.image;
-                this.notification.image =
+                this.pushNotification.image =
                   globals.mediaServerStatic + data.image;
               }
             }
@@ -182,15 +183,18 @@ export default Vue.extend({
           await MediaService.upload("icon", this.formIcon).then((response) => {
             if (response.data.statusCode === 201) {
               data.icon = response.data.data.image;
-              this.notification.icon = globals.mediaServerStatic + data.icon;
+              this.pushNotification.icon =
+                globals.mediaServerStatic + data.icon;
             }
           });
-        await NotificationService.create(data).then((response) => {
-          this.notification.id = response.data.data.id;
-          this.notification.sent = false;
+        await NotificationService.create(data).then(async (response) => {
+          this.pushNotification.id = response.data.data.id;
+          this.pushNotification.sent = false;
           Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
-          this.firebaseInsertNotification();
-          this.sendPushNotification();
+          if (this.push) {
+            await this.firebaseInsertNotification();
+            await this.sendPushNotification();
+          }
           this.$router.go(-1);
         });
 
@@ -198,10 +202,6 @@ export default Vue.extend({
       } catch (error) {
         Vue.prototype.$toast("error", error.message);
       }
-    },
-
-    notificationEvent(event: Record<string, unknown>) {
-      this.notification = _.assign(this.notification, event);
     },
 
     getSrcFromFile(type: string, file: FileReader): void {
@@ -217,11 +217,17 @@ export default Vue.extend({
       );
     },
 
+    notificationEvent(event: Record<string, unknown>) {
+      this.time_to_live = Number(event.time_to_live);
+      event = _.omit(event, "time_to_live");
+      this.pushNotification = _.assign(this.pushNotification, event);
+    },
+
     async firebaseInsertNotification() {
       await FirebaseService.upsert(
         FirebaseCollectionsEnum.NOTIFICATIONS,
-        this.notification.id,
-        this.notification
+        this.pushNotification.id,
+        this.pushNotification
       ).then(() => console.log("New Notification Created"));
     },
 
@@ -231,18 +237,19 @@ export default Vue.extend({
         {
           fieldPath: "erpCustomerType",
           opStr: "in",
-          value: this.notification.erpCustomerType,
+          value: this.pushNotification.erpCustomerType,
         },
-        this.notification
+        this.pushNotification,
+        this.time_to_live
         // new Date()
       );
 
-      // update notification and make sent true
-      this.notification.sent = true;
+      // update push notification and make sent true
+      this.pushNotification.sent = true;
       await FirebaseService.upsert(
         FirebaseCollectionsEnum.NOTIFICATIONS,
-        this.notification.id,
-        this.notification
+        this.pushNotification.id,
+        this.pushNotification
       ).then(() => console.log("Notification Sent True"));
     },
   },

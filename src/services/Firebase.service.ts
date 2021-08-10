@@ -91,7 +91,8 @@ export default {
   async sendPushToQuery(
     collection: string,
     where: { fieldPath: string; opStr: any; value: any },
-    notification: IPushNotification
+    notification: IPushNotification,
+    time_to_live: number
     // schedule: Date
   ) {
     const results = await this.getAllByQuery(collection, where);
@@ -100,10 +101,12 @@ export default {
       // const scheduledTime = formatDate(schedule, "YYYY-MM-DD HH:MM:SS");
       const data = JSON.stringify({
         notification,
-        to: tokens[0],
-        topic: notification.id,
+        registration_ids: tokens,
+        time_to_live,
+        // topic: notification.id,
         // isScheduled: true,
         // scheduledTime: scheduledTime,
+        // dry_run: true, // for developer to send as test
       });
       return await apiClient.post(globals.fcmBaseUrl, data, {
         headers: { Authorization: `key=${fcmServerKey}` },
