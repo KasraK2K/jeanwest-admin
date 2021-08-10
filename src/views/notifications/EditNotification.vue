@@ -138,7 +138,7 @@ export default Vue.extend({
       title,
       push: false,
       ready: false,
-      notification: undefined,
+      notification: {} as unknown as INotification,
       formTitle: "",
       formContent: "",
       formImage: null,
