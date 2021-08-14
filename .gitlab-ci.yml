@@ -1,7 +1,7 @@
 image: ubuntu
 
 before_script:
-  # - echo "nameserver 8.8.8.8" | tee /etc/resolv.conf > /dev/null
+  ## - echo "nameserver 8.8.8.8" | tee /etc/resolv.conf > /dev/null
   #  - apt-get update -yqq
   #  - apt-get install sudo -yqq
   #  - apt-get install sudo -f
