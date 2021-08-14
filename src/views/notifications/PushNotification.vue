@@ -6,9 +6,9 @@
       <v-row>
         <v-col cols="12" md="4">
           <v-text-field
-            label="نام پوش‌نوتیفیکیشن"
-            placeholder="لطفا نام پوش‌نوتیفیکیشن را وارد کنید."
-            v-model.trim="name"
+            label="متن پوش‌نوتیفیکیشن"
+            placeholder="لطفا متن پوش‌نوتیفیکیشن را وارد کنید."
+            v-model.trim="body"
             @change="exportNotification()"
             clearable
             outlined
@@ -74,7 +74,7 @@ export default Vue.extend({
   data() {
     return {
       pageTitle: "ایجاد پوش‌نوتیفیکیشن",
-      name: "",
+      body: "",
       // click_action: "",
       time_to_live: 2419200,
       erpCustomerType: [],
@@ -84,7 +84,7 @@ export default Vue.extend({
   methods: {
     exportNotification() {
       const notification = {
-        name: this.name,
+        body: this.body,
         // click_action: this.click_action,
         time_to_live: this.time_to_live,
         erpCustomerType: this.erpCustomerType,

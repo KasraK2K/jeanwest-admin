@@ -118,6 +118,7 @@ export default Vue.extend({
     [key: string]: unknown;
     pushNotification: IPushNotification;
     time_to_live: number;
+    formTitle: string;
   } {
     const title = "ایجاد اعلان جدید";
     return {
@@ -167,7 +168,7 @@ export default Vue.extend({
         title: this.formTitle,
         body: this.formContent,
       };
-      this.pushNotification = _.assign(this.pushNotification, data);
+      this.pushNotification.title = this.formTitle;
       try {
         if (this.formImage)
           await MediaService.upload("banner", this.formImage).then(
@@ -217,10 +218,11 @@ export default Vue.extend({
       );
     },
 
-    notificationEvent(event: Record<string, unknown>) {
-      this.time_to_live = Number(event.time_to_live);
+    notificationEvent(event: any) {
+      this.time_to_live = event.time_to_live;
       event = _.omit(event, "time_to_live");
       this.pushNotification = _.assign(this.pushNotification, event);
+      console.log(this.pushNotification);
     },
 
     async firebaseInsertNotification() {
