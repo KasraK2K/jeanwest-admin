@@ -222,7 +222,6 @@ export default Vue.extend({
       this.time_to_live = event.time_to_live;
       event = _.omit(event, "time_to_live");
       this.pushNotification = _.assign(this.pushNotification, event);
-      console.log(this.pushNotification);
     },
 
     async firebaseInsertNotification() {
