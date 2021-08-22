@@ -114,3 +114,46 @@ export default {
     }
   },
 };
+
+// {
+//   name: "projects/836085134543/campaigns/1542676248201380644",
+//   displayName: "نام تست ۱",
+//   state: "RUNNING",
+//   targetingCondition: "app.id == '1:836085134543:web:e6babc3a0602a2a88773ba'",
+//   onStart: {},
+//   lastUpdateTime: "2021-08-21T05:58:16.207260Z",
+//   notificationOptions: {
+//     messageText: "متن تست ۱",
+//     messageTitle: "تست ۱",
+//     expiryTime: "2419200s",
+//   },
+//   targetingConditionJson:
+//     '{\n  "or": {\n    "conditions": [{\n      "and": {\n        "conditions": [{\n          "appId": {\n            "targetGmpAppId": "1:836085134543:web:e6babc3a0602a2a88773ba"\n          }\n        }]\n      }\n    }]\n  }\n}',
+// };
+
+// ------------------------------------------------------------------------------
+
+// POST https://fcm.googleapis.com/v1/projects/myproject-b5ae1/messages:send HTTP/1.1
+
+// Content-Type: application/json
+// Authorization: Bearer ya29.ElqKBGN2Ri_Uz...PbJ_uNasm
+
+// {
+//   "message": {
+//     "token" : <token of destination app>,
+//     "notification": {
+//       "title": "FCM Message",
+//       "body": "This is a message from FCM"
+//     },
+//     "webpush": {
+//       "headers": {
+//         "Urgency": "high"
+//       },
+//       "notification": {
+//         "body": "This is a message from FCM to web",
+//         "requireInteraction": "true",
+//         "badge": "/badge-icon.png"
+//       }
+//     }
+//   }
+// }

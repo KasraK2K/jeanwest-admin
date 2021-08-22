@@ -172,6 +172,7 @@ export default Vue.extend({
       ],
       pushNotification: {} as IPushNotification,
       time_to_live: 2419200,
+      inProgress: false,
     };
   },
 
@@ -196,10 +197,17 @@ export default Vue.extend({
     },
 
     async submitData(): Promise<void> {
+      if (this.inProgress) {
+        Vue.prototype.$toast("error", "لطفا صبر کنید.");
+        return;
+      }
+
       if (this.push && (!this.formTitle || !this.formContent)) {
         Vue.prototype.$toast("error", "اطلاعات وارد شده کافی نیست.");
         return;
       }
+      
+      this.inProgress = true; // if user try to click more than once get error
       let data: Record<string, unknown> = {
         title: this.formTitle,
         body: this.formContent,

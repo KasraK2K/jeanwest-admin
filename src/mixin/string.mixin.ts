@@ -63,3 +63,11 @@ export const toEnglishString: (sentence: string) => string = (
   }
   return engString;
 };
+
+/* -------------------------------------------------------------------------- */
+/*                         convert html to plain text                         */
+/* -------------------------------------------------------------------------- */
+export const toPlainText = (htmlString: string) =>
+  String(htmlString)
+    .replace(/<[^>]+>/g, "")
+    .trim();
