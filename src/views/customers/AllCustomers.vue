@@ -141,24 +141,25 @@
 
       <template v-slot:[`item.phoneNumber`]="{ item }">
         <pre class="ltr text-right">{{
-          toPersianString(`0${item.phoneNumber}`)
-        }}</pre>
+            toPersianString(`0${item.phoneNumber}`)
+          }}</pre>
       </template>
 
       <template v-slot:[`item.erpCustomerType`]="{ item }">
         <pre
           class="ltr text-right"
           :style="'color: ' + customerType(item.erpCustomerType).color"
-          >{{ customerType(item.erpCustomerType).name }}</pre
         >
+          {{ customerType(item.erpCustomerType).name }}
+        </pre>
       </template>
 
       <template v-slot:[`item.loggedInAt`]="{ item }">
         <pre class="ltr text-right">{{
-          item.loggedInAt
-            ? toPersianString(toPersianTime(item.loggedInAt))
-            : null
-        }}</pre>
+            item.loggedInAt
+              ? toPersianString(toPersianTime(item.loggedInAt))
+              : null
+          }}</pre>
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
@@ -173,8 +174,8 @@
           :close-icon="
             item.active ? 'mdi-toggle-switch-off' : 'mdi-toggle-switch'
           "
-          @click:close="toggleActivation(item.id)"
-          @click="toggleActivation(item.id)"
+          @click:close="toggleActivation(item)"
+          @click="toggleActivation(item)"
         >
           {{ item.active ? "غیر فعال" : "فعال" }}
         </v-chip>
@@ -211,11 +212,8 @@
 <script lang="ts">
 import Vue from "vue";
 import CustomerService from "@/services/Customer.service";
-import {
-  IFilters,
-  IOptions,
-  IPagination,
-} from "@/interfaces/others/pagination.interface";
+import AdminService from "@/services/Admin.service";
+import { IFilters, IOptions, IPagination } from "@/interfaces/others/pagination.interface";
 import { ICustomer } from "@/interfaces/entities/customer.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 import { MapCustomerType } from "@/constant/customer-type";
@@ -285,7 +283,7 @@ export default Vue.extend({
           const data = response.data.data;
           this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
           this.items = data.result;
-        }
+        },
       );
     },
     paginateGenerator() {
@@ -301,8 +299,9 @@ export default Vue.extend({
       this.dates = undefined;
       this.paginateGenerator();
     },
-    toggleActivation(id: string): void {
-      console.log(`toggle activation ${id}`);
+    toggleActivation(custommer: ICustomer): void {
+      AdminService.toggleCustomer(custommer.id, { active: !custommer.active })
+        .then(() => custommer.active = !custommer.active);
     },
     customerType(type: string): IMapCustomerType {
       return MapCustomerType.has(type)

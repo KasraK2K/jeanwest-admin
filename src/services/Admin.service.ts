@@ -28,5 +28,15 @@ export default {
     return await apiClient.patch(`${modulePath}/edit`, data);
   },
 
+  async toggleCustomer(
+    id: string,
+    data: Record<string, unknown>
+  ): Promise<AxiosResponse> {
+    return await apiClient.patch(
+      `${modulePath}/deactivate/customer/${id}`,
+      data
+    );
+  },
+
   // async softDelete() {},
 };

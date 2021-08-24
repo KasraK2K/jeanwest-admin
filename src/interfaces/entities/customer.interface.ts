@@ -8,7 +8,9 @@
 //
 //=====================================================================
 
-export interface ICustomer {
+import { Base } from "@/interfaces/base/base.interface";
+
+export interface ICustomer extends Base {
   phoneNumber?: string;
   code?: string;
   email?: string;

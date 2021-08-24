@@ -9,8 +9,9 @@
 //================================================================
 
 import { IGroup } from "./group.interface";
+import { Base } from "@/interfaces/base/base.interface";
 
-export interface IDiscount {
+export interface IDiscount extends Base {
   name: string;
   code: string;
   reductionPrice: number;
