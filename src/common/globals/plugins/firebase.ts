@@ -1,12 +1,12 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyAsQpQHHcgaEhz0BeJ1lj9cuuHMcaXbGHY",
-  authDomain: "test-jeanswest.firebaseapp.com",
-  projectId: "test-jeanswest",
-  storageBucket: "test-jeanswest.appspot.com",
-  messagingSenderId: "836085134543",
-  appId: "1:836085134543:web:e6babc3a0602a2a88773ba",
-  measurementId: "G-HJJN0B1KKX",
+  apiKey: "AIzaSyAGJiFJ_MM39WSxiiDU3C-d2OuSbCygKAM",
+  authDomain: "jeanswest-avakatan.firebaseapp.com",
+  projectId: "jeanswest-avakatan",
+  storageBucket: "jeanswest-avakatan.appspot.com",
+  messagingSenderId: "765850527197",
+  appId: "1:765850527197:web:e1babae636801dbef90234",
+  measurementId: "G-X2KSH2B3LY",
 };
 
 export const fcmServerKey =
-  "AAAAwqqOtM8:APA91bHyy1hvs4jKmbbMz5SPzWVf-OnAuRmljfr2ZELI9UWUsVAMyKBhvVwKFZS8FM68lI8pBlYaQYvdKZ9QDTQjM8YGG5oq9PqUM021NpChPWP64yLC_cM36KtiYpE9TUhGPM8iiyMD";
+  "AAAAslA_pd0:APA91bHwEFx2N-eKzNs9aaI_sSADjMwN17iN-FFfiLDAmGdoxKflvtJMZv-JlB5L8El__miEQKIutJpNb24hUJ7id2FRG8XWVrwJg4NJOz793GzCz6unQqsDfwRS5azUxeJuNq0li4ZV";
