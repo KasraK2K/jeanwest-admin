@@ -283,11 +283,16 @@ export default Vue.extend({
     };
   },
   watch: {
-    limit() {
+    limit(): void {
       this.page = 1;
+      this.pagination.option.limit = { eq: this.limit };
       this.getList();
     },
-    pagination() {
+    page(): void {
+      this.pagination.option.page = { eq: this.page };
+      this.getList();
+    },
+    pagination(): void {
       this.getList();
     },
     items(): void {
