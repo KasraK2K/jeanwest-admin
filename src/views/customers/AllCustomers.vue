@@ -90,6 +90,7 @@
         { text: 'موبایل', value: 'phoneNumber' },
         { text: 'سطح عضویت', value: 'erpCustomerType' },
         { text: 'آخرین ورود', value: 'loggedInAt' },
+        { text: 'پیام', value: 'sendMessage', align: 'center', sortable: false },
         { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
       ]"
       :items="items"
@@ -162,8 +163,23 @@
           }}</pre>
       </template>
 
+      <template v-slot:[`item.sendMessage`]="{ item }">
+        <!-- FCM -->
+        {{ item.no }}
+        <v-btn
+          color="primary"
+          elevation="2"
+          icon
+          outlined
+        >
+          <v-icon dark small>
+            mdi-message-reply-text-outline
+          </v-icon>
+        </v-btn>
+      </template>
+
       <template v-slot:[`item.status`]="{ item }">
-        <!-- active/deactive -->
+        <!-- active/deactivate -->
         <v-chip
           class="ml-2"
           :color="item.active ? 'yellow' : 'green'"
@@ -261,6 +277,7 @@ export default Vue.extend({
           limit: { eq: 10 },
         },
       },
+      dialog: false,
     };
   },
   watch: {
@@ -299,9 +316,9 @@ export default Vue.extend({
       this.dates = undefined;
       this.paginateGenerator();
     },
-    toggleActivation(custommer: ICustomer): void {
-      AdminService.toggleCustomer(custommer.id, { active: !custommer.active })
-        .then(() => custommer.active = !custommer.active);
+    toggleActivation(customer: ICustomer): void {
+      AdminService.toggleCustomer(customer.id, { active: !customer.active })
+        .then(() => customer.active = !customer.active);
     },
     customerType(type: string): IMapCustomerType {
       return MapCustomerType.has(type)
