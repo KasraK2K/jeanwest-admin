@@ -170,10 +170,59 @@
 
       <template v-slot:[`item.sendMessage`]="{ item }">
         <!-- FCM -->
-        {{ item.no }}
+        <!-- {{ item.no }}
         <v-btn color="primary" elevation="2" icon outlined>
           <v-icon dark small> mdi-message-reply-text-outline </v-icon>
-        </v-btn>
+        </v-btn> -->
+        <div class="text-center">
+          <v-dialog v-model="dialog" width="500">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="primary"
+                elevation="2"
+                v-bind="attrs"
+                v-on="on"
+                icon
+                outlined
+              >
+                <v-icon dark small>mdi-message-reply-text-outline</v-icon>
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    label="عنوان پوش‌نوتیفیکیشن"
+                    placeholder="لطفا عنوان پوش‌نوتیفیکیشن را وارد کنید."
+                    v-model.trim="pushText"
+                    clearable
+                    outlined
+                    hide-details="auto"
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="12">
+                  <v-text-field
+                    label="متن پوش‌نوتیفیکیشن"
+                    placeholder="لطفا متن پوش‌نوتیفیکیشن را وارد کنید."
+                    v-model.trim="pushBody"
+                    clearable
+                    outlined
+                    hide-details="auto"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-card>
+
+            <v-btn large color="primary" @click="sendPushNotification(item)"
+              >ارسال</v-btn
+            >
+            <v-btn large color="secondary" @click="clearPushNotification"
+              >انصراف</v-btn
+            >
+          </v-dialog>
+        </div>
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
@@ -280,6 +329,8 @@ export default Vue.extend({
         },
       },
       dialog: false,
+      pushText: "",
+      pushBody: "",
     };
   },
   watch: {
@@ -332,6 +383,21 @@ export default Vue.extend({
       return MapCustomerType.has(type)
         ? (MapCustomerType.get(type) as IMapCustomerType)
         : { erpName: "تعریف نشده", name: "تعریف نشده", color: "" };
+    },
+    sendPushNotification(customer: ICustomer) {
+      const notification = {
+        text: this.pushText,
+        body: this.pushBody,
+      };
+      console.log("push notification", notification);
+      console.log("push customer", customer);
+      // get customer token from firebase
+      // send notification to this token
+    },
+    clearPushNotification() {
+      this.pushText = "";
+      this.pushBody = "";
+      this.dialog = false;
     },
   },
   mounted(): void {
