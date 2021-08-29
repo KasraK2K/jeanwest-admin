@@ -67,7 +67,7 @@ export const toEnglishString: (sentence: string) => string = (
 /* -------------------------------------------------------------------------- */
 /*                         convert html to plain text                         */
 /* -------------------------------------------------------------------------- */
-export const toPlainText = (htmlString: string) =>
+export const toPlainText = (htmlString: string): string =>
   String(htmlString)
     .replace(/<[^>]+>/g, "")
     .trim();

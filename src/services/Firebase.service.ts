@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IPushNotification } from "./../interfaces/entities/notification.interface";
 import { globals } from "@/common/globals/globals";
 import { AxiosResponse } from "axios";
@@ -24,7 +25,10 @@ export default {
   },
 
   // ─── GET ONE DOCUMENT ───────────────────────────────────────────────────────────
-  async getOne(collection: string, id: string) {
+  async getOne(
+    collection: string,
+    id: string
+  ): Promise<firebase.firestore.DocumentData | undefined> {
     return (await this.refrence(collection).doc(id).get()).data();
   },
 
@@ -53,7 +57,11 @@ export default {
   },
 
   // ─── UPSERT DOCUMENT ────────────────────────────────────────────────────────────
-  async upsert(collection: string, id: string, data: any): Promise<void> {
+  async upsert(
+    collection: string,
+    id: string,
+    data: firebase.firestore.DocumentData
+  ): Promise<void> {
     return await this.refrence(collection).doc(id).set(data);
   },
 
@@ -94,7 +102,7 @@ export default {
     notification: IPushNotification,
     time_to_live: number
     // schedule: Date
-  ) {
+  ): Promise<AxiosResponse<any> | undefined> {
     const results = await this.getAllByQuery(collection, where);
     if (results && results.length) {
       const tokens = _.map(results, "token");

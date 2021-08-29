@@ -5,7 +5,6 @@ import {
 } from "@/interfaces/others/pagination.interface";
 import PaymentService from "@/services/Payment.service";
 import { Component, Vue, Watch } from "vue-property-decorator";
-import * as _ from "lodash";
 import { ITransaction } from "@/interfaces/entities/transaction.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 
@@ -47,25 +46,25 @@ class AllPayments extends Vue {
   //   :::::: W A T C H : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────
   @Watch("limit")
-  onLimitChanged(val: string, oldVal: string): void {
+  onLimitChanged(/*val: string, oldVal: string*/): void {
     this.page = 1;
     this.pagination.option.limit = { eq: this.limit };
     this.getList();
   }
 
   @Watch("page")
-  onPageChanged(val: string, oldVal: string): void {
+  onPageChanged(/*val: string, oldVal: string*/): void {
     this.pagination.option.page = { eq: this.page };
     this.getList();
   }
 
   @Watch("pagination")
-  onPaginationChanged(val: string, oldVal: string): void {
+  onPaginationChanged(/*val: string, oldVal: string*/): void {
     this.getList();
   }
 
   @Watch("items")
-  onItemsChanged(val: string, oldVal: string): void {
+  onItemsChanged(/*val: string, oldVal: string*/): void {
     this.loading = false;
   }
 

@@ -93,6 +93,7 @@ class EditPromotionGroup extends Vue {
         (value["eq"] && value["eq"].length === 0) ||
         (value["ct"] && value["ct"].length === 0)
       )
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         delete (this as any).updateGroupData.target[key];
     }
   }

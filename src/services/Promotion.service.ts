@@ -17,7 +17,7 @@ export default {
     return await apiClient.get(`${modulePath}/point/${id}`);
   },
 
-  async editPoint(data: Record<string, unknown>): Promise<AxiosResponse<any>> {
+  async editPoint(data: Record<string, unknown>): Promise<AxiosResponse> {
     return await apiClient.patch(`${modulePath}/point`, data);
   },
 

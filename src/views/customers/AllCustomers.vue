@@ -90,7 +90,12 @@
         { text: 'موبایل', value: 'phoneNumber' },
         { text: 'سطح عضویت', value: 'erpCustomerType' },
         { text: 'آخرین ورود', value: 'loggedInAt' },
-        { text: 'پیام', value: 'sendMessage', align: 'center', sortable: false },
+        {
+          text: 'پیام',
+          value: 'sendMessage',
+          align: 'center',
+          sortable: false,
+        },
         { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
       ]"
       :items="items"
@@ -142,8 +147,8 @@
 
       <template v-slot:[`item.phoneNumber`]="{ item }">
         <pre class="ltr text-right">{{
-            toPersianString(`0${item.phoneNumber}`)
-          }}</pre>
+          toPersianString(`0${item.phoneNumber}`)
+        }}</pre>
       </template>
 
       <template v-slot:[`item.erpCustomerType`]="{ item }">
@@ -157,24 +162,17 @@
 
       <template v-slot:[`item.loggedInAt`]="{ item }">
         <pre class="ltr text-right">{{
-            item.loggedInAt
-              ? toPersianString(toPersianTime(item.loggedInAt))
-              : null
-          }}</pre>
+          item.loggedInAt
+            ? toPersianString(toPersianTime(item.loggedInAt))
+            : null
+        }}</pre>
       </template>
 
       <template v-slot:[`item.sendMessage`]="{ item }">
         <!-- FCM -->
         {{ item.no }}
-        <v-btn
-          color="primary"
-          elevation="2"
-          icon
-          outlined
-        >
-          <v-icon dark small>
-            mdi-message-reply-text-outline
-          </v-icon>
+        <v-btn color="primary" elevation="2" icon outlined>
+          <v-icon dark small> mdi-message-reply-text-outline </v-icon>
         </v-btn>
       </template>
 
@@ -229,7 +227,11 @@
 import Vue from "vue";
 import CustomerService from "@/services/Customer.service";
 import AdminService from "@/services/Admin.service";
-import { IFilters, IOptions, IPagination } from "@/interfaces/others/pagination.interface";
+import {
+  IFilters,
+  IOptions,
+  IPagination,
+} from "@/interfaces/others/pagination.interface";
 import { ICustomer } from "@/interfaces/entities/customer.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 import { MapCustomerType } from "@/constant/customer-type";
@@ -300,7 +302,7 @@ export default Vue.extend({
           const data = response.data.data;
           this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
           this.items = data.result;
-        },
+        }
       );
     },
     paginateGenerator() {
@@ -317,8 +319,9 @@ export default Vue.extend({
       this.paginateGenerator();
     },
     toggleActivation(customer: ICustomer): void {
-      AdminService.toggleCustomer(customer.id, { active: !customer.active })
-        .then(() => customer.active = !customer.active);
+      AdminService.toggleCustomer(customer.id, {
+        active: !customer.active,
+      }).then(() => (customer.active = !customer.active));
     },
     customerType(type: string): IMapCustomerType {
       return MapCustomerType.has(type)

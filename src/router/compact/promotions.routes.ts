@@ -12,7 +12,6 @@ import EditJeansPoint from "@/views/promotions/jeanspoints/edit/EditJeansPoint.v
 
 // ─── GROUPS ─────────────────────────────────────────────────────────────────────
 import AllGroups from "@/views/promotions/groups/AllGroups.vue";
-import EditGroup from "@/components/EditGroup.vue";
 
 import { IRouter } from "@/interfaces/others/route.interface";
 

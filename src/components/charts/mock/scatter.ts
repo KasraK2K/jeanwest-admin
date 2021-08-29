@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { toPersianString } from "./../../../mixin/string.mixin";
 export const scatterChartOptions = {
   textStyle: {

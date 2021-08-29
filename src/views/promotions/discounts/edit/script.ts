@@ -1,6 +1,5 @@
 import PromotionService from "@/services/Promotion.service";
 import { IDiscount } from "@/interfaces/entities/discount.interface";
-import Editor from "@tinymce/tinymce-vue";
 import EditGroup from "@/components/promotions/group/EditGroup.vue";
 import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-group";
 import { Vue, Component, Prop } from "vue-property-decorator";

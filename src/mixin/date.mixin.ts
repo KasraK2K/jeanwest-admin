@@ -1,4 +1,4 @@
-import moment, { from } from "jalali-moment";
+import moment from "jalali-moment";
 
 export const toPersianTime = (
   date: string,
@@ -24,7 +24,7 @@ export const toGregorian = async (date: string): Promise<string | null> => {
 export const changeTimeZone = (
   date: string,
   options: { from: string; fromFormat: string; to: string; toFormat: string }
-) => {
+): string => {
   return moment
     .from(date, options.from, options.fromFormat)
     .locale(options.to)

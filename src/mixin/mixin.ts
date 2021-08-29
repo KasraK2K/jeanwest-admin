@@ -3,7 +3,7 @@ import {
   numberToCash,
   toPersianString,
   toEnglishString,
-  toPlainText
+  toPlainText,
 } from "@/mixin/string.mixin";
 import {
   toPersianTime,

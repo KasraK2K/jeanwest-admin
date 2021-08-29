@@ -206,7 +206,7 @@ export default Vue.extend({
         Vue.prototype.$toast("error", "اطلاعات وارد شده کافی نیست.");
         return;
       }
-      
+
       this.inProgress = true; // if user try to click more than once get error
       let data: Record<string, unknown> = {
         title: this.formTitle,
@@ -264,6 +264,7 @@ export default Vue.extend({
       );
     },
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     notificationEvent(event: any) {
       this.time_to_live = event.time_to_live;
       event = _.omit(event, "time_to_live");

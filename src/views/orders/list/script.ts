@@ -47,25 +47,25 @@ export class AllOrders extends Vue {
   //   :::::: W A T C H : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────
   @Watch("limit")
-  onLimitChanged(val: string, oldVal: string): void {
+  onLimitChanged(/*val: string, oldVal: string*/): void {
     this.page = 1;
     this.pagination.option.limit = { eq: this.limit };
     this.getList();
   }
 
   @Watch("page")
-  onPageChanged(val: string, oldVal: string): void {
+  onPageChanged(/*val: string, oldVal: string*/): void {
     this.pagination.option.page = { eq: this.page };
     this.getList();
   }
 
   @Watch("pagination")
-  onPaginationChanged(val: string, oldVal: string): void {
+  onPaginationChanged(/*val: string, oldVal: string*/): void {
     this.getList();
   }
 
   @Watch("items")
-  onItemsChanged(val: string, oldVal: string): void {
+  onItemsChanged(/*val: string, oldVal: string*/): void {
     this.loading = false;
   }
 
@@ -88,7 +88,7 @@ export class AllOrders extends Vue {
     });
   }
 
-  paginateGenerator() {
+  paginateGenerator(): void {
     this.page = 1;
     const options: IOptions = {
       page: { eq: this.page },
