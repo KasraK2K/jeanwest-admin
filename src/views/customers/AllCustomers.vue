@@ -170,59 +170,11 @@
 
       <template v-slot:[`item.sendMessage`]="{ item }">
         <!-- FCM -->
-        <!-- {{ item.no }}
         <v-btn color="primary" elevation="2" icon outlined>
-          <v-icon dark small> mdi-message-reply-text-outline </v-icon>
-        </v-btn> -->
-        <div class="text-center">
-          <v-dialog v-model="dialog" width="500">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                color="primary"
-                elevation="2"
-                v-bind="attrs"
-                v-on="on"
-                icon
-                outlined
-              >
-                <v-icon dark small>mdi-message-reply-text-outline</v-icon>
-              </v-btn>
-            </template>
-
-            <v-card>
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field
-                    label="عنوان پوش‌نوتیفیکیشن"
-                    placeholder="لطفا عنوان پوش‌نوتیفیکیشن را وارد کنید."
-                    v-model.trim="pushText"
-                    clearable
-                    outlined
-                    hide-details="auto"
-                  ></v-text-field>
-                </v-col>
-
-                <v-col cols="12">
-                  <v-text-field
-                    label="متن پوش‌نوتیفیکیشن"
-                    placeholder="لطفا متن پوش‌نوتیفیکیشن را وارد کنید."
-                    v-model.trim="pushBody"
-                    clearable
-                    outlined
-                    hide-details="auto"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card>
-
-            <v-btn large color="primary" @click="sendPushNotification(item)"
-              >ارسال</v-btn
-            >
-            <v-btn large color="secondary" @click="clearPushNotification"
-              >انصراف</v-btn
-            >
-          </v-dialog>
-        </div>
+          <v-icon dark small @click="showDialog(item)"
+            >mdi-message-reply-text-outline</v-icon
+          >
+        </v-btn>
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
@@ -269,6 +221,48 @@
       ></v-text-field>
     </div>
     <!-- ---------------------------- END: Pagination -------------------------  -->
+
+    <!-- ------------------------------------------------------------------------ */
+    /*                                START: Dialog                               */
+    /* ------------------------------------------------------------------------  -->
+    <v-row justify="center">
+      <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-card class="pa-3">
+          <v-card-title>ارسال پوش‌نوتیفیکیشن به {{ fullName }}</v-card-title>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field
+                label="عنوان پوش‌نوتیفیکیشن"
+                placeholder="لطفا عنوان پوش‌نوتیفیکیشن را وارد کنید."
+                v-model.trim="pushText"
+                clearable
+                outlined
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="12">
+              <v-text-field
+                label="متن پوش‌نوتیفیکیشن"
+                placeholder="لطفا متن پوش‌نوتیفیکیشن را وارد کنید."
+                v-model.trim="pushBody"
+                clearable
+                outlined
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-card-actions>
+            <v-btn large color="primary" @click="sendPushNotification()"
+              >ارسال</v-btn
+            >
+            <v-btn large color="secondary" @click="clearDialog">انصراف</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+    <!-- ----------------------------- END: Dialog ----------------------------  -->
   </v-container>
 </template>
 
@@ -285,6 +279,10 @@ import { ICustomer } from "@/interfaces/entities/customer.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 import { MapCustomerType } from "@/constant/customer-type";
 import { IMapCustomerType } from "@/interfaces/constant/map.interface";
+import FirebaseService from "@/services/Firebase.service";
+import { FirebaseCollectionsEnum } from "@/enums/firebase";
+import { IPushNotification } from "@/interfaces/entities/notification.interface";
+import * as _ from "lodash";
 
 export default Vue.extend({
   name: "AllCustomers",
@@ -296,6 +294,7 @@ export default Vue.extend({
     limit: number;
     pagination: IPagination;
     items: ICustomer[];
+    currentCustomer: ICustomer;
   } {
     const title = "لیست کاربران";
     return {
@@ -331,6 +330,7 @@ export default Vue.extend({
       dialog: false,
       pushText: "",
       pushBody: "",
+      currentCustomer: {} as ICustomer,
     };
   },
   watch: {
@@ -384,24 +384,50 @@ export default Vue.extend({
         ? (MapCustomerType.get(type) as IMapCustomerType)
         : { erpName: "تعریف نشده", name: "تعریف نشده", color: "" };
     },
-    sendPushNotification(customer: ICustomer) {
-      const notification = {
-        text: this.pushText,
-        body: this.pushBody,
-      };
-      console.log("push notification", notification);
-      console.log("push customer", customer);
-      // get customer token from firebase
-      // send notification to this token
+    showDialog(customer: ICustomer) {
+      this.dialog = true;
+      this.currentCustomer = _.assign({}, customer);
     },
-    clearPushNotification() {
+    async sendPushNotification() {
+      const notification = {
+        title: this.pushText,
+        body: this.pushBody,
+      } as IPushNotification;
+      const firebaseUser = await this.getFirebaseUser(this.currentCustomer.id);
+      firebaseUser && firebaseUser.token
+        ? await FirebaseService.sendPushToToken(
+            notification,
+            firebaseUser.token
+          )
+            .then((response) => console.log("then response:", response))
+            .catch((error) => console.log("catch error:", error))
+        : Vue.prototype.$toast("info", "این کاربر توکن فعال ندارد.");
+      this.clearDialog();
+    },
+    clearDialog(): void {
+      this.currentCustomer = {} as ICustomer;
       this.pushText = "";
       this.pushBody = "";
       this.dialog = false;
     },
+    async getFirebaseUser(id: string) {
+      return await FirebaseService.getOne(
+        FirebaseCollectionsEnum.USERS,
+        id
+      ).then((response) => response);
+    },
   },
   mounted(): void {
     this.getList();
+  },
+  computed: {
+    fullName(): string {
+      return this.currentCustomer &&
+        this.currentCustomer.firstName &&
+        this.currentCustomer.lastName
+        ? `${this.currentCustomer.firstName} ${this.currentCustomer.lastName}`
+        : "ناشناس";
+    },
   },
 });
 </script>

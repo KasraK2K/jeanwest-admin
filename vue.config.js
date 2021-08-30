@@ -4,14 +4,14 @@ module.exports = {
   configureWebpack: {
     devtool: "source-map",
   },
-  // devServer: {
-  //   host: process.env.HOST,
-  //   port: process.env.PORT,
-  //   // https: process.env.https,
-  //   // hotOnly: false,
-  //   overlay: {
-  //     warnings: true,
-  //     errors: true,
-  //   },
-  // },
+  devServer: {
+    host: process.env.HOST,
+    port: process.env.PORT,
+    https: JSON.parse(process.env.HTTPS),
+    // hotOnly: false,
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
+  },
 };
