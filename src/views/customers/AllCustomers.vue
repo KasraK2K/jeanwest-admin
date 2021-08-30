@@ -152,20 +152,20 @@
       </template>
 
       <template v-slot:[`item.erpCustomerType`]="{ item }">
-        <pre
+        <span
           class="ltr text-right"
           :style="'color: ' + customerType(item.erpCustomerType).color"
         >
           {{ customerType(item.erpCustomerType).name }}
-        </pre>
+        </span>
       </template>
 
       <template v-slot:[`item.loggedInAt`]="{ item }">
-        <pre class="ltr text-right">{{
+        <span class="ltr text-right">{{
           item.loggedInAt
             ? toPersianString(toPersianTime(item.loggedInAt))
             : null
-        }}</pre>
+        }}</span>
       </template>
 
       <template v-slot:[`item.sendMessage`]="{ item }">
@@ -227,39 +227,45 @@
     /* ------------------------------------------------------------------------  -->
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="600px">
-        <v-card class="pa-3">
-          <v-card-title>ارسال پوش‌نوتیفیکیشن به {{ fullName }}</v-card-title>
-          <v-row>
-            <v-col cols="12">
-              <v-text-field
-                label="عنوان پوش‌نوتیفیکیشن"
-                placeholder="لطفا عنوان پوش‌نوتیفیکیشن را وارد کنید."
-                v-model.trim="pushText"
-                clearable
-                outlined
-                hide-details="auto"
-              ></v-text-field>
-            </v-col>
+        <v-form
+          v-model="valid"
+          ref="pushForm"
+          @submit.prevent="sendPushNotification"
+        >
+          <v-card class="pa-3">
+            <v-card-title>ارسال پوش‌نوتیفیکیشن به {{ fullName }}</v-card-title>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  label="عنوان پوش‌نوتیفیکیشن"
+                  placeholder="لطفا عنوان پوش‌نوتیفیکیشن را وارد کنید."
+                  v-model.trim="pushText"
+                  outlined
+                  hide-details="auto"
+                  :rules="pushTextRule"
+                  required
+                ></v-text-field>
+              </v-col>
 
-            <v-col cols="12">
-              <v-text-field
-                label="متن پوش‌نوتیفیکیشن"
-                placeholder="لطفا متن پوش‌نوتیفیکیشن را وارد کنید."
-                v-model.trim="pushBody"
-                clearable
-                outlined
-                hide-details="auto"
-              ></v-text-field>
-            </v-col>
-          </v-row>
+              <v-col cols="12">
+                <v-text-field
+                  label="متن پوش‌نوتیفیکیشن"
+                  placeholder="لطفا متن پوش‌نوتیفیکیشن را وارد کنید."
+                  v-model.trim="pushBody"
+                  outlined
+                  hide-details="auto"
+                  :rules="pushBodyRule"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
-          <v-card-actions>
-            <v-btn large color="primary" @click="sendPushNotification()"
-              >ارسال</v-btn
-            >
-            <v-btn large color="secondary" @click="clearDialog">انصراف</v-btn>
-          </v-card-actions>
-        </v-card>
+            <v-card-actions>
+              <v-btn large color="primary" type="submit">ارسال</v-btn>
+              <v-btn large color="secondary" @click="clearDialog">انصراف</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
       </v-dialog>
     </v-row>
     <!-- ----------------------------- END: Dialog ----------------------------  -->
@@ -282,6 +288,7 @@ import { IMapCustomerType } from "@/interfaces/constant/map.interface";
 import FirebaseService from "@/services/Firebase.service";
 import { FirebaseCollectionsEnum } from "@/enums/firebase";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
+import { FormRefs } from "@/types/global.type";
 import * as _ from "lodash";
 
 export default Vue.extend({
@@ -330,6 +337,15 @@ export default Vue.extend({
       dialog: false,
       pushText: "",
       pushBody: "",
+      pushTextRule: [
+        (v: string) =>
+          (!!v && v.length >= 3) || "تیتر باید بیشتر از ۳ حرف باشد.",
+      ],
+      pushBodyRule: [
+        (v: string) =>
+          (!!v && v.length >= 3) || "متن باید بیشتر از ۳ حرف باشد.",
+      ],
+      valid: false,
       currentCustomer: {} as ICustomer,
     };
   },
@@ -389,6 +405,8 @@ export default Vue.extend({
       this.currentCustomer = _.assign({}, customer);
     },
     async sendPushNotification() {
+      (this.$refs.pushForm as FormRefs).validate();
+      if (!this.valid) return;
       const notification = {
         title: this.pushText,
         body: this.pushBody,

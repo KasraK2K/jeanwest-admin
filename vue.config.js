@@ -10,7 +10,7 @@ module.exports = {
     https: JSON.parse(process.env.HTTPS),
     overlay: {
       warnings: false,
-      errors: process.env.NODE_ENV === "production",
+      errors: process.env.NODE_ENV !== "production",
     },
   },
 };
