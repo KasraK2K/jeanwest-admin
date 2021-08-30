@@ -1,1 +1,4 @@
-export type FormRefs = Vue & { validate: () => boolean };
+export type FormRefs = Vue & {
+  validate: () => boolean;
+  resetValidation: () => void;
+};

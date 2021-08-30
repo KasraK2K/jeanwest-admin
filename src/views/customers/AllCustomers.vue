@@ -427,6 +427,7 @@ export default Vue.extend({
       this.pushText = "";
       this.pushBody = "";
       this.dialog = false;
+      (this.$refs.pushForm as FormRefs).resetValidation();
     },
     async getFirebaseUser(id: string) {
       return await FirebaseService.getOne(
