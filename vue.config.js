@@ -8,10 +8,9 @@ module.exports = {
     host: process.env.HOST,
     port: process.env.PORT,
     https: JSON.parse(process.env.HTTPS),
-    // hotOnly: false,
     overlay: {
-      warnings: true,
-      errors: true,
+      warnings: false,
+      errors: process.env.NODE_ENV === "production",
     },
   },
 };

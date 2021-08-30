@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
     "sourceMap": true,
     "baseUrl": ".",
     "types": ["webpack-env", "jest", "vuetify"],
