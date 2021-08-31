@@ -10,3 +10,6 @@ export const firebaseConfig = {
 
 export const fcmServerKey =
   "AAAAslA_pd0:APA91bHwEFx2N-eKzNs9aaI_sSADjMwN17iN-FFfiLDAmGdoxKflvtJMZv-JlB5L8El__miEQKIutJpNb24hUJ7id2FRG8XWVrwJg4NJOz793GzCz6unQqsDfwRS5azUxeJuNq0li4ZV";
+
+export const fcmPublicVapidKey =
+  "BB7sHR0uXrXXdb7hvNUk8yroT-YJCm9KoVhLVKxRcArMtL8AQDtZjsDyT-__WVc6AaqnObTbLtVJJoS78d_Czf4";
