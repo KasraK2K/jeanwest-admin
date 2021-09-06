@@ -7,234 +7,111 @@
       <v-card elevation="2" outlined class="mt-2 pa-4">
         <v-row>
           <v-col cols="12">
-            <v-text-field
-              label="نام"
-              v-model.trim="discount.name"
-              hide-details="auto"
-              type="text"
-              clearable
-            >
+            <v-text-field label="نام" v-model.trim="discount.name" hide-details="auto" type="text" clearable>
             </v-text-field>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-text-field
-              label="کد"
-              v-model.trim="discount.code"
-              hide-details="auto"
-              type="text"
-              clearable
-            >
+            <v-text-field label="کد" v-model.trim="discount.code" hide-details="auto" type="text" clearable>
             </v-text-field>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-text-field
-              label="مقدار تخفیف"
-              v-model.trim="discount.reductionPrice"
-              hide-details="auto"
-              type="number"
-              clearable
-            >
+            <v-text-field label="مقدار تخفیف" v-model.trim="discount.reductionPrice" hide-details="auto" type="number"
+              clearable>
             </v-text-field>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-autocomplete
-              label="نوع تخفیف"
-              v-model="discount.isPercentage"
-              :items="[
+            <v-autocomplete label="نوع تخفیف" v-model="discount.isPercentage" :items="[
                 { text: 'درصدی', value: true },
                 { text: 'مبلغی', value: false },
-              ]"
-              item-text="text"
-              item-value="value"
-              hide-details="auto"
-              clearable
-            >
+              ]" item-text="text" item-value="value" hide-details="auto" clearable>
             </v-autocomplete>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-autocomplete
-              label="اعمال همزمان"
-              v-model="discount.singularity"
-              :items="[
+            <v-autocomplete label="اعمال همزمان" v-model="discount.singularity" :items="[
                 { text: 'بله', value: false },
                 { text: 'خیر', value: true },
-              ]"
-              item-text="text"
-              item-value="value"
-              hide-details="auto"
-              clearable
-            >
+              ]" item-text="text" item-value="value" hide-details="auto" clearable>
             </v-autocomplete>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-text-field
-              label="محدودیت تعداد"
-              v-model.number="discount.countLimit"
-              hide-details="auto"
-              type="number"
-              clearable
-            >
+            <v-text-field label="محدودیت تعداد" v-model.number="discount.countLimit" hide-details="auto" type="number"
+              clearable>
             </v-text-field>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-text-field
-              label="دفعات استفاده"
-              v-model.number="discount.usageCount"
-              hide-details="auto"
-              type="number"
-              clearable
-            >
+            <v-text-field label="دفعات استفاده" v-model.number="discount.usageCount" hide-details="auto" type="number"
+              clearable>
             </v-text-field>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-text-field
-              label="حداکثر تخفیف"
-              v-model.number="discount.maxTotal"
-              hide-details="auto"
-              type="number"
-              clearable
-            >
+            <v-text-field label="حداکثر تخفیف" v-model.number="discount.maxTotal" hide-details="auto" type="number"
+              clearable>
             </v-text-field>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-text-field
-              label="حداقل خرید"
-              v-model.number="discount.minTotal"
-              hide-details="auto"
-              type="number"
-              clearable
-            >
+            <v-text-field label="حداقل خرید" v-model.number="discount.minTotal" hide-details="auto" type="number"
+              clearable>
             </v-text-field>
           </v-col>
 
           <v-col class="col-12 col-md-3">
-            <v-menu
-              v-model="startDateMenu"
-              :nudge-top="20"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-              :close-on-content-click="false"
-            >
+            <v-menu v-model="startDateMenu" :nudge-top="20" transition="scale-transition" offset-y min-width="auto"
+              :close-on-content-click="false">
               <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="discount.startDate"
-                  label="تاریخ شروع"
-                  placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید."
-                  readonly
-                  clearable
-                  v-bind="attrs"
-                  v-on="on"
-                  hide-details="auto"
-                  @click:clear="discount.startDate = ''"
-                ></v-text-field>
+                <v-text-field v-model="discount.startDate" label="تاریخ شروع"
+                  placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید." readonly clearable v-bind="attrs" v-on="on"
+                  hide-details="auto" @click:clear="discount.startDate = ''"></v-text-field>
               </template>
               <v-date-picker v-model="discount.startDate"></v-date-picker>
             </v-menu>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-menu
-              ref="startTimeMenu"
-              v-model="startTimePickerMenu"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              :return-value.sync="startTime"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
+            <v-menu ref="startTimeMenu" v-model="startTimePickerMenu" :close-on-content-click="false" :nudge-right="40"
+              :return-value.sync="startTime" transition="scale-transition" offset-y min-width="290px">
               <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="startTime"
-                  label="زمان شروع"
-                  v-bind="attrs"
-                  v-on="on"
-                  hide-details="auto"
-                  clearable
-                ></v-text-field>
+                <v-text-field v-model="startTime" label="زمان شروع" v-bind="attrs" v-on="on" hide-details="auto"
+                  clearable></v-text-field>
               </template>
-              <v-time-picker
-                v-if="startTimePickerMenu"
-                v-model="startTime"
-                ampm-in-title
-                format="24hr"
-                @click:minute="$refs.startTimeMenu.save(startTime)"
-                landscape
-                scrollable
-              ></v-time-picker>
+              <v-time-picker v-if="startTimePickerMenu" v-model="startTime" ampm-in-title format="24hr"
+                @click:minute="$refs.startTimeMenu.save(startTime)" landscape scrollable></v-time-picker>
             </v-menu>
           </v-col>
 
           <v-col class="col-12 col-md-3">
-            <v-menu
-              v-model="expirationDateMenu"
-              :nudge-top="20"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-              :close-on-content-click="false"
-            >
+            <v-menu v-model="expirationDateMenu" :nudge-top="20" transition="scale-transition" offset-y min-width="auto"
+              :close-on-content-click="false">
               <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="discount.expirationDate"
-                  label="تاریخ انقضا"
-                  placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید."
-                  readonly
-                  clearable
-                  v-bind="attrs"
-                  v-on="on"
-                  hide-details="auto"
-                  @click:clear="discount.expirationDate = ''"
-                ></v-text-field>
+                <v-text-field v-model="discount.expirationDate" label="تاریخ انقضا"
+                  placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید." readonly clearable v-bind="attrs" v-on="on"
+                  hide-details="auto" @click:clear="discount.expirationDate = ''"></v-text-field>
               </template>
               <v-date-picker v-model="discount.expirationDate"></v-date-picker>
             </v-menu>
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-menu
-              ref="expirationTimeMenu"
-              v-model="expirationTimePickerMenu"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              :return-value.sync="expirationTime"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
+            <v-menu ref="expirationTimeMenu" v-model="expirationTimePickerMenu" :close-on-content-click="false"
+              :nudge-right="40" :return-value.sync="expirationTime" transition="scale-transition" offset-y
+              min-width="290px">
               <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="expirationTime"
-                  label="زمان انقضا"
-                  v-bind="attrs"
-                  v-on="on"
-                  hide-details="auto"
-                  clearable
-                ></v-text-field>
+                <v-text-field v-model="expirationTime" label="زمان انقضا" v-bind="attrs" v-on="on" hide-details="auto"
+                  clearable></v-text-field>
               </template>
-              <v-time-picker
-                v-if="expirationTimePickerMenu"
-                v-model="expirationTime"
-                format="24hr"
-                @click:minute="$refs.expirationTimeMenu.save(expirationTime)"
-                landscape
-                scrollable
-              ></v-time-picker>
+              <v-time-picker v-if="expirationTimePickerMenu" v-model="expirationTime" format="24hr"
+                @click:minute="$refs.expirationTimeMenu.save(expirationTime)" landscape scrollable></v-time-picker>
             </v-menu>
           </v-col>
         </v-row>
-        <v-btn large color="primary" class="mt-4" @click="editDiscount"
-          >ویرایش</v-btn
-        >
+        <v-btn large color="primary" class="mt-4" @click="editDiscount">ویرایش</v-btn>
       </v-card>
     </v-col>
   </v-row>

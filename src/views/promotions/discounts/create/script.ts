@@ -40,7 +40,7 @@ class CreateDiscount extends Vue {
   private multiplyTen() {
     _.assign(this.discount, {
       reductionPrice: this.discount.isPercentage
-        ? this.discount.reductionPrice
+        ? this.discount.reductionPrice / 100
         : this.discount.reductionPrice * 10,
       maxTotal: this.discount.maxTotal && this.discount.maxTotal * 10,
       minTotal: this.discount.minTotal && this.discount.minTotal * 10,

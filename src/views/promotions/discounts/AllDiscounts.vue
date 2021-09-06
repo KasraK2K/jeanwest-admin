@@ -238,7 +238,7 @@
       <template v-slot:[`item.reductionPrice`]="{ item }">
         {{
           item.isPercentage
-            ? toPersianString(`${item.reductionPrice}%`)
+            ? toPersianString(`${item.reductionPrice * 100}%`)
             : toPersianString(numberToCash(item.reductionPrice / 10))
         }}
       </template>
