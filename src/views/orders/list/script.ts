@@ -79,7 +79,7 @@ export class AllOrders extends Vue {
   // ──────────────────────────────────────────────────────────────
   //   :::::: M E T H O D : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────────
-  getList(): void {
+  private getList(): void {
     this.loading = true;
     OrderService.getList(this.pagination).then((response) => {
       const data = response.data.data;
@@ -88,7 +88,7 @@ export class AllOrders extends Vue {
     });
   }
 
-  paginateGenerator(): void {
+  private paginateGenerator(): void {
     this.page = 1;
     const options: IOptions = {
       page: { eq: this.page },
@@ -103,7 +103,7 @@ export class AllOrders extends Vue {
     this.pagination = paginationGenerator(options, filters);
   }
 
-  jeanswestStatusGen(status: number): { text: string; class: string } {
+  private jeanswestStatusGen(status: number): { text: string; class: string } {
     switch (status) {
       case 0:
         return { text: "در انتظار", class: "yellow--text" };
@@ -119,7 +119,7 @@ export class AllOrders extends Vue {
     }
   }
 
-  banimodeStatusGen(status: number): { text: string; class: string } {
+  private banimodeStatusGen(status: number): { text: string; class: string } {
     switch (status) {
       case 0:
         return { text: "ارسال نشده", class: "yellow--text" };
@@ -133,6 +133,10 @@ export class AllOrders extends Vue {
       default:
         return { text: "سایر", class: "red--text" };
     }
+  }
+
+  private fullName(address: Record<string, string>) {
+    return `${address.firstName} ${address.lastName}`;
   }
 }
 

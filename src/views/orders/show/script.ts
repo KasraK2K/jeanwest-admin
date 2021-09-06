@@ -64,6 +64,10 @@ class ShowOrder extends Vue {
       }
     return { name: "ندارد", class: "error--text" };
   }
+
+  private fullName(address: Record<string, string>) {
+    return `${address.firstName} ${address.lastName}`;
+  }
 }
 
 export default ShowOrder;
