@@ -112,13 +112,10 @@
 <script lang="ts">
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
-import NotificationService from "@/services/Notification.service";
-import MediaService from "@/services/Media.service";
 import PushNotification from "./PushNotification.vue";
 import { INotification } from "@/interfaces/entities/notification.interface";
 import { globals } from "@/common/globals/globals";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
-import FirebaseService from "@/services/Firebase.service";
 import { FirebaseCollectionsEnum } from "@/enums/firebase";
 import * as _ from "lodash";
 
@@ -178,8 +175,8 @@ export default Vue.extend({
 
   methods: {
     findOne(id: string): void {
-      NotificationService.findOne(id).then((response) => {
-        const notification: INotification = response.data.data;
+      Vue.prototype.$api.notification.findOne(id).then((response) => {
+        const notification: INotification = response.data;
         this.ready = true;
         this.notification = notification;
 
@@ -215,24 +212,27 @@ export default Vue.extend({
       this.pushNotification.title = this.formTitle;
       try {
         if (this.formImage)
-          await MediaService.upload("banner", this.formImage).then(
-            (response) => {
+          await Vue.prototype.$api.media
+            .upload("banner", this.formImage)
+            .then((response) => {
               if (response.data.statusCode === 201) {
-                data.image = response.data.data.image;
+                data.image = response.data.image;
                 this.pushNotification.image =
                   globals.mediaServerStatic + data.image;
               }
-            }
-          );
+            });
         if (this.formIcon)
-          await MediaService.upload("icon", this.formIcon).then((response) => {
-            if (response.data.statusCode === 201) {
-              data.icon = response.data.data.image;
-              this.pushNotification.icon =
-                globals.mediaServerStatic + data.icon;
-            }
-          });
-        await NotificationService.edit(data, this.id)
+          await Vue.prototype.$api.media
+            .upload("icon", this.formIcon)
+            .then((response) => {
+              if (response.data.statusCode === 201) {
+                data.icon = response.data.image;
+                this.pushNotification.icon =
+                  globals.mediaServerStatic + data.icon;
+              }
+            });
+        await Vue.prototype.$api.media
+          .edit(data, this.id)
           .then(async () => {
             this.pushNotification.id = this.notification.id;
             this.pushNotification.sent = false;
@@ -272,15 +272,17 @@ export default Vue.extend({
     },
 
     async firebaseInsertNotification() {
-      await FirebaseService.upsert(
-        FirebaseCollectionsEnum.NOTIFICATIONS,
-        this.pushNotification.id,
-        this.pushNotification
-      ).then(() => console.log("New Notification Created"));
+      await Vue.prototype.$api.firebase
+        .upsert(
+          FirebaseCollectionsEnum.NOTIFICATIONS,
+          this.pushNotification.id,
+          this.pushNotification
+        )
+        .then(() => console.log("New Notification Created"));
     },
 
     async sendPushNotification() {
-      await FirebaseService.sendPushToQuery(
+      await Vue.prototype.$api.firebase.sendPushToQuery(
         FirebaseCollectionsEnum.USERS,
         {
           fieldPath: "erpCustomerType",
@@ -294,11 +296,13 @@ export default Vue.extend({
 
       // update notification and make sent true
       this.pushNotification.sent = true;
-      await FirebaseService.upsert(
-        FirebaseCollectionsEnum.NOTIFICATIONS,
-        this.pushNotification.id,
-        this.pushNotification
-      ).then(() => console.log("Notification Sent True"));
+      await Vue.prototype.$api.firebase
+        .upsert(
+          FirebaseCollectionsEnum.NOTIFICATIONS,
+          this.pushNotification.id,
+          this.pushNotification
+        )
+        .then(() => console.log("Notification Sent True"));
     },
   },
 

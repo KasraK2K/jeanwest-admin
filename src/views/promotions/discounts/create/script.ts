@@ -1,4 +1,3 @@
-import PromotionService from "@/services/Promotion.service";
 import { IDiscount } from "@/interfaces/entities/discount.interface";
 import Editor from "@tinymce/tinymce-vue";
 import { Vue, Component } from "vue-property-decorator";
@@ -31,7 +30,7 @@ class CreateDiscount extends Vue {
 
   private createDiscount() {
     this.multiplyTen();
-    PromotionService.createDiscount(this.discount).then(() => {
+    Vue.prototype.$api.promotion.createDiscount(this.discount).then(() => {
       Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
       this.$router.go(-1);
     });

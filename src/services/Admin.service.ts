@@ -4,16 +4,9 @@ import { apiClient } from "./Axios.service";
 
 const modulePath = "/admin";
 
-export default {
-  async getList(
-    pagination: IPagination,
-    token: string
-  ): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/list`, pagination, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+export const Admin = {
+  getList(pagination: IPagination): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/list`, pagination);
   },
 
   // async findOne(id: string): Promise<AxiosResponse> {
@@ -24,18 +17,15 @@ export default {
   //   return await apiClient.post(modulePath, data);
   // },
 
-  async edit(data: Record<string, unknown>): Promise<AxiosResponse> {
-    return await apiClient.patch(`${modulePath}/edit`, data);
+  edit(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/edit`, data);
   },
 
-  async toggleCustomer(
+  toggleCustomer(
     id: string,
     data: Record<string, unknown>
   ): Promise<AxiosResponse> {
-    return await apiClient.patch(
-      `${modulePath}/deactivate/customer/${id}`,
-      data
-    );
+    return apiClient.patch(`${modulePath}/deactivate/customer/${id}`, data);
   },
 
   // async softDelete() {},

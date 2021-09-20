@@ -79,7 +79,6 @@
 import Vue from "vue";
 import { tokenName } from "@/common/globals/globals";
 import { mapState } from "vuex";
-import AuthService from "@/services/Auth.service";
 
 export default Vue.extend({
   name: "Login",
@@ -112,7 +111,8 @@ export default Vue.extend({
       };
       console.log(data);
       if (this.valid) {
-        AuthService.getPin(data)
+        Vue.prototype.$api.auth
+          .getPin(data)
           .then()
           .catch((error) => console.log("error", error));
         this.showMobile = false;
@@ -126,9 +126,10 @@ export default Vue.extend({
           pin: String(this.pin),
         };
         // get jwt with axios
-        AuthService.login(data)
+        Vue.prototype.$api.auth
+          .login(data)
           .then((response) => {
-            this.$store.dispatch("setToken", response.data.data.accessToken);
+            this.$store.dispatch("setToken", response.data.accessToken);
             // set token state as tokenName
             if (this.token) this.setToken(this.token);
             // set localStorage with key tokenName

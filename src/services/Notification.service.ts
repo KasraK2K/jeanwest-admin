@@ -4,31 +4,28 @@ import { apiClient } from "./Axios.service";
 
 const modulePath = "/notification";
 
-export default {
-  async getList(pagination: IPagination): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/list`, pagination);
+export const Notification = {
+  getList(pagination: IPagination): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/list`, pagination);
   },
 
-  async findOne(id: string): Promise<AxiosResponse> {
-    return await apiClient.get(`${modulePath}/${id}`);
+  findOne(id: string): Promise<AxiosResponse> {
+    return apiClient.get(`${modulePath}/${id}`);
   },
 
-  async create(data: Record<string, unknown>): Promise<AxiosResponse> {
-    return await apiClient.post(modulePath, data);
+  create(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return apiClient.post(modulePath, data);
   },
 
-  async edit(
-    data: Record<string, unknown>,
-    id: string
-  ): Promise<AxiosResponse> {
-    return await apiClient.patch(`${modulePath}/${id}`, data);
+  edit(data: Record<string, unknown>, id: string): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/${id}`, data);
   },
 
-  async softDelete(id: string): Promise<AxiosResponse> {
-    return await apiClient.delete(`${modulePath}/${id}`);
+  softDelete(id: string): Promise<AxiosResponse> {
+    return apiClient.delete(`${modulePath}/${id}`);
   },
 
-  async restore(id: string): Promise<AxiosResponse> {
-    return await apiClient.patch(`${modulePath}/restore/${id}`);
+  restore(id: string): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/restore/${id}`);
   },
 };

@@ -1,5 +1,4 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
-import AdminService from "@/services/Admin.service";
 import { IFilters, IOptions } from "@/interfaces/others/pagination.interface";
 import { IAdmin } from "@/interfaces/entities/admin.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
@@ -77,13 +76,11 @@ class AllAdmins extends Vue {
   // ──────────────────────────────────────────────────────────────
   private getList(): void {
     this.loading = true;
-    AdminService.getList(this.pagination, this.$store.state.token).then(
-      (response) => {
-        const data = response.data.data;
-        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-        this.items = data.result;
-      }
-    );
+    Vue.prototype.$api.admin.getList(this.pagination).then((response) => {
+      const data = response.data;
+      this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+      this.items = data.result;
+    });
   }
 
   private paginateGenerator(): void {
@@ -102,7 +99,9 @@ class AllAdmins extends Vue {
   }
 
   private toggleActivation(id: string, active: boolean): void {
-    AdminService.edit({ id, active: !active }).then(() => this.getList());
+    Vue.prototype.$api.admin
+      .edit({ id, active: !active })
+      .then(() => this.getList());
   }
 }
 

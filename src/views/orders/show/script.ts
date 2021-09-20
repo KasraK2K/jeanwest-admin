@@ -1,5 +1,4 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
-import OrderService from "@/services/Order.service";
 import { IOrder } from "@/interfaces/entities/order.interface";
 import { ITransaction } from "@/interfaces/entities/transaction.interface";
 
@@ -32,8 +31,8 @@ class ShowOrder extends Vue {
   //   :::::: L I F E S Y C L E : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────────────
   private mounted(): void {
-    OrderService.findOne(this.id).then((response) => {
-      this.order = response.data.data;
+    Vue.prototype.$api.order.findOne(this.id).then((response) => {
+      this.order = response.data;
       this.title += this.order.code;
       this.ready = true;
     });

@@ -10,6 +10,7 @@ import Gantt from "highcharts/modules/gantt";
 import HighchartsVue from "highcharts-vue";
 import toast from "@/plugins/toast";
 import math from "@/plugins/math";
+import api from "@/plugins/api";
 import { methods } from "@/mixin/mixin";
 import ECharts from "vue-echarts";
 import { use } from "echarts/core";
@@ -71,7 +72,7 @@ if (process.env.NODE_ENV === "production") Vue.config.silent = true;
 // ──────────────────────────────────────────────────────────────────────────────────
 Stock(Highcharts);
 Gantt(Highcharts);
-[HighchartsVue, toast, math].forEach((x) => Vue.use(x));
+[HighchartsVue, toast, math, api].forEach((x) => Vue.use(x));
 use([CanvasRenderer, BarChart, GridComponent, TooltipComponent]);
 
 // ──────────────────────────────────────────────────────────────────────────────────

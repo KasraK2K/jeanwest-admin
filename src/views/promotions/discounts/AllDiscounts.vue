@@ -371,7 +371,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import PromotionService from "@/services/Promotion.service";
 import {
   IFilters,
   IOptions,
@@ -451,11 +450,13 @@ export default Vue.extend({
   methods: {
     getList(): void {
       this.loading = true;
-      PromotionService.getDiscountList(this.pagination).then((response) => {
-        const data = response.data.data;
-        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-        this.items = data.result;
-      });
+      Vue.prototype.$api.promotion
+        .getDiscountList(this.pagination)
+        .then((response) => {
+          const data = response.data;
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+        });
     },
     paginateGenerator(): void {
       this.page = 1;
@@ -481,7 +482,9 @@ export default Vue.extend({
       this.paginateGenerator();
     },
     deleteDiscount(id: string): void {
-      PromotionService.discountSoftDelete(id).then(() => this.getList());
+      Vue.prototype.$api.promotion
+        .discountSoftDelete(id)
+        .then(() => this.getList());
     },
     restoreDiscount(id: string): void {
       // PromotionService.discountRestore(id).then(() => this.getList());

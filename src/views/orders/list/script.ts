@@ -1,5 +1,4 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
-import OrderService from "@/services/Order.service";
 import {
   IFilters,
   IOptions,
@@ -81,8 +80,8 @@ export class AllOrders extends Vue {
   // ──────────────────────────────────────────────────────────────
   private getList(): void {
     this.loading = true;
-    OrderService.getList(this.pagination).then((response) => {
-      const data = response.data.data;
+    Vue.prototype.$api.order.getList(this.pagination).then((response) => {
+      const data = response.data;
       this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
       this.items = data.result;
     });

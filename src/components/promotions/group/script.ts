@@ -1,5 +1,4 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
-import PromotionService from "@/services/Promotion.service";
 import { ITarget } from "@/interfaces/entities/group.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
@@ -99,7 +98,8 @@ class EditPromotionGroup extends Vue {
   }
 
   private update() {
-    PromotionService.editGroup({ ...this.updateGroupData })
+    Vue.prototype.$api.promotion
+      .editGroup({ ...this.updateGroupData })
       .then(() => {
         Vue.prototype.$toast("success", "گروه با موفقیت بروزرسانی شد.");
       })

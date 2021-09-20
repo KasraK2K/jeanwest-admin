@@ -3,7 +3,6 @@ import {
   IOptions,
   IPagination,
 } from "@/interfaces/others/pagination.interface";
-import PaymentService from "@/services/Payment.service";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { ITransaction } from "@/interfaces/entities/transaction.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
@@ -80,8 +79,8 @@ class AllPayments extends Vue {
   // ──────────────────────────────────────────────────────────────
   private getList(): void {
     this.loading = true;
-    PaymentService.getList(this.pagination).then((response) => {
-      const data = response.data.data;
+    Vue.prototype.$api.payment.getList(this.pagination).then((response) => {
+      const data = response.data;
       this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
       this.items = data.result;
     });

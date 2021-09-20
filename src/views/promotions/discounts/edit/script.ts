@@ -1,4 +1,3 @@
-import PromotionService from "@/services/Promotion.service";
 import { IDiscount } from "@/interfaces/entities/discount.interface";
 import EditGroup from "@/components/promotions/group/EditGroup.vue";
 import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-group";
@@ -50,9 +49,10 @@ class CreateDiscount extends Vue {
   }
 
   private findOneDiscount() {
-    PromotionService.findOneDiscount(this.id)
+    Vue.prototype.$api.promotion
+      .findOneDiscount(this.id)
       .then((response) => {
-        this.discount = _.assign(this.discount, response.data.data);
+        this.discount = _.assign(this.discount, response.data);
         this.discount.reductionPrice *= 100;
         this.divisionTen();
         // edit resived date and set time from resived date
@@ -86,7 +86,8 @@ class CreateDiscount extends Vue {
 
     this.multiplyTen();
 
-    PromotionService.editDiscount(this.discount)
+    Vue.prototype.$api.promotion
+      .editDiscount(this.discount)
       .then(() => {
         Vue.prototype.$toast("success", "با موفقیت بروزرسانی شد.");
         this.$router.go(-1);

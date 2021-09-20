@@ -274,8 +274,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import CustomerService from "@/services/Customer.service";
-import AdminService from "@/services/Admin.service";
 import {
   IFilters,
   IOptions,
@@ -285,7 +283,6 @@ import { ICustomer } from "@/interfaces/entities/customer.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 import { MapCustomerType } from "@/constant/customer-type";
 import { IMapCustomerType } from "@/interfaces/constant/map.interface";
-import FirebaseService from "@/services/Firebase.service";
 import { FirebaseCollectionsEnum } from "@/enums/firebase";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
 import { FormRefs } from "@/types/global.type";
@@ -369,13 +366,11 @@ export default Vue.extend({
   methods: {
     getList(): void {
       this.loading = true;
-      CustomerService.getList(this.pagination, this.$store.state.token).then(
-        (response) => {
-          const data = response.data.data;
-          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-          this.items = data.result;
-        }
-      );
+      Vue.prototype.$api.customer.getList(this.pagination).then((response) => {
+        const data = response.data;
+        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+        this.items = data.result;
+      });
     },
     paginateGenerator() {
       this.page = 1;
@@ -391,9 +386,11 @@ export default Vue.extend({
       this.paginateGenerator();
     },
     toggleActivation(customer: ICustomer): void {
-      AdminService.toggleCustomer(customer.id, {
-        active: !customer.active,
-      }).then(() => (customer.active = !customer.active));
+      Vue.prototype.$api.admin
+        .toggleCustomer(customer.id, {
+          active: !customer.active,
+        })
+        .then(() => (customer.active = !customer.active));
     },
     customerType(type: string): IMapCustomerType {
       return MapCustomerType.has(type)
@@ -413,10 +410,8 @@ export default Vue.extend({
       } as IPushNotification;
       const firebaseUser = await this.getFirebaseUser(this.currentCustomer.id);
       firebaseUser && firebaseUser.token
-        ? await FirebaseService.sendPushToToken(
-            notification,
-            firebaseUser.token
-          )
+        ? await Vue.prototype.$api.firebase
+            .sendPushToToken(notification, firebaseUser.token)
             .then((response) => console.log("then response:", response))
             .catch((error) => console.log("catch error:", error))
         : Vue.prototype.$toast("info", "این کاربر توکن فعال ندارد.");
@@ -430,10 +425,9 @@ export default Vue.extend({
       (this.$refs.pushForm as FormRefs).resetValidation();
     },
     async getFirebaseUser(id: string) {
-      return await FirebaseService.getOne(
-        FirebaseCollectionsEnum.USERS,
-        id
-      ).then((response) => response);
+      return await Vue.prototype.$api.firebase
+        .getOne(FirebaseCollectionsEnum.USERS, id)
+        .then((response) => response);
     },
   },
   mounted(): void {

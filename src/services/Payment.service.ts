@@ -4,8 +4,8 @@ import { apiClient } from "./Axios.service";
 
 const modulePath = "/payment";
 
-export default {
-  async getList(pagination: IPagination): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/list`, pagination);
+export const Payment = {
+  getList(pagination: IPagination): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/list`, pagination);
   },
 };
