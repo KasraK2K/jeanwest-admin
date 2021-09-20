@@ -273,7 +273,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import PromotionService from "@/services/Promotion.service";
 import {
   IFilters,
   IOptions,
@@ -351,11 +350,13 @@ export default Vue.extend({
   methods: {
     getList(): void {
       this.loading = true;
-      PromotionService.getPointList(this.pagination).then((response) => {
-        const data = response.data.data;
-        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-        this.items = data.result;
-      });
+      Vue.prototype.$api.promotion
+        .getPointList(this.pagination)
+        .then((response) => {
+          const data = response.data;
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+        });
     },
     paginateGenerator() {
       this.page = 1;

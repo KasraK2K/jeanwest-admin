@@ -136,7 +136,6 @@
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import { mapGetters } from "vuex";
-import SupportService from "@/services/Support.service";
 import { IPagination } from "@/interfaces/others/pagination.interface";
 
 export default Vue.extend({
@@ -177,13 +176,11 @@ export default Vue.extend({
   },
   methods: {
     findOne(): void {
-      SupportService.getList(this.pagination, this.$store.state.token).then(
-        (response) => {
-          let data = response.data.data.result[0];
-          data.context = data.context.reverse();
-          this.result = data;
-        }
-      );
+      Vue.prototype.$api.support.getList(this.pagination).then((response) => {
+        let data = response.data.result[0];
+        data.context = data.context.reverse();
+        this.result = data;
+      });
     },
     createReply(): void {
       const data = {
@@ -192,7 +189,8 @@ export default Vue.extend({
         text: this.formText,
         code: (this as any).result.code,
       };
-      SupportService.reply(data)
+      Vue.prototype.$api.support
+        .reply(data)
         .then(() => {
           this.formHint = undefined;
           this.formText = "";

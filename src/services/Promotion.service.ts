@@ -5,60 +5,57 @@ import { IDiscount } from "@/interfaces/entities/discount.interface";
 
 const modulePath = "/promotion";
 
-export default {
+export const Promotion = {
   // ──────────────────────────────────────────────────────────────────────
   //   :::::: J E A N S P O I N T : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────────────────
-  async getPointList(pagination: IPagination): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/point/list`, pagination);
+  getPointList(pagination: IPagination): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/point/list`, pagination);
   },
 
-  async findOnePoint(id: string): Promise<AxiosResponse> {
-    return await apiClient.get(`${modulePath}/point/${id}`);
+  findOnePoint(id: string): Promise<AxiosResponse> {
+    return apiClient.get(`${modulePath}/point/${id}`);
   },
 
-  async editPoint(data: Record<string, unknown>): Promise<AxiosResponse> {
-    return await apiClient.patch(`${modulePath}/point`, data);
+  editPoint(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/point`, data);
   },
 
   // ──────────────────────────────────────────────────────────────────
   //   :::::: D I S C O U N T : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────────────
-  async createDiscount(data: IDiscount): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/discount/admin/create`, data);
+  createDiscount(data: IDiscount): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/discount/admin/create`, data);
   },
 
-  async getDiscountList(pagination: IPagination): Promise<AxiosResponse> {
-    return await apiClient.post(
-      `${modulePath}/discount/admin/list`,
-      pagination
-    );
+  getDiscountList(pagination: IPagination): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/discount/admin/list`, pagination);
   },
 
-  async findOneDiscount(id: string): Promise<AxiosResponse> {
-    return await apiClient.get(`${modulePath}/discount/admin/${id}`);
+  findOneDiscount(id: string): Promise<AxiosResponse> {
+    return apiClient.get(`${modulePath}/discount/admin/${id}`);
   },
 
-  async editDiscount(data: IDiscount): Promise<AxiosResponse> {
-    return await apiClient.patch(`${modulePath}/discount/admin/edit`, data);
+  editDiscount(data: IDiscount): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/discount/admin/edit`, data);
   },
 
-  async discountSoftDelete(id: string): Promise<AxiosResponse> {
-    return await apiClient.delete(`${modulePath}/discount/admin/delete/${id}`);
+  discountSoftDelete(id: string): Promise<AxiosResponse> {
+    return apiClient.delete(`${modulePath}/discount/admin/delete/${id}`);
   },
 
   // ────────────────────────────────────────────────────────────
   //   :::::: G R O U P : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────
-  async getGroupList(pagination: IPagination): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/group/list`, pagination);
+  getGroupList(pagination: IPagination): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/group/list`, pagination);
   },
 
-  async editGroup(data: Record<string, unknown>): Promise<AxiosResponse> {
-    return await apiClient.patch(`${modulePath}/group`, data);
+  editGroup(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/group`, data);
   },
 
-  async groupSoftDelete(id: string): Promise<AxiosResponse> {
-    return await apiClient.delete(`${modulePath}/group/${id}`);
+  groupSoftDelete(id: string): Promise<AxiosResponse> {
+    return apiClient.delete(`${modulePath}/group/${id}`);
   },
 };

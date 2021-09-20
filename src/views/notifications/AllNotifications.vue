@@ -210,7 +210,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import NotificationService from "@/services/Notification.service";
 import {
   IFilters,
   IOptions,
@@ -284,11 +283,13 @@ export default Vue.extend({
     },
     getList(): void {
       this.loading = true;
-      NotificationService.getList(this.pagination).then((response) => {
-        const data = response.data.data;
-        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-        this.items = data.result;
-      });
+      Vue.prototype.$api.notification
+        .getList(this.pagination)
+        .then((response) => {
+          const data = response.data;
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+        });
     },
     paginateGenerator() {
       this.page = 1;
@@ -304,10 +305,10 @@ export default Vue.extend({
       this.paginateGenerator();
     },
     deleteNotification(id: string): void {
-      NotificationService.softDelete(id).then(() => this.getList());
+      Vue.prototype.$api.notification.softDelete(id).then(() => this.getList());
     },
     restoreNotification(id: string): void {
-      NotificationService.restore(id).then(() => this.getList());
+      Vue.prototype.$api.notification.restore(id).then(() => this.getList());
     },
   },
   mounted(): void {

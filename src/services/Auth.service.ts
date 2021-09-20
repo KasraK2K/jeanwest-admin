@@ -1,18 +1,15 @@
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
 
-export default {
+export const Auth = {
   /**
    * @param {*} data: { phoneNumber: string }
    */
-  async getPin(data: { phoneNumber: string }): Promise<AxiosResponse> {
-    return await apiClient.post("/otp/request/admin", data);
+  getPin(data: { phoneNumber: string }): Promise<AxiosResponse> {
+    return apiClient.post("/otp/request/admin", data);
   },
 
-  async login(data: {
-    phoneNumber: string;
-    pin: string;
-  }): Promise<AxiosResponse> {
-    return await apiClient.post("/adminAuth", data);
+  login(data: { phoneNumber: string; pin: string }): Promise<AxiosResponse> {
+    return apiClient.post("/adminAuth", data);
   },
 };

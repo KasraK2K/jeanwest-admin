@@ -4,16 +4,9 @@ import { apiClient } from "./Axios.service";
 
 const modulePath = "/customer";
 
-export default {
-  async getList(
-    pagination: IPagination,
-    token: string
-  ): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/list`, pagination, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+export const Customer = {
+  getList(pagination: IPagination): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/list`, pagination);
   },
 
   // async findOne(id: string): Promise<AxiosResponse> {

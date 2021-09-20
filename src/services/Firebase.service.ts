@@ -14,7 +14,7 @@ import * as _ from "lodash";
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-export default {
+export const Firebase = {
   // ────────────────────────────────────────────────────────────────────
   //   :::::: F I R E S T O R E : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────────────

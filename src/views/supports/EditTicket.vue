@@ -71,7 +71,6 @@
 import Vue from "vue";
 import * as _ from "lodash";
 import Editor from "@tinymce/tinymce-vue";
-import SupportService from "@/services/Support.service";
 import { IContext, ITicket } from "@/interfaces/entities/ticket.interface";
 import { IPagination } from "@/interfaces/others/pagination.interface";
 
@@ -117,7 +116,8 @@ export default Vue.extend({
         code: this.ticket.code,
         contextCode: this.context.contextCode,
       };
-      SupportService.editReply(data)
+      Vue.prototype.$api.support
+        .editReply(data)
         .then(() => {
           Vue.prototype.$toast("success", "پاسخ با موفقیت بروزرسانی شد.");
           this.$router.go(-1);
@@ -136,17 +136,15 @@ export default Vue.extend({
           id: { eq: this.id },
         },
       };
-      SupportService.getList(pagination, this.$store.state.token).then(
-        (response) => {
-          this.ticket = response.data.data.result[0];
-          this.context = _.filter(this.ticket.context, [
-            "contextCode",
-            this.contextCode,
-          ])[0];
-          // TODO: this.formHint = this.context.hint
-          this.formContent = this.context.text;
-        }
-      );
+      Vue.prototype.$api.support.getList(pagination).then((response) => {
+        this.ticket = response.data.result[0];
+        this.context = _.filter(this.ticket.context, [
+          "contextCode",
+          this.contextCode,
+        ])[0];
+        // TODO: this.formHint = this.context.hint
+        this.formContent = this.context.text;
+      });
     },
     statusGen(): string {
       if (this.ticket.status === 0) return "بسته";

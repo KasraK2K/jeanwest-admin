@@ -251,7 +251,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import PromotionService from "@/services/Promotion.service";
 import {
   IFilters,
   IOptions,
@@ -321,11 +320,13 @@ export default Vue.extend({
   methods: {
     getList(): void {
       this.loading = true;
-      PromotionService.getGroupList(this.pagination).then((response) => {
-        const data = response.data.data;
-        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-        this.items = data.result;
-      });
+      Vue.prototype.$api.promotion
+        .getGroupList(this.pagination)
+        .then((response) => {
+          const data = response.data;
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+        });
     },
     paginateGenerator() {
       this.page = 1;
@@ -344,12 +345,14 @@ export default Vue.extend({
       this.paginateGenerator();
     },
     toggleActivation(id: string, active: boolean): void {
-      PromotionService.editGroup({ id, active: !active }).then(() =>
-        this.getList()
-      );
+      Vue.prototype.$api.promotion
+        .editGroup({ id, active: !active })
+        .then(() => this.getList());
     },
     deleteNotification(id: string): void {
-      PromotionService.groupSoftDelete(id).then(() => this.getList());
+      Vue.prototype.$api.promotion
+        .groupSoftDelete(id)
+        .then(() => this.getList());
     },
     restoreNotification(id: string): void {
       // PromotionService.restore(id).then(() => this.getList());

@@ -101,7 +101,6 @@
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import EditGroup from "@/components/promotions/group/EditGroup.vue";
-import PromotionService from "@/services/Promotion.service";
 import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-group";
 import { IJeansPoint } from "@/interfaces/entities/jeanspoint.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
@@ -145,8 +144,8 @@ export default Vue.extend({
   },
   methods: {
     findOne() {
-      PromotionService.findOnePoint(this.id).then((response) => {
-        this.jeanspoint = response.data.data;
+      Vue.prototype.$api.promotion.findOnePoint(this.id).then((response) => {
+        this.jeanspoint = response.data;
         this.divisionTen();
         this.group = this.jeanspoint.promotionGroup;
         this.context =
@@ -157,7 +156,8 @@ export default Vue.extend({
     updateJeansPoint() {
       this.jeanspoint.description = { context: this.context };
       this.multiplyTen();
-      PromotionService.editPoint({ ...this.jeanspoint })
+      Vue.prototype.$api.promotion
+        .editPoint({ ...this.jeanspoint })
         .then(() => {
           Vue.prototype.$toast("success", "جین‌پوینت با موفقیت بروزرسانی شد.");
         })

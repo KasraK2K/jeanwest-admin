@@ -169,7 +169,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import SupportService from "@/services/Support.service";
 import {
   IFilters,
   IOptions,
@@ -239,13 +238,11 @@ export default Vue.extend({
   methods: {
     getList(): void {
       this.loading = true;
-      SupportService.getList(this.pagination, this.$store.state.token).then(
-        (response) => {
-          const data = response.data.data;
-          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-          this.items = data.result;
-        }
-      );
+      Vue.prototype.$api.support.getList(this.pagination).then((response) => {
+        const data = response.data;
+        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+        this.items = data.result;
+      });
     },
     paginateGenerator() {
       this.page = 1;

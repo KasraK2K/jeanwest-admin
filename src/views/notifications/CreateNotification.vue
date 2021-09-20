@@ -104,13 +104,10 @@
 <script lang="ts">
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
-import NotificationService from "@/services/Notification.service";
-import MediaService from "@/services/Media.service";
 import PushNotification from "./PushNotification.vue";
 import * as _ from "lodash";
 import { globals } from "@/common/globals/globals";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
-import FirebaseService from "@/services/Firebase.service";
 import { FirebaseCollectionsEnum } from "@/enums/firebase";
 
 export default Vue.extend({
@@ -179,33 +176,37 @@ export default Vue.extend({
       this.pushNotification.title = this.formTitle;
       try {
         if (this.formImage)
-          await MediaService.upload("banner", this.formImage).then(
-            (response) => {
+          await Vue.prototype.$api.media
+            .upload("banner", this.formImage)
+            .then((response) => {
               if (response.data.statusCode === 201) {
-                data.image = response.data.data.image;
+                data.image = response.data.image;
                 this.pushNotification.image =
                   globals.mediaServerStatic + data.image;
               }
-            }
-          );
+            });
         if (this.formIcon)
-          await MediaService.upload("icon", this.formIcon).then((response) => {
-            if (response.data.statusCode === 201) {
-              data.icon = response.data.data.image;
-              this.pushNotification.icon =
-                globals.mediaServerStatic + data.icon;
+          await Vue.prototype.$api.media
+            .upload("icon", this.formIcon)
+            .then((response) => {
+              if (response.data.statusCode === 201) {
+                data.icon = response.data.image;
+                this.pushNotification.icon =
+                  globals.mediaServerStatic + data.icon;
+              }
+            });
+        await Vue.prototype.$api.notification
+          .create(data)
+          .then(async (response) => {
+            this.pushNotification.id = response.data.id;
+            this.pushNotification.sent = false;
+            Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
+            if (this.push) {
+              await this.firebaseInsertNotification();
+              await this.sendPushNotification();
             }
+            this.$router.go(-1);
           });
-        await NotificationService.create(data).then(async (response) => {
-          this.pushNotification.id = response.data.data.id;
-          this.pushNotification.sent = false;
-          Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
-          if (this.push) {
-            await this.firebaseInsertNotification();
-            await this.sendPushNotification();
-          }
-          this.$router.go(-1);
-        });
 
         Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
       } catch (error) {
@@ -234,15 +235,17 @@ export default Vue.extend({
     },
 
     async firebaseInsertNotification() {
-      await FirebaseService.upsert(
-        FirebaseCollectionsEnum.NOTIFICATIONS,
-        this.pushNotification.id,
-        this.pushNotification
-      ).then(() => console.log("New Notification Created"));
+      await Vue.prototype.$api.firebase
+        .upsert(
+          FirebaseCollectionsEnum.NOTIFICATIONS,
+          this.pushNotification.id,
+          this.pushNotification
+        )
+        .then(() => console.log("New Notification Created"));
     },
 
     async sendPushNotification() {
-      await FirebaseService.sendPushToQuery(
+      await Vue.prototype.$api.firebase.sendPushToQuery(
         FirebaseCollectionsEnum.USERS,
         {
           fieldPath: "erpCustomerType",
@@ -256,11 +259,13 @@ export default Vue.extend({
 
       // update push notification and make sent true
       this.pushNotification.sent = true;
-      await FirebaseService.upsert(
-        FirebaseCollectionsEnum.NOTIFICATIONS,
-        this.pushNotification.id,
-        this.pushNotification
-      ).then(() => console.log("Notification Sent True"));
+      await Vue.prototype.$api.firebase
+        .upsert(
+          FirebaseCollectionsEnum.NOTIFICATIONS,
+          this.pushNotification.id,
+          this.pushNotification
+        )
+        .then(() => console.log("Notification Sent True"));
     },
   },
 

@@ -4,36 +4,29 @@ import { apiClient } from "./Axios.service";
 
 const modulePath = "/ticket";
 
-export default {
-  async getList(
-    pagination: IPagination,
-    token: string
-  ): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/admin/list`, pagination, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+export const Support = {
+  getList(pagination: IPagination): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/admin/list`, pagination);
   },
 
-  async reply(data: Record<string, unknown>): Promise<AxiosResponse> {
-    return await apiClient.post(`${modulePath}/admin/reply`, data);
+  reply(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/admin/reply`, data);
   },
 
-  // async findOne(id: string): Promise<AxiosResponse> {
-  //   return await apiClient.get(`${modulePath}/${id}`);
+  // findOne(id: string): Promise<AxiosResponse> {
+  //   return apiClient.get(`${modulePath}/${id}`);
   // },
 
-  async editReply(data: Record<string, unknown>): Promise<AxiosResponse> {
-    return await apiClient.patch(`${modulePath}/admin/edit`, data);
+  editReply(data: Record<string, unknown>): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/admin/edit`, data);
   },
 
-  // async edit(
+  // edit(
   //   data: Record<string, unknown>,
   //   id: string
   // ): Promise<AxiosResponse> {
-  //   return await apiClient.patch(`${modulePath}/${id}`, data);
+  //   return apiClient.patch(`${modulePath}/${id}`, data);
   // },
 
-  // async softDelete() {},
+  // softDelete() {},
 };
