@@ -13,11 +13,15 @@
         <v-card-text>
           <p>
             <span>تحویل گیرنده:</span>
-            <span class="font-weight-bold mr-2">{{ fullName(order.address) }}</span>
+            <span class="font-weight-bold mr-2"
+              >{{ fullName(order.address) }}</span
+            >
           </p>
           <p>
             <span>شماره تماس:</span>
-            <span class="font-weight-bold mr-2">{{ toPersianString(`0${order.address.receiverMobile}`) }}</span>
+            <span class="font-weight-bold mr-2"
+              >{{ toPersianString(`0${order.address.receiverMobile}`) }}</span
+            >
           </p>
           <p>
             <span>آدرس:</span>
@@ -72,7 +76,10 @@
           </p>
           <p class="mb-0">
             <span>وضعیت پرداخت:</span>
-            <span class="font-weight-bold primary--text mr-2" :class="transaction(order.transaction).gateClass">
+            <span
+              class="font-weight-bold primary--text mr-2"
+              :class="transaction(order.transaction).gateClass"
+            >
               درگاه پرداخت {{ transaction(order.transaction).gateName }}
             </span>
           </p>
@@ -127,7 +134,10 @@
         <v-card-text>
           <p>
             <span>نحوه پرداخت:</span>
-            <span class="font-weight-bold mr-2" :class="transaction(order.transaction).gateClass">
+            <span
+              class="font-weight-bold mr-2"
+              :class="transaction(order.transaction).gateClass"
+            >
               درگاه پرداخت {{ transaction(order.transaction).gateName }}
             </span>
           </p>
@@ -151,10 +161,20 @@
   </v-card>
 
   <v-row>
-    <v-col v-for="(item, index) in order.itemDetail" :key="index" cols="12" md="4">
+    <v-col
+      v-for="(item, index) in order.itemDetail"
+      :key="index"
+      cols="12"
+      md="4"
+    >
       <v-card elevation="2" outlined rounded class="mb-3">
         <v-list-item>
-          <v-img class="ml-4" max-width="200" :src="item.banimodeDetails.images" contain />
+          <v-img
+            class="ml-4"
+            max-width="200"
+            :src="item.banimodeDetails.images"
+            contain
+          />
 
           <v-list-item-content>
             <v-card-title>
@@ -162,7 +182,14 @@
                 {{ item.banimodeDetails.product_manufacturer_name }}
               </span>
               <v-spacer></v-spacer>
-              <v-chip v-if="item.returned" color="red" label outlined class="mr-3">مرجوع شده</v-chip>
+              <v-chip
+                v-if="item.returned"
+                color="red"
+                label
+                outlined
+                class="mr-3"
+                >مرجوع شده</v-chip
+              >
             </v-card-title>
             <v-list-item-title class="mb-5">
               <span class="font-weight-bold mb-3">
@@ -171,7 +198,10 @@
             </v-list-item-title>
             <p class="mb-3">
               <span>رنگ:</span>
-              <span class="font-weight-bold mr-2" :style="`color: ${item.banimodeDetails.color_value}`">
+              <span
+                class="font-weight-bold mr-2"
+                :style="`color: ${item.banimodeDetails.color_value}`"
+              >
                 {{ item.banimodeDetails.color_name }} ({{
                 toPersianString(item.erpDetails.colorCode) }})
               </span>
