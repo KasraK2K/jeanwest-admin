@@ -11,22 +11,14 @@ export const tokenName = "token";
 
 export const globals = {
   /** NOTE: Server Backend */
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? "http://10.0.1.131:5000/api/v1"
-      : "http://10.0.1.111:8000/api/v1",
-
-  // baseURL: "http://10.0.1.111:8000/api/v1",
-
-  /** NOTE: Server Backend Local */
-  // baseURL: "http://localhost:3500/api/v1",
+  baseURL: `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_URL}:${process.env.VUE_APP_BACKEND_PORT}/${process.env.VUE_APP_BACKEND_PREFIX}`,
 
   /** NOTE: Media Server API */
-  mediaServerBaseURL: "http://10.0.1.111:3000/api/v1/media/upload/image",
+  mediaServerBaseURL: `${process.env.VUE_APP_MEDIA_PROTOCOL}://${process.env.VUE_APP_MEDIA_BASE_URL}:${process.env.VUE_APP_MEDIA_PORT}/${process.env.VUE_APP_MEDIA_PREFIX}/${process.env.VUE_APP_MEDIA_PATH}`,
 
   /** NOTE: Media Server Read */
-  mediaServerStatic: "http://10.0.1.111:8081/uploads",
+  mediaServerStatic: `${process.env.VUE_APP_MEDIA_PROTOCOL}://${process.env.VUE_APP_MEDIA_BASE_URL}:${process.env.VUE_APP_MEDIA_PORT}/${process.env.VUE_APP_MEDIA_PREFIX}/${process.env.VUE_APP_MEDIA_PATH}`,
 
   /** NOTE: Firebase Cloud Messaging send API */
-  fcmBaseUrl: "https://fcm.googleapis.com/fcm/send",
+  fcmBaseUrl: process.env.VUE_APP_FCM_BASE_URL,
 };
