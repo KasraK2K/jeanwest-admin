@@ -12,9 +12,9 @@ export const tokenName = "token";
 export const globals = {
   /** NOTE: Server Backend */
   baseURL:
-  process.env.NODE_ENV === "production"
-    ? "http://10.0.1.131:5000/api/v1"
-    : "http://10.0.1.111:8000/api/v1",
+    process.env.NODE_ENV === "production"
+      ? "http://10.0.1.131:5000/api/v1"
+      : "http://10.0.1.111:8000/api/v1",
 
   // baseURL: "http://10.0.1.111:8000/api/v1",
 
