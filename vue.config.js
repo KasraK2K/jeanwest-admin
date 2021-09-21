@@ -1,16 +1,20 @@
+const production = process.env.NODE_ENV === "production";
+
 module.exports = {
   transpileDependencies: ["vuetify"],
-  lintOnSave: process.env.NODE_ENV !== "production",
+  lintOnSave: !production,
   configureWebpack: {
     devtool: "source-map",
   },
   devServer: {
-    host: process.env.HOST,
-    port: process.env.PORT,
+    host: production ? process.env.HOST || "0.0.0.0" : "localhost",
+    port: production ? process.env.PORT || 8080 : 8080,
     https: JSON.parse(process.env.HTTPS),
     overlay: {
       warnings: false,
-      errors: process.env.NODE_ENV !== "production",
+      errors: !production,
     },
+    public: "https://admin.avktn.com",
+    // disableHostCheck: true,
   },
 };
