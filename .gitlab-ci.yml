@@ -54,4 +54,4 @@ publish:
     - echo "http://JWApp-Dev-0-1.AVAKATAN.ir:8080/"
 
   only:
-    - master
+    - main
