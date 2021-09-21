@@ -30,7 +30,8 @@ Develop_Stage:
     - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/ && git clone git@gitlab.avakatan.ir:K.Karami/jeanwesr-admin.git jeanswest-admin"
     - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && git checkout develop"
     - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && yarn"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && pm2 start yarn --interpreter bash -p 8080 --name jeanswest-admin -- serve:dev"
+    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cp /home/gitlab/config/admin/.env.development /home/gitlab/jeanswest-admin/"
+    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && pm2 start yarn --interpreter bash --name jeanswest-admin -- serve:dev"
     - echo "http://JWApp-Dev-0-1.AVAKATAN.ir:8080/"
 
   only:
