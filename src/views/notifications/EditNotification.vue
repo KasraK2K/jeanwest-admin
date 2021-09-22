@@ -231,7 +231,7 @@ export default Vue.extend({
                   globals.mediaServerStatic + data.icon;
               }
             });
-        await Vue.prototype.$api.media
+        await Vue.prototype.$api.notification
           .edit(data, this.id)
           .then(async () => {
             this.pushNotification.id = this.notification.id;

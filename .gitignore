@@ -28,5 +28,5 @@ pnpm-debug.log*
 package-lock.json
 /package-lock.json
 yarn.lock
-/.env.development
-/.env.production
+.env.development
+.env.production
