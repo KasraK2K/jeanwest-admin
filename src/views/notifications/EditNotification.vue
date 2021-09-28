@@ -215,7 +215,7 @@ export default Vue.extend({
           await Vue.prototype.$api.media
             .upload("banner", this.formImage)
             .then((response) => {
-              if (response.data.statusCode === 201) {
+              if (response.status === 200) {
                 data.image = response.data.image;
                 this.pushNotification.image =
                   globals.mediaServerStatic + data.image;
@@ -225,7 +225,7 @@ export default Vue.extend({
           await Vue.prototype.$api.media
             .upload("icon", this.formIcon)
             .then((response) => {
-              if (response.data.statusCode === 201) {
+              if (response.status === 200) {
                 data.icon = response.data.image;
                 this.pushNotification.icon =
                   globals.mediaServerStatic + data.icon;
@@ -241,12 +241,14 @@ export default Vue.extend({
               await this.firebaseInsertNotification();
               await this.sendPushNotification();
             }
-            this.$router.go(-1);
+            this.$router.push({ name: "AllNotifications" });
           })
           .catch(() => {
+            this.inProgress = true;
             Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
           });
       } catch (error) {
+        this.inProgress = false;
         Vue.prototype.$toast("error", error.message);
       }
     },
@@ -291,7 +293,6 @@ export default Vue.extend({
         },
         this.pushNotification,
         this.time_to_live
-        // new Date()
       );
 
       // update notification and make sent true
