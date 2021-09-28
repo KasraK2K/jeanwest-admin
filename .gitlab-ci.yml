@@ -18,7 +18,7 @@ before_script:
   - chmod 700 ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-Develop_Stage:
+develop:
   type: deploy
   environment:
     name: develop
@@ -36,3 +36,22 @@ Develop_Stage:
 
   only:
     - develop
+
+publish:
+  type: deploy
+  environment:
+    name: publish
+  script:
+    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "pm2 ls"
+    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "pm2 delete jeanswest-admin > /dev/null 2>&1 || FAILED=true"
+    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "pm2 ls"
+    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "rm -rf /home/gitlab/jeanswest-admin/"
+    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cd /home/gitlab/ && git clone git@gitlab.avakatan.ir:K.Karami/jeanwesr-admin.git jeanswest-admin"
+    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && git checkout main"
+    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && yarn"
+    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cp /home/gitlab/config/admin/.env.production /home/gitlab/jeanswest-admin/"
+    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && pm2 start yarn --interpreter bash --name jeanswest-admin -- serve:prod"
+    - echo "http://JWApp-Dev-0-1.AVAKATAN.ir:8080/"
+
+  only:
+    - main
