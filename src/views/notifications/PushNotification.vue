@@ -16,18 +16,6 @@
           ></v-text-field>
         </v-col>
 
-        <!-- <v-col cols="12" md="4">
-          <v-text-field
-            label="اکشن کلیک"
-            placeholder="لطفا یک آدرس اینترنتی برای اکشن وارد کنید."
-            v-model.trim="click_action"
-            @change="exportNotification()"
-            clearable
-            outlined
-            hide-details="auto"
-          ></v-text-field>
-        </v-col> -->
-
         <v-col cols="12" md="4">
           <v-text-field
             label="زمان ماندگاری"
@@ -58,6 +46,18 @@
             hide-details="auto"
           ></v-autocomplete>
         </v-col>
+
+        <v-col cols="12">
+          <v-text-field
+            label="اکشن کلیک"
+            placeholder="لطفا یک آدرس اینترنتی برای اکشن وارد کنید."
+            v-model.trim="click_action"
+            @change="exportNotification()"
+            clearable
+            outlined
+            hide-details="auto"
+          ></v-text-field>
+        </v-col>
       </v-row>
     </v-card-text>
   </v-card>
@@ -75,7 +75,7 @@ export default Vue.extend({
     return {
       pageTitle: "ایجاد پوش‌نوتیفیکیشن",
       body: "",
-      // click_action: "",
+      click_action: "",
       time_to_live: 2419200,
       erpCustomerType: [],
     };
@@ -85,7 +85,7 @@ export default Vue.extend({
     exportNotification() {
       const notification = {
         body: this.body,
-        // click_action: this.click_action,
+        click_action: this.click_action,
         time_to_live: this.time_to_live,
         erpCustomerType: this.erpCustomerType,
       };
