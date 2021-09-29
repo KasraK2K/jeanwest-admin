@@ -53,7 +53,6 @@ class CreateDiscount extends Vue {
       .findOneDiscount(this.id)
       .then((response) => {
         this.discount = _.assign(this.discount, response.data);
-        this.discount.reductionPrice *= 100;
         this.divisionTen();
         // edit resived date and set time from resived date
         if (this.discount.startDate) {
