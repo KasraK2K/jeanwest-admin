@@ -64,8 +64,7 @@
 </template>
 
 <script lang="ts">
-import { MapCustomerType } from "@/constant/customer-type";
-import { IMapCustomerType } from "@/interfaces/constant/map.interface";
+import { customerType } from "@/mixin/string.mixin";
 import Vue from "vue";
 
 export default Vue.extend({
@@ -96,14 +95,8 @@ export default Vue.extend({
       let types: Record<string, unknown>[] = [];
       for (let i = -11; i <= 12; i++)
         if (i !== 9)
-          types.push({ text: this.customerType(String(i)).name, value: i });
+          types.push({ text: customerType(String(i)).name, value: i });
       return types;
-    },
-
-    customerType(type: string): IMapCustomerType {
-      return MapCustomerType.has(type)
-        ? (MapCustomerType.get(type) as IMapCustomerType)
-        : { erpName: "تعریف نشده", name: "تعریف نشده", color: "" };
     },
   },
 });

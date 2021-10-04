@@ -73,7 +73,7 @@
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'عنوان', value: 'title', sortable: false },
-        { text: 'سطح عضویت', value: 'role' },
+        { text: 'سطح عضویت', value: 'roles' },
         { text: 'زمان ایجاد', value: 'datetime.created_at' },
         { text: 'زمان بروزرسانی', value: 'datetime.updated_at' },
         { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
@@ -120,13 +120,16 @@
         {{ toPersianString(item.no) }}
       </template>
 
-      <template v-slot:[`item.role`]="{ item }">
-        <span
-          class="ltr text-right"
-          :style="'color: ' + customerType(item.role).color"
-        >
-          {{ customerType(item.role).name }}
-        </span>
+      <template v-slot:[`item.roles`]="{ item }">
+        <template v-for="(role, index) in item.roles">
+          <div
+            :key="index"
+            class="ltr text-right"
+            :style="'color: ' + customerType(role).color"
+          >
+            {{ customerType(role).name }}
+          </div>
+        </template>
       </template>
 
       <template v-slot:[`item.datetime.created_at`]="{ item }">
@@ -227,8 +230,6 @@ import {
 } from "@/interfaces/others/pagination.interface";
 import * as _ from "lodash";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
-import { MapCustomerType } from "@/constant/customer-type";
-import { IMapCustomerType } from "@/interfaces/constant/map.interface";
 
 export default Vue.extend({
   data(): {

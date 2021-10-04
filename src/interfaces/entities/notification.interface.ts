@@ -15,6 +15,7 @@ export interface INotification extends Base {
   body: string;
   image: string;
   icon: string;
+  roles: number[];
 }
 
 export interface IPushNotification extends INotification {

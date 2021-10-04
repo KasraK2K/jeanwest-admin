@@ -19,7 +19,7 @@
               </v-text-field>
             </v-col>
 
-            <v-col cols="12" :md="formCondition() ? '6' : '3'">
+            <v-col cols="12" :md="formCondition() ? '6' : '4'">
               <v-file-input
                 v-model="formImage"
                 accept="image/png, image/jpeg, image/bmp"
@@ -33,7 +33,7 @@
               ></v-file-input>
             </v-col>
 
-            <v-col cols="12" :md="formCondition() ? '6' : '3'">
+            <v-col cols="12" :md="formCondition() ? '6' : '4'">
               <v-file-input
                 v-model="formIcon"
                 accept="image/png, image/jpeg, image/bmp"
@@ -47,7 +47,25 @@
               ></v-file-input>
             </v-col>
 
-            <v-col cols="12" md="1">
+            <v-col cols="12" :md="formCondition() ? '6' : '4'">
+              <v-autocomplete
+                label="گروه‌های کاربری"
+                v-model="roles"
+                :items="customerTypeArray()"
+                item-text="text"
+                item-value="value"
+                chips
+                clearable
+                deletable-chips
+                multiple
+                small-chips
+                hide-details="auto"
+              >
+                <v-icon slot="prepend" color="blue">mdi-account</v-icon>
+              </v-autocomplete>
+            </v-col>
+
+            <v-col cols="12" md="4">
               <v-switch v-model="push" label="پوش‌نوتیفیکیشن" inset></v-switch>
             </v-col>
           </v-row>
@@ -109,6 +127,7 @@ import * as _ from "lodash";
 import { globals } from "@/common/globals/globals";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
 import { FirebaseCollectionsEnum } from "@/enums/firebase";
+import { customerType } from "@/mixin/string.mixin";
 
 export default Vue.extend({
   data(): {
@@ -153,6 +172,7 @@ export default Vue.extend({
       pushNotification: {} as IPushNotification,
       time_to_live: 2419200,
       inProgress: false,
+      roles: [],
     };
   },
 
@@ -172,6 +192,7 @@ export default Vue.extend({
       let data: Record<string, unknown> = {
         title: this.formTitle,
         body: this.formContent,
+        roles: this.roles,
       };
       this.pushNotification.title = this.formTitle;
       try {
@@ -270,6 +291,14 @@ export default Vue.extend({
           this.pushNotification
         )
         .then(() => console.log("Notification Sent True"));
+    },
+
+    customerTypeArray() {
+      let types: Record<string, unknown>[] = [];
+      for (let i = -11; i <= 12; i++)
+        if (i !== 9)
+          types.push({ text: customerType(String(i)).name, value: i });
+      return types;
     },
   },
 
