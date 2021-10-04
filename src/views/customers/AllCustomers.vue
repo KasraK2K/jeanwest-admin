@@ -392,11 +392,6 @@ export default Vue.extend({
         })
         .then(() => (customer.active = !customer.active));
     },
-    customerType(type: string): IMapCustomerType {
-      return MapCustomerType.has(type)
-        ? (MapCustomerType.get(type) as IMapCustomerType)
-        : { erpName: "تعریف نشده", name: "تعریف نشده", color: "" };
-    },
     showDialog(customer: ICustomer) {
       this.dialog = true;
       this.currentCustomer = _.assign({}, customer);

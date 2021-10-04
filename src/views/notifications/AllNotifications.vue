@@ -73,6 +73,7 @@
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'عنوان', value: 'title', sortable: false },
+        { text: 'سطح عضویت', value: 'role' },
         { text: 'زمان ایجاد', value: 'datetime.created_at' },
         { text: 'زمان بروزرسانی', value: 'datetime.updated_at' },
         { text: 'گزینه‌ها', value: 'status', align: 'center', sortable: false },
@@ -117,6 +118,15 @@
 
       <template v-slot:[`item.no`]="{ item }">
         {{ toPersianString(item.no) }}
+      </template>
+
+      <template v-slot:[`item.role`]="{ item }">
+        <span
+          class="ltr text-right"
+          :style="'color: ' + customerType(item.role).color"
+        >
+          {{ customerType(item.role).name }}
+        </span>
       </template>
 
       <template v-slot:[`item.datetime.created_at`]="{ item }">
@@ -217,6 +227,8 @@ import {
 } from "@/interfaces/others/pagination.interface";
 import * as _ from "lodash";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
+import { MapCustomerType } from "@/constant/customer-type";
+import { IMapCustomerType } from "@/interfaces/constant/map.interface";
 
 export default Vue.extend({
   data(): {

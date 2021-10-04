@@ -4,6 +4,7 @@ import {
   toPersianString,
   toEnglishString,
   toPlainText,
+  customerType,
 } from "@/mixin/string.mixin";
 import {
   toPersianTime,
@@ -21,6 +22,7 @@ export const methods = {
     toPersianString: toPersianString,
     toEnglishString: toEnglishString,
     toPlainText: toPlainText,
+    customerType: customerType,
     toPersianTime: toPersianTime,
     toGregorian: toGregorian,
     changeTimeZone: changeTimeZone,

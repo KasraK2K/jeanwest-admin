@@ -1,3 +1,6 @@
+import { MapCustomerType } from "@/constant/customer-type";
+import { IMapCustomerType } from "@/interfaces/constant/map.interface";
+
 /* -------------------------------------------------------------------------- */
 /*                           convert number to cash                           */
 /* -------------------------------------------------------------------------- */
@@ -71,3 +74,13 @@ export const toPlainText = (htmlString: string): string =>
   String(htmlString)
     .replace(/<[^>]+>/g, "")
     .trim();
+
+/* -------------------------------------------------------------------------- */
+/*                  convert erpCustomerType to name and color                 */
+/* -------------------------------------------------------------------------- */
+export const customerType = (type: string | number): IMapCustomerType => {
+  if (typeof type === "number") type = String(type);
+  return MapCustomerType.has(type)
+    ? (MapCustomerType.get(type) as IMapCustomerType)
+    : { erpName: "تعریف نشده", name: "تعریف نشده", color: "" };
+};
