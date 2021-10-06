@@ -160,18 +160,19 @@ export default Vue.extend({
         .editPoint({ ...this.jeanspoint })
         .then(() => {
           Vue.prototype.$toast("success", "جین‌پوینت با موفقیت بروزرسانی شد.");
+          this.$router.push({ name: "AllJeansPoints" });
         })
         .catch(() => {
           Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
         });
     },
     multiplyTen() {
-      _.assign(this.discount, {
+      _.assign(this.jeanspoint, {
         minTotal: this.jeanspoint.minTotal * 10,
       });
     },
     divisionTen() {
-      _.assign(this.discount, {
+      _.assign(this.jeanspoint, {
         minTotal: this.jeanspoint.minTotal / 10,
       });
     },
