@@ -1,17 +1,20 @@
 <template>
   <v-container fluid v-if="ready">
-    <v-row>
-      <v-col cols="12" lg="6">
+    <v-row
+      class="d-flex justify-center align-center"
+      style="height: calc(100vh - 56px)"
+    >
+      <!-- <v-col cols="12" lg="6">
         <v-chart class="scatterChart rtl" :option="scatterChartOptions" />
-      </v-col>
+      </v-col> -->
 
       <v-col cols="12" lg="6">
         <v-chart class="priChart rtl" :option="pirChartOptions" />
       </v-col>
 
-      <v-col cols="12">
+      <!-- <v-col cols="12">
         <v-chart class="sankeyChart rtl" :option="sankeyChartOptions" />
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>
