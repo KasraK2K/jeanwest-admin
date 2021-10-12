@@ -262,11 +262,19 @@
       </template>
 
       <template v-slot:[`item.maxTotal`]="{ item }">
-        {{ toPersianString(numberToCash(item.maxTotal / 10)) }}
+        {{
+          item.maxTotal === -1
+            ? "ندارد"
+            : toPersianString(numberToCash(item.maxTotal / 10))
+        }}
       </template>
 
       <template v-slot:[`item.minTotal`]="{ item }">
-        {{ toPersianString(numberToCash(item.minTotal / 10)) }}
+        {{
+          item.minTotal === -1
+            ? "ندارد"
+            : toPersianString(numberToCash(item.minTotal / 10))
+        }}
       </template>
 
       <template v-slot:[`item.singularity`]="{ item }">

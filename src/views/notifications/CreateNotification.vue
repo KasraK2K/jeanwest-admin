@@ -126,7 +126,7 @@ import PushNotification from "./PushNotification.vue";
 import * as _ from "lodash";
 import { globals } from "@/common/globals/globals";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
-import { FirebaseCollectionsEnum } from "@/enums/firebase";
+import { FirebaseCollectionsEnum } from "@/enums/firebase.enum";
 import { customerType } from "@/mixin/string.mixin";
 
 export default Vue.extend({

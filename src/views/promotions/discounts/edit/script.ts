@@ -6,6 +6,7 @@ import { formatDate } from "@/mixin/date.mixin";
 import * as _ from "lodash";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
+import { OperatorEnum } from "@/enums/general.enum";
 
 @Component({
   name: "EditDiscount",
@@ -102,8 +103,14 @@ class CreateDiscount extends Vue {
       reductionPrice: this.discount.isPercentage
         ? this.discount.reductionPrice / 100
         : this.discount.reductionPrice * 10,
-      maxTotal: this.discount.maxTotal && this.discount.maxTotal * 10,
-      minTotal: this.discount.minTotal && this.discount.minTotal * 10,
+      maxTotal: this.changeNumber(
+        this.discount.maxTotal,
+        OperatorEnum.MULTIPLE
+      ),
+      minTotal: this.changeNumber(
+        this.discount.minTotal,
+        OperatorEnum.MULTIPLE
+      ),
     });
   }
 
@@ -112,9 +119,17 @@ class CreateDiscount extends Vue {
       reductionPrice: this.discount.isPercentage
         ? this.discount.reductionPrice
         : this.discount.reductionPrice / 10,
-      maxTotal: this.discount.maxTotal && this.discount.maxTotal / 10,
-      minTotal: this.discount.minTotal && this.discount.minTotal / 10,
+      maxTotal: this.changeNumber(this.discount.maxTotal, OperatorEnum.DIVIDER),
+      minTotal: this.changeNumber(this.discount.minTotal, OperatorEnum.DIVIDER),
     });
+  }
+
+  private changeNumber(number: number | undefined, operator: OperatorEnum) {
+    if (!number || number === -1) return number;
+    else number = +number;
+
+    if (operator === OperatorEnum.DIVIDER) return number / 10;
+    else if (operator === OperatorEnum.MULTIPLE) return number * 10;
   }
 }
 

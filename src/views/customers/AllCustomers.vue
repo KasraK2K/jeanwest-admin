@@ -283,7 +283,7 @@ import { ICustomer } from "@/interfaces/entities/customer.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 import { MapCustomerType } from "@/constant/customer-type";
 import { IMapCustomerType } from "@/interfaces/constant/map.interface";
-import { FirebaseCollectionsEnum } from "@/enums/firebase";
+import { FirebaseCollectionsEnum } from "@/enums/firebase.enum";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
 import { FormRefs } from "@/types/global.type";
 import * as _ from "lodash";
