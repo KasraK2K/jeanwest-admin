@@ -14,6 +14,6 @@ deploy:
     - sudo git checkout develop
     - sudo yarn
     - sudo pm2 restart jeanswest-admin
-    - echo "Please check 10.0.1.133:3000 or https://admin.jeanswest.club"
+    - echo -e "\n\n####################################################################\n###################### JW Club Project info ########################\n# Backend: 10.0.1.133:5000 or https://api.jeanswest.club           #\n# PWA: 10.0.1.133:8000 or https://jwclub.jeanswest.club            #\n# Admin : 10.0.1.133:3000 or https://admin.jeanswest.club          #\n# Media Serv : 10.0.1.133:8080 or https://media.jeanswest.club     #\n# Media Upload : 10.0.1.133:8081 or https://upload.jeanswest.club  #\n####################################################################\n"
   environment:
     name: club_server
