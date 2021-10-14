@@ -1,57 +1,18 @@
-image: ubuntu
+stages:
+  - deploy
 
-before_script:
-  ## - echo "nameserver 8.8.8.8" | tee /etc/resolv.conf > /dev/null
-  #  - apt-get update -yqq
-  #  - apt-get install sudo -yqq
-  #  - apt-get install sudo -f
-  # - apt-get install git -yqq
-  - apt-get update -qq
-  - apt-get install sudo -qq
-  - apt-get install git -qq
-
-  # Setup SSH deploy keys
-  - "which ssh-agent || ( apt-get install -qq openssh-client )"
-  - eval $(ssh-agent -s)
-  - ssh-add <(echo "$DEV_SSH_PRIVATE_KEY")
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-
-develop:
-  type: deploy
-  environment:
-    name: develop
-  script:
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "pm2 ls"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "pm2 delete jeanswest-admin > /dev/null 2>&1 || FAILED=true"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "pm2 ls"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "rm -rf /home/gitlab/jeanswest-admin/"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/ && git clone git@gitlab.avakatan.ir:K.Karami/jeanwesr-admin.git jeanswest-admin"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && git checkout develop"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && yarn"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cp /home/gitlab/config/admin/.env.development /home/gitlab/jeanswest-admin/"
-    - ssh -tt gitlab@JWApp-Dev-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && pm2 start yarn --interpreter bash --name jeanswest-admin -- serve:dev"
-    - echo "http://JWApp-Dev-0-1.AVAKATAN.ir:8080/"
-
+deploy:
+  stage: deploy
+  tags:
+    - club_server_133
   only:
     - develop
-
-publish:
-  type: deploy
-  environment:
-    name: publish
+  before_script:
+    - cd /opt/jeanswest-club/jeanwest-admin/
   script:
-    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "pm2 ls"
-    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "pm2 delete jeanswest-admin > /dev/null 2>&1 || FAILED=true"
-    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "pm2 ls"
-    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "rm -rf /home/gitlab/jeanswest-admin/"
-    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cd /home/gitlab/ && git clone git@gitlab.avakatan.ir:K.Karami/jeanwesr-admin.git jeanswest-admin"
-    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && git checkout main"
-    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && yarn"
-    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cp /home/gitlab/config/admin/.env.production /home/gitlab/jeanswest-admin/"
-    - ssh -tt gitlab@JWClub-0-1.AVAKATAN.ir "cd /home/gitlab/jeanswest-admin/ && pm2 start yarn --interpreter bash --name jeanswest-admin -- serve:prod"
-    - echo "http://JWApp-Dev-0-1.AVAKATAN.ir:8080/"
-
-  only:
-    - main
+    - sudo git pull origin
+    - sudo git checkout develop
+    - sudo yarn build
+    - sudo pm2 restart jeanswest-admin
+  environment:
+    name: club_server
