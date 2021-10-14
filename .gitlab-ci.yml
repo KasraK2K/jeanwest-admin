@@ -12,7 +12,7 @@ deploy:
   script:
     - sudo git pull origin
     - sudo git checkout develop
-    - sudo yarn build
+    - sudo yarn
     - sudo pm2 restart jeanswest-admin
   environment:
     name: club_server
