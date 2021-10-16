@@ -17,4 +17,4 @@ deploy:
     - echo "Please check 10.0.1.89:3000"
   environment:
     name: develop
-  # test
+  
