@@ -31,7 +31,7 @@ export class AllOrders extends Vue {
   private limit = 10;
   private pageCount = 1;
   // filter
-  private code = "";
+  private banimodeCode = "";
   private status: number = null as unknown as number;
   private banimodeStatus: number = null as unknown as number;
   private cost: number = null as unknown as number;
@@ -94,7 +94,7 @@ export class AllOrders extends Vue {
       limit: { eq: this.limit },
     };
     const filters: IFilters = {
-      code: { eq: this.code },
+      banimodeCode: { eq: this.banimodeCode },
       status: { eq: this.status },
       banimodeStatus: { eq: this.banimodeStatus },
       cost: { eq: this.cost && this.cost * 10 },
