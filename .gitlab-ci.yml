@@ -4,7 +4,7 @@ stages:
 deploy:
   stage: deploy
   tags:
-    - club_server_133
+    - club_dev
   only:
     - develop
   before_script:
@@ -14,7 +14,7 @@ deploy:
     - sudo git checkout develop
     - sudo yarn
     - sudo pm2 restart jeanswest-admin
-    - echo "Please check 10.0.1.133:3000 or https://admin.jeanswest.club"
+    - echo "Please check 10.0.1.89:3000"
   environment:
-    name: club_server
+    name: develop
   
