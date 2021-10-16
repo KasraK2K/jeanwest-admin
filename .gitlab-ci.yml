@@ -36,4 +36,3 @@ deploy_prod:
   environment:
     name: Production
   when: manual
-  #test
