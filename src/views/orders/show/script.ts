@@ -33,7 +33,7 @@ class ShowOrder extends Vue {
   private mounted(): void {
     Vue.prototype.$api.order.findOne(this.id).then((response) => {
       this.order = response.data;
-      this.title += this.order.code;
+      this.title += this.order.banimodeCode;
       this.ready = true;
     });
   }

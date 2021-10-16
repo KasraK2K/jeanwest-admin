@@ -11,7 +11,7 @@
         <v-text-field
           label="کد"
           placeholder="لطفا کد سفارش را وارد کنید."
-          v-model.trim="code"
+          v-model.trim="banimodeCode"
           @change="paginateGenerator()"
           clearable
           outlined
@@ -81,7 +81,7 @@
   <v-data-table
     :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
-        { text: 'کد', value: 'code', sortable: false },
+        { text: 'کد', value: 'banimodeCode', sortable: false },
         { text: 'وضعیت', value: 'status' },
         { text: 'وضعیت بانی‌مد', value: 'banimodeStatus' },
         { text: 'تحویل گیرنده', value: 'fullName' },
@@ -127,9 +127,9 @@
       {{ toPersianString(item.no) }}
     </template>
 
-    <template v-slot:[`item.code`]="{ item }">
+    <template v-slot:[`item.banimodeCode`]="{ item }">
       <span :class="[item.active] ? 'green--text' : 'pink--text'">
-        {{ item.code }}
+        {{ item.banimodeCode }}
       </span>
     </template>
 
