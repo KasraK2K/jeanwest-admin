@@ -18,4 +18,3 @@ deploy:
   environment:
     name: club_server
   
-  #this ias for test only
