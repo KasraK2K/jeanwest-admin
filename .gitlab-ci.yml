@@ -17,3 +17,5 @@ deploy:
     - echo "Please check 10.0.1.133:3000 or https://admin.jeanswest.club"
   environment:
     name: club_server
+  
+  #this ias for test only
