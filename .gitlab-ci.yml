@@ -1,8 +1,26 @@
 stages:
+  - deploy_develop
   - deploy_preprod
   - deploy_prod
 
-ddeploy_preprod:
+deploy_develop:
+  stage: deploy_develop
+  tags:
+    - club_dev
+  only:
+    - develop
+  before_script:
+    - cd /opt/jeanswest-club/jeanwest-admin/
+  script:
+    - sudo git pull origin
+    - sudo git checkout develop
+    - sudo yarn
+    - sudo pm2 restart jeanswest-admin
+    - echo "Please check 10.0.1.89:3000"
+  environment:
+    name: develop
+
+deploy_preprod:
   stage: deploy_preprod
   tags:
     - club_preprod
