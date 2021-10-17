@@ -1,8 +1,10 @@
 stages:
-  - deploy
+  - deploy_develop
+  - deploy_preprod
+  - deploy_prod
 
-deploy:
-  stage: deploy
+deploy_develop:
+  stage: deploy_develop
   tags:
     - club_dev
   only:
@@ -17,4 +19,38 @@ deploy:
     - echo "Please check 10.0.1.89:3000"
   environment:
     name: develop
-  
+
+deploy_preprod:
+  stage: deploy_preprod
+  tags:
+    - club_preprod
+  only:
+    - main
+  before_script:
+    - cd /opt/jeanswest-club/jeanwest-admin/
+  script:
+    - sudo git pull origin
+    - sudo git checkout main
+    - sudo yarn
+    - sudo pm2 restart jeanswest-admin
+    - echo "Please check 10.0.1.133:3000 or https://admin.jeanswest.club"
+  environment:
+    name: PreProduction
+
+deploy_prod:
+  stage: deploy_prod
+  tags:
+    - club_prod
+  only:
+    - main
+  before_script:
+    - cd /opt/jeanswest-club/jeanwest-admin/
+  script:
+    - sudo git pull origin
+    - sudo git checkout main
+    - sudo yarn
+    - sudo pm2 restart jeanswest-admin
+    - echo "Please check https://admin.avktn.com"
+  environment:
+    name: Production
+  when: manual
