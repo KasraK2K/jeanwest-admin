@@ -144,9 +144,21 @@
     </template>
 
     <template v-slot:[`item.options`]="{ item }">
+      <!-- edit -->
+      <!-- <v-chip
+        class="ml-2"
+        color="blue"
+        link
+        label
+        outlined
+        close
+        close-icon="mdi-square-edit-outline"
+        @click:close="$router.push({ name: 'EditAdmin' })"
+        @click="$router.push({ name: 'EditAdmin' })"
+      >ویرایش</v-chip> -->
+
       <!-- active/deactive -->
       <v-chip
-        class="ml-2"
         :color="item.active ? 'yellow' : 'green'"
         link
         label
