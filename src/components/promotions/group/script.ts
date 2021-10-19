@@ -8,6 +8,8 @@ import * as _ from "lodash";
 class EditPromotionGroup extends Vue {
   @Prop(Object) readonly defaultData!: IPromotionGroup;
   @Prop(Object) readonly group!: IGroup;
+  @Prop(String) readonly name!: string;
+  @Prop(String) readonly exportEventName!: string;
 
   private ready = false;
   private updateGroupData!: IGroup;
@@ -57,7 +59,7 @@ class EditPromotionGroup extends Vue {
 
   private updateGroup() {
     this.sanitize();
-    this.update();
+    this.checkForUpdateOrExport();
   }
 
   private sanitize() {
@@ -95,6 +97,15 @@ class EditPromotionGroup extends Vue {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         delete (this as any).updateGroupData.target[key];
     }
+  }
+
+  private checkForUpdateOrExport() {
+    this.exportEventName
+      ? this.$emit(this.exportEventName, {
+          group: this.exportEventName,
+          data: this.updateGroupData,
+        })
+      : this.update;
   }
 
   private update() {
