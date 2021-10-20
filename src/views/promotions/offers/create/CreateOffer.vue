@@ -1,19 +1,19 @@
 <template>
-  <v-container fluid v-if="ready">
+  <v-container fluid>
     <h1 class="blue--text">{{ title }}</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
     <!-- ────────────────────────────────────────────────────────────────────────
-    //   :::::: U P D A T E   O F F E R : :  :   :    :     :        :          :
+    //   :::::: C R E A T E   O F F E R : :  :   :    :     :        :          :
     // ────────────────────────────────────────────────────────────────────── -->
     <v-row>
       <v-col>
         <v-card elevation="2" outlined id="offer" class="mt-2 pa-4">
           <v-card-title>
-            <label for="name" class="pointer">ویرایش پیشنهاد</label>
+            <label for="name" class="pointer">ایجاد پیشنهاد</label>
           </v-card-title>
 
-          <v-form @submit.prevent="updateOffer(true)">
+          <v-form @submit.prevent="createOffer(true)">
             <v-row>
               <!-- offer.name -->
               <v-col cols="12" md="4">
@@ -23,22 +23,6 @@
                   hide-details="auto"
                   id="name"
                 />
-              </v-col>
-
-              <!-- offer.active -->
-              <v-col cols="12" md="2">
-                <v-autocomplete
-                  label="وضعیت"
-                  v-model="offer.active"
-                  :items="[
-                    { text: 'فعال', value: true },
-                    { text: 'غیرفعال', value: false },
-                  ]"
-                  item-text="text"
-                  item-value="value"
-                  hide-details="auto"
-                  clearable
-                ></v-autocomplete>
               </v-col>
 
               <!-- offer.singularity -->
@@ -72,6 +56,16 @@
                 <v-text-field
                   label="حداکثر مبلغ تخفیف"
                   v-model.number="offer.maxDiscount"
+                  type="number"
+                  hide-details="auto"
+                />
+              </v-col>
+
+              <!-- offer.countLimit -->
+              <v-col cols="12" md="2">
+                <v-text-field
+                  label="محدودیت در تعداد"
+                  v-model.number="offer.countLimit"
                   type="number"
                   hide-details="auto"
                 />
@@ -128,16 +122,6 @@
                 <v-text-field
                   label="مقدار تخفیف target"
                   v-model.number="offer.target.reduction"
-                  type="number"
-                  hide-details="auto"
-                />
-              </v-col>
-
-              <!-- offer.countLimit -->
-              <v-col cols="12" md="2">
-                <v-text-field
-                  label="محدودیت در تعداد"
-                  v-model.number="offer.countLimit"
                   type="number"
                   hide-details="auto"
                 />
@@ -270,7 +254,7 @@
             </v-row>
 
             <v-btn type="submit" large color="primary" class="mt-4"
-              >ویرایش</v-btn
+              >ایجاد</v-btn
             >
           </v-form>
         </v-card>
@@ -282,7 +266,7 @@
     // ──────────────────────────────────────────────────────────────────────── -->
     <EditGroup
       :default-data="defaultData"
-      :group="triggerGroup"
+      :group="defaultTargetData"
       name="trigger"
       exportEventName="triggerGroup"
       :showButton="false"
@@ -295,7 +279,7 @@
     // ───────────────────────────────────────────────────────────────────────── -->
     <EditGroup
       :default-data="defaultData"
-      :group="targetGroup"
+      :group="defaultTargetData"
       name="target"
       exportEventName="targetGroup"
       :showButton="false"
@@ -313,13 +297,12 @@ import { IOffer } from "@/interfaces/entities/offer.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import * as _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
-import { formatDate } from "@/mixin/date.mixin";
-import { IGroup } from "@/interfaces/entities/group.interface";
+// import { formatDate } from "@/mixin/date.mixin";
+import { IGroup, ITarget } from "@/interfaces/entities/group.interface";
+
+const noNumber: number = undefined as unknown as number;
 
 export default Vue.extend({
-  props: {
-    id: { type: String, required: true },
-  },
   data(): {
     [key: string]: unknown;
     offer: IOffer;
@@ -329,7 +312,7 @@ export default Vue.extend({
     expirationDateMenu: boolean;
     time: Record<string, string>;
   } {
-    const title = "ویرایش پیشنهاد ";
+    const title = "ایجاد پیشنهاد ";
     return {
       title,
       breadcrumbs: [
@@ -346,8 +329,24 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
-      ready: false,
-      offer: {} as unknown as IOffer,
+      offer: {
+        name: "",
+        code: "",
+        singularity: false,
+        trigger: { type: "", value: noNumber },
+        target: {
+          type: "",
+          value: noNumber,
+          reduction: noNumber,
+        },
+        maxDiscount: noNumber,
+        minTotal: noNumber,
+        countLimit: noNumber,
+        expirationDate: null,
+        startDate: null,
+        triggerGroup: {},
+        targetGroup: {},
+      } as IOffer,
       context: "",
       defaultData: DefaultData,
       startDateMenu: false,
@@ -363,38 +362,18 @@ export default Vue.extend({
       expirationTimeMenu: false,
       expirationTimePickerMenu: false,
       expirationTime: "",
-      triggerGroup: {} as IGroup,
-      targetGroup: {} as IGroup,
+      defaultTargetData: {
+        target: {} as ITarget,
+      } as IGroup,
     };
   },
-  methods: {
-    findOne(): void {
-      Vue.prototype.$api.promotion.findOneOffer(this.id).then((response) => {
-        this.offer = response.data;
-        this.title += this.offer.name;
-        this.triggerGroup = this.offer.triggerGroup;
-        this.targetGroup = this.offer.targetGroup;
-        if (this.offer.startDate) {
-          this.time.startTime = formatDate(this.offer.startDate, "HH:mm");
-          this.time.startDate = formatDate(this.offer.startDate);
-        }
-        if (this.offer.expirationDate) {
-          this.time.expirationTime = formatDate(
-            this.offer.expirationDate,
-            "HH:mm"
-          );
-          this.time.expirationDate = formatDate(this.offer.expirationDate);
-        }
-        this.divisionTen();
-        this.ready = true;
-      });
-    },
 
+  methods: {
     getExportedData(event): void {
       this.offer[event.group] = event.data.target;
     },
 
-    updateOffer(back: boolean): void {
+    createOffer(back?: boolean): void {
       Promise.resolve(() => {
         (this as any).$refs.triggerGroupComponent.updateGroup();
       }).then(() => {
@@ -411,13 +390,13 @@ export default Vue.extend({
       );
       this.multiplyTen();
       Vue.prototype.$api.promotion
-        .editOffer(this.offer, this.id)
+        .createOffer(this.offer, this.id)
         .then(() => {
-          Vue.prototype.$toast("success", "پیشنهاد با موفقیت بروزرسانی شد.");
+          Vue.prototype.$toast("success", "پیشنهاد با موفقیت ایجاد شد.");
           back && this.$router.push({ name: "AllOffers" });
         })
         .catch(() => {
-          Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
+          Vue.prototype.$toast("error", "مشکلی در ایجاد پیشنهاد رخ داد.");
         });
     },
 
@@ -431,20 +410,6 @@ export default Vue.extend({
         maxDiscount: this.changeNumber(
           this.offer.maxDiscount,
           OperatorEnum.MULTIPLE
-        ),
-      });
-    },
-
-    divisionTen(): void {
-      _.assign(this.offer, {
-        reduction:
-          this.offer.target.reduction > 1
-            ? this.offer.target.reduction / 10
-            : this.offer.target.reduction,
-        minTotal: this.changeNumber(this.offer.minTotal, OperatorEnum.DIVIDER),
-        maxDiscount: this.changeNumber(
-          this.offer.maxDiscount,
-          OperatorEnum.DIVIDER
         ),
       });
     },
@@ -475,11 +440,9 @@ export default Vue.extend({
       this.time.expirationDate = "";
     },
   },
+
   components: {
     EditGroup,
-  },
-  mounted() {
-    this.findOne();
   },
 });
 </script>

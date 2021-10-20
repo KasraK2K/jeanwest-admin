@@ -5,6 +5,7 @@ import EditDiscount from "@/views/promotions/discounts/edit/EditDiscount.vue";
 
 // ─── OFFERS ─────────────────────────────────────────────────────────────────────
 import AllOffers from "@/views/promotions/offers/AllOffers.vue";
+import CreateOffer from "@/views/promotions/offers/create/CreateOffer.vue";
 import EditOffer from "@/views/promotions/offers/edit/EditOffer.vue";
 
 // ─── JEAPOINTS ──────────────────────────────────────────────────────────────────
@@ -55,6 +56,14 @@ export const promotions: IRouter[] = [
     component: AllOffers,
     meta: {
       title: "لیست پیشنهادات",
+    },
+  },
+  {
+    path: "/promotions/offers/create",
+    name: "CreateOffer",
+    component: CreateOffer,
+    meta: {
+      title: "ایجاد پیشنهاد",
     },
   },
   {

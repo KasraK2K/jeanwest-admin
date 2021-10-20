@@ -62,6 +62,10 @@ export const Promotion = {
     return apiClient.patch(`${modulePath}/offer/${id}`, data);
   },
 
+  createOffer(data: Partial<IOffer>): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/offer/create`, data);
+  },
+
   // ────────────────────────────────────────────────────────────
   //   :::::: G R O U P : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import { ITarget } from "@/interfaces/entities/group.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
@@ -10,6 +10,7 @@ class EditPromotionGroup extends Vue {
   @Prop(Object) readonly group!: IGroup;
   @Prop(String) readonly name!: string;
   @Prop(String) readonly exportEventName!: string;
+  @Prop({ type: Boolean, default: true }) readonly showButton!: boolean;
 
   private ready = false;
   private updateGroupData!: IGroup;
@@ -89,13 +90,9 @@ class EditPromotionGroup extends Vue {
     for (const item of _.entries(this.updateGroupData.target as ITarget)) {
       const key = item[0];
       const value = item[1];
-      if (
-        typeof value !== "object" ||
-        (value["eq"] && value["eq"].length === 0) ||
-        (value["ct"] && value["ct"].length === 0)
-      )
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        delete (this as any).updateGroupData.target[key];
+
+      if (typeof value !== "object" || !_.entries(value)[1])
+        delete this.updateGroupData.target[key];
     }
   }
 

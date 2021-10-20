@@ -172,7 +172,14 @@
           </v-col>
         </v-row>
 
-        <v-btn type="submit" large color="primary" class="mt-4">ویرایش</v-btn>
+        <v-btn
+          v-if="showButton"
+          type="submit"
+          large
+          color="primary"
+          class="mt-4"
+          >ویرایش</v-btn
+        >
       </v-form>
     </v-card>
   </v-col>

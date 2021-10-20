@@ -230,7 +230,7 @@ export default Vue.extend({
           })
           .catch(() => {
             this.inProgress = true;
-            Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
+            Vue.prototype.$toast("error", "مشکلی در ایجاد اعلان رخ داد.");
           });
 
         Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
