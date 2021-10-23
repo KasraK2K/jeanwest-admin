@@ -58,7 +58,7 @@ class EditPromotionGroup extends Vue {
     this.ready = true;
   }
 
-  private updateGroup() {
+  public updateGroup(): void {
     this.sanitize();
     this.checkForUpdateOrExport();
   }
@@ -74,7 +74,7 @@ class EditPromotionGroup extends Vue {
 
     if (this.quantity && this.quantityType)
       this.updateGroupData.target.quantity = {
-        [String(this.quantityType)]: Number(this.quantity),
+        [this.quantityType]: Number(this.quantity),
       };
 
     if (this.basePrice && this.basePriceType)
@@ -88,10 +88,11 @@ class EditPromotionGroup extends Vue {
       };
 
     for (const item of _.entries(this.updateGroupData.target as ITarget)) {
-      const key = item[0];
-      const value = item[1];
+      const key: string = item[0];
+      const value: Record<string, unknown> = item[1];
+      const objectValue = _.entries(value)[0][1] as Array<any>;
 
-      if (typeof value !== "object" || !_.entries(value)[1])
+      if (typeof value !== "object" || !objectValue.length)
         delete this.updateGroupData.target[key];
     }
   }

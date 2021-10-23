@@ -13,7 +13,7 @@
             <label for="name" class="pointer">ویرایش پیشنهاد</label>
           </v-card-title>
 
-          <v-form @submit.prevent="updateOffer(true)">
+          <v-form @submit.prevent="beforeUpdate">
             <v-row>
               <!-- offer.name -->
               <v-col cols="12" md="4">
@@ -285,9 +285,7 @@
       :group="triggerGroup"
       name="trigger"
       exportEventName="triggerGroup"
-      :showButton="false"
       @triggerGroup="getExportedData"
-      ref="triggerGroupComponent"
     />
 
     <!-- ───────────────────────────────────────────────────────────────────────────
@@ -298,9 +296,7 @@
       :group="targetGroup"
       name="target"
       exportEventName="targetGroup"
-      :showButton="false"
       @targetGroup="getExportedData"
-      ref="targetGroupComponent"
     />
   </v-container>
 </template>
@@ -314,7 +310,7 @@ import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import * as _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
 import { formatDate } from "@/mixin/date.mixin";
-import { IGroup } from "@/interfaces/entities/group.interface";
+import { IGroup, ITarget } from "@/interfaces/entities/group.interface";
 
 export default Vue.extend({
   props: {
@@ -390,17 +386,11 @@ export default Vue.extend({
       });
     },
 
-    getExportedData(event): void {
-      this.offer[event.group] = event.data.target;
+    getExportedData(event: any) {
+      this.updateOffer({ [event.group]: event.data.target });
     },
 
-    updateOffer(back: boolean): void {
-      Promise.resolve(() => {
-        (this as any).$refs.triggerGroupComponent.updateGroup();
-      }).then(() => {
-        (this as any).$refs.targetGroupComponent.updateGroup();
-      });
-
+    beforeUpdate() {
       this.offer.startDate = this.timeGenerator(
         this.time.startDate,
         this.time.startTime
@@ -410,8 +400,18 @@ export default Vue.extend({
         this.time.expirationTime
       );
       this.multiplyTen();
+
+      const offerWithOutGroup: Partial<IOffer> = _.omit(this.offer, [
+        "triggerGroup",
+        "targetGroup",
+      ]) as Partial<IOffer>;
+
+      this.updateOffer(offerWithOutGroup, true);
+    },
+
+    updateOffer(data: Partial<IOffer>, back = false) {
       Vue.prototype.$api.promotion
-        .editOffer(this.offer, this.id)
+        .editOffer(data, this.id)
         .then(() => {
           Vue.prototype.$toast("success", "پیشنهاد با موفقیت بروزرسانی شد.");
           back && this.$router.push({ name: "AllOffers" });

@@ -264,7 +264,7 @@
     <!-- ──────────────────────────────────────────────────────────────────────────
     //   :::::: T R I G G E R   G R O U P : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────── -->
-    <EditGroup
+    <!-- <EditGroup
       :default-data="defaultData"
       :group="defaultTargetData"
       name="trigger"
@@ -272,12 +272,12 @@
       :showButton="false"
       @triggerGroup="getExportedData"
       ref="triggerGroupComponent"
-    />
+    /> -->
 
     <!-- ───────────────────────────────────────────────────────────────────────────
     //   :::::: T A R G E T   G R O U P : :  :   :    :     :        :          :
     // ───────────────────────────────────────────────────────────────────────── -->
-    <EditGroup
+    <!-- <EditGroup
       :default-data="defaultData"
       :group="defaultTargetData"
       name="target"
@@ -285,13 +285,13 @@
       :showButton="false"
       @targetGroup="getExportedData"
       ref="targetGroupComponent"
-    />
+    /> -->
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import EditGroup from "@/components/promotions/group/EditGroup.vue";
+// import EditGroup from "@/components/promotions/group/EditGroup.vue";
 import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-group";
 import { IOffer } from "@/interfaces/entities/offer.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
@@ -362,23 +362,23 @@ export default Vue.extend({
       expirationTimeMenu: false,
       expirationTimePickerMenu: false,
       expirationTime: "",
-      defaultTargetData: {
-        target: {} as ITarget,
-      } as IGroup,
+      // defaultTargetData: {
+      //   target: {} as ITarget,
+      // } as IGroup,
     };
   },
 
   methods: {
-    getExportedData(event): void {
-      this.offer[event.group] = event.data.target;
-    },
+    // getExportedData(event): void {
+    //   this.offer[event.group] = event.data.target;
+    // },
 
     createOffer(back?: boolean): void {
-      Promise.resolve(() => {
-        (this as any).$refs.triggerGroupComponent.updateGroup();
-      }).then(() => {
-        (this as any).$refs.targetGroupComponent.updateGroup();
-      });
+      // Promise.resolve(() => {
+      //   (this as any).$refs.triggerGroupComponent.updateGroup();
+      // }).then(() => {
+      //   (this as any).$refs.targetGroupComponent.updateGroup();
+      // });
 
       this.offer.startDate = this.timeGenerator(
         this.time.startDate,
@@ -441,8 +441,8 @@ export default Vue.extend({
     },
   },
 
-  components: {
-    EditGroup,
-  },
+  // components: {
+  //   EditGroup,
+  // },
 });
 </script>
