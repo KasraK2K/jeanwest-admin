@@ -104,7 +104,13 @@
         <v-col cols="12" md="9">
           <v-toolbar flat>
             <v-toolbar-title>
-              <h1 class="blue--text">{{ title }}</h1>
+              <div class="d-flex justify-start align-center">
+                <h1 class="blue--text">{{ title }}</h1>
+                <v-divider vertical class="mx-4"></v-divider>
+                <router-link :to="{ name: 'CreateAdmin' }">
+                  <v-icon color="blue" large>mdi-plus-circle</v-icon>
+                </router-link>
+              </div>
             </v-toolbar-title>
           </v-toolbar>
         </v-col>
@@ -145,7 +151,7 @@
 
     <template v-slot:[`item.options`]="{ item }">
       <!-- edit -->
-      <!-- <v-chip
+      <v-chip
         class="ml-2"
         color="blue"
         link
@@ -153,9 +159,10 @@
         outlined
         close
         close-icon="mdi-square-edit-outline"
-        @click:close="$router.push({ name: 'EditAdmin' })"
+        @click:close="$router.push({ name: 'EditAdmin', params: { id: item.id } })"
         @click="$router.push({ name: 'EditAdmin' })"
-      >ویرایش</v-chip> -->
+        >ویرایش</v-chip
+      >
 
       <!-- active/deactive -->
       <v-chip

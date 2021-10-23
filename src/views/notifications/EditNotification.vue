@@ -12,7 +12,7 @@
 
     <v-row>
       <v-col cols="12" :md="formCondition() ? '9' : '12'">
-        <v-card id="form" class="mt-2 pa-4">
+        <v-card elevation="2" outlined id="form" class="mt-2 pa-4">
           <v-row>
             <v-col cols="12" :md="formCondition() ? '12' : '6'">
               <v-text-field
@@ -92,7 +92,7 @@
       </v-col>
 
       <v-col v-if="formCondition()" cols="12" md="3" class="mb-5">
-        <v-card elevation="2" class="mx-auto mt-2" max-width="374">
+        <v-card elevation="2" outlined class="mx-auto mt-2" max-width="374">
           <v-card-title>
             <v-img
               v-if="iconUrl"
@@ -267,7 +267,7 @@ export default Vue.extend({
             this.inProgress = true;
             Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
           });
-      } catch (error) {
+      } catch (error: any) {
         this.inProgress = false;
         Vue.prototype.$toast("error", error.message);
       }

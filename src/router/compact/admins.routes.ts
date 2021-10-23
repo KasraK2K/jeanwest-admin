@@ -1,6 +1,7 @@
 import { IRouter } from "@/interfaces/others/route.interface";
 import AllAdmins from "@/views/admins/list/AllAdmins.vue";
 import EditAdmin from "@/views/admins/edit/EditAdmin.vue";
+import CreateAdmin from "@/views/admins/create/CreateAdmin.vue";
 
 export const admins: IRouter[] = [
   {
@@ -9,6 +10,14 @@ export const admins: IRouter[] = [
     component: AllAdmins,
     meta: {
       title: "لیست ادمین‌ها",
+    },
+  },
+  {
+    path: "/admins/create",
+    name: "CreateAdmin",
+    component: CreateAdmin,
+    meta: {
+      title: "ایجاد ادمین",
     },
   },
   {
