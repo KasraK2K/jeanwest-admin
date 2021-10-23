@@ -22,3 +22,9 @@ export const globals = {
   /** NOTE: Firebase Cloud Messaging send API */
   fcmBaseUrl: process.env.VUE_APP_FCM_BASE_URL,
 };
+
+export const local = {
+  theme: {
+    dark: "local.theme.dark",
+  },
+};
