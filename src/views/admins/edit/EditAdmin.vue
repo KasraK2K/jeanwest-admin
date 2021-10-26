@@ -229,8 +229,8 @@ export default Vue.extend({
         })
         .catch((error) => {
           const data = error.response.data;
-          data.statusCode === 400
-            ? Vue.prototype.$toast("error", data.message)
+          data.statusCode === 409
+            ? Vue.prototype.$toast("error", "ادمین با این موبایل موجود است.")
             : Vue.prototype.$toast("error", "مشکلی در ویرایش ادمین رخ داد.");
         });
     },

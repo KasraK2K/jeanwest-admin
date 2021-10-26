@@ -33,7 +33,7 @@
               <v-col cols="12" md="3">
                 <v-text-field
                   label="موبایل"
-                  v-model.trim="admin.phoneNumber"
+                  v-model.trim="phoneNumber"
                   :rules="rules.mobile"
                   hide-details="auto"
                 >
@@ -138,6 +138,7 @@ export default Vue.extend({
   data(): {
     [key: string]: unknown;
     admin: IAdmin;
+    phoneNumber: string;
   } {
     const title = "ایجاد ادمین جدید";
     return {
@@ -162,6 +163,7 @@ export default Vue.extend({
         phoneNumber: undefined,
         permissions: [],
       } as unknown as IAdmin,
+      phoneNumber: "",
       AdminCrudPermissions,
       AdminModulePermissions,
       AllModuleAccess,
@@ -194,7 +196,7 @@ export default Vue.extend({
 
   methods: {
     createAdmin() {
-      this.admin.phoneNumber = this.admin.phoneNumber.slice(1);
+      this.admin.phoneNumber = this.phoneNumber.slice(1);
       Vue.prototype.$api.admin
         .create(this.admin)
         .then(() => {

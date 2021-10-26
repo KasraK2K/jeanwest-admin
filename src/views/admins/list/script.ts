@@ -26,7 +26,7 @@ class AllAdmins extends Vue {
   private page = 1;
   private pageCount = 1;
   private limit = 10;
-  private active: undefined;
+  private active: boolean = null as unknown as boolean;
   // filter
   // private type = undefined;
   // private status = undefined;
