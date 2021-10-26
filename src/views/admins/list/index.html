@@ -160,7 +160,7 @@
         close
         close-icon="mdi-square-edit-outline"
         @click:close="$router.push({ name: 'EditAdmin', params: { id: item.id } })"
-        @click="$router.push({ name: 'EditAdmin' })"
+        @click="$router.push({ name: 'EditAdmin', params: { id: item.id } })"
         >ویرایش</v-chip
       >
 

@@ -18,8 +18,8 @@ export const Admin = {
     return await apiClient.post(`${modulePath}/create`, data);
   },
 
-  edit(data: Partial<IAdmin>): Promise<AxiosResponse> {
-    return apiClient.patch(`${modulePath}/edit`, data);
+  edit(data: Partial<IAdmin>, id: string): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/edit/${id}`, data);
   },
 
   toggleCustomer(

@@ -111,7 +111,7 @@
             </v-row>
 
             <v-btn type="submit" large color="primary" class="mt-4"
-              >ویرایش</v-btn
+              >ایجاد</v-btn
             >
           </v-form>
         </v-card>

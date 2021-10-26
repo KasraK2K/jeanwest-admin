@@ -100,7 +100,7 @@ class AllAdmins extends Vue {
 
   private toggleActivation(id: string, active: boolean): void {
     Vue.prototype.$api.admin
-      .edit({ id, active: !active })
+      .edit({ active: !active }, id)
       .then(() => this.getList());
   }
 }
