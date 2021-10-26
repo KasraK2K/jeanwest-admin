@@ -26,6 +26,7 @@ class AllAdmins extends Vue {
   private page = 1;
   private pageCount = 1;
   private limit = 10;
+  private active: undefined;
   // filter
   // private type = undefined;
   // private status = undefined;
@@ -89,7 +90,9 @@ class AllAdmins extends Vue {
       page: { eq: this.page },
       limit: { eq: this.limit },
     };
-    const filters: IFilters = {};
+    const filters: IFilters = {
+      active: { eq: this.active },
+    };
     this.pagination = paginationGenerator(options, filters);
   }
 
