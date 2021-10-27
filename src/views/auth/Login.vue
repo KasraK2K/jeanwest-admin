@@ -109,7 +109,6 @@ export default Vue.extend({
       const data = {
         phoneNumber: this.phoneNumberGen(),
       };
-      console.log(data);
       if (this.valid) {
         Vue.prototype.$api.auth
           .getPin(data)

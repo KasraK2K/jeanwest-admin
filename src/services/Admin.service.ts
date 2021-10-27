@@ -1,3 +1,4 @@
+import { IAdmin } from "@/interfaces/entities/admin.interface";
 import { IPagination } from "@/interfaces/others/pagination.interface";
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
@@ -9,16 +10,16 @@ export const Admin = {
     return apiClient.post(`${modulePath}/list`, pagination);
   },
 
-  // async findOne(id: string): Promise<AxiosResponse> {
-  //   return await apiClient.get(`${modulePath}/${id}`);
-  // },
+  async findOne(id: string): Promise<AxiosResponse> {
+    return await apiClient.get(`${modulePath}/${id}`);
+  },
 
-  // async create(data: Record<string, unknown>): Promise<AxiosResponse> {
-  //   return await apiClient.post(modulePath, data);
-  // },
+  async create(data: IAdmin): Promise<AxiosResponse> {
+    return await apiClient.post(`${modulePath}/create`, data);
+  },
 
-  edit(data: Record<string, unknown>): Promise<AxiosResponse> {
-    return apiClient.patch(`${modulePath}/edit`, data);
+  edit(data: Partial<IAdmin>, id: string): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/edit/${id}`, data);
   },
 
   toggleCustomer(
@@ -27,6 +28,4 @@ export const Admin = {
   ): Promise<AxiosResponse> {
     return apiClient.patch(`${modulePath}/deactivate/customer/${id}`, data);
   },
-
-  // async softDelete() {},
 };

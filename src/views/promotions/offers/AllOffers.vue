@@ -5,100 +5,7 @@
     <!-- ------------------------------------------------------------------------ */
     /*                                START: Filter                               */
     ---------------------------------------------------------------------------- -->
-    <v-card class="mb-8" elevation="1" outlined>
-      <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
-      <v-row class="mx-4">
-        <v-col class="col-12 col-md-4">
-          <v-text-field
-            label="کد"
-            placeholder="لطفا کد پیشنهاد را وارد کنید."
-            v-model="code"
-            @change="paginateGenerator()"
-            outlined
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
 
-        <v-col class="col-12 col-md-4">
-          <v-text-field
-            label="نام"
-            placeholder="لطفا نام پیشنهاد را وارد کنید."
-            v-model="name"
-            @change="paginateGenerator()"
-            outlined
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col class="col-12 col-md-4">
-          <v-autocomplete
-            label="وضعیت"
-            v-model="active"
-            :items="[
-              { text: 'فعال', value: true },
-              { text: 'غیرفعال', value: false },
-            ]"
-            item-text="text"
-            item-value="value"
-            @change="paginateGenerator()"
-            outlined
-            hide-details="auto"
-          ></v-autocomplete>
-        </v-col>
-
-        <v-col class="col-12 col-md-4">
-          <v-text-field
-            label="گروه هدف"
-            placeholder="لطفا گروه هدف را وارد کنید."
-            v-model="target_group"
-            @change="paginateGenerator()"
-            outlined
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col class="col-12 col-md-4">
-          <v-text-field
-            label="گروه پیشنهاد"
-            placeholder="لطفا گروه پیشنهاد را وارد کنید."
-            v-model="trigger_group"
-            @change="paginateGenerator()"
-            outlined
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col class="col-12 col-md-4">
-          <v-menu
-            v-model="datesMenu"
-            :close-on-content-click="false"
-            :nudge-top="20"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="dates"
-                label="بازه زمان شروع یا پایان"
-                placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید."
-                readonly
-                clearable
-                v-bind="attrs"
-                v-on="on"
-                @click:clear="clearDateFilter()"
-                outlined
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="dates"
-              multiple
-              @change="paginateGenerator()"
-            ></v-date-picker>
-          </v-menu>
-        </v-col>
-      </v-row>
-    </v-card>
     <!-- ----------------------------- END: Filter ----------------------------- -->
 
     <!-- ------------------------------------------------------------------------ */
@@ -109,10 +16,11 @@
         { text: 'شماره', value: 'no', align: 'center' },
         { text: 'کد', value: 'code' },
         { text: 'نام', value: 'name' },
-        { text: 'گروه هدف', value: 'target_group' },
-        { text: 'گروه پیشنهاد', value: 'trigger_group' },
-        { text: 'زمان شروع', value: 'start_at' },
-        { text: 'زمان پایان', value: 'end_at' },
+        { text: 'محدودیت در تعداد ', value: 'countLimit' },
+        { text: 'حداقل مبلغ خرید', value: 'minTotal' },
+        { text: 'اعمال همزمان', value: 'singularity' },
+        { text: 'زمان ایجاد', value: 'datetime.created_at' },
+        { text: 'زمان بروزرسانی', value: 'datetime.updated_at' },
         {
           text: 'گزینه‌ها',
           value: 'options',
@@ -139,7 +47,7 @@
                 <div class="d-flex justify-start align-center">
                   <h1 class="blue--text">{{ title }}</h1>
                   <v-divider vertical class="mx-4"></v-divider>
-                  <router-link to="/createOffer">
+                  <router-link :to="{ name: 'CreateOffer' }">
                     <v-icon color="blue" large>mdi-plus-circle</v-icon>
                   </router-link>
                 </div>
@@ -162,49 +70,36 @@
       </template>
 
       <template v-slot:[`item.code`]="{ item }">
-        <v-tooltip
-          top
-          :color="item.active ? 'green' : 'pink'"
-          :open-on-hover="false"
-          :open-on-click="true"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <span
-              :class="item.active ? 'green--text' : 'pink--text'"
-              v-bind="attrs"
-              v-on="on"
-            >
-              {{ item.code }}
-            </span>
-          </template>
-          <span>{{ item.filter }}</span>
-        </v-tooltip>
+        <span :class="item.active ? 'green--text' : 'pink--text'">
+          {{ item.code }}
+        </span>
       </template>
 
-      <template v-slot:[`item.start_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.start_at)) }}
+      <template v-slot:[`item.countLimit`]="{ item }">
+        {{
+          item.countLimit === -1 ? "ندارد" : toPersianString(item.countLimit)
+        }}
       </template>
 
-      <template v-slot:[`item.end_at`]="{ item }">
-        {{ toPersianString(toPersianTime(item.end_at)) }}
+      <template v-slot:[`item.minTotal`]="{ item }">
+        {{ toPersianString(numberToCash(item.minTotal / 10)) }}
+      </template>
+
+      <template v-slot:[`item.singularity`]="{ item }">
+        <span :class="item.singularity ? 'red--text' : 'green--text'">
+          {{ item.singularity ? "خیر" : "بله" }}
+        </span>
+      </template>
+
+      <template v-slot:[`item.datetime.created_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.created_at)) }}
+      </template>
+
+      <template v-slot:[`item.datetime.updated_at`]="{ item }">
+        {{ toPersianString(toPersianTime(item.datetime.updated_at)) }}
       </template>
 
       <template v-slot:[`item.options`]="{ item }">
-        <!-- group -->
-        <v-chip
-          class="ml-2"
-          color="yellow"
-          link
-          label
-          outlined
-          close
-          close-icon="mdi-square-edit-outline"
-          @click:close="$router.push({ path: 'editOffer' })"
-          :to="{ path: 'editOffer' }"
-        >
-          گروه
-        </v-chip>
-
         <!-- edit -->
         <v-chip
           class="ml-2"
@@ -214,24 +109,12 @@
           outlined
           close
           close-icon="mdi-square-edit-outline"
-          @click:close="$router.push({ path: 'editOffer' })"
-          :to="{ path: 'editOffer' }"
+          @click:close="
+            $router.push({ name: 'EditOffer', params: { id: item.id } })
+          "
+          :to="{ name: 'EditOffer', params: { id: item.id } }"
         >
           ویرایش
-        </v-chip>
-
-        <!-- delete -->
-        <v-chip
-          color="red"
-          link
-          label
-          outlined
-          close
-          close-icon="mdi-delete"
-          @click:close="deleteNotification(item.id)"
-          @click="deleteNotification(item.id)"
-        >
-          حذف
         </v-chip>
       </template>
     </v-data-table>
@@ -244,8 +127,8 @@
       <v-pagination
         v-model="page"
         :length="pageCount"
-        :total-visible="10"
-        @input="getList(page, limit, filter)"
+        :total-visible="limit"
+        @input="page = $event"
       ></v-pagination>
       <v-text-field
         style="max-width: 250px"
@@ -265,6 +148,13 @@
 
 <script lang="ts">
 import Vue from "vue";
+import {
+  IFilters,
+  IOptions,
+  IPagination,
+} from "@/interfaces/others/pagination.interface";
+import { paginationGenerator } from "@/common/utils/pagination.utils";
+import { IOffer } from "@/interfaces/entities/offer.interface";
 
 export default Vue.extend({
   data(): {
@@ -272,6 +162,9 @@ export default Vue.extend({
     page: number;
     pageCount: number;
     limit: number;
+    pagination: IPagination;
+    items: IOffer[];
+    minTotal: number;
   } {
     const title = "لیست پیشنهادات";
     return {
@@ -291,108 +184,81 @@ export default Vue.extend({
       search: "",
       // pagination
       page: 1,
-      pageCount: 1,
       limit: 10,
+      pageCount: 1,
       // filter
       code: undefined,
       name: undefined,
+      countLimit: undefined,
+      minTotal: undefined as unknown as number,
+      singularity: undefined,
       active: undefined,
-      target_group: undefined,
-      trigger_group: undefined,
       dates: undefined,
       datesMenu: false,
-      filter: {},
+      pagination: {
+        option: {
+          page: { eq: 1 },
+          limit: { eq: 10 },
+        },
+      },
+      groupDataName: undefined,
     };
   },
   watch: {
-    limit() {
+    limit(): void {
       this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+      this.pagination.option.limit = { eq: this.limit };
+      this.getList();
     },
-    filter() {
-      this.page = 1;
-      this.getList(this.page, this.limit, this.filter);
+    page(): void {
+      this.pagination.option.page = { eq: this.page };
+      this.getList();
+    },
+    pagination(): void {
+      this.getList();
+    },
+    items(): void {
+      this.loading = false;
     },
   },
   methods: {
-    getList(page: number, limit: number, filter?: unknown): void {
+    getList(): void {
       this.loading = true;
-      setTimeout(() => {
-        this.items = [
-          {
-            no: 1,
-            code: "Code01",
-            name: "نام پیشنهاد ۱",
-            active: true,
-            target_group: "TargetG-01",
-            trigger_group: "TriggerG-01",
-            start_at: "2021-04-27T14:20:22.783Z",
-            end_at: "2021-04-28T14:20:23.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
-          },
-          {
-            no: 2,
-            code: "Code02",
-            name: "نام پیشنهاد ۲",
-            active: false,
-            target_group: "TargetG-02",
-            trigger_group: "TriggerG-02",
-            start_at: "2021-04-27T14:20:23.783Z",
-            end_at: "2021-04-28T14:20:24.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
-          },
-          {
-            no: 3,
-            code: "Code03",
-            name: "نام پیشنهاد ۳",
-            active: false,
-            target_group: "TargetG-03",
-            trigger_group: "TriggerG-03",
-            start_at: "2021-04-27T14:20:24.783Z",
-            end_at: "2021-04-28T14:20:25.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
-          },
-          {
-            no: 4,
-            code: "Code04",
-            name: "نام پیشنهاد ۴",
-            active: true,
-            target_group: "TargetG-04",
-            trigger_group: "TriggerG-04",
-            start_at: "2021-04-27T14:20:25.783Z",
-            end_at: "2021-04-28T14:20:26.783Z",
-            filter: { target: "some target", trigger: "some trigger" },
-          },
-        ];
-        this.loading = false;
-      }, 500);
-      console.log(
-        `getList: { page: ${page}, limit: ${limit}, filter: ${JSON.stringify(
-          filter
-        )} }`
-      );
+      Vue.prototype.$api.promotion
+        .getOfferList(this.pagination)
+        .then((response) => {
+          const data = response.data;
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+        });
     },
-    paginateGenerator(): void {
-      this.filter = {
-        code: this.code,
-        name: this.name,
-        active: this.active,
-        target_group: this.target_group,
-        trigger_group: this.trigger_group,
-        dates: this.dates,
+    paginateGenerator() {
+      this.page = 1;
+      const options: IOptions = {
+        page: { eq: this.page },
+        limit: { eq: this.limit },
       };
+      const filters: IFilters = {
+        //   code: { eq: this.code },
+        //   name: { eq: this.name },
+        //   countLimit: { eq: this.countLimit },
+        //   minTotal: { eq: this.minTotal * 10 },
+        //   singularity: { eq: this.singularity },
+        //   active: { eq: this.active },
+      };
+      this.pagination = paginationGenerator(options, filters);
     },
     clearDateFilter(): void {
       this.dates = undefined;
       this.paginateGenerator();
     },
-    deleteNotification(id: string): void {
+    deleteOffer(id: string): void {
       console.log("delete id:", id);
-      // use service for delete notification with id
+      // use service for delete offer with id
     },
   },
   mounted(): void {
-    this.getList(this.page, this.limit);
+    this.getList();
   },
 });
 </script>

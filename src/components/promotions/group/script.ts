@@ -1,4 +1,4 @@
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import { ITarget } from "@/interfaces/entities/group.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
@@ -8,6 +8,9 @@ import * as _ from "lodash";
 class EditPromotionGroup extends Vue {
   @Prop(Object) readonly defaultData!: IPromotionGroup;
   @Prop(Object) readonly group!: IGroup;
+  @Prop(String) readonly name!: string;
+  @Prop(String) readonly exportEventName!: string;
+  @Prop({ type: Boolean, default: true }) readonly showButton!: boolean;
 
   private ready = false;
   private updateGroupData!: IGroup;
@@ -55,9 +58,9 @@ class EditPromotionGroup extends Vue {
     this.ready = true;
   }
 
-  private updateGroup() {
+  public updateGroup(): void {
     this.sanitize();
-    this.update();
+    this.checkForUpdateOrExport();
   }
 
   private sanitize() {
@@ -71,7 +74,7 @@ class EditPromotionGroup extends Vue {
 
     if (this.quantity && this.quantityType)
       this.updateGroupData.target.quantity = {
-        [String(this.quantityType)]: Number(this.quantity),
+        [this.quantityType]: Number(this.quantity),
       };
 
     if (this.basePrice && this.basePriceType)
@@ -85,16 +88,22 @@ class EditPromotionGroup extends Vue {
       };
 
     for (const item of _.entries(this.updateGroupData.target as ITarget)) {
-      const key = item[0];
-      const value = item[1];
-      if (
-        typeof value !== "object" ||
-        (value["eq"] && value["eq"].length === 0) ||
-        (value["ct"] && value["ct"].length === 0)
-      )
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        delete (this as any).updateGroupData.target[key];
+      const key: string = item[0];
+      const value: Record<string, unknown> = item[1];
+      const objectValue = _.entries(value)[0][1] as Array<any>;
+
+      if (typeof value !== "object" || !objectValue.length)
+        delete this.updateGroupData.target[key];
     }
+  }
+
+  private checkForUpdateOrExport() {
+    this.exportEventName
+      ? this.$emit(this.exportEventName, {
+          group: this.exportEventName,
+          data: this.updateGroupData,
+        })
+      : this.update;
   }
 
   private update() {

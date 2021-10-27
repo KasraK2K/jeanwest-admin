@@ -3,7 +3,7 @@
     <h1 class="blue--text">{{ title }}</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
-    <v-card id="form" class="mt-2 mb-5 pa-4">
+    <v-card elevation="2" outlined id="form" class="mt-2 mb-5 pa-4">
       <v-row>
         <v-col>
           <v-text-field

@@ -17,7 +17,7 @@
 
       <div class="d-flex align-center">
         <v-switch
-          v-model="$vuetify.theme.dark"
+          @click="changeTheme"
           class="mt-5 ml-4"
           color="white"
           inset
@@ -85,8 +85,9 @@
 <script lang="ts">
 import Vue from "vue";
 import SidebarLists from "@/components/SidebarLists.vue";
-import { tokenName } from "@/common/globals/globals";
+import { local, tokenName } from "@/common/globals/globals";
 import { mapState } from "vuex";
+import { dark } from "./plugins/theme";
 
 export default Vue.extend({
   name: "App",
@@ -94,6 +95,7 @@ export default Vue.extend({
   components: {
     SidebarLists,
   },
+
   data(): Record<string, unknown> {
     return {
       topbar: true,
@@ -103,10 +105,24 @@ export default Vue.extend({
       showTopMenuBtn: document.body.clientWidth > 1264,
     };
   },
+
   computed: {
     ...mapState(["token"]),
   },
+
+  mounted() {
+    const theme = JSON.parse(localStorage.getItem(local.theme.dark) || "true");
+    this.$vuetify.theme.dark = theme;
+  },
+
   methods: {
+    changeTheme() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      localStorage.setItem(
+        local.theme.dark,
+        JSON.stringify(this.$vuetify.theme.dark)
+      );
+    },
     onResize() {
       this.showTopMenuBtn = document.body.clientWidth > 1264;
     },

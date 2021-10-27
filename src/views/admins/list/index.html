@@ -4,74 +4,27 @@
   <!-- ------------------------------------------------------------------------ */
   /*                                START: Filter                               */
   ---------------------------------------------------------------------------- -->
-  <!-- <v-card class="mb-8" elevation="1" outlined rounded>
-      <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
-      <v-row class="mx-4">
-        <v-col class="col-12 col-md-3">
-          <v-autocomplete
-            label="نوع"
-            v-model="type"
-            :items="[
-              { text: 'پیامک', value: 'SMS' },
-              { text: 'اعلان', value: 'PUSH' },
-            ]"
-            item-text="text"
-            item-value="value"
-            @change="paginateGenerator({ page: 1 })"
-            outlined
-            hide-details="auto"
-          ></v-autocomplete>
-        </v-col>
+  <v-card class="mb-8" elevation="1" outlined>
+    <v-card-title class="blue--text">فیلتر {{ title }}</v-card-title>
+    <v-row class="mx-4">
 
-        <v-col class="col-12 col-md-3">
-          <v-autocomplete
-            label="وضعیت"
-            v-model="status"
-            :items="[
-              { text: 'ارسال شده', value: 1 },
-              { text: 'ارسال نشده', value: 0 },
+      <v-col cols="12" md="3">
+        <v-autocomplete
+          label="وضعیت"
+          v-model="active"
+          :items="[
+              { text: 'فعال', value: true },
+              { text: 'غیر فعال', value: false },
             ]"
-            item-text="text"
-            item-value="value"
-            @change="paginateGenerator()"
-            outlined
-            hide-details="auto"
-          ></v-autocomplete>
-        </v-col>
-
-        <v-col class="col-12 col-md-3">
-          <v-menu
-            ref="datesMenu"
-            v-model="datesMenu"
-            :close-on-content-click="false"
-            :nudge-top="20"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-            :close-on-content-click="false"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="dates"
-                label="تاریخ ایجاد یا ارسال"
-                placeholder="لطفا روزهای مورد نظر خود را انتخاب کنید."
-                readonly
-                clearable
-                v-bind="attrs"
-                v-on="on"
-                @click:clear="clearDateFilter()"
-                outlined
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="dates"
-              multiple
-              @change="paginateGenerator()"
-            ></v-date-picker>
-          </v-menu>
-        </v-col>
-      </v-row>
-    </v-card> -->
+          item-text="text"
+          item-value="value"
+          @change="paginateGenerator()"
+          clearable
+          outlined
+        ></v-autocomplete>
+      </v-col>
+    </v-row>
+  </v-card>
   <!-- ----------------------------- END: Filter ----------------------------- -->
 
   <!-- ------------------------------------------------------------------------ */
@@ -104,12 +57,18 @@
         <v-col cols="12" md="9">
           <v-toolbar flat>
             <v-toolbar-title>
-              <h1 class="blue--text">{{ title }}</h1>
+              <div class="d-flex justify-start align-center">
+                <h1 class="blue--text">{{ title }}</h1>
+                <v-divider vertical class="mx-4"></v-divider>
+                <router-link :to="{ name: 'CreateAdmin' }">
+                  <v-icon color="blue" large>mdi-plus-circle</v-icon>
+                </router-link>
+              </div>
             </v-toolbar-title>
           </v-toolbar>
         </v-col>
 
-        <v-col class="col-12 col-md-3">
+        <v-col cols="12" md="3">
           <v-text-field
             v-model="search"
             label="جستجو در این صفحه"
@@ -144,9 +103,22 @@
     </template>
 
     <template v-slot:[`item.options`]="{ item }">
-      <!-- active/deactive -->
+      <!-- edit -->
       <v-chip
         class="ml-2"
+        color="blue"
+        link
+        label
+        outlined
+        close
+        close-icon="mdi-square-edit-outline"
+        @click:close="$router.push({ name: 'EditAdmin', params: { id: item.id } })"
+        @click="$router.push({ name: 'EditAdmin', params: { id: item.id } })"
+        >ویرایش</v-chip
+      >
+
+      <!-- active/deactive -->
+      <v-chip
         :color="item.active ? 'yellow' : 'green'"
         link
         label

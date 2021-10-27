@@ -26,6 +26,7 @@ class AllAdmins extends Vue {
   private page = 1;
   private pageCount = 1;
   private limit = 10;
+  private active: boolean = null as unknown as boolean;
   // filter
   // private type = undefined;
   // private status = undefined;
@@ -89,7 +90,9 @@ class AllAdmins extends Vue {
       page: { eq: this.page },
       limit: { eq: this.limit },
     };
-    const filters: IFilters = {};
+    const filters: IFilters = {
+      active: { eq: this.active },
+    };
     this.pagination = paginationGenerator(options, filters);
   }
 
@@ -100,7 +103,7 @@ class AllAdmins extends Vue {
 
   private toggleActivation(id: string, active: boolean): void {
     Vue.prototype.$api.admin
-      .edit({ id, active: !active })
+      .edit({ active: !active }, id)
       .then(() => this.getList());
   }
 }

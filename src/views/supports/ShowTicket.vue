@@ -137,14 +137,19 @@ import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import { mapGetters } from "vuex";
 import { IPagination } from "@/interfaces/others/pagination.interface";
+import { toPersianString } from "@/mixin/string.mixin";
 
 export default Vue.extend({
+  props: {
+    id: { type: String, required: true },
+  },
+
   data(): {
     [key: string]: unknown;
     formStatus: { text: string | undefined; value: number | undefined };
     pagination: IPagination;
   } {
-    const title = "تیتر سوال کاربر";
+    const title = "تیتر سوال ";
     return {
       title,
       formHint: undefined,
@@ -171,15 +176,16 @@ export default Vue.extend({
       ],
     };
   },
-  props: {
-    id: { type: String, required: true },
-  },
+
   methods: {
     findOne(): void {
       Vue.prototype.$api.support.getList(this.pagination).then((response) => {
         let data = response.data.result[0];
         data.context = data.context.reverse();
         this.result = data;
+        this.title += `${data.customer.firstName} ${
+          data.customer.lastName
+        } - ۰${toPersianString(data.customer.phoneNumber)}`;
       });
     },
     createReply(): void {
@@ -207,12 +213,15 @@ export default Vue.extend({
       return this.themeGetter === "dark" ? "teal" : "teal lighten-4";
     },
   },
+
   components: {
     editor: Editor,
   },
+
   computed: {
     ...mapGetters(["themeGetter"]),
   },
+
   mounted() {
     this.findOne();
   },
