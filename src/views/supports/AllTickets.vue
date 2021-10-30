@@ -128,15 +128,11 @@
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
-        <v-chip
-          :color="statusColor(item.status)"
-          link
-          label
-          outlined
-          :to="{ name: 'ShowTicket', params: { id: item.id } }"
-        >
-          {{ statusText(item.status) }}
-        </v-chip>
+        <router-link :to="{ name: 'ShowTicket', params: { id: item.id } }">
+          <v-icon :color="statusColor(item.status)">{{
+            statusIcon(item.status)
+          }}</v-icon>
+        </router-link>
       </template>
     </v-data-table>
     <!-- ------------------------------ END: List ------------------------------ -->
@@ -262,16 +258,20 @@ export default Vue.extend({
       this.paginateGenerator();
     },
     statusColor(status: number): string {
-      if (status === 0) return "blue";
-      else if (status === 1) return "red";
+      if (status === 0) return "grey";
+      else if (status === 1) return "teal";
       else if (status === 2) return "yellow";
-      else return "purple";
+      else return "red";
     },
-    statusText(status: number): string {
-      if (status === 0) return "بسته";
-      else if (status === 1) return "باز";
-      else if (status === 2) return "پیگیری";
-      else return "تعریف نشده";
+    statusIcon(status: number): string {
+      // بسته
+      if (status === 0) return "mdi-check-all";
+      // باز
+      else if (status === 1) return "mdi-check";
+      // پیگیری
+      else if (status === 2) return "mdi-face-agent";
+      // تعریف نشده
+      else return "mdi-crosshairs-question";
     },
   },
   mounted(): void {
