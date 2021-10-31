@@ -75,6 +75,7 @@
     <v-data-table
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
+        { text: 'نام و نام خانوادگی', value: 'fullname', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
         { text: 'کد', value: 'code' },
         { text: 'زمان ایجاد', value: 'datetime.created_at' },
@@ -117,6 +118,14 @@
 
       <template v-slot:[`item.no`]="{ item }">
         {{ toPersianString(item.no) }}
+      </template>
+
+      <template v-slot:[`item.fullname`]="{ item }">
+        {{
+          toPersianString(
+            `${item.customer.firstName} ${item.customer.lastName}`
+          )
+        }}
       </template>
 
       <template v-slot:[`item.datetime.created_at`]="{ item }">
