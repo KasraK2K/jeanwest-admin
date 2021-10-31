@@ -33,7 +33,7 @@ class ShowOrder extends Vue {
   private mounted(): void {
     Vue.prototype.$api.order.findOne(this.id).then((response) => {
       this.order = response.data;
-      this.title += this.order.banimodeCode;
+      this.title += this.order.banimodeCode || "بدون کد";
       this.ready = true;
     });
   }
@@ -66,6 +66,15 @@ class ShowOrder extends Vue {
 
   private fullName(address: Record<string, string>) {
     return `${address.firstName} ${address.lastName}`;
+  }
+
+  private translatepromotionType(type: string) {
+    const types = new Map([
+      ["offer", "پیشنهاد"],
+      ["point", "جین‌پوینت"],
+      ["discount", "تخفیف"],
+    ]);
+    return types.has(type) ? types.get(type) : "تعریف نشده";
   }
 }
 

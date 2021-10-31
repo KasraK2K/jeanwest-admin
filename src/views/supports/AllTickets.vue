@@ -75,7 +75,7 @@
     <v-data-table
       :headers="[
         { text: 'شماره', value: 'no', align: 'center' },
-        { text: 'عنوان', value: 'fullname', sortable: false },
+        { text: 'نام و نام خانوادگی', value: 'fullname', sortable: false },
         { text: 'عنوان', value: 'title', sortable: false },
         { text: 'کد', value: 'code' },
         { text: 'زمان ایجاد', value: 'datetime.created_at' },

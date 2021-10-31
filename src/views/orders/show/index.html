@@ -160,6 +160,59 @@
     </v-row>
   </v-card>
 
+
+  <v-card v-if="order.promotion.detail && order.promotion.detail.length" elevation="2" outlined rounded class="mb-3">
+    <v-row>
+      <v-col v-for="promotion in order.promotion.detail" cols="12" md="6" lg="3" class="justify-center">
+        <v-card-title class="blue--text">{{ promotion.name }}</v-card-title>
+
+        <v-card-text>
+          <p>
+            <span>نوع:</span>
+            <span
+              class="font-weight-bold mr-2"
+            >
+              {{ translatepromotionType(promotion.type) }}
+            </span>
+          </p>
+          <p>
+            <span>کد:</span>
+            <span
+              class="font-weight-bold mr-2"
+            >
+              {{ promotion.code }}
+            </span>
+          </p>
+          <p>
+            <span>مجوز استفاده:</span>
+            <span
+              class="font-weight-bold mr-2"
+            >
+              {{ promotion.permit ? "دارد" : "ندارد" }}
+            </span>
+          </p>
+          <p>
+            <span>تخفیف انتخاب شده:</span>
+            <span
+              class="font-weight-bold mr-2"
+            >
+            {{ toPersianString(numberToCash(promotion.usedReduction / 10)) }} تومان
+            </span>
+          </p>
+          <p>
+            <span>تخفیف اعمال شده:</span>
+            <span
+              class="font-weight-bold mr-2"
+            >
+            {{ toPersianString(numberToCash(promotion.appliedReduction / 10)) }} تومان
+            </span>
+          </p>
+        </v-card-text>
+      </v-col>
+    </v-row>
+  </v-card>
+
+  <!-- REVIEW: change ui for this element to be more responsive -->
   <!-- ------------------------------------------------------------------------ */
   /*                                item details                                */
   /* ------------------------------------------------------------------------- -->
