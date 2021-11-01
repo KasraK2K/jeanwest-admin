@@ -87,7 +87,6 @@ import Vue from "vue";
 import SidebarLists from "@/components/SidebarLists.vue";
 import { local, tokenName } from "@/common/globals/globals";
 import { mapState } from "vuex";
-import { dark } from "./plugins/theme";
 
 export default Vue.extend({
   name: "App",
@@ -148,7 +147,7 @@ export default Vue.extend({
     },
     logOut(): void {
       localStorage.removeItem(tokenName);
-      this.$store.state.token = "";
+      this.$store.dispatch("setToken", "");
       this.checkLogin();
     },
   },

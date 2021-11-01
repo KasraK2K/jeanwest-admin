@@ -1,32 +1,44 @@
-import Vuex, { Store } from "vuex";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
-export const GlobalStore: Store<{
+interface IGlobalState {
   token: string;
   themeName: string;
-}> = new Vuex.Store({
-  state: {
-    token: "",
-    themeName: "",
+}
+
+const state = {
+  token: "",
+  themeName: "",
+};
+
+const mutations = {
+  SET_TOKEN(state: IGlobalState, token: string): void {
+    state.token = token;
   },
-  mutations: {
-    SET_TOKEN(state, token): void {
-      state.token = token;
-    },
-    SET_THEME(state, themeName): void {
-      state.themeName = themeName;
-    },
+  SET_THEME(state: IGlobalState, themeName: string): void {
+    state.themeName = themeName;
   },
-  actions: {
-    setToken({ commit }, token): void {
-      commit("SET_TOKEN", token);
-    },
-    setTheme({ commit }, themName): void {
-      commit("SET_THEME", themName);
-    },
+};
+
+const actions = {
+  setToken({ commit }, token: string): void {
+    commit("SET_TOKEN", token);
   },
-  modules: {},
-  getters: {
-    tokenGetter: (state): string => state.token,
-    themeGetter: (state): string => state.themeName,
-  }, // if we use multiple time some state like this.$store.categories.length whrite here
-});
+  setTheme({ commit }, themName: string): void {
+    commit("SET_THEME", themName);
+  },
+};
+
+const modules = {};
+
+const getters = {
+  tokenGetter: (state: IGlobalState): string => state.token,
+  themeGetter: (state: IGlobalState): string => state.themeName,
+};
+
+export const GlobalStore = {
+  state,
+  mutations,
+  actions,
+  modules,
+  getters,
+};

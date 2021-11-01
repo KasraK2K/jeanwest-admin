@@ -1,32 +1,33 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { GlobalStore } from "./compact/global.store";
+import { OrderStore } from "./compact/order.store";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    token: "",
-    themeName: "",
+    ...GlobalStore.state,
+    ...OrderStore.state,
   },
+
   mutations: {
-    SET_TOKEN(state, token): void {
-      state.token = token;
-    },
-    SET_THEME(state, themeName): void {
-      state.themeName = themeName;
-    },
+    ...GlobalStore.mutations,
+    ...OrderStore.mutations,
   },
+
   actions: {
-    setToken({ commit }, token): void {
-      commit("SET_TOKEN", token);
-    },
-    setTheme({ commit }, themName): void {
-      commit("SET_THEME", themName);
-    },
+    ...GlobalStore.actions,
+    ...OrderStore.actions,
   },
-  modules: {},
+
+  modules: {
+    ...GlobalStore.modules,
+    ...OrderStore.modules,
+  },
+
   getters: {
-    tokenGetter: (state): string => state.token,
-    themeGetter: (state): string => state.themeName,
-  }, // if we use multiple time some state like this.$store.categories.length whrite here
+    ...GlobalStore.getters,
+    ...OrderStore.getters,
+  },
 });

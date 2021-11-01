@@ -7,7 +7,6 @@ export const orders: IRouter[] = [
     path: "/orders/all",
     name: "AllOrders",
     component: AllOrders,
-    props: true,
     meta: {
       title: "لیست سفارشات",
     },

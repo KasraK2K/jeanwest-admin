@@ -4,16 +4,16 @@ import {
   IOptions,
   IPagination,
 } from "@/interfaces/others/pagination.interface";
-
 import { IOrder } from "@/interfaces/entities/order.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
+import { mapState } from "vuex";
 
-@Component({ name: "AllOrders" })
+@Component({ name: "AllOrders", computed: mapState(["orderFilter"]) })
 export class AllOrders extends Vue {
-  // ────────────────────────────────────────────────────────────
-  //   :::::: P R O P S : :  :   :    :     :        :          :
-  // ────────────────────────────────────────────────────────────
-  @Prop(Object) forceFilter!: IFilters;
+  // ──────────────────────────────────────────────────────────────────
+  //   :::::: C O M P U T E D : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────────
+  public orderFilter!: IFilters;
 
   // ──────────────────────────────────────────────────────────
   //   :::::: D A T A : :  :   :    :     :        :          :
@@ -47,7 +47,6 @@ export class AllOrders extends Vue {
       limit: { eq: 10 },
     },
   };
-  private filterLogic = false;
 
   // ────────────────────────────────────────────────────────────
   //   :::::: W A T C H : :  :   :    :     :        :          :
@@ -79,7 +78,6 @@ export class AllOrders extends Vue {
   //   :::::: L I F E S Y C L E : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────────────
   private mounted(): void {
-    if (this.forceFilter) this.filterLogic = true;
     this.paginateGenerator();
     this.getList();
   }
@@ -114,8 +112,8 @@ export class AllOrders extends Vue {
       cost: { eq: this.cost && this.cost * 10 },
     };
 
-    this.pagination = this.filterLogic
-      ? paginationGenerator(options, this.forceFilter)
+    this.pagination = this.orderFilter
+      ? paginationGenerator(options, this.orderFilter)
       : paginationGenerator(options, filters);
   }
 
@@ -156,7 +154,7 @@ export class AllOrders extends Vue {
   }
 
   private removeForceFilter(): void {
-    this.filterLogic = false;
+    this.$store.dispatch("setOrderFilter", undefined);
     this.paginateGenerator();
   }
 }

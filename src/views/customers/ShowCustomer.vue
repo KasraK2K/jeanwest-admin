@@ -8,8 +8,7 @@
         <span>اطلاعات شخصی کاربر</span>
         <v-spacer />
         <!-- v-if="customer.orderCount" -->
-        <v-btn
-          :to="{
+        <!-- :to="{
             name: 'AllOrders',
             params: {
               forceFilter: {
@@ -18,7 +17,9 @@
                 },
               },
             },
-          }"
+          }" -->
+        <v-btn
+          @click="setOrderFilterState(customer.id)"
           color="teal"
           large
           outlined
@@ -191,7 +192,6 @@ export default Vue.extend({
     const title = "نمایش حساب کاربری ";
     return {
       ready: false,
-      // isOrderDataReady: false,
       title,
       breadcrumbs: [
         {
@@ -208,16 +208,6 @@ export default Vue.extend({
         },
       ],
       customer: {} as ICustomer,
-      // order: {} as IOrder,
-      // pagination: {
-      //   option: {
-      //     page: { eq: 1 },
-      //     limit: { eq: 10 },
-      //   },
-      //   filter: {
-      //     id: { eq: this.id },
-      //   },
-      // } as IPagination,
     };
   },
 
@@ -246,18 +236,6 @@ export default Vue.extend({
         );
     },
 
-    // getList() {
-    //   Vue.prototype.$api.order
-    //     .getList(this.pagination)
-    //     .then((response: { data: IOrder }) => {
-    //       this.order = response.data;
-    //       this.isOrderDataReady = true;
-    //     })
-    //     .catch(() =>
-    //       Vue.prototype.$toast("error", "خطا در دریافت اطلاعات سفارشات کاربر")
-    //     );
-    // },
-
     numberToDeviceName(deviceNumber: string | number) {
       deviceNumber = String(deviceNumber);
       const devices = new Map([
@@ -266,6 +244,16 @@ export default Vue.extend({
         ["2", "Kiosk"],
       ]);
       return devices.has(deviceNumber) ? devices.get(deviceNumber) : "ناشناس";
+    },
+
+    setOrderFilterState(id: string) {
+      const orderFilter = {
+        customer: {
+          eq: { id },
+        },
+      };
+      this.$store.dispatch("setOrderFilter", orderFilter);
+      this.$router.push({ name: "AllOrders" });
     },
   },
 });

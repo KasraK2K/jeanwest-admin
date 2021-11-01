@@ -9,7 +9,7 @@
       <span>فیلتر {{ title }}</span>
       <v-spacer />
       <v-btn
-        v-if="filterLogic"
+        v-if="orderFilter"
         @click="removeForceFilter"
         color="red"
         large
@@ -18,7 +18,7 @@
         حذف فیلتر اجباری
       </v-btn>
     </v-card-title>
-    <v-row class="mx-4" v-if="!filterLogic">
+    <v-row class="mx-4" v-if="!orderFilter">
       <v-col cols="12" md="3">
         <v-text-field
           label="کد"
