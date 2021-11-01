@@ -1,14 +1,20 @@
-import { Vue, Component, Watch } from "vue-property-decorator";
+import { Vue, Component, Watch, Prop } from "vue-property-decorator";
 import {
   IFilters,
   IOptions,
   IPagination,
 } from "@/interfaces/others/pagination.interface";
+
 import { IOrder } from "@/interfaces/entities/order.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 
 @Component({ name: "AllOrders" })
 export class AllOrders extends Vue {
+  // ────────────────────────────────────────────────────────────
+  //   :::::: P R O P S : :  :   :    :     :        :          :
+  // ────────────────────────────────────────────────────────────
+  @Prop(Object) forceFilter!: IFilters;
+
   // ──────────────────────────────────────────────────────────
   //   :::::: D A T A : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────
@@ -41,6 +47,7 @@ export class AllOrders extends Vue {
       limit: { eq: 10 },
     },
   };
+  private filterLogic = false;
 
   // ────────────────────────────────────────────────────────────
   //   :::::: W A T C H : :  :   :    :     :        :          :
@@ -72,6 +79,8 @@ export class AllOrders extends Vue {
   //   :::::: L I F E S Y C L E : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────────────
   private mounted(): void {
+    if (this.forceFilter) this.filterLogic = true;
+    this.paginateGenerator();
     this.getList();
   }
 
@@ -80,11 +89,16 @@ export class AllOrders extends Vue {
   // ──────────────────────────────────────────────────────────────
   private getList(): void {
     this.loading = true;
-    Vue.prototype.$api.order.getList(this.pagination).then((response) => {
-      const data = response.data;
-      this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-      this.items = data.result;
-    });
+    Vue.prototype.$api.order
+      .getList(this.pagination)
+      .then((response) => {
+        const data = response.data;
+        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+        this.items = data.result;
+      })
+      .catch(() => {
+        Vue.prototype.$toast("error", "خطا در دریافت لیست سفارشات.");
+      });
   }
 
   private paginateGenerator(): void {
@@ -99,7 +113,10 @@ export class AllOrders extends Vue {
       banimodeStatus: { eq: this.banimodeStatus },
       cost: { eq: this.cost && this.cost * 10 },
     };
-    this.pagination = paginationGenerator(options, filters);
+
+    this.pagination = this.filterLogic
+      ? paginationGenerator(options, this.forceFilter)
+      : paginationGenerator(options, filters);
   }
 
   private jeanswestStatusGen(status: number): { text: string; class: string } {
@@ -136,6 +153,11 @@ export class AllOrders extends Vue {
 
   private fullName(address: Record<string, string>) {
     return `${address.firstName} ${address.lastName}`;
+  }
+
+  private removeForceFilter(): void {
+    this.filterLogic = false;
+    this.paginateGenerator();
   }
 }
 

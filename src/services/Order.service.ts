@@ -1,3 +1,4 @@
+import { IOrder } from "@/interfaces/entities/order.interface";
 import { IPagination } from "./../interfaces/others/pagination.interface";
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
@@ -9,7 +10,7 @@ export const Order = {
     return apiClient.post(`${modulePath}/list`, pagination);
   },
 
-  findOne(id: string): Promise<AxiosResponse> {
+  findOne(id: string): Promise<IOrder> {
     return apiClient.get(`${modulePath}/${id}`);
   },
 };

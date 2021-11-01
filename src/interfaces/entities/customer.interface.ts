@@ -9,6 +9,8 @@
 //=====================================================================
 
 import { Base } from "@/interfaces/base/base.interface";
+import { IOrder } from "./order.interface";
+import { ITicket } from "./ticket.interface";
 
 export interface ICustomer extends Base {
   phoneNumber?: string;
@@ -25,10 +27,12 @@ export interface ICustomer extends Base {
   erpTsCodeId?: string;
   erpUpdatedAt?: string;
   banimodeUserId?: string;
+  registerPlatform: number;
+  loginPlatform: number;
   favorites?: [];
   relationsToOthers?: [];
   relationsOfOthers?: [];
   address?: [];
-  tickets?: [];
-  orders?: [];
+  tickets?: ITicket[];
+  orders?: IOrder[];
 }

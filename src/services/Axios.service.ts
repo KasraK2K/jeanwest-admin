@@ -1,6 +1,6 @@
 import axios from "axios";
 import { globals } from "@/common/globals/globals";
-import Store from "@/store";
+import Store from "@/store/index.store";
 
 export const apiClient = axios.create({
   baseURL: globals.baseURL,

@@ -384,7 +384,6 @@ import {
   IOptions,
   IPagination,
 } from "@/interfaces/others/pagination.interface";
-import * as _ from "lodash";
 import { IDiscount } from "@/interfaces/entities/discount.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 import { numberToCash, toPersianString } from "@/mixin/string.mixin";

@@ -3,7 +3,7 @@ import {
   IOptions,
   IFilters,
 } from "@/interfaces/others/pagination.interface";
-import * as _ from "lodash";
+import _ from "lodash";
 
 export const paginationGenerator = (
   options: IOptions,

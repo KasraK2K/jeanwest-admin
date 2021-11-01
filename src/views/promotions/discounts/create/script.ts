@@ -1,7 +1,7 @@
 import { IDiscount } from "@/interfaces/entities/discount.interface";
 import Editor from "@tinymce/tinymce-vue";
 import { Vue, Component } from "vue-property-decorator";
-import * as _ from "lodash";
+import _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
 @Component({
   name: "CreateDiscount",

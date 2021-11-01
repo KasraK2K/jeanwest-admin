@@ -69,7 +69,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import * as _ from "lodash";
+import _ from "lodash";
 import Editor from "@tinymce/tinymce-vue";
 import { IContext, ITicket } from "@/interfaces/entities/ticket.interface";
 import { IPagination } from "@/interfaces/others/pagination.interface";

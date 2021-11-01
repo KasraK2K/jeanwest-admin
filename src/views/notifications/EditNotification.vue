@@ -135,7 +135,7 @@ import { INotification } from "@/interfaces/entities/notification.interface";
 import { globals } from "@/common/globals/globals";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
 import { FirebaseCollectionsEnum } from "@/enums/firebase.enum";
-import * as _ from "lodash";
+import _ from "lodash";
 import { customerType } from "@/mixin/string.mixin";
 
 export default Vue.extend({
@@ -262,14 +262,10 @@ export default Vue.extend({
               await this.sendPushNotification();
             }
             this.$router.push({ name: "AllNotifications" });
-          })
-          .catch(() => {
-            this.inProgress = true;
-            Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
           });
-      } catch (error: any) {
+      } catch {
         this.inProgress = false;
-        Vue.prototype.$toast("error", error.message);
+        Vue.prototype.$toast("error", "مشکلی در بروزرسانی رخ داد.");
       }
     },
 

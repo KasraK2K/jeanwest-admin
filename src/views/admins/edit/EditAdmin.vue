@@ -128,7 +128,7 @@
 <script lang="ts">
 import { IAdmin } from "@/interfaces/entities/admin.interface";
 import Vue from "vue";
-import * as _ from "lodash";
+import _ from "lodash";
 import {
   AdminCrudPermissions,
   AdminModulePermissions,

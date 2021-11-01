@@ -1,8 +1,8 @@
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { ITarget } from "@/interfaces/entities/group.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
-import * as _ from "lodash";
+import _ from "lodash";
 
 @Component({ name: "EditPromotionGroup" })
 class EditPromotionGroup extends Vue {
@@ -90,7 +90,7 @@ class EditPromotionGroup extends Vue {
     for (const item of _.entries(this.updateGroupData.target as ITarget)) {
       const key: string = item[0];
       const value: Record<string, unknown> = item[1];
-      const objectValue = _.entries(value)[0][1] as Array<any>;
+      const objectValue = _.entries(value)[0][1] as [];
 
       if (typeof value !== "object" || !objectValue.length)
         delete this.updateGroupData.target[key];
