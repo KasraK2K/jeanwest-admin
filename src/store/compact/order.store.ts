@@ -3,7 +3,7 @@
 import { IFilters } from "@/interfaces/others/pagination.interface";
 
 interface IOrderState {
-  orderFilter: IFilters;
+  orderFilter: IFilters | undefined;
 }
 
 const state = {
@@ -25,7 +25,8 @@ const actions = {
 const modules = {};
 
 const getters = {
-  orderFilterGetter: (state: IOrderState): IFilters => state.orderFilter,
+  orderFilterGetter: (state: IOrderState): IFilters | undefined =>
+    state.orderFilter,
 };
 
 export const OrderStore = {
