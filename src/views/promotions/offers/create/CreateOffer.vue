@@ -76,7 +76,7 @@
                 <v-autocomplete
                   label="نوع trigger"
                   v-model="offer.trigger.type"
-                  :items="[{ text: 'تعداد', value: 'count' }]"
+                  :items="offerDefaultTypes"
                   item-text="text"
                   item-value="value"
                   hide-details="auto"
@@ -99,7 +99,7 @@
                 <v-autocomplete
                   label="نوع target"
                   v-model="offer.target.type"
-                  :items="[{ text: 'تعداد', value: 'count' }]"
+                  :items="offerDefaultTypes"
                   item-text="text"
                   item-value="value"
                   hide-details="auto"
@@ -276,6 +276,7 @@ const noNumber: number = undefined as unknown as number;
 export default Vue.extend({
   data(): {
     [key: string]: unknown;
+    offerDefaultTypes: Array<{ text: string; value: string }>;
     offer: IOffer;
     defaultData: IPromotionGroup;
     context: string;
@@ -299,6 +300,12 @@ export default Vue.extend({
           text: title,
           to: document.location.pathname,
         },
+      ],
+      offerDefaultTypes: [
+        { text: "تعداد", value: "count" },
+        // { text: "هدفمند", value: "target-only" },
+        // { text: "قیمت", value: "price" },
+        // { text: "پله‌ای", value: "step" },
       ],
       offer: {
         name: "",
