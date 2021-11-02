@@ -109,9 +109,18 @@ export default Vue.extend({
     ...mapState(["token"]),
   },
 
+  created(): void {
+    this.checkLogin();
+    this.$store.dispatch("setTheme", "dark");
+  },
   mounted() {
     const theme = JSON.parse(localStorage.getItem(local.theme.dark) || "true");
     this.$vuetify.theme.dark = theme;
+  },
+  updated(): void {
+    this.$vuetify.theme["dark"]
+      ? this.$store.dispatch("setTheme", "dark")
+      : this.$store.dispatch("setTheme", "light");
   },
 
   methods: {
@@ -150,15 +159,6 @@ export default Vue.extend({
       this.$store.dispatch("setToken", "");
       this.checkLogin();
     },
-  },
-  created(): void {
-    this.checkLogin();
-    this.$store.dispatch("setTheme", "dark");
-  },
-  updated(): void {
-    this.$vuetify.theme["dark"]
-      ? this.$store.dispatch("setTheme", "dark")
-      : this.$store.dispatch("setTheme", "light");
   },
 });
 </script>

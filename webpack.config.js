@@ -1,9 +1,12 @@
-// Inside of webpack.config.js:
-import { InjectManifest } from "workbox-webpack-plugin";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { GenerateSW } = require("workbox-webpack-plugin");
 
-export const plugins = [
-  // Other plugins...
-  new InjectManifest({
-    swSrc: "./src/service-worker.js",
-  }),
-];
+module.exports = {
+  // Other webpack config...
+  plugins: [
+    // Other plugins...
+    new GenerateSW({
+      option: "value",
+    }),
+  ],
+};
