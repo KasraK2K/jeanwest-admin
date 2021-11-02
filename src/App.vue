@@ -109,33 +109,12 @@ export default Vue.extend({
     ...mapState(["token"]),
   },
 
-  created(): void {
-    this.checkLogin();
-    this.$store.dispatch("setTheme", "dark");
-    if (Vue.prototype.$workbox) {
-      Vue.prototype.$workbox.addEventListener("waiting", () => {
-        this.showUpgradeUI = true;
-      });
-    }
-  },
-
   mounted() {
     const theme = JSON.parse(localStorage.getItem(local.theme.dark) || "true");
     this.$vuetify.theme.dark = theme;
   },
 
-  updated(): void {
-    this.$vuetify.theme["dark"]
-      ? this.$store.dispatch("setTheme", "dark")
-      : this.$store.dispatch("setTheme", "light");
-  },
-
   methods: {
-    async accept() {
-      this.showUpgradeUI = false;
-      await Vue.prototype.$workbox.messageSW({ type: "SKIP_WAITING" });
-    },
-
     changeTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       localStorage.setItem(
@@ -143,7 +122,6 @@ export default Vue.extend({
         JSON.stringify(this.$vuetify.theme.dark)
       );
     },
-
     onResize() {
       this.showTopMenuBtn = document.body.clientWidth > 1264;
     },
@@ -152,7 +130,6 @@ export default Vue.extend({
         ? (this.variant = !this.variant)
         : (this.variant = false);
     },
-
     getToken(name: string): string | undefined {
       const storageToken = localStorage.getItem(name);
       if (storageToken) {
@@ -160,7 +137,6 @@ export default Vue.extend({
         return storageToken;
       }
     },
-
     checkLogin(): void {
       let token = this.getToken(tokenName);
       const route = document.location.pathname.slice(1);
@@ -169,12 +145,20 @@ export default Vue.extend({
         this.$router.push({ name: "Login" });
       }
     },
-
     logOut(): void {
       localStorage.removeItem(tokenName);
       this.$store.dispatch("setToken", "");
       this.checkLogin();
     },
+  },
+  created(): void {
+    this.checkLogin();
+    this.$store.dispatch("setTheme", "dark");
+  },
+  updated(): void {
+    this.$vuetify.theme["dark"]
+      ? this.$store.dispatch("setTheme", "dark")
+      : this.$store.dispatch("setTheme", "light");
   },
 });
 </script>

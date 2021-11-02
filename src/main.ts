@@ -1,6 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
-import wb from "./registerServiceWorker";
+import "./registerServiceWorker";
 import router from "./router";
 import store from "./store/index.store";
 import vuetify from "./plugins/vuetify";
@@ -63,7 +63,6 @@ Vue.mixin(methods);
 // ────────────────────────────────────────────────────────────────────────────────────
 //   :::::: V U E   C O N F I G U R A T I O N : :  :   :    :     :        :          :
 // ────────────────────────────────────────────────────────────────────────────────────
-Vue.prototype.$workbox = wb; // pwa
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 if (process.env.NODE_ENV === "production") Vue.config.silent = true;

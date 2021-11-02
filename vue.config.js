@@ -1,13 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { GenerateSW } = require("workbox-webpack-plugin");
-
 module.exports = {
-  publicPath: "",
-
   transpileDependencies: ["vuetify"],
   lintOnSave: process.env.NODE_ENV !== "production",
   configureWebpack: {
-    plugins: [new GenerateSW()],
+    devtool: "source-map",
   },
   devServer: {
     host: process.env.VUE_APP_HOST,
