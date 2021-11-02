@@ -6,9 +6,15 @@ import {
 } from "@/interfaces/others/pagination.interface";
 import { IOrder } from "@/interfaces/entities/order.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
+import { mapState } from "vuex";
 
-@Component({ name: "AllOrders" })
+@Component({ name: "AllOrders", computed: mapState(["orderFilter"]) })
 export class AllOrders extends Vue {
+  // ──────────────────────────────────────────────────────────────────
+  //   :::::: C O M P U T E D : :  :   :    :     :        :          :
+  // ──────────────────────────────────────────────────────────────────
+  public orderFilter!: IFilters;
+
   // ──────────────────────────────────────────────────────────
   //   :::::: D A T A : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────
@@ -72,6 +78,7 @@ export class AllOrders extends Vue {
   //   :::::: L I F E S Y C L E : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────────────
   private mounted(): void {
+    this.paginateGenerator();
     this.getList();
   }
 
@@ -80,11 +87,16 @@ export class AllOrders extends Vue {
   // ──────────────────────────────────────────────────────────────
   private getList(): void {
     this.loading = true;
-    Vue.prototype.$api.order.getList(this.pagination).then((response) => {
-      const data = response.data;
-      this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
-      this.items = data.result;
-    });
+    Vue.prototype.$api.order
+      .getList(this.pagination)
+      .then((response) => {
+        const data = response.data;
+        this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+        this.items = data.result;
+      })
+      .catch(() => {
+        Vue.prototype.$toast("error", "خطا در دریافت لیست سفارشات.");
+      });
   }
 
   private paginateGenerator(): void {
@@ -99,7 +111,10 @@ export class AllOrders extends Vue {
       banimodeStatus: { eq: this.banimodeStatus },
       cost: { eq: this.cost && this.cost * 10 },
     };
-    this.pagination = paginationGenerator(options, filters);
+
+    this.pagination = this.orderFilter
+      ? paginationGenerator(options, this.orderFilter)
+      : paginationGenerator(options, filters);
   }
 
   private jeanswestStatusGen(status: number): { text: string; class: string } {
@@ -136,6 +151,11 @@ export class AllOrders extends Vue {
 
   private fullName(address: Record<string, string>) {
     return `${address.firstName} ${address.lastName}`;
+  }
+
+  private removeForceFilter(): void {
+    this.$store.dispatch("setOrderFilter", undefined);
+    this.paginateGenerator();
   }
 }
 

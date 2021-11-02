@@ -123,7 +123,7 @@
 import Vue from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import PushNotification from "./PushNotification.vue";
-import * as _ from "lodash";
+import _ from "lodash";
 import { globals } from "@/common/globals/globals";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
 import { FirebaseCollectionsEnum } from "@/enums/firebase.enum";
@@ -227,16 +227,10 @@ export default Vue.extend({
               await this.sendPushNotification();
             }
             this.$router.push({ name: "AllNotifications" });
-          })
-          .catch(() => {
-            this.inProgress = true;
-            Vue.prototype.$toast("error", "مشکلی در ایجاد اعلان رخ داد.");
           });
-
         Vue.prototype.$toast("success", "با موفقیت ایجاد شد.");
-      } catch (error: any) {
-        this.inProgress = false;
-        Vue.prototype.$toast("error", error.message);
+      } catch {
+        Vue.prototype.$toast("error", "مشکلی در ایجاد اعلان رخ داد.");
       }
     },
 

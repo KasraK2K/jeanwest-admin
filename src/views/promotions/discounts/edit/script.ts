@@ -3,7 +3,7 @@ import EditGroup from "@/components/promotions/group/EditGroup.vue";
 import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-group";
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { formatDate } from "@/mixin/date.mixin";
-import * as _ from "lodash";
+import _ from "lodash";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
 import { OperatorEnum } from "@/enums/general.enum";

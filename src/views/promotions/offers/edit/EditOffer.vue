@@ -307,10 +307,10 @@ import EditGroup from "@/components/promotions/group/EditGroup.vue";
 import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-group";
 import { IOffer } from "@/interfaces/entities/offer.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
-import * as _ from "lodash";
+import _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
 import { formatDate } from "@/mixin/date.mixin";
-import { IGroup, ITarget } from "@/interfaces/entities/group.interface";
+import { IGroup } from "@/interfaces/entities/group.interface";
 
 export default Vue.extend({
   props: {
@@ -386,7 +386,7 @@ export default Vue.extend({
       });
     },
 
-    getExportedData(event: any) {
+    getExportedData(event: { group: string; data: Record<string, unknown> }) {
       this.updateOffer({ [event.group]: event.data.target });
     },
 

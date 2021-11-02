@@ -31,11 +31,13 @@ class ShowOrder extends Vue {
   //   :::::: L I F E S Y C L E : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────────────
   private mounted(): void {
-    Vue.prototype.$api.order.findOne(this.id).then((response) => {
-      this.order = response.data;
-      this.title += this.order.banimodeCode || "بدون کد";
-      this.ready = true;
-    });
+    Vue.prototype.$api.order
+      .findOne(this.id)
+      .then((response: { data: IOrder }) => {
+        this.order = response.data;
+        this.title += this.order.banimodeCode || "بدون کد";
+        this.ready = true;
+      });
   }
 
   // ──────────────────────────────────────────────────────────────

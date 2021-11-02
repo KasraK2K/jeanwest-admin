@@ -105,7 +105,7 @@ import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-g
 import { IJeansPoint } from "@/interfaces/entities/jeanspoint.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
-import * as _ from "lodash";
+import _ from "lodash";
 
 export default Vue.extend({
   props: {

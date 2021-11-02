@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
-import store from "./store";
+import store from "./store/index.store";
 import vuetify from "./plugins/vuetify";
 import Highcharts from "highcharts";
 import Stock from "highcharts/modules/stock";

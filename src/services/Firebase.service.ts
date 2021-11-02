@@ -8,7 +8,7 @@ import {
   fcmServerKey,
 } from "@/common/globals/plugins/firebase";
 import firebase from "firebase";
-import * as _ from "lodash";
+import _ from "lodash";
 // import { formatDate } from "@/mixin/date.mixin";
 
 firebase.initializeApp(firebaseConfig);

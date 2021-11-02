@@ -228,7 +228,6 @@ import {
   IOptions,
   IPagination,
 } from "@/interfaces/others/pagination.interface";
-import * as _ from "lodash";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 
 export default Vue.extend({

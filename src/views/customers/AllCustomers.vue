@@ -178,6 +178,18 @@
       </template>
 
       <template v-slot:[`item.status`]="{ item }">
+        <!-- show -->
+        <v-chip
+          class="ml-2"
+          color="blue"
+          link
+          label
+          outlined
+          :to="{ name: 'ShowCustomer', params: { id: item.id } }"
+        >
+          نمایش
+        </v-chip>
+
         <!-- active/deactivate -->
         <v-chip
           class="ml-2"
@@ -232,7 +244,7 @@
           ref="pushForm"
           @submit.prevent="sendPushNotification"
         >
-          <v-card class="pa-3">
+          <v-card class="pa-3" elevation="2" outlined>
             <v-card-title>ارسال پوش‌نوتیفیکیشن به {{ fullName }}</v-card-title>
             <v-row>
               <v-col cols="12">
@@ -281,12 +293,10 @@ import {
 } from "@/interfaces/others/pagination.interface";
 import { ICustomer } from "@/interfaces/entities/customer.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
-import { MapCustomerType } from "@/constant/customer-type";
-import { IMapCustomerType } from "@/interfaces/constant/map.interface";
 import { FirebaseCollectionsEnum } from "@/enums/firebase.enum";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
 import { FormRefs } from "@/types/global.type";
-import * as _ from "lodash";
+import _ from "lodash";
 
 export default Vue.extend({
   name: "AllCustomers",

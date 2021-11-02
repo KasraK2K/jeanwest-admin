@@ -1,3 +1,4 @@
+import { ICustomer } from "./../interfaces/entities/customer.interface";
 import { IPagination } from "@/interfaces/others/pagination.interface";
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
@@ -9,9 +10,9 @@ export const Customer = {
     return apiClient.post(`${modulePath}/list`, pagination);
   },
 
-  // async findOne(id: string): Promise<AxiosResponse> {
-  //   return await apiClient.get(`${modulePath}/${id}`);
-  // },
+  async findOne(id: string): Promise<ICustomer> {
+    return await apiClient.get(`${modulePath}/${id}`);
+  },
 
   // async create(data: Record<string, unknown>): Promise<AxiosResponse> {
   //   return await apiClient.post(modulePath, data);

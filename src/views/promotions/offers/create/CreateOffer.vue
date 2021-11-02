@@ -260,45 +260,16 @@
         </v-card>
       </v-col>
     </v-row>
-
-    <!-- ──────────────────────────────────────────────────────────────────────────
-    //   :::::: T R I G G E R   G R O U P : :  :   :    :     :        :          :
-    // ──────────────────────────────────────────────────────────────────────── -->
-    <!-- <EditGroup
-      :default-data="defaultData"
-      :group="defaultTargetData"
-      name="trigger"
-      exportEventName="triggerGroup"
-      :showButton="false"
-      @triggerGroup="getExportedData"
-      ref="triggerGroupComponent"
-    /> -->
-
-    <!-- ───────────────────────────────────────────────────────────────────────────
-    //   :::::: T A R G E T   G R O U P : :  :   :    :     :        :          :
-    // ───────────────────────────────────────────────────────────────────────── -->
-    <!-- <EditGroup
-      :default-data="defaultData"
-      :group="defaultTargetData"
-      name="target"
-      exportEventName="targetGroup"
-      :showButton="false"
-      @targetGroup="getExportedData"
-      ref="targetGroupComponent"
-    /> -->
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-// import EditGroup from "@/components/promotions/group/EditGroup.vue";
 import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-group";
 import { IOffer } from "@/interfaces/entities/offer.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
-import * as _ from "lodash";
+import _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
-// import { formatDate } from "@/mixin/date.mixin";
-import { IGroup, ITarget } from "@/interfaces/entities/group.interface";
 
 const noNumber: number = undefined as unknown as number;
 
@@ -362,9 +333,6 @@ export default Vue.extend({
       expirationTimeMenu: false,
       expirationTimePickerMenu: false,
       expirationTime: "",
-      // defaultTargetData: {
-      //   target: {} as ITarget,
-      // } as IGroup,
     };
   },
 
@@ -440,9 +408,5 @@ export default Vue.extend({
       this.time.expirationDate = "";
     },
   },
-
-  // components: {
-  //   EditGroup,
-  // },
 });
 </script>

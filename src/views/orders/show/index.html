@@ -221,13 +221,14 @@
       v-for="(item, index) in order.itemDetail"
       :key="index"
       cols="12"
-      md="4"
+      md="6"
+      xl="4"
     >
-      <v-card elevation="2" outlined rounded class="mb-3">
+      <v-card elevation="2" outlined rounded>
         <v-list-item>
           <v-img
             class="ml-4"
-            max-width="200"
+            max-width="150"
             :src="item.banimodeDetails.images"
             contain
           />

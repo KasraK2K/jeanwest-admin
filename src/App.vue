@@ -87,7 +87,6 @@ import Vue from "vue";
 import SidebarLists from "@/components/SidebarLists.vue";
 import { local, tokenName } from "@/common/globals/globals";
 import { mapState } from "vuex";
-import { dark } from "./plugins/theme";
 
 export default Vue.extend({
   name: "App",
@@ -110,9 +109,18 @@ export default Vue.extend({
     ...mapState(["token"]),
   },
 
+  created(): void {
+    this.checkLogin();
+    this.$store.dispatch("setTheme", "dark");
+  },
   mounted() {
     const theme = JSON.parse(localStorage.getItem(local.theme.dark) || "true");
     this.$vuetify.theme.dark = theme;
+  },
+  updated(): void {
+    this.$vuetify.theme["dark"]
+      ? this.$store.dispatch("setTheme", "dark")
+      : this.$store.dispatch("setTheme", "light");
   },
 
   methods: {
@@ -148,18 +156,9 @@ export default Vue.extend({
     },
     logOut(): void {
       localStorage.removeItem(tokenName);
-      this.$store.state.token = "";
+      this.$store.dispatch("setToken", "");
       this.checkLogin();
     },
-  },
-  created(): void {
-    this.checkLogin();
-    this.$store.dispatch("setTheme", "dark");
-  },
-  updated(): void {
-    this.$vuetify.theme["dark"]
-      ? this.$store.dispatch("setTheme", "dark")
-      : this.$store.dispatch("setTheme", "light");
   },
 });
 </script>
