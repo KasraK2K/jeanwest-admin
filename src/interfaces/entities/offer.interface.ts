@@ -15,8 +15,8 @@ export interface IOffer extends Base {
   name: string;
   code: string;
   singularity: boolean;
-  trigger: { type: string; value: number };
-  target: { type: string; value: number; reduction: number };
+  trigger: ITrigger;
+  target: ITarget;
   maxDiscount: number;
   minTotal: number;
   countLimit: number;
@@ -24,4 +24,14 @@ export interface IOffer extends Base {
   startDate?: string | null;
   triggerGroup: IGroup;
   targetGroup: IGroup;
+  roles: [];
+}
+
+export interface ITrigger {
+  type: string;
+  value: number;
+}
+
+export interface ITarget extends ITrigger {
+  reduction: number;
 }

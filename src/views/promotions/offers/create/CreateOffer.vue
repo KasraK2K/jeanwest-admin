@@ -72,7 +72,11 @@
               </v-col>
 
               <!-- offer.trigger.type -->
-              <v-col cols="12" md="2">
+              <v-col
+                v-if="offer.target.type !== 'target-only'"
+                cols="12"
+                md="2"
+              >
                 <v-autocomplete
                   label="نوع trigger"
                   v-model="offer.trigger.type"
@@ -85,9 +89,17 @@
               </v-col>
 
               <!-- offer.trigger.value -->
-              <v-col cols="12" md="2">
+              <v-col
+                v-if="offer.target.type !== 'target-only'"
+                cols="12"
+                md="2"
+              >
                 <v-text-field
-                  label="مقدار trigger"
+                  :label="
+                    offer.trigger.type === 'price'
+                      ? 'مبلغ trigger'
+                      : 'مقدار trigger'
+                  "
                   v-model.number="offer.trigger.value"
                   type="number"
                   hide-details="auto"
@@ -108,7 +120,7 @@
               </v-col>
 
               <!-- offer.target.value -->
-              <v-col cols="12" md="2">
+              <v-col v-if="offer.target.type !== 'price'" cols="12" md="2">
                 <v-text-field
                   label="مقدار target"
                   v-model.number="offer.target.value"
@@ -251,6 +263,25 @@
                   </v-time-picker>
                 </v-menu>
               </v-col>
+
+              <!-- offer.roles -->
+              <v-col cols="12" md="4">
+                <v-autocomplete
+                  label="گروه‌های کاربری"
+                  v-model="offer.roles"
+                  :items="customerTypeArray()"
+                  item-text="text"
+                  item-value="value"
+                  chips
+                  clearable
+                  deletable-chips
+                  multiple
+                  small-chips
+                  hide-details="auto"
+                >
+                  <v-icon slot="prepend" color="blue">mdi-account</v-icon>
+                </v-autocomplete>
+              </v-col>
             </v-row>
 
             <v-btn type="submit" large color="primary" class="mt-4"
@@ -266,12 +297,24 @@
 <script lang="ts">
 import Vue from "vue";
 import { DefaultPromotionGroupData as DefaultData } from "@/constant/promotion-group";
-import { IOffer } from "@/interfaces/entities/offer.interface";
+import {
+  IOffer,
+  ITarget,
+  ITrigger,
+} from "@/interfaces/entities/offer.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
+import { customerType } from "@/mixin/string.mixin";
 
 const noNumber: number = undefined as unknown as number;
+const noString: string = undefined as unknown as string;
+const defaultTrigger: ITrigger = { type: noString, value: noNumber };
+const defaultTarget: ITarget = {
+  type: noString,
+  value: noNumber,
+  reduction: noNumber,
+};
 
 export default Vue.extend({
   data(): {
@@ -303,20 +346,16 @@ export default Vue.extend({
       ],
       offerDefaultTypes: [
         { text: "تعداد", value: "count" },
-        // { text: "هدفمند", value: "target-only" },
-        // { text: "قیمت", value: "price" },
+        { text: "هدفمند", value: "target-only" },
+        { text: "قیمت", value: "price" },
         // { text: "پله‌ای", value: "step" },
       ],
       offer: {
         name: "",
         code: "",
         singularity: false,
-        trigger: { type: "", value: noNumber },
-        target: {
-          type: "",
-          value: noNumber,
-          reduction: noNumber,
-        },
+        trigger: defaultTrigger,
+        target: defaultTarget,
         maxDiscount: noNumber,
         minTotal: noNumber,
         countLimit: noNumber,
@@ -324,6 +363,7 @@ export default Vue.extend({
         startDate: null,
         triggerGroup: {},
         targetGroup: {},
+        roles: [],
       } as IOffer,
       context: "",
       defaultData: DefaultData,
@@ -344,28 +384,39 @@ export default Vue.extend({
   },
 
   methods: {
-    // getExportedData(event): void {
-    //   this.offer[event.group] = event.data.target;
-    // },
-
-    createOffer(back?: boolean): void {
-      // Promise.resolve(() => {
-      //   (this as any).$refs.triggerGroupComponent.updateGroup();
-      // }).then(() => {
-      //   (this as any).$refs.targetGroupComponent.updateGroup();
-      // });
+    beforeCreate() {
+      this.triggerLogic(this.offer.target.type);
+      this.targetLogic(this.offer.target.type);
 
       this.offer.startDate = this.timeGenerator(
         this.time.startDate,
         this.time.startTime
       );
+
       this.offer.expirationDate = this.timeGenerator(
         this.time.expirationDate,
         this.time.expirationTime
       );
-      this.multiplyTen();
+    },
+
+    triggerLogic(type: string): void {
+      if (type === "target-only") {
+        this.offer.trigger.type = noString;
+        this.offer.trigger.value = noNumber;
+      }
+    },
+
+    targetLogic(type: string): void {
+      if (type === "price") this.offer.target.value = noNumber;
+    },
+
+    createOffer(back?: boolean): void {
+      this.beforeCreate();
+
+      const newOffer: IOffer = this.multiplyTen();
+
       Vue.prototype.$api.promotion
-        .createOffer(this.offer, this.id)
+        .createOffer(newOffer, this.id)
         .then(() => {
           Vue.prototype.$toast("success", "پیشنهاد با موفقیت ایجاد شد.");
           back && this.$router.push({ name: "AllOffers" });
@@ -375,18 +426,21 @@ export default Vue.extend({
         });
     },
 
-    multiplyTen(): void {
-      _.assign(this.offer, {
-        reduction:
-          this.offer.target.reduction > 1
-            ? this.offer.target.reduction * 10
-            : this.offer.target.reduction,
-        minTotal: this.changeNumber(this.offer.minTotal, OperatorEnum.MULTIPLE),
+    multiplyTen(): IOffer {
+      const newOffer = JSON.parse(JSON.stringify(this.offer));
+      _.assign(newOffer, {
+        minTotal: this.changeNumber(newOffer.minTotal, OperatorEnum.MULTIPLE),
         maxDiscount: this.changeNumber(
-          this.offer.maxDiscount,
+          newOffer.maxDiscount,
           OperatorEnum.MULTIPLE
         ),
       });
+      if (newOffer.trigger.type === "price") newOffer.trigger.value *= 10;
+      newOffer.target.reduction =
+        newOffer.target.reduction < 1 && newOffer.target.type !== "price"
+          ? newOffer.target.reduction
+          : newOffer.target.reduction * 10;
+      return newOffer;
     },
 
     changeNumber(
@@ -413,6 +467,14 @@ export default Vue.extend({
     clearexpirationTime(): void {
       this.time.expirationTime = "";
       this.time.expirationDate = "";
+    },
+
+    customerTypeArray() {
+      let types: Record<string, unknown>[] = [];
+      for (let i = -11; i <= 12; i++)
+        if (i !== 9)
+          types.push({ text: customerType(String(i)).name, value: i });
+      return types;
     },
   },
 });

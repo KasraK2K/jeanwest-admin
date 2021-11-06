@@ -103,7 +103,7 @@ class EditPromotionGroup extends Vue {
           group: this.exportEventName,
           data: this.updateGroupData,
         })
-      : this.update;
+      : this.update();
   }
 
   private update() {
