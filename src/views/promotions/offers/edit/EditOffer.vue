@@ -281,7 +281,7 @@
               </v-col>
 
               <!-- offer.roles -->
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="4">
                 <v-autocomplete
                   label="گروه‌های کاربری"
                   v-model="offer.roles"
@@ -498,30 +498,27 @@ export default Vue.extend({
       });
       if (newOffer.trigger.type === "price") newOffer.trigger.value *= 10;
       newOffer.target.reduction =
-        newOffer.target.reduction < 1 && newOffer.target.type !== "price"
+        newOffer.target.reduction <= 1 && newOffer.target.type !== "price"
           ? newOffer.target.reduction
           : newOffer.target.reduction * 10;
       return newOffer;
     },
 
-    divisionTen(): void {
-      _.assign(this.offer, {
-        reduction:
-          this.offer.target.reduction > 1
-            ? this.offer.target.reduction / 10
-            : this.offer.target.reduction,
-        minTotal: this.changeNumber(this.offer.minTotal, OperatorEnum.DIVIDER),
+    divisionTen() {
+      const newOffer = JSON.parse(JSON.stringify(this.offer));
+      _.assign(newOffer, {
+        minTotal: this.changeNumber(newOffer.minTotal, OperatorEnum.DIVIDER),
         maxDiscount: this.changeNumber(
-          this.offer.maxDiscount,
+          newOffer.maxDiscount,
           OperatorEnum.DIVIDER
         ),
       });
-
-      if (this.offer.trigger.type === "price") this.offer.trigger.value /= 10;
-      this.offer.target.reduction =
-        this.offer.target.reduction < 1 && this.offer.target.type !== "price"
-          ? this.offer.target.reduction
-          : this.offer.target.reduction / 10;
+      if (newOffer.trigger.type === "price") newOffer.trigger.value /= 10;
+      newOffer.target.reduction =
+        newOffer.target.reduction <= 1 && newOffer.target.type !== "price"
+          ? newOffer.target.reduction
+          : newOffer.target.reduction / 10;
+      this.offer = JSON.parse(JSON.stringify(newOffer));
     },
 
     changeNumber(

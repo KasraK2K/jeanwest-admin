@@ -265,7 +265,7 @@
               </v-col>
 
               <!-- offer.roles -->
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="4">
                 <v-autocomplete
                   label="گروه‌های کاربری"
                   v-model="offer.roles"
