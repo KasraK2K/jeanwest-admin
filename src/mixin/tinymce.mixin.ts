@@ -1,5 +1,5 @@
 export const tinyApiKey = (): string => {
-  return "pgxbkqy8xfl67jrbzbpzlfv76ove7nzl6nmkxm5kdg1wwyn5";
+  return "0dkyauj6v5bv9jj6qu3mhyp2svuxcxkw9hh5r0uobewgj39a";
 };
 
 export const tinyInit = (): Record<string, unknown> => {
