@@ -6,6 +6,7 @@ import {
   toPlainText,
   customerType,
   stringSplitter,
+  joinArray,
   mediaPath,
 } from "@/mixin/string.mixin";
 import {
@@ -25,6 +26,7 @@ export const methods = {
     toPlainText,
     customerType,
     stringSplitter,
+    joinArray,
     mediaPath,
     toPersianTime,
     toGregorian,

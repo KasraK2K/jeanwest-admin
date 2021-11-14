@@ -1,6 +1,7 @@
 import { MapCustomerType } from "@/constant/customer-type";
 import { IMapCustomerType } from "@/interfaces/constant/map.interface";
 import { globals } from "@/common/globals/globals";
+import { text } from "express";
 
 /* -------------------------------------------------------------------------- */
 /*                           convert number to cash                           */
@@ -97,6 +98,15 @@ export const mediaPath = (path: string): string => {
 /* -------------------------------------------------------------------------- */
 /*                               string splitter                              */
 /* -------------------------------------------------------------------------- */
-export const stringSplitter = (text: string, splitter: string): string[] => {
-  return text.split(splitter);
+export const stringSplitter = (text: string, splitter = ","): string[] => {
+  return text ? text.split(splitter) : [];
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                 join string                                */
+/* -------------------------------------------------------------------------- */
+export const joinArray = (textArray: string[], joinCharacter = ","): string => {
+  return textArray && Array.isArray(textArray)
+    ? textArray.join(joinCharacter)
+    : "";
 };

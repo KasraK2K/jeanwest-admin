@@ -4,7 +4,7 @@ import { register } from "register-service-worker";
 
 if (
   process.env.NODE_ENV === "production" &&
-  JSON.parse(process.env.VUE_APP_PWA)
+  JSON.parse(String(process.env.VUE_APP_PWA))
 ) {
   register(`${process.env.BASE_URL}service-worker.js`, {
     ready() {

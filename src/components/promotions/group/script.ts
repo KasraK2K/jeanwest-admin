@@ -1,8 +1,10 @@
+import { stringSplitter } from "./../../../mixin/string.mixin";
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { ITarget } from "@/interfaces/entities/group.interface";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
 import _ from "lodash";
+import { joinArray } from "@/mixin/string.mixin";
 
 @Component({ name: "EditPromotionGroup" })
 class EditPromotionGroup extends Vue {
@@ -22,6 +24,9 @@ class EditPromotionGroup extends Vue {
     brand: { eq: [] },
     ageGroup: { eq: [] },
     colorFamily: { eq: [] },
+    styleCode: { eq: [] },
+    sku: { eq: [] },
+    barcode: { eq: [] },
   };
   private quantity: number | undefined;
   private quantityType!: string;
@@ -29,6 +34,9 @@ class EditPromotionGroup extends Vue {
   private basePriceType!: string;
   private salePrice: number | undefined;
   private salePriceType!: string;
+  private styleCode!: string;
+  private sku!: string;
+  private barcode!: string;
 
   private mounted() {
     this.init();
@@ -36,6 +44,17 @@ class EditPromotionGroup extends Vue {
 
   private init() {
     _.assign(this.target, this.group.target);
+
+    // convert string[] to string
+    if (this.target.styleCode && this.target.styleCode.eq) {
+      this.styleCode = joinArray(this.target.styleCode.eq);
+    }
+    if (this.target.sku && this.target.sku.eq) {
+      this.sku = joinArray(this.target.sku.eq);
+    }
+    if (this.target.barcode && this.target.barcode.eq) {
+      this.barcode = joinArray(this.target.barcode.eq);
+    }
 
     // set numerical values
     this.quantity = Number(this.firstValue(this.target.quantity)) || undefined;
@@ -64,6 +83,11 @@ class EditPromotionGroup extends Vue {
   }
 
   private sanitize() {
+    this.target = _.assign(this.target, {
+      styleCode: { eq: stringSplitter(this.styleCode) },
+      sku: { eq: stringSplitter(this.sku) },
+      barcode: { eq: stringSplitter(this.barcode) },
+    });
     this.group.target = _.assign(this.group.target, this.target);
     this.updateGroupData = _.assign(this.group);
     this.updateGroupData.target = _.omit(this.updateGroupData.target, [

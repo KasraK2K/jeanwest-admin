@@ -221,6 +221,7 @@
                       v-bind="attrs"
                       v-on="on"
                       @click:clear="clearexpirationTime"
+                      hide-details="auto"
                     ></v-text-field>
                   </template>
                   <v-date-picker v-model="time.expirationDate"></v-date-picker>
@@ -278,9 +279,7 @@
                   multiple
                   small-chips
                   hide-details="auto"
-                >
-                  <v-icon slot="prepend" color="blue">mdi-account</v-icon>
-                </v-autocomplete>
+                />
               </v-col>
             </v-row>
 
@@ -306,12 +305,13 @@ import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
 import { customerType } from "@/mixin/string.mixin";
+import { OfferTypeEnum } from "@/enums/offer.enum";
 
 const noNumber: number = undefined as unknown as number;
-const noString: string = undefined as unknown as string;
-const defaultTrigger: ITrigger = { type: noString, value: noNumber };
+const noType: OfferTypeEnum = undefined as unknown as OfferTypeEnum;
+const defaultTrigger: ITrigger = { type: noType, value: noNumber };
 const defaultTarget: ITarget = {
-  type: noString,
+  type: noType,
   value: noNumber,
   reduction: noNumber,
 };
@@ -345,10 +345,10 @@ export default Vue.extend({
         },
       ],
       offerDefaultTypes: [
-        { text: "تعداد", value: "count" },
-        { text: "هدفمند", value: "target-only" },
-        { text: "قیمت", value: "price" },
-        // { text: "پله‌ای", value: "step" },
+        { text: "تعداد", value: OfferTypeEnum.COUNT },
+        { text: "هدفمند", value: OfferTypeEnum.TARGET_ONLY },
+        { text: "قیمت", value: OfferTypeEnum.PRICE },
+        { text: "پله‌ای", value: OfferTypeEnum.STEP },
       ],
       offer: {
         name: "",
@@ -401,7 +401,7 @@ export default Vue.extend({
 
     triggerLogic(type: string): void {
       if (type === "target-only") {
-        this.offer.trigger.type = noString;
+        this.offer.trigger.type = noType;
         this.offer.trigger.value = noNumber;
       }
     },
