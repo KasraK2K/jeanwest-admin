@@ -1,7 +1,6 @@
 import { MapCustomerType } from "@/constant/customer-type";
 import { IMapCustomerType } from "@/interfaces/constant/map.interface";
 import { globals } from "@/common/globals/globals";
-import { text } from "express";
 
 /* -------------------------------------------------------------------------- */
 /*                           convert number to cash                           */

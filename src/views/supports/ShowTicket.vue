@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid v-if="ready">
     <h1 class="blue--text">{{ title }}</h1>
     <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
@@ -7,7 +7,7 @@
       <v-row>
         <v-col cols="12" md="8">
           <v-text-field
-            label="یادداشت"
+            label="یادداشت یادآوری"
             hide-details="auto"
             class="mb-4"
             v-model="formHint"
@@ -27,6 +27,7 @@
             item-value="value"
             label="وضعیت"
             v-model="formStatus"
+            @change="changeStatus"
             return-object
           >
             <template v-slot:item="{ item, attrs, on }">
@@ -138,6 +139,7 @@ import Editor from "@tinymce/tinymce-vue";
 import { mapGetters } from "vuex";
 import { IPagination } from "@/interfaces/others/pagination.interface";
 import { toPersianString } from "@/mixin/string.mixin";
+import { ITicket } from "@/interfaces/entities/ticket.interface";
 
 export default Vue.extend({
   props: {
@@ -148,10 +150,12 @@ export default Vue.extend({
     [key: string]: unknown;
     formStatus: { text: string | undefined; value: number | undefined };
     pagination: IPagination;
+    result: ITicket;
   } {
     const title = "تیتر سوال ";
     return {
       title,
+      ready: false,
       formHint: undefined,
       formStatus: { text: undefined, value: undefined },
       formText: "",
@@ -159,7 +163,7 @@ export default Vue.extend({
         option: { page: { eq: 1 }, limit: { eq: 1 } },
         filter: { id: { eq: this.id } },
       },
-      result: [],
+      result: {} as ITicket,
       breadcrumbs: [
         {
           text: "صفحه اصلی",
@@ -180,12 +184,12 @@ export default Vue.extend({
   methods: {
     findOne(): void {
       Vue.prototype.$api.support.getList(this.pagination).then((response) => {
-        let data = response.data.result[0];
+        let data: ITicket = response.data.result[0];
         data.context = data.context.reverse();
         this.result = data;
-        this.title += `${data.customer.firstName} ${
-          data.customer.lastName
-        } - ۰${toPersianString(data.customer.phoneNumber)}`;
+        this.formStatus.value = this.result.status;
+        this.title += this.titleGenerator();
+        this.ready = true;
       });
     },
     createReply(): void {
@@ -193,7 +197,7 @@ export default Vue.extend({
         hint: this.formHint,
         status: this.formStatus.value,
         text: this.formText,
-        code: (this as any).result.code,
+        code: this.result.code,
       };
       Vue.prototype.$api.support
         .reply(data)
@@ -211,6 +215,25 @@ export default Vue.extend({
     },
     adminColor(): string {
       return this.themeGetter === "dark" ? "teal" : "teal lighten-4";
+    },
+    changeStatus(): void {
+      Vue.prototype.$api.support
+        .changeStatus({
+          code: this.result.code,
+          status: this.formStatus.value,
+        })
+        .then(() => {
+          Vue.prototype.$toast("success", "وضعیت تیکت با موفقیت تغییر کرد.");
+        })
+        .catch(() => {
+          Vue.prototype.$toast("error", "مشکلی در بروزرسانی وضعیت رخ داد.");
+        });
+    },
+    titleGenerator(): string {
+      const title = `${this.result.customer.firstName} ${
+        this.result.customer.lastName
+      } - ۰${toPersianString(Number(this.result.customer.phoneNumber))}`;
+      return title.replaceAll("null", "").trim();
     },
   },
 
