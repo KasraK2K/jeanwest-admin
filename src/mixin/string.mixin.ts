@@ -97,14 +97,14 @@ export const mediaPath = (path: string): string => {
 /* -------------------------------------------------------------------------- */
 /*                               string splitter                              */
 /* -------------------------------------------------------------------------- */
-export const stringSplitter = (text: string, splitter = ","): string[] => {
+export const stringSplitter = (text: string, splitter = " "): string[] => {
   return text ? text.split(splitter) : [];
 };
 
 /* -------------------------------------------------------------------------- */
 /*                                 join string                                */
 /* -------------------------------------------------------------------------- */
-export const joinArray = (textArray: string[], joinCharacter = ","): string => {
+export const joinArray = (textArray: string[], joinCharacter = " "): string => {
   return textArray && Array.isArray(textArray)
     ? textArray.join(joinCharacter)
     : "";
