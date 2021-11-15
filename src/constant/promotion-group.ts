@@ -215,15 +215,7 @@ export const DefaultPromotionGroupData: IPromotionGroup = {
     eq: ["Women", "MEN", "Unisex"],
   },
   brand: {
-    eq: [
-      "S&K",
-      "Baleno",
-      "Vero Moda",
-      "JeansWest",
-      "JootiJeans",
-      "Casio",
-      "Only",
-    ],
+    eq: ["Samuel & Kevin", "Baleno", "Jeanswest", "JootiJeans", "Casio"],
   },
   ageGroup: {
     eq: ["Adult", "Kids"],
