@@ -98,6 +98,7 @@ export const mediaPath = (path: string): string => {
 /*                               string splitter                              */
 /* -------------------------------------------------------------------------- */
 export const stringSplitter = (text: string, splitter = " "): string[] => {
+  text = text.replace(/\n/g, splitter).replace(/"/g, "");
   return text ? text.split(splitter) : [];
 };
 
