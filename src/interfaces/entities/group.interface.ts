@@ -37,6 +37,15 @@ export interface ITarget {
   colorFamily?: {
     eq: string[];
   };
+  styleCode?: {
+    eq: string[];
+  };
+  sku?: {
+    eq: string[];
+  };
+  barcode?: {
+    eq: string[];
+  };
   quantity?: {
     [key: string]: number;
   }; // gt-gte-lt-lte-eq

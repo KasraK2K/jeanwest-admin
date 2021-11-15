@@ -9,12 +9,14 @@
 //===========================================
 
 import { Base } from "@/interfaces/base/base.interface";
+import { ICustomer } from "./customer.interface";
 
 export interface ITicket extends Base {
   code: string;
   title: string;
   hint: string;
   context: IContext[];
+  customer: ICustomer;
 }
 
 //=============================================================

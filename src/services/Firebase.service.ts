@@ -91,7 +91,7 @@ export const Firebase = {
     token: string
   ): Promise<AxiosResponse> {
     const data = JSON.stringify({ notification, to: token });
-    return await apiClient.post(globals.fcmBaseUrl, data, {
+    return await apiClient.post(String(globals.fcmBaseUrl), data, {
       headers: { Authorization: `key=${fcmServerKey}` },
     });
   },
@@ -116,7 +116,7 @@ export const Firebase = {
         // scheduledTime: scheduledTime,
         // dry_run: true, // for developer to send as test
       });
-      return await apiClient.post(globals.fcmBaseUrl, data, {
+      return await apiClient.post(String(globals.fcmBaseUrl), data, {
         headers: { Authorization: `key=${fcmServerKey}` },
       });
     }

@@ -1,5 +1,6 @@
 import { MapCustomerType } from "@/constant/customer-type";
 import { IMapCustomerType } from "@/interfaces/constant/map.interface";
+import { globals } from "@/common/globals/globals";
 
 /* -------------------------------------------------------------------------- */
 /*                           convert number to cash                           */
@@ -83,4 +84,29 @@ export const customerType = (type: string | number): IMapCustomerType => {
   return MapCustomerType.has(type)
     ? (MapCustomerType.get(type) as IMapCustomerType)
     : { erpName: "تعریف نشده", name: "تعریف نشده", color: "" };
+};
+
+/* -------------------------------------------------------------------------- */
+/*                            media path generator                            */
+/* -------------------------------------------------------------------------- */
+export const mediaPath = (path: string): string => {
+  if (path.slice(0, 5) === "blob:") return path;
+  else return globals.mediaServerStatic + path;
+};
+
+/* -------------------------------------------------------------------------- */
+/*                               string splitter                              */
+/* -------------------------------------------------------------------------- */
+export const stringSplitter = (text: string, splitter = " "): string[] => {
+  text = text.replace(/\n/g, splitter).replace(/"/g, "");
+  return text ? text.split(splitter) : [];
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                 join string                                */
+/* -------------------------------------------------------------------------- */
+export const joinArray = (textArray: string[], joinCharacter = " "): string => {
+  return textArray && Array.isArray(textArray)
+    ? textArray.join(joinCharacter)
+    : "";
 };

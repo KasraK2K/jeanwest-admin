@@ -13,20 +13,11 @@ export const Support = {
     return apiClient.post(`${modulePath}/admin/reply`, data);
   },
 
-  // findOne(id: string): Promise<AxiosResponse> {
-  //   return apiClient.get(`${modulePath}/${id}`);
-  // },
-
   editReply(data: Record<string, unknown>): Promise<AxiosResponse> {
     return apiClient.patch(`${modulePath}/admin/edit`, data);
   },
 
-  // edit(
-  //   data: Record<string, unknown>,
-  //   id: string
-  // ): Promise<AxiosResponse> {
-  //   return apiClient.patch(`${modulePath}/${id}`, data);
-  // },
-
-  // softDelete() {},
+  changeStatus(data: { code: string; status: number }): Promise<AxiosResponse> {
+    return apiClient.patch(`${modulePath}/admin/changeTicketStatus`, data);
+  },
 };

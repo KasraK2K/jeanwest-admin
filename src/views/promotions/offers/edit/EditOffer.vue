@@ -294,9 +294,7 @@
                   multiple
                   small-chips
                   hide-details="auto"
-                >
-                  <v-icon slot="prepend" color="blue">mdi-account</v-icon>
-                </v-autocomplete>
+                />
               </v-col>
             </v-row>
 
@@ -343,9 +341,10 @@ import { OperatorEnum } from "@/enums/general.enum";
 import { formatDate } from "@/mixin/date.mixin";
 import { IGroup } from "@/interfaces/entities/group.interface";
 import { customerType } from "@/mixin/string.mixin";
+import { OfferTypeEnum } from "@/enums/offer.enum";
 
 const noNumber: number = undefined as unknown as number;
-const noString: string = undefined as unknown as string;
+const noType: OfferTypeEnum = undefined as unknown as OfferTypeEnum;
 
 export default Vue.extend({
   props: {
@@ -385,10 +384,10 @@ export default Vue.extend({
       ],
       ready: false,
       offerDefaultTypes: [
-        { text: "تعداد", value: "count" },
-        { text: "هدفمند", value: "target-only" },
-        { text: "قیمت", value: "price" },
-        // { text: "پله‌ای", value: "step" },
+        { text: "تعداد", value: OfferTypeEnum.COUNT },
+        { text: "هدفمند", value: OfferTypeEnum.TARGET_ONLY },
+        { text: "قیمت", value: OfferTypeEnum.PRICE },
+        { text: "پله‌ای", value: OfferTypeEnum.STEP },
       ],
       offer: {} as unknown as IOffer,
       context: "",
@@ -466,7 +465,7 @@ export default Vue.extend({
 
     triggerLogic(type: string): void {
       if (type === "target-only") {
-        this.offer.trigger.type = noString;
+        this.offer.trigger.type = noType;
         this.offer.trigger.value = noNumber;
       }
     },

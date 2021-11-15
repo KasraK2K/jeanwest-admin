@@ -5,6 +5,9 @@ import {
   toEnglishString,
   toPlainText,
   customerType,
+  stringSplitter,
+  joinArray,
+  mediaPath,
 } from "@/mixin/string.mixin";
 import {
   toPersianTime,
@@ -12,24 +15,22 @@ import {
   formatDate,
   changeTimeZone,
 } from "@/mixin/date.mixin";
-import { globals } from "@/common/globals/globals";
 
 export const methods = {
   methods: {
-    tinyApiKey: tinyApiKey,
-    tinyInit: tinyInit,
-    numberToCash: numberToCash,
-    toPersianString: toPersianString,
-    toEnglishString: toEnglishString,
-    toPlainText: toPlainText,
-    customerType: customerType,
-    toPersianTime: toPersianTime,
-    toGregorian: toGregorian,
-    changeTimeZone: changeTimeZone,
-    formatDate: formatDate,
-    mediaPath: (path: string): string => {
-      if (path.slice(0, 5) === "blob:") return path;
-      else return globals.mediaServerStatic + path;
-    },
+    tinyApiKey,
+    tinyInit,
+    numberToCash,
+    toPersianString,
+    toEnglishString,
+    toPlainText,
+    customerType,
+    stringSplitter,
+    joinArray,
+    mediaPath,
+    toPersianTime,
+    toGregorian,
+    changeTimeZone,
+    formatDate,
   },
 };

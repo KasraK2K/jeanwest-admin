@@ -8,6 +8,7 @@
 //
 //========================================
 
+import { OfferTypeEnum } from "@/enums/offer.enum";
 import { Base } from "@/interfaces/base/base.interface";
 import { IGroup } from "./group.interface";
 
@@ -28,10 +29,12 @@ export interface IOffer extends Base {
 }
 
 export interface ITrigger {
-  type: string;
+  type: OfferTypeEnum;
   value: number;
 }
 
 export interface ITarget extends ITrigger {
+  type: OfferTypeEnum;
+  value: number;
   reduction: number;
 }
