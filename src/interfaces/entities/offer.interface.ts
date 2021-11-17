@@ -30,11 +30,9 @@ export interface IOffer extends Base {
 
 export interface ITrigger {
   type: OfferTypeEnum;
-  value: number;
+  value: number | number[] | string | string[];
 }
 
 export interface ITarget extends ITrigger {
-  type: OfferTypeEnum;
-  value: number;
-  reduction: number;
+  reduction: number | number[] | string | string[];
 }
