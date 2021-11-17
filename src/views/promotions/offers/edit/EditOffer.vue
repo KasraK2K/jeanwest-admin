@@ -363,7 +363,7 @@ import _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
 import { formatDate } from "@/mixin/date.mixin";
 import { IGroup } from "@/interfaces/entities/group.interface";
-import { customerType, stringSplitter } from "@/mixin/string.mixin";
+import { customerType, joinArray, stringSplitter } from "@/mixin/string.mixin";
 import { OfferTypeEnum } from "@/enums/offer.enum";
 
 const noNumber: number = undefined as unknown as number;
@@ -442,6 +442,14 @@ export default Vue.extend({
     findOne(): void {
       Vue.prototype.$api.promotion.findOneOffer(this.id).then((response) => {
         this.offer = response.data;
+        if (Array.isArray(this.offer.trigger.type))
+          this.offer.trigger.value = joinArray(
+            this.offer.trigger.value as string[]
+          );
+        if (Array.isArray(this.offer.target.reduction))
+          this.offer.target.reduction = joinArray(
+            this.offer.target.reduction as string[]
+          );
         this.title += this.offer.name;
         this.triggerGroup = this.offer.triggerGroup;
         this.targetGroup = this.offer.targetGroup;
