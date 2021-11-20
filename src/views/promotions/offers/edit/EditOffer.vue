@@ -442,13 +442,6 @@ export default Vue.extend({
     findOne(): void {
       Vue.prototype.$api.promotion.findOneOffer(this.id).then((response) => {
         this.offer = response.data;
-
-        if (Array.isArray(this.offer.trigger.value))
-          this.offer.trigger.value = joinArray(this.offer.trigger.value);
-
-        if (Array.isArray(this.offer.target.reduction))
-          this.offer.target.reduction = joinArray(this.offer.target.reduction);
-
         this.title += this.offer.name;
         this.triggerGroup = this.offer.triggerGroup;
         this.targetGroup = this.offer.targetGroup;
@@ -582,6 +575,7 @@ export default Vue.extend({
           OperatorEnum.DIVIDER
         ),
       });
+
       newOffer.target.reduction = this.divisionGraterThanOne(
         newOffer.target.reduction
       );
@@ -592,10 +586,18 @@ export default Vue.extend({
         newOffer.trigger.value = this.divisionGraterThanOne(
           newOffer.trigger.value
         );
+
+      if (Array.isArray(this.offer.trigger.value))
+        this.offer.trigger.value = joinArray(this.offer.trigger.value);
+
+      if (Array.isArray(this.offer.target.reduction))
+        this.offer.target.reduction = joinArray(this.offer.target.reduction);
+
       this.offer = JSON.parse(JSON.stringify(newOffer));
     },
 
     divisionGraterThanOne(data: number | number[]): number | number[] {
+      console.log("data", data);
       if (Array.isArray(data))
         return data.map((value: number) => {
           return value <= 1 ? value : value / 10;
