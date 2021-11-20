@@ -106,7 +106,10 @@ export const stringSplitter = (text: string, splitter = " "): string[] => {
 /* -------------------------------------------------------------------------- */
 /*                                 join string                                */
 /* -------------------------------------------------------------------------- */
-export const joinArray = (textArray: string[], joinCharacter = " "): string => {
+export const joinArray = (
+  textArray: string[] | number[],
+  joinCharacter = " "
+): string => {
   return textArray && Array.isArray(textArray)
     ? textArray.join(joinCharacter)
     : "";

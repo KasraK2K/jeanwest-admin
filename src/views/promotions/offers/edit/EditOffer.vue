@@ -442,21 +442,22 @@ export default Vue.extend({
     findOne(): void {
       Vue.prototype.$api.promotion.findOneOffer(this.id).then((response) => {
         this.offer = response.data;
-        if (Array.isArray(this.offer.trigger.type))
-          this.offer.trigger.value = joinArray(
-            this.offer.trigger.value as string[]
-          );
+
+        if (Array.isArray(this.offer.trigger.value))
+          this.offer.trigger.value = joinArray(this.offer.trigger.value);
+
         if (Array.isArray(this.offer.target.reduction))
-          this.offer.target.reduction = joinArray(
-            this.offer.target.reduction as string[]
-          );
+          this.offer.target.reduction = joinArray(this.offer.target.reduction);
+
         this.title += this.offer.name;
         this.triggerGroup = this.offer.triggerGroup;
         this.targetGroup = this.offer.targetGroup;
+
         if (this.offer.startDate) {
           this.time.startTime = formatDate(this.offer.startDate, "HH:mm");
           this.time.startDate = formatDate(this.offer.startDate);
         }
+
         if (this.offer.expirationDate) {
           this.time.expirationTime = formatDate(
             this.offer.expirationDate,
@@ -464,6 +465,7 @@ export default Vue.extend({
           );
           this.time.expirationDate = formatDate(this.offer.expirationDate);
         }
+
         this.divisionTen();
         this.ready = true;
       });
