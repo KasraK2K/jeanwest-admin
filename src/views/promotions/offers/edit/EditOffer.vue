@@ -512,10 +512,7 @@ export default Vue.extend({
       if (targetType === OfferTypeEnum.PRICE)
         this.offer.target.value = noNumber;
 
-      if (
-        targetType === OfferTypeEnum.STEP_PRICE ||
-        targetType === OfferTypeEnum.STEP_COUNT
-      ) {
+      if (typeof targetReduction === "string") {
         this.offer.target.value = noNumber;
         targetReduction = stringSplitter(String(targetReduction));
         targetReduction = targetReduction.map((value: string) => Number(value));
@@ -597,7 +594,6 @@ export default Vue.extend({
     },
 
     divisionGraterThanOne(data: number | number[]): number | number[] {
-      console.log("data", data);
       if (Array.isArray(data))
         return data.map((value: number) => {
           return value <= 1 ? value : value / 10;
