@@ -106,8 +106,13 @@
                       ? 'مبلغ trigger'
                       : 'مقدار trigger'
                   "
-                  v-model.number="offer.trigger.value"
-                  type="number"
+                  v-model="offer.trigger.value"
+                  :type="
+                    offer.trigger.type === 'step-price' ||
+                    offer.trigger.type === 'step-count'
+                      ? 'string'
+                      : 'number'
+                  "
                   hide-details="auto"
                 />
               </v-col>
@@ -126,7 +131,14 @@
               </v-col>
 
               <!-- offer.target.value -->
-              <v-col v-if="offer.target.type !== 'price'" cols="12" md="2">
+              <v-col
+                v-if="
+                  offer.target.type === 'count' ||
+                  offer.target.type === 'target-only'
+                "
+                cols="12"
+                md="2"
+              >
                 <v-text-field
                   label="مقدار target"
                   v-model.number="offer.target.value"
@@ -138,6 +150,17 @@
               <!-- offer.target.reduction -->
               <v-col cols="12" md="2">
                 <v-text-field
+                  v-if="
+                    offer.target.type === 'step-price' ||
+                    offer.target.type === 'step-count'
+                  "
+                  label="مقدار تخفیف target"
+                  v-model="offer.target.reduction"
+                  type="text"
+                  hide-details="auto"
+                />
+                <v-text-field
+                  v-else
                   label="مقدار تخفیف target"
                   v-model.number="offer.target.reduction"
                   type="number"
@@ -340,7 +363,7 @@ import _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
 import { formatDate } from "@/mixin/date.mixin";
 import { IGroup } from "@/interfaces/entities/group.interface";
-import { customerType } from "@/mixin/string.mixin";
+import { customerType, joinArray, stringSplitter } from "@/mixin/string.mixin";
 import { OfferTypeEnum } from "@/enums/offer.enum";
 
 const noNumber: number = undefined as unknown as number;
@@ -387,7 +410,8 @@ export default Vue.extend({
         { text: "تعداد", value: OfferTypeEnum.COUNT },
         { text: "هدفمند", value: OfferTypeEnum.TARGET_ONLY },
         { text: "قیمت", value: OfferTypeEnum.PRICE },
-        { text: "پله‌ای", value: OfferTypeEnum.STEP },
+        { text: "پله‌ای قیمت", value: OfferTypeEnum.STEP_PRICE },
+        { text: "پله‌ای تعداد", value: OfferTypeEnum.STEP_COUNT },
       ],
       offer: {} as unknown as IOffer,
       context: "",
@@ -421,10 +445,12 @@ export default Vue.extend({
         this.title += this.offer.name;
         this.triggerGroup = this.offer.triggerGroup;
         this.targetGroup = this.offer.targetGroup;
+
         if (this.offer.startDate) {
           this.time.startTime = formatDate(this.offer.startDate, "HH:mm");
           this.time.startDate = formatDate(this.offer.startDate);
         }
+
         if (this.offer.expirationDate) {
           this.time.expirationTime = formatDate(
             this.offer.expirationDate,
@@ -432,6 +458,7 @@ export default Vue.extend({
           );
           this.time.expirationDate = formatDate(this.offer.expirationDate);
         }
+
         this.divisionTen();
         this.ready = true;
       });
@@ -442,8 +469,8 @@ export default Vue.extend({
     },
 
     beforeUpdate() {
-      this.triggerLogic(this.offer.target.type);
-      this.targetLogic(this.offer.target.type);
+      this.triggerLogic();
+      this.targetLogic();
 
       this.offer.startDate = this.timeGenerator(
         this.time.startDate,
@@ -463,15 +490,35 @@ export default Vue.extend({
       this.updateOffer(offerWithOutGroup, true);
     },
 
-    triggerLogic(type: string): void {
-      if (type === "target-only") {
+    triggerLogic(): void {
+      const targetType = this.offer.target.type;
+      let triggerValue = this.offer.trigger.value;
+
+      if (targetType === OfferTypeEnum.TARGET_ONLY) {
         this.offer.trigger.type = noType;
         this.offer.trigger.value = noNumber;
+      } else if (typeof triggerValue === "string") {
+        triggerValue = stringSplitter(String(triggerValue));
+        triggerValue = triggerValue.map((value: string) => Number(value));
       }
+
+      this.offer.trigger.value = triggerValue;
     },
 
-    targetLogic(type: string): void {
-      if (type === "price") this.offer.target.value = noNumber;
+    targetLogic(): void {
+      const targetType = this.offer.target.type;
+      let targetReduction = this.offer.target.reduction;
+
+      if (targetType === OfferTypeEnum.PRICE)
+        this.offer.target.value = noNumber;
+
+      if (typeof targetReduction === "string") {
+        this.offer.target.value = noNumber;
+        targetReduction = stringSplitter(String(targetReduction));
+        targetReduction = targetReduction.map((value: string) => Number(value));
+      }
+
+      this.offer.target.reduction = targetReduction;
     },
 
     updateOffer(data: Partial<IOffer>, back = false) {
@@ -495,12 +542,25 @@ export default Vue.extend({
           OperatorEnum.MULTIPLE
         ),
       });
-      if (newOffer.trigger.type === "price") newOffer.trigger.value *= 10;
-      newOffer.target.reduction =
-        newOffer.target.reduction <= 1 && newOffer.target.type !== "price"
-          ? newOffer.target.reduction
-          : newOffer.target.reduction * 10;
+      newOffer.target.reduction = this.multipleGraterThanOne(
+        newOffer.target.reduction
+      );
+      if (
+        newOffer.trigger.type === OfferTypeEnum.PRICE ||
+        newOffer.trigger.type === OfferTypeEnum.STEP_PRICE
+      )
+        newOffer.trigger.value = this.multipleGraterThanOne(
+          newOffer.trigger.value
+        );
       return newOffer;
+    },
+
+    multipleGraterThanOne(data: number | number[]): number | number[] {
+      if (Array.isArray(data))
+        return data.map((value: number) => {
+          return value <= 1 ? value : value * 10;
+        });
+      else return data <= 1 ? data : data * 10;
     },
 
     divisionTen() {
@@ -512,12 +572,33 @@ export default Vue.extend({
           OperatorEnum.DIVIDER
         ),
       });
-      if (newOffer.trigger.type === "price") newOffer.trigger.value /= 10;
-      newOffer.target.reduction =
-        newOffer.target.reduction <= 1 && newOffer.target.type !== "price"
-          ? newOffer.target.reduction
-          : newOffer.target.reduction / 10;
+
+      newOffer.target.reduction = this.divisionGraterThanOne(
+        newOffer.target.reduction
+      );
+      if (
+        newOffer.trigger.type === OfferTypeEnum.PRICE ||
+        newOffer.trigger.type === OfferTypeEnum.STEP_PRICE
+      )
+        newOffer.trigger.value = this.divisionGraterThanOne(
+          newOffer.trigger.value
+        );
+
+      if (Array.isArray(this.offer.trigger.value))
+        this.offer.trigger.value = joinArray(this.offer.trigger.value);
+
+      if (Array.isArray(this.offer.target.reduction))
+        this.offer.target.reduction = joinArray(this.offer.target.reduction);
+
       this.offer = JSON.parse(JSON.stringify(newOffer));
+    },
+
+    divisionGraterThanOne(data: number | number[]): number | number[] {
+      if (Array.isArray(data))
+        return data.map((value: number) => {
+          return value <= 1 ? value : value / 10;
+        });
+      else return data <= 1 ? data : data / 10;
     },
 
     changeNumber(
