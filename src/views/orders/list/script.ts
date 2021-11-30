@@ -77,7 +77,7 @@ export class AllOrders extends Vue {
   // ────────────────────────────────────────────────────────────────────
   //   :::::: L I F E S Y C L E : :  :   :    :     :        :          :
   // ────────────────────────────────────────────────────────────────────
-  private mounted(): void {
+  public mounted(): void {
     this.paginateGenerator();
     this.getList();
   }
@@ -85,7 +85,7 @@ export class AllOrders extends Vue {
   // ──────────────────────────────────────────────────────────────
   //   :::::: M E T H O D : :  :   :    :     :        :          :
   // ──────────────────────────────────────────────────────────────
-  private getList(): void {
+  public getList(): void {
     this.loading = true;
     Vue.prototype.$api.order
       .getList(this.pagination)
@@ -99,7 +99,7 @@ export class AllOrders extends Vue {
       });
   }
 
-  private paginateGenerator(): void {
+  public paginateGenerator(): void {
     this.page = 1;
     const options: IOptions = {
       page: { eq: this.page },
@@ -117,7 +117,7 @@ export class AllOrders extends Vue {
       : paginationGenerator(options, filters);
   }
 
-  private jeanswestStatusGen(status: number): { text: string; class: string } {
+  public jeanswestStatusGen(status: number): { text: string; class: string } {
     switch (status) {
       case 0:
         return { text: "در انتظار", class: "yellow--text" };
@@ -133,7 +133,7 @@ export class AllOrders extends Vue {
     }
   }
 
-  private banimodeStatusGen(status: number): { text: string; class: string } {
+  public banimodeStatusGen(status: number): { text: string; class: string } {
     switch (status) {
       case 0:
         return { text: "ارسال نشده", class: "yellow--text" };
@@ -156,6 +156,32 @@ export class AllOrders extends Vue {
   private removeForceFilter(): void {
     this.$store.dispatch("setOrderFilter", undefined);
     this.paginateGenerator();
+  }
+
+  private searchWithLike(event: string) {
+    this.loading = true;
+
+    const data = {
+      value: event,
+      page: this.page,
+      limit: this.limit,
+    };
+
+    if (event)
+      Vue.prototype.$api.order
+        .searchWithLike(data)
+        .then((response) => {
+          const data = response.data;
+          this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+          this.items = data.result;
+        })
+        .catch(() => {
+          Vue.prototype.$toast(
+            "error",
+            "خطا در دریافت لیست سفارشات جستجو شده."
+          );
+        });
+    else this.getList();
   }
 }
 
