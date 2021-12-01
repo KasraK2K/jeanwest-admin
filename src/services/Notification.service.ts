@@ -1,4 +1,4 @@
-import { IPagination } from "./../interfaces/others/pagination.interface";
+import { IPagination, ISearchWithLike } from "@/interfaces/others/pagination.interface";
 import { AxiosResponse } from "axios";
 import { apiClient } from "./Axios.service";
 
@@ -7,6 +7,10 @@ const modulePath = "/notification";
 export const Notification = {
   getList(pagination: IPagination): Promise<AxiosResponse> {
     return apiClient.post(`${modulePath}/list`, pagination);
+  },
+
+  searchWithLike(data: ISearchWithLike): Promise<AxiosResponse> {
+    return apiClient.post(`${modulePath}/list/search`, data);
   },
 
   findOne(id: string): Promise<AxiosResponse> {

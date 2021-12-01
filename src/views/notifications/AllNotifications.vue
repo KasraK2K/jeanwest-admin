@@ -83,8 +83,6 @@
       item-key="id"
       :loading="loading"
       loading-text="در حال دریافت اطلاعات از سرور ..."
-      :search="search"
-      no-results-text="نتیجه‌ای یافت نشد."
       :page.sync="page"
       :items-per-page="limit"
       hide-default-footer
@@ -108,9 +106,10 @@
 
           <v-col class="col-12 col-md-3">
             <v-text-field
-              v-model="search"
-              label="جستجو در این صفحه"
+              @change="searchWithLike"
+              label="جستجو"
               class="ml-4"
+              clearable
             ></v-text-field>
           </v-col>
         </v-row>
@@ -254,7 +253,6 @@ export default Vue.extend({
           to: document.location.pathname,
         },
       ],
-      search: "",
       // pagination
       page: 1,
       pageCount: 1,
@@ -271,28 +269,38 @@ export default Vue.extend({
       },
     };
   },
+
   watch: {
     limit(): void {
       this.page = 1;
       this.pagination.option.limit = { eq: this.limit };
       this.getList();
     },
+
     page(): void {
       this.pagination.option.page = { eq: this.page };
       this.getList();
     },
+
     pagination(): void {
       this.getList();
     },
+
     items(): void {
       this.loading = false;
     },
   },
+
+  mounted(): void {
+    this.getList();
+  },
+
   methods: {
     changePage(page: number) {
       this.page = page;
       this.paginateGenerator();
     },
+
     getList(): void {
       this.loading = true;
       Vue.prototype.$api.notification
@@ -303,6 +311,7 @@ export default Vue.extend({
           this.items = data.result;
         });
     },
+
     paginateGenerator() {
       this.page = 1;
       const options: IOptions = {
@@ -312,19 +321,45 @@ export default Vue.extend({
       const filters: IFilters = {};
       this.pagination = paginationGenerator(options, filters);
     },
+
     clearDateFilter(): void {
       this.dates = undefined;
       this.paginateGenerator();
     },
+
     deleteNotification(id: string): void {
       Vue.prototype.$api.notification.softDelete(id).then(() => this.getList());
     },
+
     restoreNotification(id: string): void {
       Vue.prototype.$api.notification.restore(id).then(() => this.getList());
     },
-  },
-  mounted(): void {
-    this.getList();
+
+    searchWithLike(event: string) {
+      this.loading = true;
+
+      const data = {
+        value: event,
+        page: this.page,
+        limit: this.limit,
+      };
+
+      if (event)
+        Vue.prototype.$api.notification
+          .searchWithLike(data)
+          .then((response) => {
+            const data = response.data;
+            this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+            this.items = data.result;
+          })
+          .catch(() => {
+            Vue.prototype.$toast(
+              "error",
+              "خطا در دریافت لیست اعلانات جستجو شده."
+            );
+          });
+      else this.getList();
+    },
   },
 });
 </script>

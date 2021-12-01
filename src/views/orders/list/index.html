@@ -107,8 +107,6 @@
     item-key="id"
     :loading="loading"
     loading-text="در حال دریافت اطلاعات از سرور ..."
-    :search="search"
-    no-results-text="نتیجه‌ای یافت نشد."
     :page.sync="page"
     :items-per-page="limit"
     hide-default-footer
@@ -127,9 +125,10 @@
 
         <v-col class="col-12 col-md-3">
           <v-text-field
-            v-model="search"
-            label="جستجو در این صفحه"
+            @change="searchWithLike"
+            label="جستجو"
             class="ml-4"
+            clearable
           ></v-text-field>
         </v-col>
       </v-row>

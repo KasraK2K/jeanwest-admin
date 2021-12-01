@@ -21,3 +21,9 @@ export interface IOptions {
 export interface IFilters {
   [key: string]: Record<string, unknown>;
 }
+
+export interface ISearchWithLike {
+  value: string;
+  limit: number;
+  page: number;
+}

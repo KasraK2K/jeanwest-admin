@@ -103,8 +103,6 @@
       item-key="id"
       :loading="loading"
       loading-text="در حال دریافت اطلاعات از سرور ..."
-      :search="search"
-      no-results-text="نتیجه‌ای یافت نشد."
       :page.sync="page"
       :items-per-page="limit"
       hide-default-footer
@@ -121,9 +119,10 @@
 
           <v-col class="col-12 col-md-3">
             <v-text-field
-              v-model="search"
-              label="جستجو در این صفحه"
+              @change="searchWithLike"
+              label="جستجو"
               class="ml-4"
+              clearable
             ></v-text-field>
           </v-col>
         </v-row>
@@ -172,8 +171,8 @@
         <!-- FCM -->
         <v-btn color="primary" elevation="2" icon outlined>
           <v-icon dark small @click="showDialog(item)"
-            >mdi-message-reply-text-outline</v-icon
-          >
+            >mdi-message-reply-text-outline
+          </v-icon>
         </v-btn>
       </template>
 
@@ -301,6 +300,16 @@ import _ from "lodash";
 export default Vue.extend({
   name: "AllCustomers",
 
+  computed: {
+    fullName(): string {
+      return this.currentCustomer &&
+        this.currentCustomer.firstName &&
+        this.currentCustomer.lastName
+        ? `${this.currentCustomer.firstName} ${this.currentCustomer.lastName}`
+        : "ناشناس";
+    },
+  },
+
   data(): {
     [key: string]: unknown;
     page: number;
@@ -356,23 +365,32 @@ export default Vue.extend({
       currentCustomer: {} as ICustomer,
     };
   },
+
   watch: {
     limit(): void {
       this.page = 1;
       this.pagination.option.limit = { eq: this.limit };
       this.getList();
     },
+
     page(): void {
       this.pagination.option.page = { eq: this.page };
       this.getList();
     },
+
     pagination(): void {
       this.getList();
     },
+
     items(): void {
       this.loading = false;
     },
   },
+
+  mounted(): void {
+    this.getList();
+  },
+
   methods: {
     getList(): void {
       this.loading = true;
@@ -382,6 +400,7 @@ export default Vue.extend({
         this.items = data.result;
       });
     },
+
     paginateGenerator() {
       this.page = 1;
       const options: IOptions = {
@@ -391,10 +410,12 @@ export default Vue.extend({
       const filters: IFilters = {};
       this.pagination = paginationGenerator(options, filters);
     },
+
     clearDateFilter(): void {
       this.dates = undefined;
       this.paginateGenerator();
     },
+
     toggleActivation(customer: ICustomer): void {
       Vue.prototype.$api.admin
         .toggleCustomer(customer.id, {
@@ -402,10 +423,12 @@ export default Vue.extend({
         })
         .then(() => (customer.active = !customer.active));
     },
+
     showDialog(customer: ICustomer) {
       this.dialog = true;
       this.currentCustomer = _.assign({}, customer);
     },
+
     async sendPushNotification() {
       (this.$refs.pushForm as FormRefs).validate();
       if (!this.valid) return;
@@ -422,6 +445,7 @@ export default Vue.extend({
         : Vue.prototype.$toast("info", "این کاربر توکن فعال ندارد.");
       this.clearDialog();
     },
+
     clearDialog(): void {
       this.currentCustomer = {} as ICustomer;
       this.pushText = "";
@@ -429,22 +453,37 @@ export default Vue.extend({
       this.dialog = false;
       (this.$refs.pushForm as FormRefs).resetValidation();
     },
+
     async getFirebaseUser(id: string) {
       return await Vue.prototype.$api.firebase
         .getOne(FirebaseCollectionsEnum.USERS, id)
         .then((response) => response);
     },
-  },
-  mounted(): void {
-    this.getList();
-  },
-  computed: {
-    fullName(): string {
-      return this.currentCustomer &&
-        this.currentCustomer.firstName &&
-        this.currentCustomer.lastName
-        ? `${this.currentCustomer.firstName} ${this.currentCustomer.lastName}`
-        : "ناشناس";
+
+    searchWithLike(event: string) {
+      this.loading = true;
+
+      const data = {
+        value: event,
+        page: this.page,
+        limit: this.limit,
+      };
+
+      if (event)
+        Vue.prototype.$api.customer
+          .searchWithLike(data)
+          .then((response) => {
+            const data = response.data;
+            this.pageCount = Vue.prototype.$PageCount(data.total, this.limit);
+            this.items = data.result;
+          })
+          .catch(() => {
+            Vue.prototype.$toast(
+              "error",
+              "خطا در دریافت لیست کاربران جستجو شده."
+            );
+          });
+      else this.getList();
     },
   },
 });
