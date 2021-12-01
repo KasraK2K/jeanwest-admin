@@ -135,7 +135,9 @@
     </template>
 
     <template v-slot:[`item.no`]="{ item }">
-      {{ toPersianString(item.no) }}
+      <span :class="{'red--text': returnDetail && returnDetail.length}">
+        {{ toPersianString(item.no) }}
+      </span>
     </template>
 
     <template v-slot:[`item.banimodeCode`]="{ item }">
@@ -186,7 +188,7 @@
 
     <template v-slot:[`item.options`]="{ item }">
       <v-chip
-        color="blue"
+        :color="returnDetail && returnDetail.length ? 'red' : 'blue'"
         link
         label
         outlined
