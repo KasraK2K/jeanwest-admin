@@ -3,6 +3,8 @@ import Editor from "@tinymce/tinymce-vue";
 import { Vue, Component } from "vue-property-decorator";
 import _ from "lodash";
 import { OperatorEnum } from "@/enums/general.enum";
+import { customerType } from "@/mixin/string.mixin";
+
 @Component({
   name: "CreateDiscount",
   components: {
@@ -59,6 +61,13 @@ class CreateDiscount extends Vue {
 
     if (operator === OperatorEnum.DIVIDER) return number / 10;
     else if (operator === OperatorEnum.MULTIPLE) return number * 10;
+  }
+
+  private customerTypeArray() {
+    const types: Record<string, unknown>[] = [];
+    for (let i = -11; i <= 12; i++)
+      if (i !== 9) types.push({ text: customerType(String(i)).name, value: i });
+    return types;
   }
 }
 

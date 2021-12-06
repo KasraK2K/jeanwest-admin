@@ -115,7 +115,7 @@
             </v-text-field>
           </v-col>
 
-          <v-col class="col-12 col-md-3">
+          <v-col cols="12" md="3">
             <v-menu
               v-model="startDateMenu"
               :nudge-top="20"
@@ -133,6 +133,7 @@
                   clearable
                   v-bind="attrs"
                   v-on="on"
+                  hide-details="auto"
                   @click:clear="discount.startDate = ''"
                 ></v-text-field>
               </template>
@@ -140,7 +141,7 @@
             </v-menu>
           </v-col>
 
-          <v-col class="col-12 col-md-3">
+          <v-col cols="12" md="3">
             <v-menu
               v-model="expirationDateMenu"
               :nudge-top="20"
@@ -159,10 +160,26 @@
                   v-bind="attrs"
                   v-on="on"
                   @click:clear="discount.expirationDate = ''"
+                  hide-details="auto"
                 ></v-text-field>
               </template>
               <v-date-picker v-model="discount.expirationDate"></v-date-picker>
             </v-menu>
+          </v-col>
+
+          <v-col cols="12">
+            <v-autocomplete
+              label="گروه‌های کاربری"
+              v-model="discount.roles"
+              :items="customerTypeArray()"
+              item-text="text"
+              item-value="value"
+              chips
+              clearable
+              deletable-chips
+              multiple
+              small-chips
+            />
           </v-col>
         </v-row>
         <v-btn large color="primary" class="mt-4" @click="createDiscount"

@@ -231,6 +231,24 @@
               ></v-time-picker>
             </v-menu>
           </v-col>
+
+          <v-col
+            cols="12"
+            :md="discount.roles && discount.roles.length > 1 ? 12 : 3"
+          >
+            <v-autocomplete
+              label="گروه‌های کاربری"
+              v-model="discount.roles"
+              :items="customerTypeArray()"
+              item-text="text"
+              item-value="value"
+              chips
+              clearable
+              deletable-chips
+              multiple
+              small-chips
+            />
+          </v-col>
         </v-row>
         <v-btn large color="primary" class="mt-4" @click="editDiscount"
           >ویرایش</v-btn

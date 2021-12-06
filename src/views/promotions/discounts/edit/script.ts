@@ -7,6 +7,7 @@ import _ from "lodash";
 import { IPromotionGroup } from "@/interfaces/constant/group.interface";
 import { IGroup } from "@/interfaces/entities/group.interface";
 import { OperatorEnum } from "@/enums/general.enum";
+import { customerType } from "@/mixin/string.mixin";
 
 @Component({
   name: "EditDiscount",
@@ -130,6 +131,13 @@ class CreateDiscount extends Vue {
 
     if (operator === OperatorEnum.DIVIDER) return number / 10;
     else if (operator === OperatorEnum.MULTIPLE) return number * 10;
+  }
+
+  private customerTypeArray() {
+    const types: Record<string, unknown>[] = [];
+    for (let i = -11; i <= 12; i++)
+      if (i !== 9) types.push({ text: customerType(String(i)).name, value: i });
+    return types;
   }
 }
 
