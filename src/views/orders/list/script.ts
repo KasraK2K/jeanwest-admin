@@ -7,6 +7,7 @@ import {
 import { IOrder } from "@/interfaces/entities/order.interface";
 import { paginationGenerator } from "@/common/utils/pagination.utils";
 import { mapState } from "vuex";
+import { convertSearchString } from "@/mixin/string.mixin";
 
 @Component({ name: "AllOrders", computed: mapState(["orderFilter"]) })
 export class AllOrders extends Vue {
@@ -162,7 +163,7 @@ export class AllOrders extends Vue {
     this.loading = true;
 
     const data = {
-      value: event,
+      value: convertSearchString(event),
       page: this.page,
       limit: this.limit,
     };

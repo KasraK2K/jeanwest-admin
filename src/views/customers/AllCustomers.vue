@@ -295,6 +295,7 @@ import { paginationGenerator } from "@/common/utils/pagination.utils";
 import { FirebaseCollectionsEnum } from "@/enums/firebase.enum";
 import { IPushNotification } from "@/interfaces/entities/notification.interface";
 import { FormRefs } from "@/types/global.type";
+import { convertSearchString } from "@/mixin/string.mixin";
 import _ from "lodash";
 
 export default Vue.extend({
@@ -464,7 +465,7 @@ export default Vue.extend({
       this.loading = true;
 
       const data = {
-        value: event,
+        value: convertSearchString(event),
         page: this.page,
         limit: this.limit,
       };

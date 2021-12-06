@@ -69,6 +69,17 @@ export const toEnglishString: (sentence: string) => string = (
 };
 
 /* -------------------------------------------------------------------------- */
+/*                            convert search string                           */
+/* -------------------------------------------------------------------------- */
+export const convertSearchString: (sentence: string) => string = (
+  sentence: string
+) => {
+  let newString = toEnglishString(sentence);
+  if (newString[0] === "0") newString = newString.slice(1);
+  return newString;
+};
+
+/* -------------------------------------------------------------------------- */
 /*                         convert html to plain text                         */
 /* -------------------------------------------------------------------------- */
 export const toPlainText = (htmlString: string): string =>
