@@ -530,7 +530,7 @@ export default Vue.extend({
     },
 
     customerTypeArray() {
-      let types: Record<string, unknown>[] = [];
+      const types: Record<string, unknown>[] = [];
       for (let i = -11; i <= 12; i++)
         if (i !== 9)
           types.push({ text: customerType(String(i)).name, value: i });
