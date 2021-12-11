@@ -135,7 +135,9 @@
     </template>
 
     <template v-slot:[`item.no`]="{ item }">
-      <span :class="{'red--text': returnDetail && returnDetail.length}">
+      <span
+        :class="{'red--text': item.returnDetail && item.returnDetail.length}"
+      >
         {{ toPersianString(item.no) }}
       </span>
     </template>
@@ -167,7 +169,11 @@
     </template>
 
     <template v-slot:[`item.cost`]="{ item }">
-      {{ toPersianString(numberToCash(item.cost / 10)) }}
+      <span
+        :class="{'red--text': item.returnDetail && item.returnDetail.length}"
+      >
+        {{ toPersianString(numberToCash(item.cost / 10)) }}
+      </span>
     </template>
 
     <!-- <template v-slot:[`item.total`]="{ item }">
@@ -188,7 +194,7 @@
 
     <template v-slot:[`item.options`]="{ item }">
       <v-chip
-        :color="returnDetail && returnDetail.length ? 'red' : 'blue'"
+        :color="item.returnDetail && item.returnDetail.length ? 'red' : 'blue'"
         link
         label
         outlined
