@@ -150,6 +150,7 @@
         { text: 'محدودیت در تعداد ', value: 'countLimit' },
         { text: 'حداقل مبلغ خرید', value: 'minTotal' },
         { text: 'اعمال همزمان', value: 'singularity' },
+        { text: 'اعمال گروه همزمان', value: 'selfSingularity' },
         { text: 'زمان ایجاد', value: 'datetime.created_at' },
         { text: 'زمان بروزرسانی', value: 'datetime.updated_at' },
         {
@@ -211,6 +212,12 @@
       </template>
 
       <template v-slot:[`item.singularity`]="{ item }">
+        <span :class="item.singularity ? 'red--text' : 'green--text'">
+          {{ item.singularity ? "خیر" : "بله" }}
+        </span>
+      </template>
+
+      <template v-slot:[`item.selfSingularity`]="{ item }">
         <span :class="item.singularity ? 'red--text' : 'green--text'">
           {{ item.singularity ? "خیر" : "بله" }}
         </span>

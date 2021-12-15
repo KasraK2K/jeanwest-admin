@@ -57,6 +57,22 @@
                 ></v-autocomplete>
               </v-col>
 
+              <!-- offer.selfSingularity -->
+              <v-col cols="12" md="2">
+                <v-autocomplete
+                  label="اعمال گروه همزمان"
+                  v-model="offer.selfSingularity"
+                  :items="[
+                    { text: 'بله', value: false },
+                    { text: 'خیر', value: true },
+                  ]"
+                  item-text="text"
+                  item-value="value"
+                  hide-details="auto"
+                  clearable
+                ></v-autocomplete>
+              </v-col>
+
               <!-- offer.minTotal -->
               <v-col cols="12" md="2">
                 <v-text-field

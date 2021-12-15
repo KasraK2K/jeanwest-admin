@@ -16,7 +16,8 @@ export interface IJeansPoint extends Base {
   erpName: string;
   code: string;
   erpPromotionPointId: number;
-  singularity: string;
+  singularity: boolean;
+  selfSingularity: boolean;
   countLimit: number;
   minTotal: number;
   description: { context: string };

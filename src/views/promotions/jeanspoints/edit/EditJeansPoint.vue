@@ -15,7 +15,7 @@
 
           <v-form @submit.prevent="updateJeansPoint">
             <v-row>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="2">
                 <v-text-field
                   label="نام"
                   v-model.trim="jeanspoint.name"
@@ -43,6 +43,21 @@
                 <v-autocomplete
                   label="اعمال همزمان"
                   v-model="jeanspoint.singularity"
+                  :items="[
+                    { text: 'بله', value: false },
+                    { text: 'خیر', value: true },
+                  ]"
+                  item-text="text"
+                  item-value="value"
+                  hide-details="auto"
+                  clearable
+                ></v-autocomplete>
+              </v-col>
+
+              <v-col cols="12" md="2">
+                <v-autocomplete
+                  label="اعمال گروه همزمان"
+                  v-model="jeanspoint.selfSingularity"
                   :items="[
                     { text: 'بله', value: false },
                     { text: 'خیر', value: true },
