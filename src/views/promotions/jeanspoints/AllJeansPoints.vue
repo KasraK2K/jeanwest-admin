@@ -218,8 +218,8 @@
       </template>
 
       <template v-slot:[`item.selfSingularity`]="{ item }">
-        <span :class="item.singularity ? 'red--text' : 'green--text'">
-          {{ item.singularity ? "خیر" : "بله" }}
+        <span :class="item.selfSingularity ? 'red--text' : 'green--text'">
+          {{ item.selfSingularity ? "خیر" : "بله" }}
         </span>
       </template>
 
